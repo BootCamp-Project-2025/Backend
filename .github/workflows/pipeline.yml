@@ -3,14 +3,14 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - BackendCI-CDtest
+      - develop
   pull_request:
     branches:
-      - BackendCI-CDtest
+      - develop
 
 jobs:
   lint-prettier:
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request'
     runs-on: self-hosted
 
     steps:

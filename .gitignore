@@ -19,7 +19,7 @@ yarn-error.log*
 coverage/
 
 # IDE files
-.vscode/
+# .vscode/
 .idea/
 
 # OS files

@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:22.16.0-alpine
 
 WORKDIR /app
 
@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . /app/
 
-CMD [ "npm", "run", "dev:public" ]
+RUN npm run build
 
 EXPOSE 3000

@@ -1,9 +1,6 @@
 # Node modules
 node_modules/
 
-# Build output
-dist/
-
 # TypeScript cache
 *.tsbuildinfo
 
@@ -32,3 +29,6 @@ Thumbs.db
 # Prettier/ESLint cache
 .prettiercache
 .eslintcache
+
+# Docker
+docker-compose.override.yml

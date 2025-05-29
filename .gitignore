@@ -33,3 +33,6 @@ Thumbs.db
 # Docker
 docker-compose.override.yml
 /src/generated/prisma
+
+#Build local
+dist/

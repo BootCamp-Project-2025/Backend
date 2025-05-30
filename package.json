@@ -24,7 +24,10 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "@prisma/client": "^6.8.2",
+    "express": "^5.1.0",
+    "prisma": "^6.8.2",
+    "tsx": "^4.19.4"
   },
   "devDependencies": {
     "@types/express": "^5.0.2",

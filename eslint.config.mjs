@@ -8,6 +8,7 @@ import tsParser from "@typescript-eslint/parser";
 
 export default defineConfig([
   {
+    ignores: ["src/generated/**"],
     files: ["**/*.ts"],
     languageOptions: {
       parser: tsParser,
@@ -26,7 +27,7 @@ export default defineConfig([
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
-      "prettier/prettier": "error",
+      "prettier/prettier": ["warn", { endOfLine: "auto" }],
     },
   },
   {

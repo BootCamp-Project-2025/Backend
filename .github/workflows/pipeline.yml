@@ -68,7 +68,7 @@ jobs:
         run: az acr login --name projectdev2025
 
       - name: Build Docker image
-        run: docker build -f dev.Dockerfile -t backend-repo:dev .
+        run: docker build -t backend-repo:dev .
 
       - name: Tag Docker image
         run: docker tag backend-repo:dev projectdev2025.azurecr.io/backend-repo:dev

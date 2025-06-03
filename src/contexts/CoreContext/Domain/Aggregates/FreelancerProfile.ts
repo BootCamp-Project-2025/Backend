@@ -16,8 +16,13 @@ export class FreelancerProfile {
     private certifications: Certification[] = []
   ) {}
 
+  //Aca reglas del negocio invariantes del dominio
   addSkill(skill: Skill) {
-    // if (!this.skills.some(s => s.equals(skill))) {}
-    this.skills.push(skill);
+    if (this.skills.length >= 10) {
+      throw new Error("You can't have more than 10 skills");
+    }
+    if (!this.skills.some((s) => s.equals(skill))) {
+      this.skills.push(skill);
+    }
   }
 }

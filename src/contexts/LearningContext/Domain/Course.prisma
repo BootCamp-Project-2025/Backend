@@ -1,0 +1,8 @@
+model Course{
+   id      Int      @id @default(autoincrement())
+  name   String   @unique
+  field String
+  Requirements String
+  Time Int
+  description    String
+}

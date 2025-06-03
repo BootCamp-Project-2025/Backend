@@ -14,6 +14,7 @@ export class HealthService implements IHealthService {
       const dbStatus = await this.checkDBHealthUseCase.execute();
       return new GeneralHealth(apiStatus, dbStatus);
     } catch (error) {
+      console.log(error);
       throw new Error("Server is not working");
     }
   }

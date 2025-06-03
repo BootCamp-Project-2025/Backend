@@ -18,8 +18,8 @@ export default {
       console.log(healthStatus);
       if (healthStatus.dbStatus.isConnected) res.status(200).json(healthStatus);
       else throw new Error("DB is not connected");
-    } catch (error: any) {
-      res.status(500).json({ status: "error", message: error.message });
+    } catch (error) {
+      res.status(500).json({ status: "error", error });
     }
   },
 };

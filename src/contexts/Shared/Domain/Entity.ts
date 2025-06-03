@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { UniqueEntityID } from "./UniqueEntityID";
 
 const isEntity = (v: any): v is Entity<any> => {

@@ -5,4 +5,4 @@ model Course{
   Requirements String
   Time Int
   description    String
-}
+} 

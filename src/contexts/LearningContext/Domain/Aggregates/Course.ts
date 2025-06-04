@@ -23,4 +23,28 @@ export class Course extends AggregateRoot<CourseProps> {
       id
     );
   }
+
+  getName(): string {
+    return this.props.name;
+  }
+
+  getField(): string {
+    return this.props.field;
+  }
+
+  getImgSrc(): string {
+    return this.props.imgSrc;
+  }
+
+  getRequirements(): string {
+    return this.props.requirements;
+  }
+
+  getModules(): Module[] {
+    return this.props.modules ?? [];
+  }
+
+  getTime(): number {
+    return this.props.time;
+  }
 }

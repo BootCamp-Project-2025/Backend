@@ -2,7 +2,7 @@ import { ValueObject } from "@/contexts/Shared/Domain/ValueObject";
 
 interface LanguageProps {
   name: string;
-  level: "basic" | "intermediate" | "advanced";
+  level: "basic" | "intermediate" | "advanced" | "native";
 }
 
 export class Language extends ValueObject<LanguageProps> {

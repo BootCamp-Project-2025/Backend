@@ -1,15 +1,18 @@
 import { AggregateRoot } from "@/contexts/Shared/Domain/AgregateRoot";
 import { UserRoles } from "../entities/UserRoles";
-import { UserEmail } from "../entities/UserEmail";
-import { UserId } from "../entities/UserId";
+import { UserEmail } from "../valueObjects/UserEmail";
+import { UserId } from "../valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
+import { UserName } from "../valueObjects/UserName";
 //import { UserPassword } from "./valueObjects/UserPassword";
 
 export interface UserProps {
-  fullName: string;
-  email: UserEmail;
-  roles: UserRoles; // ['CLIENT'] | ['FREELANCER'] | ['CLIENT', 'FREELANCER']
+  userName: UserName;
+  userEmail: UserEmail;
+  roles: UserRoles; // ['CLIENT'] | ['FREELANCER'] | ['CLIENT', 'FREELANCER'] Enum
+  //date: new Date();
   // password: UserPassword;
+  // isAdmin: boolean;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -17,8 +20,12 @@ export class User extends AggregateRoot<UserProps> {
     return UserId.create(this._id);
   }
 
+  get userName() {
+    return this.props.userName;
+  }
+
   get email() {
-    return this.props.email;
+    return this.props.userEmail;
   }
 
   get roles(): UserRoles {
@@ -39,7 +46,7 @@ export class User extends AggregateRoot<UserProps> {
   }
 
   public static create(props: UserProps, id?: UniqueEntityID): User {
-    if (!props.fullName || !props.email) {
+    if (!props.userName || !props.userEmail) {
       throw new Error("Full name and email are required.");
     }
     return new User(
@@ -51,3 +58,10 @@ export class User extends AggregateRoot<UserProps> {
     );
   }
 }
+
+// User (AR)
+// ├── userId: UUID
+// ├── email: UserEmail (VO)
+// ├── username: UserName (VO)
+// ├── roles: UserRoles (VO)
+// └── ...autenticación...

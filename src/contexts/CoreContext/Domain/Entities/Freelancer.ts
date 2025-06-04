@@ -1,16 +1,17 @@
-import { Education } from "../entities/Education";
-import { Experience } from "../entities/Experience";
-import { Certification } from "../entities/Certification";
+import { Education } from "./Education";
+import { Experience } from "./Experience";
+import { Certification } from "./Certification";
 import { AggregateRoot } from "@/contexts/Shared/Domain/AgregateRoot";
-import { LanguageCollection } from "../entities/LanguageCollection";
-import { SkillCollection } from "../entities/SkillCollection";
+import { LanguageCollection } from "./LanguageCollection";
+import { SkillCollection } from "./SkillCollection";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
-import { UserId } from "../entities/UserId";
+import { UserId } from "../valueObjects/UserId";
+import { About } from "../valueObjects/About";
 
 interface FreelancerProps {
   id: UserId;
   fullName: string;
-  about: string;
+  about: About;
   skills: SkillCollection;
   languages: LanguageCollection;
   education: Education;
@@ -19,6 +20,7 @@ interface FreelancerProps {
 }
 
 export class Freelancer extends AggregateRoot<FreelancerProps> {
+  //cambiar a entity
   private constructor(props: FreelancerProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -27,21 +29,22 @@ export class Freelancer extends AggregateRoot<FreelancerProps> {
     id?: UniqueEntityID
   ): Freelancer {
     if (!props.fullName || !props.about) {
-      throw new Error("Full name and about are required."); //Metods of Result and Guard?
+      throw new Error("Full name and about are required.");
     }
-    return new Freelancer(props, id); //Here we can add validation logic if needed and newUser logic
+    return new Freelancer(props, id);
   }
 
   //The gets encapsulated logic of the aggregate avoiding to expose  this.props directly
   get profileId(): UniqueEntityID {
     return this._id;
+    //ver id
   }
 
   get fullName(): string {
     return this.props.fullName;
   }
 
-  get about(): string {
+  get about(): About {
     return this.props.about;
   }
 
@@ -70,3 +73,8 @@ export class Freelancer extends AggregateRoot<FreelancerProps> {
 
 //Already can do:
 //  freelancerProfile.props.languages.add(Language.create({ name: "Spanish", level: "native" }));
+
+// FreelancerProfile (AR)
+// ├── freelancerId: UUID
+// ├── userId: UUID (referencia al User)
+// ├── skills, education, experience

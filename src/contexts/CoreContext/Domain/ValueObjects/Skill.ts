@@ -1,5 +1,5 @@
 export type SkillLevel = "beginner" | "intermediate" | "advanced";
-//No necesito un id, dos skills con el mismo nombre y nivel son considerados iguales
+
 export class Skill {
   private readonly _name: string;
   private readonly _level: SkillLevel;

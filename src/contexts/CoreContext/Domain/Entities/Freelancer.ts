@@ -1,15 +1,15 @@
 import { Education } from "./Education";
 import { Experience } from "./Experience";
 import { Certification } from "./Certification";
-import { AggregateRoot } from "@/contexts/Shared/Domain/AgregateRoot";
 import { LanguageCollection } from "./LanguageCollection";
 import { SkillCollection } from "./SkillCollection";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
 import { UserId } from "../valueObjects/UserId";
 import { About } from "../valueObjects/About";
+import { Entity } from "@/contexts/Shared/Domain/Entity";
 
 interface FreelancerProps {
-  id: UserId;
+  userId: UserId; //Relation with AggregateRoot User
   fullName: string;
   about: About;
   skills: SkillCollection;
@@ -19,11 +19,11 @@ interface FreelancerProps {
   certifications: Certification;
 }
 
-export class Freelancer extends AggregateRoot<FreelancerProps> {
-  //cambiar a entity
+export class Freelancer extends Entity<FreelancerProps> {
   private constructor(props: FreelancerProps, id?: UniqueEntityID) {
     super(props, id);
   }
+
   public static create(
     props: FreelancerProps,
     id?: UniqueEntityID
@@ -35,9 +35,12 @@ export class Freelancer extends AggregateRoot<FreelancerProps> {
   }
 
   //The gets encapsulated logic of the aggregate avoiding to expose  this.props directly
-  get profileId(): UniqueEntityID {
+  get freelancerId(): UniqueEntityID {
     return this._id;
-    //ver id
+  }
+
+  get userId(): UserId {
+    return this.props.userId;
   }
 
   get fullName(): string {

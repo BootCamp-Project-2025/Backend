@@ -1,6 +1,6 @@
 import { UniqueEntityID } from "../../Shared/Domain/UniqueEntityID";
 import { Course as PrismaCourse } from "../../../generated/prisma/client";
-import { Course, CourseProps } from "../domain/aggregates/Course";
+import { Course, CourseProps } from "../Domain/Aggregates/Course";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
@@ -11,7 +11,7 @@ export class CourseMapper {
       time: prismaCourse.time,
       description: prismaCourse.description,
     };
-    return new Course(course, new UniqueEntityID(prismaCourse.id.toString()));
+    return Course.create(course, new UniqueEntityID(prismaCourse.id.toString()));
   }
 
   static toPersistence(domainCourse: Course): PrismaCourse {

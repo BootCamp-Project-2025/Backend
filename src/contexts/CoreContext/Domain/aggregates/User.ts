@@ -15,7 +15,6 @@ export interface UserProps {
   clientProfile?: Client; // Only if it includes "CLIENT"
   freelancerProfile?: Freelancer; // Only if it includes "FREELANCER"
   //date: new Date();
-  // isAdmin: boolean;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -31,7 +30,7 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.userEmail;
   }
 
-  get roles(): string[] {
+  get roles(): UserRole[] {
     return this.props.roles;
   }
 
@@ -53,7 +52,7 @@ export class User extends AggregateRoot<UserProps> {
   }
 
   // Methods to manage roles
-  public addRole(role: string): void {
+  public addRole(role: UserRole): void {
     if (!this.roles.includes(role)) {
       this.roles.push(role);
     }
@@ -77,10 +76,29 @@ export class User extends AggregateRoot<UserProps> {
     if (!props.userName || !props.userEmail) {
       throw new Error("Full name and email are required.");
     }
+
+    const roles: UserRole[] =
+      props.roles && props.roles.length > 0 ? props.roles : ["CLIENT"]; // default role
+    // Conditional validations: if there is a role, there must be a profile
+    if (roles.includes("FREELANCER") && !props.freelancerProfile) {
+      throw new Error("Freelancer profile is required for role FREELANCER.");
+    }
+
+    if (roles.includes("CLIENT") && !props.clientProfile) {
+      throw new Error("Client profile is required for role CLIENT.");
+    }
+
     return new User(
       {
-        ...props,
-        roles: props.roles ?? ["CLIENT"], // default role
+        userName: props.userName,
+        userEmail: props.userEmail,
+        roles,
+        clientProfile: roles.includes("CLIENT")
+          ? props.clientProfile
+          : undefined,
+        freelancerProfile: roles.includes("FREELANCER")
+          ? props.freelancerProfile
+          : undefined,
       },
       id
     );
@@ -91,7 +109,8 @@ export class User extends AggregateRoot<UserProps> {
 // ├── userId: UUID
 // ├── email: UserEmail (VO)
 // ├── username: UserName (VO)
-// ├── roles: UserRoles (VO)
+// ├── clientProfile?: Client
+// ├── freelancerProfile?: Freelancer
 // └── ...autenticación...
 
 //We don't want Client and Freelancer to inherit from User, but rather User to internally add its entities (Client and Freelancer)
@@ -103,3 +122,5 @@ export class User extends AggregateRoot<UserProps> {
 //We can add some events like:
 //  if (user.isFreelancer) {
 //   user.freelancerProfile?.skills.add(skill);}
+
+//TIP FOR PERSISTANCE: Wecan save the User in one table and ClientProfile and FreelancerProfile in another, using userId as the foreign key.

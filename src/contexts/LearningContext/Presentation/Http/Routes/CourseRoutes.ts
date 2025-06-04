@@ -11,7 +11,37 @@ const courseRouter = Router();
 
 /**
  * @openapi
- * /api/learning/courses:
+ * components:
+ *   schemas:
+ *     CourseDTO:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *         name:
+ *           type: string
+ *         field:
+ *           type: string
+ *         requirements:
+ *           type: string
+ *         time:
+ *           type: integer
+ *           example: 10
+ *         description:
+ *           type: string
+ *       required:
+ *         - id
+ *         - name
+ *         - field
+ *         - requirements
+ *         - time
+ *         - description
+ */
+
+/**
+ * @openapi
+ * /courses:
  *   get:
  *     summary: Retrieve all courses
  *     tags:
@@ -26,6 +56,6 @@ const courseRouter = Router();
  *               items:
  *                 $ref: '#/components/schemas/CourseDTO'
  */
-courseRouter.get("/courses", controller.getAllCourses.bind(controller));
+courseRouter.get("/", controller.getAllCourses.bind(controller));
 
 export default courseRouter;

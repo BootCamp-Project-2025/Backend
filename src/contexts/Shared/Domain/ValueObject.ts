@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface ValueObjectProps {
-  [index: string]: unknown;
+  [index: string]: any;
 }
 
 export abstract class ValueObject<T extends ValueObjectProps> {

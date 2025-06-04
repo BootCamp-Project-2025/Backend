@@ -1,6 +1,6 @@
 import { UniqueEntityID } from "../../Shared/Domain/UniqueEntityID";
 import { Course as PrismaCourse } from "../../../generated/prisma/client";
-import { Course, CourseProps } from "../domain/aggregates/Course";
+import { Course, CourseProps } from "../Domain/Aggregates/Course";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {

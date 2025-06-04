@@ -10,8 +10,12 @@ export class CourseMapper {
       requirements: prismaCourse.requirements,
       time: prismaCourse.time,
       description: prismaCourse.description,
+      imgSrc: prismaCourse.imgSrc,
     };
-    return new Course(course, new UniqueEntityID(prismaCourse.id.toString()));
+    return Course.create(
+      course,
+      new UniqueEntityID(prismaCourse.id.toString())
+    );
   }
 
   static toPersistence(domainCourse: Course): PrismaCourse {
@@ -22,6 +26,7 @@ export class CourseMapper {
       requirements: domainCourse.props.requirements,
       time: domainCourse.props.time,
       description: domainCourse.props.description,
+      imgSrc: domainCourse.props.imgSrc,
     };
   }
 }

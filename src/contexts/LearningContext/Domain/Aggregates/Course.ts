@@ -5,6 +5,7 @@ import Module from "module";
 export interface CourseProps {
   name: string;
   field: string;
+  imgSrc: string;
   requirements: string;
   modules?: Module[];
   time: number;

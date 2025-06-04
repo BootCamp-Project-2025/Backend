@@ -1,30 +1,36 @@
-import { Education } from "./Education";
-import { Experience } from "./Experience";
-import { Certification } from "./Certification";
-import { LanguageCollection } from "./LanguageCollection";
-import { SkillCollection } from "./SkillCollection";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
 import { UserId } from "../valueObjects/UserId";
-import { About } from "../valueObjects/About";
 import { Entity } from "@/contexts/Shared/Domain/Entity";
 
 interface ClientProps {
   userId: UserId; //Relation with AggregateRoot User
-  about: About;
-  skills: SkillCollection;
-  languages: LanguageCollection;
-  education: Education;
-  experience: Experience;
-  certifications: Certification;
+  //Here we can add coursesTacking, tracks etc
 }
 
 export class Client extends Entity<ClientProps> {
   private constructor(props: ClientProps, id?: UniqueEntityID) {
     super(props, id);
   }
+  public static create(props: ClientProps, id?: UniqueEntityID): Client {
+    if (!props.userId) {
+      throw new Error("User ID is required.");
+    }
+
+    return new Client(props, id);
+  }
+
+  get clientId(): UniqueEntityID {
+    return this._id;
+  }
+
+  get userId(): UserId {
+    return this.props.userId;
+  }
+
+  // gets
 }
 
 // ClientProfile (AR)
 // ├── clientId: UUID
 // ├── userId: UUID (referencia al User)
-// ├── empresa, proyectos
+// ├── courses taken etc

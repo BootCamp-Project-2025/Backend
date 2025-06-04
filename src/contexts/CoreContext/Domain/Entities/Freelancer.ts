@@ -10,7 +10,6 @@ import { Entity } from "@/contexts/Shared/Domain/Entity";
 
 interface FreelancerProps {
   userId: UserId; //Relation with AggregateRoot User
-  fullName: string;
   about: About;
   skills: SkillCollection;
   languages: LanguageCollection;
@@ -18,7 +17,6 @@ interface FreelancerProps {
   experience: Experience;
   certifications: Certification;
 }
-
 export class Freelancer extends Entity<FreelancerProps> {
   private constructor(props: FreelancerProps, id?: UniqueEntityID) {
     super(props, id);
@@ -28,23 +26,19 @@ export class Freelancer extends Entity<FreelancerProps> {
     props: FreelancerProps,
     id?: UniqueEntityID
   ): Freelancer {
-    if (!props.fullName || !props.about) {
-      throw new Error("Full name and about are required.");
+    if (!props.about) {
+      throw new Error("About is required.");
     }
+
     return new Freelancer(props, id);
   }
 
-  //The gets encapsulated logic of the aggregate avoiding to expose  this.props directly
   get freelancerId(): UniqueEntityID {
     return this._id;
   }
 
   get userId(): UserId {
     return this.props.userId;
-  }
-
-  get fullName(): string {
-    return this.props.fullName;
   }
 
   get about(): About {
@@ -74,10 +68,7 @@ export class Freelancer extends Entity<FreelancerProps> {
   //Domain events can be added here if needed like addSkill, addLanguage, etc.
 }
 
-//Already can do:
-//  freelancerProfile.props.languages.add(Language.create({ name: "Spanish", level: "native" }));
-
 // FreelancerProfile (AR)
 // ├── freelancerId: UUID
-// ├── userId: UUID (referencia al User)
-// ├── skills, education, experience
+// ├── userId: UUID (reference to User)
+// ├── skills, education, experience etc

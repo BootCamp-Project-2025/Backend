@@ -4,7 +4,7 @@ import healthController from "../controllers/healthController";
 const router = Router();
 
 /**
- * @swagger
+ * @openapi
  * /health:
  *  get:
  *      summary: Retrieves the API health status
@@ -16,5 +16,29 @@ const router = Router();
  *
  */
 router.get("", healthController.getHealthStatus);
+
+/**
+ * @swagger
+ * /health:
+ *  post:
+ *      summary: Creates sample data into Data base
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          content:
+ *                              type: string
+ *                              example: Sample content
+ *      responses:
+ *          201:
+ *              description: Data saved
+ *          500:
+ *              description: An error occured
+ *
+ */
+router.post("", healthController.saveSampleData);
 
 export default router;

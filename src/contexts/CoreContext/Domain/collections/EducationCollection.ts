@@ -11,11 +11,11 @@ export class EducationCollection {
     this.educations = educations;
   }
 
-  public static create(educations: Education[]): EducationCollection {
+  public static create(educations: Education[] = []): EducationCollection {
     return new EducationCollection(educations);
   }
 
-  public getItems(): Education[] {
+  public getAll(): Education[] {
     return [...this.educations];
   }
 

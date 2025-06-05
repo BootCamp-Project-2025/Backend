@@ -56,4 +56,8 @@ export class SkillCollection extends ValueObject<SkillCollectionProps> {
 
     return unique;
   }
+
+  public getAll(): Skill[] {
+    return this.skills;
+  }
 }

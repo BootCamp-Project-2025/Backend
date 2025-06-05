@@ -6,7 +6,7 @@ interface LanguageProps {
 }
 
 export class Language extends ValueObject<LanguageProps> {
-  private constructor(props: LanguageProps) {
+  constructor(props: LanguageProps) {
     super(props);
   }
 

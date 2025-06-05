@@ -1,27 +1,46 @@
 import { UniqueEntityID } from "../../Shared/Domain/UniqueEntityID";
 import { Course as PrismaCourse } from "../../../generated/prisma/client";
-import { Course, CourseProps } from "../Domain/Aggregates/Course";
+import { Course, CourseProps } from "../domain/aggregates/Course";
+import { CourseName } from "../domain/valueObjects/CourseName";
+import { CourseField } from "../domain/valueObjects/CourseField";
+import { CourseRequirements } from "../domain/valueObjects/CourseRequirements";
+import { CourseDescription } from "../domain/valueObjects/CourseDescription";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
+    const nameValue = CourseName.create({ name: prismaCourse.name });
+    const fieldValue = CourseField.create({ name: prismaCourse.field });
+    const requirementsValue = CourseRequirements.create({
+      name: prismaCourse.requirements,
+    });
+    const descriptionValue = CourseDescription.create({
+      name: prismaCourse.description,
+    });
+
     const course: CourseProps = {
-      name: prismaCourse.name,
-      field: prismaCourse.field,
-      requirements: prismaCourse.requirements,
+      name: nameValue,
+      field: fieldValue,
+      requirements: requirementsValue,
+      description: descriptionValue,
       time: prismaCourse.time,
-      description: prismaCourse.description,
+      imgSrc: prismaCourse.imgSrc,
     };
-    return Course.create(course, new UniqueEntityID(prismaCourse.id.toString()));
+
+    return Course.create(
+      course,
+      new UniqueEntityID(prismaCourse.id.toString())
+    );
   }
 
   static toPersistence(domainCourse: Course): PrismaCourse {
     return {
       id: domainCourse.id.toString(),
-      name: domainCourse.props.name,
-      field: domainCourse.props.field,
-      requirements: domainCourse.props.requirements,
+      name: domainCourse.props.name.value,
+      field: domainCourse.props.field.value,
+      requirements: domainCourse.props.requirements.value,
+      description: domainCourse.props.description.value,
       time: domainCourse.props.time,
-      description: domainCourse.props.description,
+      imgSrc: domainCourse.props.imgSrc,
     };
   }
 }

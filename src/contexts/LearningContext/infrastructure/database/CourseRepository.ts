@@ -4,18 +4,18 @@ import prismaClient from "../../../Shared/infrastrucutre/database/prismaClient";
 import { CourseMapper } from "../../mappers/CourseMapper";
 
 export class CourseRepository implements ICourseRepository {
-    async findById(id: string): Promise<Course | null> {
-        const course = await prismaClient.course.findUnique({
-            where: { id },
-        });
+  async findById(id: string): Promise<Course | null> {
+    const course = await prismaClient.course.findUnique({
+      where: { id },
+    });
 
-        if (!course) return null;
+    if (!course) return null;
 
-        return CourseMapper.toDomain(course);
-    }
+    return CourseMapper.toDomain(course);
+  }
 
-    async findAll(): Promise<Course[]> {
-        const courses = await prismaClient.course.findMany();
-        return courses.map(CourseMapper.toDomain);
-    }
+  async findAll(): Promise<Course[]> {
+    const courses = await prismaClient.course.findMany();
+    return courses.map(CourseMapper.toDomain);
+  }
 }

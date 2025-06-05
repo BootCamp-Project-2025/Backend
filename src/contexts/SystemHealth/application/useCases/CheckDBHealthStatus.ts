@@ -3,7 +3,7 @@ import prismaClient from "../../../Shared/infrastrucutre/database/prismaClient";
 
 export class CheckDBHealthUseCase {
   private prisma = prismaClient;
-  constructor() { }
+  constructor() {}
 
   async execute(): Promise<DBHealth> {
     try {

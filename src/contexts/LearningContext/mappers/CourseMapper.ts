@@ -50,6 +50,6 @@ export class CourseMapper {
       name: domainCourse.props.name.value,
       description: domainCourse.props.description.value,
       imgSrc: domainCourse.props.imgSrc,
-    }
+    };
   }
 }

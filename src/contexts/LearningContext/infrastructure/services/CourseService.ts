@@ -3,9 +3,9 @@ import { GetAllCoursesUseCase } from "../../aplication/useCases/GetAllCoursesUse
 import { CourseDTO } from "../../domain/dtos/CourseDTO";
 
 export class CourseService implements ICourseService {
-    constructor(private readonly getAllCoursesUseCase: GetAllCoursesUseCase) { }
+  constructor(private readonly getAllCoursesUseCase: GetAllCoursesUseCase) {}
 
-    async getAllCourses(): Promise<CourseDTO[]> {
-        return this.getAllCoursesUseCase.execute();
-    }
+  async getAllCourses(): Promise<CourseDTO[]> {
+    return this.getAllCoursesUseCase.execute();
+  }
 }

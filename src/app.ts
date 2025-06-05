@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
-import courseRoutes from "./contexts/LearningContext/Presentation/Http/Routes/CourseRoutes";
+import courseRoutes from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";

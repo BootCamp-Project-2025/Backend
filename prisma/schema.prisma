@@ -15,6 +15,7 @@ model Course{
   requirements String
   time Int
   description    String
+  imgSrc String
   modules Module[]
 }
 
@@ -23,4 +24,9 @@ model Module{
   author   Course @relation(fields: [CourseId], references: [id])
   CourseId String
   name   String   @unique
+}
+
+model SampleData {
+  id String @id @default(uuid())
+  content String
 }

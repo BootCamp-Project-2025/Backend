@@ -1,13 +1,7 @@
-import express from "express";
-import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
+import app from "./app";
 
-const app = express();
-app.use(express.json());
+const API_PORT = process.env.API_PORT || 3000;
 
-app.use("/api/health", healthRoutes);
-
-// app.use('/equipos', equipoRouter);
-
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+app.listen(API_PORT, () => {
+  console.log(`Server running on http://localhost:${API_PORT}`);
 });

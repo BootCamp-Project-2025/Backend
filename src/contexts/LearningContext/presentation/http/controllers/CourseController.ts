@@ -3,9 +3,9 @@ import { CourseService } from "../../../infrastructure/services/CourseService";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 
 export class CourseController implements ICourseController {
-  constructor(private readonly courseService: CourseService) {}
+  constructor(private readonly courseService: CourseService) { }
 
-  async getAllCourses(req: Request, res: Response): Promise<void> {
+  public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {
       const courses = await this.courseService.getAllCourses();
       res.status(200).json(courses);

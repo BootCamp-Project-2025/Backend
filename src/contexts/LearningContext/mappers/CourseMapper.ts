@@ -45,7 +45,7 @@ export class CourseMapper {
     };
   }
 
-  static toDTO(domainCourse: Course): CourseDTO {
+  static toAplicationDTO(domainCourse: Course): CourseDTO {
     return {
       name: domainCourse.props.name.value,
       description: domainCourse.props.description.value,

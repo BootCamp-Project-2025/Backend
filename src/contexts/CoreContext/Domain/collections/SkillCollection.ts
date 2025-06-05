@@ -1,26 +1,22 @@
-import { Entity } from "@/contexts/Shared/Domain/Entity";
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
 import { Skill } from "../valueObjects/Skill";
+import { ValueObject } from "@/contexts/Shared/Domain/ValueObject";
 
 interface SkillCollectionProps {
   items: Skill[];
 }
 
-export class SkillCollection extends Entity<SkillCollectionProps> {
+export class SkillCollection extends ValueObject<SkillCollectionProps> {
   private static readonly MAX_SKILLS = 10;
 
   get skills(): Skill[] {
     return this.props.items;
   }
 
-  private constructor(props: SkillCollectionProps, id?: UniqueEntityID) {
-    super(props, id);
+  private constructor(props: SkillCollectionProps) {
+    super(props);
   }
 
-  public static create(
-    items: Skill[] = [],
-    id?: UniqueEntityID
-  ): SkillCollection {
+  public static create(items: Skill[] = []): SkillCollection {
     if (items.length > this.MAX_SKILLS) {
       throw new Error(
         `A freelancer can have at most ${this.MAX_SKILLS} skills.`
@@ -28,7 +24,7 @@ export class SkillCollection extends Entity<SkillCollectionProps> {
     }
 
     const uniqueSkills = this.removeDuplicates(items);
-    return new SkillCollection({ items: uniqueSkills }, id);
+    return new SkillCollection({ items: uniqueSkills });
   }
 
   public add(skill: Skill): void {

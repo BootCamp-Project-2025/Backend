@@ -14,7 +14,7 @@ export interface UserProps {
   roles: UserRole[]; // ['CLIENT'] | ['FREELANCER'] | ['CLIENT', 'FREELANCER']
   clientProfile?: Client; // Only if it includes "CLIENT"
   freelancerProfile?: Freelancer; // Only if it includes "FREELANCER"
-  //date: new Date();
+  createdAt: Date;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -34,6 +34,9 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.roles;
   }
 
+  get createdAt(): Date {
+    return this.props.createdAt;
+  }
   // Getters per profile
   get isClient(): boolean {
     return this.roles.includes("CLIENT");
@@ -99,6 +102,7 @@ export class User extends AggregateRoot<UserProps> {
         freelancerProfile: roles.includes("FREELANCER")
           ? props.freelancerProfile
           : undefined,
+        createdAt: props.createdAt ?? new Date(),
       },
       id
     );

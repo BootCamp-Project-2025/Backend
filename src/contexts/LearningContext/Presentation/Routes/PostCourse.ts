@@ -1,7 +1,7 @@
 import express from "express";
-import { CourseController } from "../Controllers/CourseController";
-import { CreateCourseService } from "../../Application/Services/CreateCourseService";
-import { CourseRepository } from "../../Infraestructure/Repository/CourseRepository";
+import { CourseController } from "../controllers/CourseController";
+import { CreateCourseService } from "../../application/services/CreateCourseService";
+import { CourseRepository } from "../../infraestructure/repository/CourseRepository";
 
 const couseRouter = express.Router();
 

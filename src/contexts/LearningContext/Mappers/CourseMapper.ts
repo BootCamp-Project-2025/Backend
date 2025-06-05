@@ -4,14 +4,17 @@ import { Course, CourseProps } from "../Domain/Aggregates/Course";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
-    const course: CourseProps = {
+    const courseProps: CourseProps = {
       name: prismaCourse.name,
       field: prismaCourse.field,
       requirements: prismaCourse.requirements,
       time: prismaCourse.time,
       description: prismaCourse.description,
     };
-    return new Course(course, new UniqueEntityID(prismaCourse.id.toString()));
+    return Course.create(
+      courseProps,
+      new UniqueEntityID(prismaCourse.id.toString())
+    );
   }
 
   static toPersistence(domainCourse: Course): PrismaCourse {

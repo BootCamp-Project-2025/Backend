@@ -1,20 +1,28 @@
+import { ValueObject } from "@/contexts/Shared/Domain/ValueObject";
+
 export type SkillLevel = "beginner" | "intermediate" | "advanced";
 
-export class Skill {
+interface SkillProps {
+  name: string;
+  level: SkillLevel;
+}
+
+export class Skill extends ValueObject<SkillProps> {
   private readonly _name: string;
   private readonly _level: SkillLevel;
 
-  constructor(name: string, level: SkillLevel) {
-    if (!name || name.trim().length === 0) {
+  constructor(props: SkillProps) {
+    super(props);
+    if (!props.name || props.name.trim().length === 0) {
       throw new Error("Skill name is required");
     }
 
-    if (!["beginner", "intermediate", "advanced"].includes(level)) {
-      throw new Error(`Invalid skill level: ${level}`);
+    if (!["beginner", "intermediate", "advanced"].includes(props.level)) {
+      throw new Error(`Invalid skill level: ${props.level}`);
     }
 
-    this._name = name.trim();
-    this._level = level;
+    this._name = props.name.trim();
+    this._level = props.level;
   }
 
   get name(): string {

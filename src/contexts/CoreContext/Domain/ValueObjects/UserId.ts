@@ -2,7 +2,7 @@ import { ValueObject } from "@/contexts/Shared/Domain/ValueObject";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
 
 interface UserIdProps {
-  value: string;
+  value: UniqueEntityID;
 }
 
 export class UserId extends ValueObject<UserIdProps> {
@@ -10,11 +10,15 @@ export class UserId extends ValueObject<UserIdProps> {
     super(props);
   }
 
-  public static create(id: UniqueEntityID): UserId {
-    return new UserId({ value: id.toString() });
+  toString(): string {
+    return this.props.value.toString();
   }
 
-  public getValue(): string {
+  public getValue(): UniqueEntityID {
     return this.props.value;
+  }
+
+  public static create(id: UniqueEntityID): UserId {
+    return new UserId({ value: id });
   }
 }

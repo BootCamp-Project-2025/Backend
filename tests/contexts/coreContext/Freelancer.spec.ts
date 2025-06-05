@@ -22,8 +22,8 @@ describe("Freelancer Entity", () => {
     );
 
     const skillCollection = SkillCollection.create([
-      new Skill("JavaScript", "advanced"),
-      new Skill("React", "intermediate"),
+      new Skill({ name: "JavaScript", level: "advanced" }),
+      new Skill({ name: "React", level: "intermediate" }),
     ]);
 
     const languageCollection = LanguageCollection.create({

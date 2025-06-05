@@ -1,4 +1,4 @@
-import { UniqueEntityID } from "../../Shared/Domain/UniqueEntityID";
+import { UniqueEntityID } from "../../Shared/domain/UniqueEntityID";
 import { Course as PrismaCourse } from "../../../generated/prisma/client";
 import { Course, CourseProps } from "../domain/aggregates/Course";
 import { CourseName } from "../domain/valueObjects/CourseName";

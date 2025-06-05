@@ -1,6 +1,6 @@
 import { ICourseRepository } from "../../domain/interfaces/ICourseRepository";
 import { Course } from "../../domain/aggregates/Course";
-import prismaClient from "../../../SystemHealth/infrastructure/database/prismaClient"; // askDaniel
+import prismaClient from "../../../Shared/infrastrucutre/database/prismaClient"; // askDaniel
 import { CourseMapper } from "../../mappers/CourseMapper";
 
 export class CourseRepository implements ICourseRepository {

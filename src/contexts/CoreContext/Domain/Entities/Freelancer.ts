@@ -1,5 +1,5 @@
-import { SkillCollection } from "./SkillCollection";
-import { LanguageCollection } from "./LanguageCollection";
+import { SkillCollection } from "../collections/SkillCollection";
+import { LanguageCollection } from "../collections/LanguageCollection";
 import { EducationCollection } from "../collections/EducationCollection";
 import { ExperienceCollection } from "../collections/ExperienceCollection";
 import { CertificationCollection } from "../collections/CertificationCollection";

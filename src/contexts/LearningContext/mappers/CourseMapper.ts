@@ -10,13 +10,10 @@ import { CourseDTO } from "../domain/dtos/CourseDTO";
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
     const nameValue = CourseName.create({ name: prismaCourse.name });
-    const fieldValue = prismaCourse.field
-      ? CourseField.create({ field: prismaCourse.field })
-      : CourseField.create({ field: "Default" });
-
-    const requirementsValue = prismaCourse.requirements
-      ? CourseRequirements.create({ requirements: prismaCourse.requirements })
-      : CourseRequirements.create({ requirements: "None" });
+    const fieldValue = CourseField.create({ field: prismaCourse.field });
+    const requirementsValue = CourseRequirements.create({
+      requirements: prismaCourse.requirements,
+    });
     const descriptionValue = CourseDescription.create({
       description: prismaCourse.description,
     });

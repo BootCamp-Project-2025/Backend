@@ -2,7 +2,6 @@ import { ICourseRepository } from "../../domain/interfaces/ICourseRepository";
 import { Course } from "../../domain/aggregates/Course";
 import prismaClient from "../../../Shared/infrastrucutre/database/prismaClient"; // askDaniel
 import { CourseMapper } from "../../mappers/CourseMapper";
-import { PrismaClient } from "@prisma/client";
 
 export class CourseRepository implements ICourseRepository {
   async findById(id: string): Promise<Course | null> {
@@ -22,7 +21,7 @@ export class CourseRepository implements ICourseRepository {
 
   async insert(course: Course): Promise<Course> {
     const data = CourseMapper.toPersistence(course);
-    const created = await PrismaClient.course.create({ data });
+    const created = await prismaClient.course.create({ data });
     return CourseMapper.toDomain(created);
   }
 }

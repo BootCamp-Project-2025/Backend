@@ -12,7 +12,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/health", healthRoutes);
-app.use("/api/course", couseRouter);
 
 app.use("/api/courses", courseRoutes);
 

@@ -20,7 +20,7 @@
     "lint": "eslint .",
     "start": "node dist/main.js",
     "test": "jest --config jest.config.ts",
-    "test:coverage": "jest --coverage --collectCoverageFrom='src/**/*.{ts,tsx}'",
+    "test:coverage": "jest --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

@@ -1,5 +1,5 @@
 import { ICourseService } from "../../domain/interfaces/ICourseService";
-import { GetAllCoursesUseCase } from "../../aplication/useCases/GetAllCoursesUseCase";
+import { GetAllCoursesUseCase } from "../../application/useCases/GetAllCoursesUseCase";
 import { CourseDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
 

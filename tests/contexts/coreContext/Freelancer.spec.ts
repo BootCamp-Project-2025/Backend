@@ -1,16 +1,16 @@
-import { Education } from "@/contexts/CoreContext/domain_temp/entities_temp/Education";
-import { Experience } from "@/contexts/CoreContext/domain_temp/entities_temp/Experience";
-import { Freelancer } from "@/contexts/CoreContext/domain_temp/entities_temp/Freelancer";
-import { CertificationService } from "@/contexts/CoreContext/domain_temp/interfaces/services/CertificationService";
-import { EducationService } from "@/contexts/CoreContext/domain_temp/interfaces/services/EducationService";
-import { ExperienceService } from "@/contexts/CoreContext/domain_temp/interfaces/services/ExperienceService";
-import { LanguageService } from "@/contexts/CoreContext/domain_temp/interfaces/services/LanguageService";
-import { SkillService } from "@/contexts/CoreContext/domain_temp/interfaces/services/SkillService";
-import { About } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/About";
-import { Certification } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/Certification";
-import { Language } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/Language";
-import { Skill } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/Skill";
-import { UserId } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/UserId";
+import { Education } from "@/contexts/CoreContext/domain/entities/Education";
+import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
+import { Freelancer } from "@/contexts/CoreContext/domain/entities/Freelancer";
+import { CertificationService } from "@/contexts/CoreContext/domain/interfaces/services/CertificationService";
+import { EducationService } from "@/contexts/CoreContext/domain/interfaces/services/EducationService";
+import { ExperienceService } from "@/contexts/CoreContext/domain/interfaces/services/ExperienceService";
+import { LanguageService } from "@/contexts/CoreContext/domain/interfaces/services/LanguageService";
+import { SkillService } from "@/contexts/CoreContext/domain/interfaces/services/SkillService";
+import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
+import { Certification } from "@/contexts/CoreContext/domain/valueObjects/Certification";
+import { Language } from "@/contexts/CoreContext/domain/valueObjects/Language";
+import { Skill } from "@/contexts/CoreContext/domain/valueObjects/Skill";
+import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
 
 describe("Freelancer Entity", () => {

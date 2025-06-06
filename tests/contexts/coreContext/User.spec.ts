@@ -1,20 +1,20 @@
-import { User } from "@/contexts/CoreContext/domain_temp/aggregates/User";
-import { Client } from "@/contexts/CoreContext/domain_temp/entities_temp/Client";
-import { Education } from "@/contexts/CoreContext/domain_temp/entities_temp/Education";
-import { Experience } from "@/contexts/CoreContext/domain_temp/entities_temp/Experience";
-import { Freelancer } from "@/contexts/CoreContext/domain_temp/entities_temp/Freelancer";
-import { CertificationService } from "@/contexts/CoreContext/domain_temp/interfaces/services/CertificationService";
-import { EducationService } from "@/contexts/CoreContext/domain_temp/interfaces/services/EducationService";
-import { ExperienceService } from "@/contexts/CoreContext/domain_temp/interfaces/services/ExperienceService";
-import { LanguageService } from "@/contexts/CoreContext/domain_temp/interfaces/services/LanguageService";
-import { SkillService } from "@/contexts/CoreContext/domain_temp/interfaces/services/SkillService";
-import { About } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/About";
-import { Certification } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/Certification";
-import { Language } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/Language";
-import { Skill } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/Skill";
-import { UserEmail } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/UserEmail";
-import { UserId } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/UserId";
-import { UserName } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/UserName";
+import { User } from "@/contexts/CoreContext/domain/aggregates/User";
+import { Client } from "@/contexts/CoreContext/domain/entities/Client";
+import { Education } from "@/contexts/CoreContext/domain/entities/Education";
+import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
+import { Freelancer } from "@/contexts/CoreContext/domain/entities/Freelancer";
+import { CertificationService } from "@/contexts/CoreContext/domain/interfaces/services/CertificationService";
+import { EducationService } from "@/contexts/CoreContext/domain/interfaces/services/EducationService";
+import { ExperienceService } from "@/contexts/CoreContext/domain/interfaces/services/ExperienceService";
+import { LanguageService } from "@/contexts/CoreContext/domain/interfaces/services/LanguageService";
+import { SkillService } from "@/contexts/CoreContext/domain/interfaces/services/SkillService";
+import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
+import { Certification } from "@/contexts/CoreContext/domain/valueObjects/Certification";
+import { Language } from "@/contexts/CoreContext/domain/valueObjects/Language";
+import { Skill } from "@/contexts/CoreContext/domain/valueObjects/Skill";
+import { UserEmail } from "@/contexts/CoreContext/domain/valueObjects/UserEmail";
+import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
+import { UserName } from "@/contexts/CoreContext/domain/valueObjects/UserName";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
 
 describe("User Aggregate", () => {

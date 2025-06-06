@@ -1,4 +1,4 @@
-import { Experience } from "../../entities_temp/Experience";
+import { Experience } from "../../entities/Experience";
 
 export class ExperienceService {
   private readonly experiences: Experience[];

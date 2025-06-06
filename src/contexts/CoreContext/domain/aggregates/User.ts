@@ -1,10 +1,10 @@
 import { AggregateRoot } from "@/contexts/Shared/Domain/AgregateRoot";
-import { UserEmail } from "../valueObjects_temp/UserEmail";
-import { UserId } from "../valueObjects_temp/UserId";
+import { UserEmail } from "../valueObjects/UserEmail";
+import { UserId } from "../valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
-import { UserName } from "../valueObjects_temp/UserName";
-import { Client } from "../entities_temp/Client";
-import { Freelancer } from "../entities_temp/Freelancer";
+import { UserName } from "../valueObjects/UserName";
+import { Client } from "../entities/Client";
+import { Freelancer } from "../entities/Freelancer";
 
 export type UserRole = "CLIENT" | "FREELANCER";
 

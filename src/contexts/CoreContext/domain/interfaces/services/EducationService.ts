@@ -1,4 +1,4 @@
-import { Education } from "../../entities_temp/Education";
+import { Education } from "../../entities/Education";
 
 export class EducationService {
   private readonly educations: Education[];

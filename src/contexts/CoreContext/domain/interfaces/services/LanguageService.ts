@@ -1,4 +1,4 @@
-import { Language } from "../../valueObjects_temp/Language";
+import { Language } from "../../valueObjects/Language";
 
 export class LanguageService {
   private languages: Language[];

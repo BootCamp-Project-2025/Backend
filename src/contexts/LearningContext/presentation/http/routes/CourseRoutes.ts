@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { CourseController } from "../controllers/CourseController";
-import { CourseRepository } from "../../../infrastructure/database/CourseRepository";
-import { CourseService } from "../../../infrastructure/services/CourseService";
+import { CourseRepository } from "../../../infraestructure/database/CourseRepository";
+import { CourseService } from "../../../infraestructure/services/CourseService";
 import { GetAllCoursesUseCase } from "../../../application/useCases/GetAllCoursesUseCase";
 import { CreateCourseUseCase } from "@/contexts/LearningContext/application/useCases/CreateCourseUseCase";
 

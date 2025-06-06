@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
-import { CourseService } from "../../../infrastructure/services/CourseService";
+import { CourseService } from "../../../infraestructure/services/CourseService";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 

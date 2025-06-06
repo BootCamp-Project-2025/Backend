@@ -1,6 +1,7 @@
-import { Language } from "../../valueObjects/Language";
+import { Language } from "../valueObjects/Language";
+import { ILanguageService } from "../interfaces/services/ILanguageService";
 
-export class LanguageService {
+export class LanguageService implements ILanguageService {
   private languages: Language[];
 
   private constructor(languages: Language[]) {

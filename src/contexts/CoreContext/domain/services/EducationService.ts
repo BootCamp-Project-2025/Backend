@@ -1,6 +1,7 @@
-import { Education } from "../../entities/Education";
+import { Education } from "../entities/Education";
+import { IEducationService } from "../interfaces/services/IEducationService";
 
-export class EducationService {
+export class EducationService implements IEducationService {
   private readonly educations: Education[];
 
   private constructor(educations: Education[]) {

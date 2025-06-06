@@ -1,6 +1,7 @@
-import { Skill } from "../../valueObjects/Skill";
+import { Skill } from "../valueObjects/Skill";
+import { ISkillService } from "../interfaces/services/ISkillService";
 
-export class SkillService {
+export class SkillService implements ISkillService {
   private static readonly MAX_SKILLS = 10;
   private items: Skill[];
 

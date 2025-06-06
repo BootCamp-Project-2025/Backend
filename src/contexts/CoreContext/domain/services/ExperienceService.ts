@@ -1,6 +1,7 @@
-import { Experience } from "../../entities/Experience";
+import { Experience } from "../entities/Experience";
+import { IExperienceService } from "../interfaces/services/IExperienceService";
 
-export class ExperienceService {
+export class ExperienceService implements IExperienceService {
   private readonly experiences: Experience[];
 
   private constructor(experiences: Experience[]) {

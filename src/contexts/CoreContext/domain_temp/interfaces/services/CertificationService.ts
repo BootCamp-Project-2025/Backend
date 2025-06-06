@@ -1,4 +1,4 @@
-import { Certification } from "../../ValueObjects/Certification";
+import { Certification } from "../../valueObjects_temp/Certification";
 
 export class CertificationService {
   private readonly certifications: Certification[];

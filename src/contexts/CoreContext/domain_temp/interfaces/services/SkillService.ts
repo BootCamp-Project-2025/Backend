@@ -1,4 +1,4 @@
-import { Skill } from "../../ValueObjects/Skill";
+import { Skill } from "../../valueObjects_temp/Skill";
 
 export class SkillService {
   private static readonly MAX_SKILLS = 10;

@@ -1,5 +1,5 @@
-import { Client } from "@/contexts/CoreContext/Domain/Entities/Client";
-import { UserId } from "@/contexts/CoreContext/Domain/ValueObjects/UserId";
+import { Client } from "@/contexts/CoreContext/domain_temp/entities_temp/Client";
+import { UserId } from "@/contexts/CoreContext/domain_temp/valueObjects_temp/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
 
 describe("Client Entity", () => {

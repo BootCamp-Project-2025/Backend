@@ -1,21 +1,21 @@
-import { User } from "@/contexts/CoreContext/domain/aggregates/User";
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
-import { UserEmail } from "@/contexts/CoreContext/domain/valueObjects/UserEmail";
-import { UserName } from "@/contexts/CoreContext/domain/valueObjects/UserName";
-import { Client } from "@/contexts/CoreContext/domain/entities/Client";
-import { Freelancer } from "@/contexts/CoreContext/domain/entities/Freelancer";
-import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
-import { Skill } from "@/contexts/CoreContext/domain/valueObjects/Skill";
-import { Language } from "@/contexts/CoreContext/domain/valueObjects/Language";
-import { Education } from "@/contexts/CoreContext/domain/entities/Education";
-import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
+import { User } from "@/contexts/CoreContext/Domain/aggregates/User";
+import { Client } from "@/contexts/CoreContext/Domain/Entities/Client";
+import { Education } from "@/contexts/CoreContext/Domain/Entities/Education";
+import { Experience } from "@/contexts/CoreContext/Domain/Entities/Experience";
+import { Freelancer } from "@/contexts/CoreContext/Domain/Entities/Freelancer";
+import { CertificationService } from "@/contexts/CoreContext/Domain/interfaces/services/CertificationService";
+import { EducationService } from "@/contexts/CoreContext/Domain/interfaces/services/EducationService";
+import { ExperienceService } from "@/contexts/CoreContext/Domain/interfaces/services/ExperienceService";
+import { LanguageService } from "@/contexts/CoreContext/Domain/interfaces/services/LanguageService";
+import { SkillService } from "@/contexts/CoreContext/Domain/interfaces/services/SkillService";
+import { About } from "@/contexts/CoreContext/Domain/ValueObjects/About";
 import { Certification } from "@/contexts/CoreContext/Domain/ValueObjects/Certification";
-import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
-import { SkillCollection } from "@/contexts/CoreContext/Domain/interfaces/services/SkillService";
-import { LanguageCollection } from "@/contexts/CoreContext/Domain/interfaces/services/LanguageService";
-import { EducationCollection } from "@/contexts/CoreContext/Domain/interfaces/services/EducationService";
-import { ExperienceCollection } from "@/contexts/CoreContext/Domain/interfaces/services/ExperienceService";
-import { CertificationCollection } from "@/contexts/CoreContext/domain/collections/CertificationCollection";
+import { Language } from "@/contexts/CoreContext/Domain/ValueObjects/Language";
+import { Skill } from "@/contexts/CoreContext/Domain/ValueObjects/Skill";
+import { UserEmail } from "@/contexts/CoreContext/Domain/ValueObjects/UserEmail";
+import { UserId } from "@/contexts/CoreContext/Domain/ValueObjects/UserId";
+import { UserName } from "@/contexts/CoreContext/Domain/ValueObjects/UserName";
+import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
 
 describe("User Aggregate", () => {
   const userName = UserName.create("George Orwell");
@@ -29,28 +29,26 @@ describe("User Aggregate", () => {
     "Passionate full-stack developer with 5+ years of experience."
   );
 
-  const skillCollection = SkillCollection.create([
+  const skillService = SkillService.create([
     new Skill({ name: "JavaScript", level: "advanced" }),
     new Skill({ name: "React", level: "intermediate" }),
   ]);
 
-  const languageCollection = LanguageCollection.create({
-    languages: [
-      new Language({ name: "english", level: "native" }),
-      new Language({ name: "Spanish", level: "basic" }),
-    ],
-  });
+  const languageService = LanguageService.create([
+    new Language({ name: "english", level: "native" }),
+    new Language({ name: "Spanish", level: "basic" }),
+  ]);
 
-  const educationCollection = EducationCollection.create();
+  const educationService = EducationService.create();
   const education = Education.create({
     university: "MIT",
     career: "Computer Science",
     startDate: new Date("2015-09-01"),
     finishDate: new Date("2019-06-30"),
   });
-  educationCollection.add(education);
+  educationService.add(education);
 
-  const experienceCollection = ExperienceCollection.create();
+  const experienceService = ExperienceService.create();
   const experience = Experience.create({
     position: "Frontend Developer",
     employer: "TechCorp",
@@ -59,25 +57,25 @@ describe("User Aggregate", () => {
     endDate: new Date("2022-01-01"),
     description: "Worked on large-scale applications using React and Redux.",
   });
-  experienceCollection.add(experience);
+  experienceService.add(experience);
 
-  const certificationCollection = CertificationCollection.create();
+  const certificationService = CertificationService.create();
   const certification = Certification.create({
     certification: "AWS Certified Developer",
     institution: "Amazon",
     year: 2021,
   });
-  certificationCollection.add(certification);
+  certificationService.add(certification);
 
   //Freelancer
   const freelancer = Freelancer.create({
     userId,
     about,
-    skills: skillCollection,
-    languages: languageCollection,
-    education: educationCollection,
-    experience: experienceCollection,
-    certifications: certificationCollection,
+    skills: skillService.getAll(),
+    languages: languageService.getAll(),
+    education: educationService.getAll(),
+    experience: experienceService.getAll(),
+    certifications: certificationService.getAll(),
   });
 
   it("should create a User with CLIENT role", () => {

@@ -55,7 +55,7 @@ export class User extends AggregateRoot<UserProps> {
   }
 
   // Methods to manage roles
-  public addRole(role: UserRole): void {
+  private addRole(role: UserRole): void {
     if (!this.roles.includes(role)) {
       this.roles.push(role);
     }
@@ -66,13 +66,22 @@ export class User extends AggregateRoot<UserProps> {
     this.addRole("FREELANCER");
   }
 
-  public assignClientProfile(profile: Client): void {
+  private assignClientProfile(profile: Client): void {
     this.props.clientProfile = profile;
     this.addRole("CLIENT");
   }
 
   private constructor(props: UserProps, id?: UniqueEntityID) {
     super(props, id);
+  }
+
+  private static filterProfilesByRoles(props: UserProps, roles: UserRole[]) {
+    return {
+      clientProfile: roles.includes("CLIENT") ? props.clientProfile : undefined,
+      freelancerProfile: roles.includes("FREELANCER")
+        ? props.freelancerProfile
+        : undefined,
+    };
   }
 
   public static create(props: UserProps, id?: UniqueEntityID): User {
@@ -90,17 +99,15 @@ export class User extends AggregateRoot<UserProps> {
       throw new Error("Client profile is required for role CLIENT.");
     }
 
+    const profiles = this.filterProfilesByRoles(props, roles);
+
     return new User(
       {
         userName: props.userName,
         userEmail: props.userEmail,
         roles,
-        clientProfile: roles.includes("CLIENT")
-          ? props.clientProfile
-          : undefined,
-        freelancerProfile: roles.includes("FREELANCER")
-          ? props.freelancerProfile
-          : undefined,
+        clientProfile: profiles.clientProfile,
+        freelancerProfile: profiles.freelancerProfile,
         createdAt: props.createdAt ?? new Date(),
       },
       id

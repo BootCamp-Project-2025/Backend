@@ -1,15 +1,13 @@
 import { ICourseService } from "../../domain/interfaces/ICourseService";
-import { GetAllCoursesUseCase } from "../../application/useCases/GetAllCoursesUseCase";
 import { CreateCourseUseCase } from "../../application/useCases/CreateCourseUseCase";
 import { CourseDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
 import { Course } from "../../domain/aggregates/Course";
-import { CourseName } from "../../domain/valueObjects/CourseName";
-import { CourseDescription } from "../../domain/valueObjects/CourseDescription";
+import { IUseCase } from "../../domain/interfaces/IUseCase";
 
 export class CourseService implements ICourseService {
   constructor(
-    private getAllCoursesUseCase: GetAllCoursesUseCase,
+    private readonly getAllCoursesUseCase: IUseCase<void, Course[]>,
     private createCoursesUseCase: CreateCourseUseCase
   ) {}
 
@@ -19,18 +17,7 @@ export class CourseService implements ICourseService {
   }
 
   async create(courseDto: CourseDTO): Promise<CourseDTO> {
-    const courseName = CourseName.create({ name: courseDto.name });
-    const description = CourseDescription.create({
-      description: courseDto.description,
-    });
-
-    const course = Course.create({
-      name: courseName,
-      description: description,
-      imgSrc: courseDto.imgSrc,
-    });
-
-    const created = await this.createCoursesUseCase.execute(course);
+    const created = await this.createCoursesUseCase.execute(courseDto);
     return CourseMapper.toAplicationDTO(created);
   }
 }

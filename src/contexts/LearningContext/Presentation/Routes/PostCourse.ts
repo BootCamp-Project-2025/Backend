@@ -1,12 +1,12 @@
 import express from "express";
 import { CourseController } from "../controllers/CourseController";
-import { CreateCourseService } from "../../application/services/CreateCourseService";
-import { CourseRepository } from "../../infraestructure/repository/CourseRepository";
+import { CreateCourseUseCase } from "../../application/useCases/CreateCourseUseCase";
+import { CourseRepository } from "../../infraestructure/database/CourseRepository";
 
 const couseRouter = express.Router();
 
 const repo = new CourseRepository();
-const service = new CreateCourseService(repo);
+const service = new CreateCourseUseCase(repo);
 const controller = new CourseController(service);
 
 couseRouter.post("/courses", async (req, res, next) => {

@@ -1,4 +1,4 @@
-import { ValueObject } from "@/contexts/Shared/Domain/ValueObject";
+import { ValueObject } from "../../../Shared/Domain/ValueObject";
 
 interface CourseNameProps {
   [name: string]: string;
@@ -18,5 +18,9 @@ export class CourseName extends ValueObject<CourseNameProps> {
       throw new Error("Invalid course name");
     }
     return new CourseName(props);
+  }
+
+  public static default(): CourseName {
+    return new CourseName({ field: "General" });
   }
 }

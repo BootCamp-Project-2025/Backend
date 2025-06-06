@@ -1,4 +1,4 @@
-import { ValueObject } from "@/contexts/Shared/Domain/ValueObject";
+import { ValueObject } from "../../../Shared/Domain/ValueObject";
 
 interface CourseFieldProps {
   [field: string]: string;

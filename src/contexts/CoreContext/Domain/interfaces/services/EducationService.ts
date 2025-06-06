@@ -1,6 +1,6 @@
-import { Education } from "../entities/Education";
+import { Education } from "../../Entities/Education";
 
-export class EducationCollection {
+export class EducationService {
   private readonly educations: Education[];
 
   private constructor(educations: Education[]) {
@@ -11,8 +11,8 @@ export class EducationCollection {
     this.educations = educations;
   }
 
-  public static create(educations: Education[] = []): EducationCollection {
-    return new EducationCollection(educations);
+  public static create(educations: Education[] = []): EducationService {
+    return new EducationService(educations);
   }
 
   public getAll(): Education[] {
@@ -34,5 +34,3 @@ export class EducationCollection {
     }
   }
 }
-
-//EducationCollection is a wrapper class that groups several Education entities, with its own logic to manage them.

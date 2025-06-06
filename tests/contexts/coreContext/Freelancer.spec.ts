@@ -1,9 +1,9 @@
 import { CertificationCollection } from "@/contexts/CoreContext/domain/collections/CertificationCollection";
-import { EducationCollection } from "@/contexts/CoreContext/domain/collections/EducationCollection";
-import { ExperienceCollection } from "@/contexts/CoreContext/domain/collections/ExperienceCollection";
-import { LanguageCollection } from "@/contexts/CoreContext/domain/collections/LanguageCollection";
-import { SkillCollection } from "@/contexts/CoreContext/domain/collections/SkillCollection";
-import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
+import { EducationCollection } from "@/contexts/CoreContext/Domain/interfaces/services/EducationService";
+import { ExperienceCollection } from "@/contexts/CoreContext/Domain/interfaces/services/ExperienceService";
+import { LanguageCollection } from "@/contexts/CoreContext/Domain/interfaces/services/LanguageService";
+import { SkillCollection } from "@/contexts/CoreContext/Domain/interfaces/services/SkillService";
+import { Certification } from "@/contexts/CoreContext/Domain/ValueObjects/Certification";
 import { Education } from "@/contexts/CoreContext/domain/entities/Education";
 import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
 import { Freelancer } from "@/contexts/CoreContext/domain/entities/Freelancer";

@@ -36,5 +36,3 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     return new UserEmail({ value: formatted });
   }
 }
-
-//oldRegex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

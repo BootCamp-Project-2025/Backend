@@ -1,19 +1,19 @@
 import { AggregateRoot } from "@/contexts/Shared/Domain/AgregateRoot";
-import { UserEmail } from "../valueObjects/UserEmail";
-import { UserId } from "../valueObjects/UserId";
+import { UserEmail } from "../ValueObjects/UserEmail";
+import { UserId } from "../ValueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
-import { UserName } from "../valueObjects/UserName";
-import { Client } from "../entities/Client";
-import { Freelancer } from "../entities/Freelancer";
+import { UserName } from "../ValueObjects/UserName";
+import { Client } from "../Entities/Client";
+import { Freelancer } from "../Entities/Freelancer";
 
 export type UserRole = "CLIENT" | "FREELANCER";
 
 export interface UserProps {
   userName: UserName;
   userEmail: UserEmail;
-  roles: UserRole[]; // ['CLIENT'] | ['FREELANCER'] | ['CLIENT', 'FREELANCER']
-  clientProfile?: Client; // Only if it includes "CLIENT"
-  freelancerProfile?: Freelancer; // Only if it includes "FREELANCER"
+  roles: UserRole[];
+  clientProfile?: Client;
+  freelancerProfile?: Freelancer;
   createdAt: Date;
 }
 
@@ -81,8 +81,7 @@ export class User extends AggregateRoot<UserProps> {
     }
 
     const roles: UserRole[] =
-      props.roles && props.roles.length > 0 ? props.roles : ["CLIENT"]; // default role
-    // Conditional validations: if there is a role, there must be a profile
+      props.roles && props.roles.length > 0 ? props.roles : ["CLIENT"];
     if (roles.includes("FREELANCER") && !props.freelancerProfile) {
       throw new Error("Freelancer profile is required for role FREELANCER.");
     }
@@ -108,23 +107,3 @@ export class User extends AggregateRoot<UserProps> {
     );
   }
 }
-
-// User (AR)
-// ├── userId: UUID
-// ├── email: UserEmail (VO)
-// ├── username: UserName (VO)
-// ├── clientProfile?: Client
-// ├── freelancerProfile?: Freelancer
-// └── ...autenticación...
-
-//We don't want Client and Freelancer to inherit from User, but rather User to internally add its entities (Client and Freelancer)
-
-//So:
-//User maintains common data (email, name, roles).
-// If they have the "FREELANCER" role, then they have access to the freelancerProfile and its properties.
-// If they have "CLIENT," the same applies to the clientProfile
-//We can add some events like:
-//  if (user.isFreelancer) {
-//   user.freelancerProfile?.skills.add(skill);}
-
-//TIP FOR PERSISTANCE: Wecan save the User in one table and ClientProfile and FreelancerProfile in another, using userId as the foreign key.

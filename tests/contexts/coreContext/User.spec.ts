@@ -9,12 +9,12 @@ import { Skill } from "@/contexts/CoreContext/domain/valueObjects/Skill";
 import { Language } from "@/contexts/CoreContext/domain/valueObjects/Language";
 import { Education } from "@/contexts/CoreContext/domain/entities/Education";
 import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
-import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
+import { Certification } from "@/contexts/CoreContext/Domain/ValueObjects/Certification";
 import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
-import { SkillCollection } from "@/contexts/CoreContext/domain/collections/SkillCollection";
-import { LanguageCollection } from "@/contexts/CoreContext/domain/collections/LanguageCollection";
-import { EducationCollection } from "@/contexts/CoreContext/domain/collections/EducationCollection";
-import { ExperienceCollection } from "@/contexts/CoreContext/domain/collections/ExperienceCollection";
+import { SkillCollection } from "@/contexts/CoreContext/Domain/interfaces/services/SkillService";
+import { LanguageCollection } from "@/contexts/CoreContext/Domain/interfaces/services/LanguageService";
+import { EducationCollection } from "@/contexts/CoreContext/Domain/interfaces/services/EducationService";
+import { ExperienceCollection } from "@/contexts/CoreContext/Domain/interfaces/services/ExperienceService";
 import { CertificationCollection } from "@/contexts/CoreContext/domain/collections/CertificationCollection";
 
 describe("User Aggregate", () => {

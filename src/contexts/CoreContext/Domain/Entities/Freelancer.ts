@@ -1,21 +1,21 @@
-import { SkillCollection } from "../collections/SkillCollection";
-import { LanguageCollection } from "../collections/LanguageCollection";
-import { EducationCollection } from "../collections/EducationCollection";
-import { ExperienceCollection } from "../collections/ExperienceCollection";
-import { CertificationCollection } from "../collections/CertificationCollection";
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
 import { Entity } from "@/contexts/Shared/Domain/Entity";
-import { About } from "../valueObjects/About";
-import { UserId } from "../valueObjects/UserId";
+import { About } from "../ValueObjects/About";
+import { Language } from "../ValueObjects/Language";
+import { Skill } from "../ValueObjects/Skill";
+import { Education } from "./Education";
+import { Experience } from "./Experience";
+import { Certification } from "../ValueObjects/Certification";
+import { UserId } from "../ValueObjects/UserId";
 
 interface FreelancerProps {
-  userId: UserId; //Relation with AggregateRoot User
+  userId: UserId;
   about: About;
-  skills: SkillCollection;
-  languages: LanguageCollection;
-  education: EducationCollection;
-  experience: ExperienceCollection;
-  certifications: CertificationCollection;
+  skills: Skill[];
+  languages: Language[];
+  education: Education[];
+  experience: Experience[];
+  certifications: Certification[];
 }
 export class Freelancer extends Entity<FreelancerProps> {
   private constructor(props: FreelancerProps, id?: UniqueEntityID) {
@@ -45,30 +45,23 @@ export class Freelancer extends Entity<FreelancerProps> {
     return this.props.about;
   }
 
-  get skills(): SkillCollection {
+  get skills(): Skill[] {
     return this.props.skills;
   }
 
-  get languages(): LanguageCollection {
+  get languages(): Language[] {
     return this.props.languages;
   }
 
-  get education(): EducationCollection {
+  get education(): Education[] {
     return this.props.education;
   }
 
-  get experience(): ExperienceCollection {
+  get experience(): Experience[] {
     return this.props.experience;
   }
 
-  get certifications(): CertificationCollection {
+  get certifications(): Certification[] {
     return this.props.certifications;
   }
-
-  //Domain events can be added here if needed like addSkill, addLanguage, etc.
 }
-
-// FreelancerProfile (AR)
-// ├── freelancerId: UUID
-// ├── userId: UUID (reference to User)
-// ├── skills, education, experience etc

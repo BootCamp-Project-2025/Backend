@@ -1,6 +1,6 @@
-import { Experience } from "../entities/Experience";
+import { Experience } from "../../Entities/Experience";
 
-export class ExperienceCollection {
+export class ExperienceService {
   private readonly experiences: Experience[];
 
   private constructor(experiences: Experience[]) {
@@ -10,8 +10,8 @@ export class ExperienceCollection {
     this.experiences = experiences;
   }
 
-  public static create(experiences: Experience[] = []): ExperienceCollection {
-    return new ExperienceCollection(experiences);
+  public static create(experiences: Experience[] = []): ExperienceService {
+    return new ExperienceService(experiences);
   }
 
   public getAll(): Experience[] {

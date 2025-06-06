@@ -1,6 +1,6 @@
-import { Certification } from "../entities/Certification";
+import { Certification } from "../../ValueObjects/Certification";
 
-export class CertificationCollection {
+export class CertificationService {
   private readonly certifications: Certification[];
 
   private constructor(certifications: Certification[]) {
@@ -12,8 +12,8 @@ export class CertificationCollection {
 
   public static create(
     certifications: Certification[] = []
-  ): CertificationCollection {
-    return new CertificationCollection(certifications);
+  ): CertificationService {
+    return new CertificationService(certifications);
   }
 
   public getAll(): Certification[] {
@@ -27,9 +27,9 @@ export class CertificationCollection {
     this.certifications.push(certification);
   }
 
-  public removeById(id: string): void {
+  public removeByName(certificationName: string): void {
     const index = this.certifications.findIndex(
-      (cert) => cert.certificationId.toString() === id
+      (cert) => cert.certification === certificationName
     );
     if (index === -1) {
       throw new Error("Certification not found.");

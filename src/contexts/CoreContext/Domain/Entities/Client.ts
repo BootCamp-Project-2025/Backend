@@ -1,10 +1,9 @@
 import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
-import { UserId } from "../valueObjects/UserId";
+import { UserId } from "../ValueObjects/UserId";
 import { Entity } from "@/contexts/Shared/Domain/Entity";
 
 interface ClientProps {
-  userId: UserId; //Relation with AggregateRoot User
-  //Here we can add coursesTacking, tracks etc
+  userId: UserId;
 }
 
 export class Client extends Entity<ClientProps> {
@@ -26,11 +25,4 @@ export class Client extends Entity<ClientProps> {
   get userId(): UserId {
     return this.props.userId;
   }
-
-  // gets
 }
-
-// ClientProfile (AR)
-// ├── clientId: UUID
-// ├── userId: UUID (referencia al User)
-// ├── courses taken etc

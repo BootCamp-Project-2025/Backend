@@ -14,11 +14,14 @@
   "author": "",
   "type": "commonjs",
   "main": "app.js",
+  "_moduleAliases": {
+    "@": "src"
+  },
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
+    "dev": "ts-node-dev -r module-alias/register --respawn --transpile-only src/main.ts",
     "build": "tsc",
     "lint": "eslint .",
-    "start": "node dist/main.js",
+    "start": "nod -r module-alias/register dist/main.js",
     "test": "jest --config jest.config.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -27,6 +30,7 @@
     "@prisma/client": "^6.8.2",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "module-alias": "^2.2.3",
     "prisma": "^6.8.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",

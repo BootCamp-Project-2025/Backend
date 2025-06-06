@@ -1,6 +1,8 @@
 //erase rule once used
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-import { Course } from "../Aggregates/Course";
+import { Course } from "../aggregates/Course";
+
 export interface ICourseRepository {
-  insert(course: Course): Promise<Course>;
+  findById(id: string): Promise<Course | null>;
+  findAll(): Promise<Course[]>;
 }

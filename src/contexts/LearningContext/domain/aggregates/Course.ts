@@ -1,5 +1,5 @@
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
-import { AggregateRoot } from "../../../Shared/Domain/AgregateRoot";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { AggregateRoot } from "../../../Shared/domain/AgregateRoot";
 import Module from "module";
 import { CourseName } from "../valueObjects/CourseName";
 import { CourseField } from "../valueObjects/CourseField";

@@ -1,5 +1,5 @@
 import { DBHealth } from "../../domain/implementations/DBHealth";
-import prismaClient from "../../infrastructure/database/prismaClient";
+import prismaClient from "../../../Shared/infrastrucutre/database/prismaClient";
 
 export class CheckDBHealthUseCase {
   private prisma = prismaClient;

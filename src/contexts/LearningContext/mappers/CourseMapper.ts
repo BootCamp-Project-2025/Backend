@@ -1,11 +1,11 @@
-import { UniqueEntityID } from "../../Shared/Domain/UniqueEntityID";
+import { UniqueEntityID } from "../../Shared/domain/UniqueEntityID";
 import { Course as PrismaCourse } from "../../../generated/prisma/client";
-import { Course, CourseProps } from "../Domain/Aggregates/Course";
-import { CourseName } from "../Domain/valueObjects/CourseName";
-import { CourseField } from "../Domain/valueObjects/CourseField";
-import { CourseRequirements } from "../Domain/valueObjects/CourseRequirements";
-import { CourseDescription } from "../Domain/valueObjects/CourseDescription";
-import { CourseDTO } from "../Domain/dtos/CourseDTO";
+import { Course, CourseProps } from "../domain/aggregates/Course";
+import { CourseName } from "../domain/valueObjects/CourseName";
+import { CourseField } from "../domain/valueObjects/CourseField";
+import { CourseRequirements } from "../domain/valueObjects/CourseRequirements";
+import { CourseDescription } from "../domain/valueObjects/CourseDescription";
+import { CourseDTO } from "../domain/dtos/CourseDTO";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
@@ -54,6 +54,14 @@ export class CourseMapper {
       name: body.props.name.value,
       description: body.props.description.value,
       imgSrc: body.props.imgSrc,
+    };
+  }
+
+  static toAplicationDTO(domainCourse: Course): CourseDTO {
+    return {
+      name: domainCourse.props.name.value,
+      description: domainCourse.props.description.value,
+      imgSrc: domainCourse.props.imgSrc,
     };
   }
 }

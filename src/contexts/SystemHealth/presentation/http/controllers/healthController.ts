@@ -6,6 +6,8 @@ import { CheckAPIHealthStatus } from "../../../application/useCases/CheckAPIHeal
 import { SaveSampleData } from "../../../application/useCases/SaveSampleData";
 import { ResponseHandler } from "../../../../../contexts/Shared/Domain/entity/ResponseHandler";
 import { StatusCodes } from "http-status-codes";
+import { SuccessResponseEntity } from "../../../../../contexts/Shared/Domain/entity/SuccessResponseEntity";
+import { ErrorResponseEntity } from "../../../../../contexts/Shared/Domain/entity/ErrorResponseEntity";
 
 const checkDBHealthUseCase = new CheckDBHealthUseCase();
 const checkAPIHealthStatus = new CheckAPIHealthStatus();
@@ -20,7 +22,8 @@ export default {
   async getHealthStatus(req: Request, res: Response) {
     const healthStatus = await healthService.getHealthStatus();
     console.log(healthStatus);
-    ResponseHandler.sendSuccess(res, healthStatus);
+    const response = new SuccessResponseEntity(healthStatus, StatusCodes.OK);
+    ResponseHandler.send(res, response);
   },
 
   async saveSampleData(req: Request, res: Response) {
@@ -28,15 +31,16 @@ export default {
       console.log(req.body);
       const sampleContent = req.body;
       const sampleData = await healthService.saveSampleDataToDb(sampleContent);
-      ResponseHandler.sendSuccess(
-        res,
+      const response = new SuccessResponseEntity(
         sampleData,
-        "Data saved successfully",
-        StatusCodes.CREATED
+        StatusCodes.CREATED,
+        "Sample data saved successfully"
       );
+      ResponseHandler.send(res, response);
     } catch (error) {
       console.log(error);
-      ResponseHandler.sendError(res, "Something went wrong");
+      const response = new ErrorResponseEntity();
+      ResponseHandler.send(res, response);
     }
   },
 };

@@ -8,10 +8,10 @@ export class CheckDBHealthUseCase {
   async execute(): Promise<DBHealth> {
     try {
       const dbResponse = await this.prisma.$queryRaw`SELECT 1`;
-      if (dbResponse) return new DBHealth(true);
+      return new DBHealth(true);
     } catch (error) {
       console.log(error);
+      throw new Error("DB is not available");
     }
-    return new DBHealth(false);
   }
 }

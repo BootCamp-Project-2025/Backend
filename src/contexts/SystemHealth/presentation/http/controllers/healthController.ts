@@ -16,14 +16,9 @@ const healthService = new HealthService(
 
 export default {
   async getHealthStatus(req: Request, res: Response) {
-    try {
-      const healthStatus = await healthService.getHealthStatus();
-      console.log(healthStatus);
-      if (healthStatus.dbStatus.isConnected) res.status(200).json(healthStatus);
-      else throw new Error("DB is not connected");
-    } catch (error) {
-      res.status(500).json({ status: "error", error });
-    }
+    const healthStatus = await healthService.getHealthStatus();
+    console.log(healthStatus);
+    res.status(200).json(healthStatus);
   },
 
   async saveSampleData(req: Request, res: Response) {

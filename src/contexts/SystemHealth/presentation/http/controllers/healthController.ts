@@ -4,7 +4,7 @@ import { HealthService } from "../../../infrastructure/services/HealthService";
 import { CheckDBHealthUseCase } from "../../../application/useCases/CheckDBHealthStatus";
 import { CheckAPIHealthStatus } from "../../../application/useCases/CheckAPIHealthStatus";
 import { SaveSampleData } from "../../../application/useCases/SaveSampleData";
-import { ResponseHandler } from "../../../../../contexts/Shared/Domain/entity/ResponseHandler";
+import { ResponseService } from "../../../../Shared/infrastructure/services/ResponseService";
 import { StatusCodes } from "http-status-codes";
 import { SuccessResponseEntity } from "../../../../../contexts/Shared/Domain/entity/SuccessResponseEntity";
 import { ErrorResponseEntity } from "../../../../../contexts/Shared/Domain/entity/ErrorResponseEntity";
@@ -23,7 +23,7 @@ export default {
     const healthStatus = await healthService.getHealthStatus();
     console.log(healthStatus);
     const response = new SuccessResponseEntity(healthStatus, StatusCodes.OK);
-    ResponseHandler.send(res, response);
+    ResponseService.send(res, response);
   },
 
   async saveSampleData(req: Request, res: Response) {
@@ -36,11 +36,11 @@ export default {
         StatusCodes.CREATED,
         "Sample data saved successfully"
       );
-      ResponseHandler.send(res, response);
+      ResponseService.send(res, response);
     } catch (error) {
       console.log(error);
       const response = new ErrorResponseEntity();
-      ResponseHandler.send(res, response);
+      ResponseService.send(res, response);
     }
   },
 };

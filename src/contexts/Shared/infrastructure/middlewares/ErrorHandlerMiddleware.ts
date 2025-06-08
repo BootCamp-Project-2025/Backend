@@ -1,14 +1,21 @@
 import { NextFunction, Request, Response } from "express";
+import { ApiError } from "../errors/ApiError";
+import { ErrorResponseEntity } from "../../Domain/entity/ErrorResponseEntity";
+import { ResponseService } from "../services/ResponseService";
 
 export class ErrorHandlerMiddleware {
   public static handle(
-    err: any,
+    err: ApiError,
     req: Request,
     res: Response,
     next: NextFunction
   ) {
     console.log(err);
-
-    res.status(err.statusCode || 500).json({ message: err.message });
+    const response = new ErrorResponseEntity(
+      err.statusCode || 500,
+      err.message,
+      err.errors || []
+    );
+    ResponseService.send(res, response);
   }
 }

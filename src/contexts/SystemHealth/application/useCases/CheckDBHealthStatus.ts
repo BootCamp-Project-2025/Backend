@@ -1,3 +1,4 @@
+import { ApiError } from "../../../../contexts/Shared/infrastructure/errors/ApiError";
 import { DBHealth } from "../../domain/implementations/DBHealth";
 import prismaClient from "../../infrastructure/database/prismaClient";
 
@@ -11,7 +12,7 @@ export class CheckDBHealthUseCase {
       return new DBHealth(true);
     } catch (error) {
       console.log(error);
-      throw new Error("DB is not available");
+      throw new ApiError(505, "Internal server error", ["DB is not connected"]);
     }
   }
 }

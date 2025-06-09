@@ -8,7 +8,7 @@ export class CheckDBHealthUseCase {
 
   async execute(): Promise<DBHealth> {
     try {
-      const dbResponse = await this.prisma.$queryRaw`SELECT 1`;
+      await this.prisma.$queryRaw`SELECT 1`;
       return new DBHealth(true);
     } catch (error) {
       console.log(error);

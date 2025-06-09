@@ -8,6 +8,7 @@ export class ErrorHandlerMiddleware {
     err: ApiError,
     req: Request,
     res: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next: NextFunction
   ) {
     console.log(err);

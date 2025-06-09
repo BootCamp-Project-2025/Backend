@@ -1,0 +1,23 @@
+import { injectable } from "tsyringe";
+import { ICourseRepository } from "../../domain/interfaces/ICourseRepository";
+import { Course } from "../../domain/aggregates/Course";
+import prismaClient from "../../../shared/infrastrucutre/database/prismaClient"; // askDaniel
+import { CourseMapper } from "../../mappers/CourseMapper";
+
+@injectable()
+export class CourseRepository implements ICourseRepository {
+  async findById(id: string): Promise<Course | null> {
+    const course = await prismaClient.course.findUnique({
+      where: { id },
+    });
+
+    if (!course) return null;
+
+    return CourseMapper.toDomain(course);
+  }
+
+  async findAll(): Promise<Course[]> {
+    const courses = await prismaClient.course.findMany();
+    return courses.map(CourseMapper.toDomain);
+  }
+}

@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import "reflect-metadata";
+import "./di-container";
 import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
 
 import swaggerUi from "swagger-ui-express";

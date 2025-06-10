@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import "reflect-metadata";
+import "./d-containers";
 import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
 import courseRoutes from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 

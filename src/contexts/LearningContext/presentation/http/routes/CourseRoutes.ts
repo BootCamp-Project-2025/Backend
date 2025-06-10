@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { controller } from "../controllers/CourseMain";
+import { container } from "tsyringe";
+import { CourseController } from "../controllers/CourseController";
 
 const courseRouter = Router();
+const controller = container.resolve(CourseController);
 
 /**
  * @openapi

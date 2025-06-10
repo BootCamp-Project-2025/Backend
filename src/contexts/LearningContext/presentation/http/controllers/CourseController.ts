@@ -3,9 +3,13 @@ import { Request, Response } from "express";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { ICourseService } from "@/contexts/LearningContext/domain/interfaces/ICourseService";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class CourseController implements ICourseController {
-  constructor(private readonly courseService: ICourseService) {}
+  constructor(
+    @inject("ICourseService") private readonly courseService: ICourseService
+  ) {}
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {

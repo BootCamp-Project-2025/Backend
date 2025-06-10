@@ -11,7 +11,7 @@ import { Certification } from "@/contexts/CoreContext/domain/valueObjects/Certif
 import { Language } from "@/contexts/CoreContext/domain/valueObjects/Language";
 import { Skill } from "@/contexts/CoreContext/domain/valueObjects/Skill";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 describe("Freelancer Entity", () => {
   it("should create a valid Freelancer with all properties", () => {

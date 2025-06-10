@@ -26,7 +26,7 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.userName;
   }
 
-  get email() {
+  get userEmail() {
     return this.props.userEmail;
   }
 

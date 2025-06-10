@@ -30,3 +30,87 @@ model SampleData {
   id String @id @default(uuid())
   content String
 }
+
+enum UserRole {
+  CLIENT
+  FREELANCER
+}
+
+model User {
+  id                 String      @id @default(uuid())
+  userName           String
+  userEmail          String      @unique
+  roles              UserRole[]    @default(["CLIENT"])
+  createdAt          DateTime    @default(now())
+
+  freelancerProfile  Freelancer? @relation("UserFreelancer")
+  clientProfile      Client?     @relation("UserClient")
+}
+
+model Freelancer {
+  id      String @id @default(uuid())
+  userId  String @unique
+  user    User   @relation("UserFreelancer", fields: [userId], references: [id])
+
+  about          String
+  skills         Skill[]
+  languages      Language[]
+  education      Education[]
+  experience     Experience[]
+  certifications Certification[]
+}
+
+model Client {
+  id      String @id @default(uuid())
+  userId  String @unique
+  user    User   @relation("UserClient", fields: [userId], references: [id])
+
+  // Otros campos del cliente
+}
+
+model Skill {
+  id           String     @id @default(uuid())
+  name         String
+  level        String
+  freelancerId String
+  freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
+}
+
+model Language {
+  id           String     @id @default(uuid())
+  name         String
+  level        String
+  freelancerId String
+  freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
+}
+
+model Certification {
+  id            String     @id @default(uuid())
+  certification String
+  institution   String
+  year          Int
+  freelancerId  String
+  freelancer    Freelancer @relation(fields: [freelancerId], references: [id])
+}
+
+model Education {
+  id           String     @id @default(uuid())
+  career       String
+  university   String
+  startDate    DateTime
+  endDate      DateTime
+  freelancerId String
+  freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
+}
+
+model Experience {
+  id           String     @id @default(uuid())
+  position     String
+  employer     String
+  country      String
+  description  String
+  startDate    DateTime
+  endDate      DateTime
+  freelancerId String
+  freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
+}

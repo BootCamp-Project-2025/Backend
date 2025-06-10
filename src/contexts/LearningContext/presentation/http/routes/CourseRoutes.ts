@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { controller } from "../controllers/CourseMain";
+import { container } from "tsyringe";
+import { CourseController } from "../controllers/CourseController";
+
+const courseController = container.resolve<CourseController>(CourseController);
 
 const courseRouter = Router();
 
@@ -14,6 +17,6 @@ const courseRouter = Router();
  *       200:
  *         description: A list of courses
  */
-courseRouter.get("/", controller.getAllCourses);
+courseRouter.get("/", courseController.getAllCourses);
 
 export default courseRouter;

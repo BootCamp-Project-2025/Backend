@@ -1,8 +1,10 @@
+import { injectable } from "tsyringe";
 import { ICourseRepository } from "../../domain/interfaces/ICourseRepository";
 import { Course } from "../../domain/aggregates/Course";
-import prismaClient from "../../../Shared/infrastrucutre/database/prismaClient"; // askDaniel
+import prismaClient from "../../../Shared/infrastructure/database/PrismaClient"; // askDaniel
 import { CourseMapper } from "../../mappers/CourseMapper";
 
+@injectable()
 export class CourseRepository implements ICourseRepository {
   async findById(id: string): Promise<Course | null> {
     const course = await prismaClient.course.findUnique({

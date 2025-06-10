@@ -3,5 +3,5 @@
 import { CourseDTO } from "../dtos/CourseDTO";
 
 export interface ICourseService {
-  getAllCourses(): Promise<CourseDTO[]>;
+    getAllCourses(): Promise<CourseDTO[]>;
 }

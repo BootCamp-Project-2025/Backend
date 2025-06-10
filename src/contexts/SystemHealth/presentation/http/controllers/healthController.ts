@@ -4,7 +4,7 @@ import { HealthService } from "../../../infrastructure/services/HealthService";
 import { CheckDBHealthUseCase } from "../../../application/useCases/CheckDBHealthStatus";
 import { CheckAPIHealthStatus } from "../../../application/useCases/CheckAPIHealthStatus";
 import { SaveSampleData } from "../../../application/useCases/SaveSampleData";
-import { ResponseService } from "../../../../Shared/infrastructure/services/ResponseService";
+import { ResponseService } from "../../../../Shared/application/services/ResponseService";
 import { StatusCodes } from "http-status-codes";
 import { SuccessResponseEntity } from "../../../../../contexts/Shared/Domain/entity/SuccessResponseEntity";
 import { ErrorResponseEntity } from "../../../../../contexts/Shared/Domain/entity/ErrorResponseEntity";

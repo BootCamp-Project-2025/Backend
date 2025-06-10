@@ -10,18 +10,18 @@ import { ICourseService } from "./contexts/LearningContext/domain/interfaces/ICo
 import { CourseService } from "./contexts/LearningContext/infrastructure/services/CourseService";
 import { Course } from "./contexts/LearningContext/domain/aggregates/Course";
 
-container.registerSingleton<ICourseRepository>(
+container.register<ICourseRepository>(
   "ICourseRepository",
   CourseRepository
 );
 
-container.registerSingleton<IUseCase<void, Course[]>>(
+container.register<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",
   GetAllCoursesUseCase
 );
-container.registerSingleton<ICourseService>("ICourseService", CourseService);
+container.register<ICourseService>("ICourseService", CourseService);
 
-container.registerSingleton<ICourseController>(
+container.register<ICourseController>(
   "ICourseController",
   CourseController
 );

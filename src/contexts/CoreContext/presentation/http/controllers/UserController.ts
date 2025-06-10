@@ -10,9 +10,12 @@ export class UserController implements IUserController {
 
   getUser = async (req: Request, res: Response) => {
     try {
-      const id: string = req.params;
-      const data = this.userService.get(id);
-      res.status(200).json(data);
+      const id: string = "f5e0fd8b-c211-4937-9d91-edbae2c3d94b";
+      const user = await this.userService.get(id);
+      if (user !== null) {
+        const userDto = UserMapper.domainToGetUserDto(user);
+        res.status(200).json(userDto);
+      } else res.status(404).json({ error: "user not found" });
     } catch (error) {
       res.status(500).json(error);
       console.log(error);

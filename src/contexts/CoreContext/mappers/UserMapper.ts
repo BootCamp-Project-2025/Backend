@@ -3,6 +3,7 @@ import { User as PrismaUser, UserRole } from "@/generated/prisma";
 import { ICreateUserDto } from "../domain/interfaces/dtos/ICreateUserDto";
 import { UserEmail } from "../domain/valueObjects/UserEmail";
 import { UserName } from "../domain/valueObjects/UserName";
+import { GetUserDto } from "../domain/interfaces/dtos/GetUserDto";
 
 export default class UserMapper {
   static createUserDtoToDomain(dto: ICreateUserDto) {
@@ -21,7 +22,25 @@ export default class UserMapper {
       userName: user.userName.value,
       userEmail: user.email.value,
       roles: roles2,
-      createdAt: new Date(),
+      createdAt: user.createdAt,
     };
+  }
+
+  static persistanceToDomain(prismaUser: PrismaUser): User {
+    return User.create({
+      userName: UserName.create(prismaUser.userName),
+      userEmail: UserEmail.create(prismaUser.userEmail),
+      roles: prismaUser.roles,
+      createdAt: prismaUser.createdAt,
+    });
+  }
+
+  static domainToGetUserDto(user: User): GetUserDto {
+    return new GetUserDto(
+      user.userName.value,
+      user.email.value,
+      user.roles,
+      user.createdAt
+    );
   }
 }

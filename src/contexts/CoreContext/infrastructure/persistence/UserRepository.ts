@@ -1,18 +1,28 @@
 import prismaClient from "@/contexts/SystemHealth/infrastructure/database/prismaClient";
 import { User } from "../../domain/aggregates/User";
 import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
-import { UserEmail } from "../../domain/valueObjects/UserEmail";
-import { UserName } from "../../domain/valueObjects/UserName";
 import UserMapper from "../../mappers/UserMapper";
 
 export class UserRepository implements IUserRepository {
   getAll(): Promise<User[]> {
     throw new Error("Method not implemented.");
   }
-  getById(id: string): Promise<User> {
-    throw new Error("Method not implemented.");
+  async getById(id: string): Promise<User | null> {
+    try {
+      const dbUser = await prismaClient.user.findUnique({
+        where: { id: id },
+      });
+      if (dbUser !== null) {
+        const user = UserMapper.persistanceToDomain(dbUser);
+        return user;
+      }
+      return null;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   }
-  delete(id: string): Promise<string | void> {
+  delete(): Promise<string | void> {
     throw new Error("Method not implemented.");
   }
 
@@ -25,7 +35,7 @@ export class UserRepository implements IUserRepository {
     return user;
   }
 
-  update(id: string, object: User): Promise<User> {
+  update(): Promise<User> {
     throw new Error("Method not implemented.");
   }
 }

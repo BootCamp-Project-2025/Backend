@@ -4,7 +4,7 @@ import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepos
 export class GetUserUseCase {
   constructor(private readonly repository: IUserRepository) {}
 
-  execute(id: string): User {
-    return this.repository.getById(id);
+  async execute(id: string): Promise<User | null> {
+    return await this.repository.getById(id);
   }
 }

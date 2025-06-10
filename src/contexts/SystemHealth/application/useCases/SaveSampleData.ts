@@ -1,9 +1,9 @@
 import { ISampleDataRequest } from "../../domain/dto/ISampleDataReqDto";
-import prismaClient from "../../../Shared/infrastrucutre/database/prismaClient";
+import prismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 import { SampleData } from "@/generated/prisma";
 
 export class SaveSampleData {
-  constructor() {}
+  constructor() { }
 
   async save(sampleDataReq: ISampleDataRequest): Promise<SampleData> {
     try {

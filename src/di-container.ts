@@ -5,9 +5,9 @@ import { ICourseController } from "./contexts/LearningContext/domain/interfaces/
 import { CourseRepository } from "./contexts/LearningContext/infrastructure/database/CourseRepository";
 import { CourseController } from "./contexts/LearningContext/presentation/http/controllers/CourseController";
 import IUseCase from "./contexts/LearningContext/domain/interfaces/IUseCase";
-import { GetAllCoursesUseCase } from "./contexts/LearningContext/aplication/useCases/GetAllCoursesUseCase";
+import { GetAllCoursesUseCase } from "./contexts/LearningContext/application/useCases/GetAllCoursesUseCase";
 import { ICourseService } from "./contexts/LearningContext/domain/interfaces/ICourseService";
-import { CourseService } from "./contexts/LearningContext/infrastructure/services/CourseService";
+import { CourseService } from "./contexts/LearningContext/application/services/CourseService";
 import { Course } from "./contexts/LearningContext/domain/aggregates/Course";
 
 container.register<ICourseRepository>("ICourseRepository", CourseRepository);

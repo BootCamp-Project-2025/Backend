@@ -1,4 +1,4 @@
-import { Entity } from "../../../Shared/Domain/Entity";
+import { Entity } from "../../../Shared/domain/Entity";
 
 interface ModuleProps {
   name: string;

@@ -1,6 +1,6 @@
 import { Client } from "@/contexts/CoreContext/domain/entities/Client";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 describe("Client Entity", () => {
   it("should create a valid Client with userId", () => {

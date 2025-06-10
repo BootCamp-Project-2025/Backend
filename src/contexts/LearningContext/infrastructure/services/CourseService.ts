@@ -8,8 +8,9 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class CourseService implements ICourseService {
   constructor(
-    @inject("GetAllCoursesUseCase") private readonly getAllCoursesUseCase: IUseCase<void, Course[]>
-  ) { }
+    @inject("GetAllCoursesUseCase")
+    private readonly getAllCoursesUseCase: IUseCase<void, Course[]>
+  ) {}
 
   async getAllCourses(): Promise<CourseDTO[]> {
     const courses = await this.getAllCoursesUseCase.execute();

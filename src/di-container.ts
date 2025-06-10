@@ -11,21 +11,19 @@ import { CourseService } from "./contexts/LearningContext/infrastructure/service
 import { Course } from "./contexts/LearningContext/domain/aggregates/Course";
 
 container.registerSingleton<ICourseRepository>(
-    "ICourseRepository",
-    CourseRepository
+  "ICourseRepository",
+  CourseRepository
 );
 
 container.registerSingleton<IUseCase<void, Course[]>>(
-    "GetAllCoursesUseCase",
-    GetAllCoursesUseCase
+  "GetAllCoursesUseCase",
+  GetAllCoursesUseCase
 );
-container.registerSingleton<ICourseService>(
-    "ICourseService",
-    CourseService);
+container.registerSingleton<ICourseService>("ICourseService", CourseService);
 
 container.registerSingleton<ICourseController>(
-    "ICourseController",
-    CourseController
+  "ICourseController",
+  CourseController
 );
 
 export { container };

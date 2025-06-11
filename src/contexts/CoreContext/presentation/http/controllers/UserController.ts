@@ -7,10 +7,14 @@ import { Request, Response } from "express";
 
 export class UserController implements IUserController {
   constructor(private userService: IUserService) {}
+  freelance = async (req: Request, res: Response) => {
+    const user = await this.userService.createFreelanceProfile(req.params.id);
+    res.status(200).json(user);
+  };
 
-  getUser = async (req: Request, res: Response) => {
+  get = async (req: Request, res: Response) => {
     try {
-      const id: string = "f5e0fd8b-c211-4937-9d91-edbae2c3d94b";
+      const id: string = req.params.id;
       const user = await this.userService.get(id);
       if (user !== null) {
         const userDto = UserMapper.domainToGetUserDto(user);
@@ -26,7 +30,7 @@ export class UserController implements IUserController {
       const dto: ICreateUserDto = req.body as ICreateUserDto;
       const user: User = UserMapper.createUserDtoToDomain(dto);
       const data = await this.userService.create(user);
-      res.status(200).json(data);
+      res.status(201).json(data);
     } catch (error) {
       res.status(500).json(error);
       console.log(error);

@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use("/api/health", healthRoutes);
 
-app.use("/user", userRoutes);
+app.use("/api/users", userRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

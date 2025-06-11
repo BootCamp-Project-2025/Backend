@@ -3,7 +3,9 @@ import { User as PrismaUser, UserRole } from "@/generated/prisma";
 import { ICreateUserDto } from "../domain/interfaces/dtos/ICreateUserDto";
 import { UserEmail } from "../domain/valueObjects/UserEmail";
 import { UserName } from "../domain/valueObjects/UserName";
-import { GetUserDto } from "../domain/interfaces/dtos/GetUserDto";
+import { IGetUserDto } from "../domain/interfaces/dtos/IGetUserDto";
+import { UserDao } from "../domain/interfaces/dao/UserDao";
+import FreelancerMapper from "./FreelancerMapper";
 
 export default class UserMapper {
   static createUserDtoToDomain(dto: ICreateUserDto) {
@@ -26,21 +28,43 @@ export default class UserMapper {
     };
   }
 
-  static persistanceToDomain(prismaUser: PrismaUser): User {
-    return User.create({
-      userName: UserName.create(prismaUser.userName),
-      userEmail: UserEmail.create(prismaUser.userEmail),
-      roles: prismaUser.roles,
-      createdAt: prismaUser.createdAt,
-    });
+  static persistanceToDomain(userDao: UserDao): User {
+    try {
+      let freelancer = undefined;
+      if (userDao.freelancerProfile !== null) {
+        freelancer = FreelancerMapper.persistanceToDomain(
+          userDao.id,
+          userDao.freelancerProfile
+        );
+      }
+      return User.create({
+        userName: UserName.create(userDao.userName),
+        userEmail: UserEmail.create(userDao.userEmail),
+        roles: userDao.roles,
+        createdAt: userDao.createdAt,
+        freelancerProfile: freelancer,
+        clientProfile: undefined,
+      });
+    } catch (e) {
+      console.log(e);
+      throw new Error("cant mapp persistance to domain");
+    }
   }
 
-  static domainToGetUserDto(user: User): GetUserDto {
-    return new GetUserDto(
-      user.userName.value,
-      user.email.value,
-      user.roles,
-      user.createdAt
-    );
+  static domainToGetUserDto(user: User): IGetUserDto {
+    let freelancer = undefined;
+    if (user.freelancerProfile !== undefined)
+      freelancer = FreelancerMapper.domainToFreelancerProfileDto(
+        user.freelancerProfile
+      );
+    return {
+      userName: user.userName.value,
+      userEmail: user.email.value,
+      createdAt: user.createdAt,
+      roles: user.roles,
+      id: user.id.toString(),
+      freelancerProfile: freelancer,
+      clientProfile: undefined,
+    };
   }
 }

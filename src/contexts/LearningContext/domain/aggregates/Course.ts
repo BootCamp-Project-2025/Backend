@@ -8,12 +8,12 @@ import { CourseDescription } from "../valueObjects/CourseDescription";
 
 export interface CourseProps {
   name: CourseName;
-  field: CourseField;
-  requirements: CourseRequirements;
+  field?: CourseField;
+  requirements?: CourseRequirements;
   description: CourseDescription;
   imgSrc: string;
   modules?: Module[];
-  time: number;
+  time?: number;
 }
 
 type CoursePrimitiveProps = {
@@ -67,11 +67,14 @@ export class Course extends AggregateRoot<CourseProps> {
   }
 
   getField(): CourseField {
-    return this.props.field;
+    return this.props.field ?? CourseField.create({ field: "General" });
   }
 
   getRequirements(): CourseRequirements {
-    return this.props.requirements;
+    return (
+      this.props.requirements ??
+      CourseRequirements.create({ requirements: "None" })
+    );
   }
 
   getDescription(): CourseDescription {
@@ -87,6 +90,6 @@ export class Course extends AggregateRoot<CourseProps> {
   }
 
   getTime(): number {
-    return this.props.time;
+    return this.props.time ?? 0;
   }
 }

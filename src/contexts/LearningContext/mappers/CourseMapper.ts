@@ -10,12 +10,12 @@ import { CourseDTO } from "../domain/dtos/CourseDTO";
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
     const nameValue = CourseName.create({ name: prismaCourse.name });
-    const fieldValue = CourseField.create({ name: prismaCourse.field });
+    const fieldValue = CourseField.create({ field: prismaCourse.field });
     const requirementsValue = CourseRequirements.create({
-      name: prismaCourse.requirements,
+      requirements: prismaCourse.requirements,
     });
     const descriptionValue = CourseDescription.create({
-      name: prismaCourse.description,
+      description: prismaCourse.description,
     });
 
     const course: CourseProps = {
@@ -36,12 +36,20 @@ export class CourseMapper {
   static toPersistence(domainCourse: Course): PrismaCourse {
     return {
       id: domainCourse.id.toString(),
-      name: domainCourse.props.name.value,
-      field: domainCourse.props.field.value,
-      requirements: domainCourse.props.requirements.value,
-      description: domainCourse.props.description.value,
-      time: domainCourse.props.time,
-      imgSrc: domainCourse.props.imgSrc,
+      name: domainCourse.getName().value,
+      field: domainCourse.getField().value,
+      requirements: domainCourse.getRequirements().value,
+      description: domainCourse.getDescription().value,
+      time: domainCourse.getTime(),
+      imgSrc: domainCourse.getImgSrc(),
+    };
+  }
+
+  static toCreateDTO(body: Course): CourseDTO {
+    return {
+      name: body.props.name.value,
+      description: body.props.description.value,
+      imgSrc: body.props.imgSrc,
     };
   }
 

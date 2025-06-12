@@ -3,6 +3,7 @@ import cors from "cors";
 import "reflect-metadata";
 import "./di-container";
 import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
+import courseRoutes from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 
 import courseRouter from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
@@ -16,6 +17,8 @@ app.use(express.json());
 
 app.use("/api/health", healthRoutes);
 app.use("/api/courses", courseRouter);
+
+app.use("/api/courses", courseRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

@@ -5,4 +5,5 @@ import { Course } from "../aggregates/Course";
 export interface ICourseRepository {
   findById(id: string): Promise<Course | null>;
   findAll(): Promise<Course[]>;
+  insert(course: Course): Promise<Course>;
 }

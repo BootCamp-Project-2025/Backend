@@ -15,7 +15,7 @@ export class CourseRequirements extends ValueObject<CourseRequirementsProps> {
 
   public static create(props: CourseRequirementsProps): CourseRequirements {
     if (!props.requirements || typeof props.requirements !== "string") {
-      throw new Error("Invalid field value");
+      throw new Error("Invalid requirement value");
     }
     return new CourseRequirements(props);
   }

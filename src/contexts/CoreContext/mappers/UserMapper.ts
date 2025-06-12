@@ -8,7 +8,7 @@ import { UserDao } from "../domain/interfaces/dao/UserDao";
 import FreelancerMapper from "./FreelancerMapper";
 
 export default class UserMapper {
-  static createUserDtoToDomain(dto: ICreateUserDto) {
+  static createUserDtoTodomain(dto: ICreateUserDto) {
     return User.create({
       userName: UserName.create(dto.userName),
       userEmail: UserEmail.create(dto.userEmail),
@@ -28,11 +28,11 @@ export default class UserMapper {
     };
   }
 
-  static persistanceToDomain(userDao: UserDao): User {
+  static persistanceTodomain(userDao: UserDao): User {
     try {
       let freelancer = undefined;
       if (userDao.freelancerProfile !== null) {
-        freelancer = FreelancerMapper.persistanceToDomain(
+        freelancer = FreelancerMapper.persistanceTodomain(
           userDao.id,
           userDao.freelancerProfile
         );

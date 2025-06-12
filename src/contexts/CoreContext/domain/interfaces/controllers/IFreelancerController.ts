@@ -1,4 +1,4 @@
-export interface IFreelancerService {
+export default interface IFreelancerController {
   addSkill(): void;
   deleteSkill(): void;
   editSkill(): void;

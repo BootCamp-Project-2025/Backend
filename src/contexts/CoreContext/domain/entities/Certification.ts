@@ -1,4 +1,5 @@
-import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
+import { Entity } from "@/contexts/Shared/domain/Entity";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 interface CertificationProps {
   certification: string;
@@ -6,9 +7,9 @@ interface CertificationProps {
   year: number;
 }
 
-export class Certification extends ValueObject<CertificationProps> {
-  private constructor(props: CertificationProps) {
-    super(props);
+export class Certification extends Entity<CertificationProps> {
+  private constructor(props: CertificationProps, id?: UniqueEntityID) {
+    super(props, id);
   }
 
   public static create(props: CertificationProps): Certification {
@@ -16,6 +17,10 @@ export class Certification extends ValueObject<CertificationProps> {
       throw new Error("All fields are required for a certification.");
     }
     return new Certification(props);
+  }
+
+  get certificationId(): UniqueEntityID {
+    return this._id;
   }
 
   get certification(): string {

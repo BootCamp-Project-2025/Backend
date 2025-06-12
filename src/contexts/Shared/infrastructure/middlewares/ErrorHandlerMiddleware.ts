@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ApiError } from "../errors/ApiError";
-import { ErrorResponseEntity } from "../../Domain/entity/ErrorResponseEntity";
+import { ErrorResponseEntity } from "../../domain/entity/ErrorResponseEntity";
 import { ResponseService } from "../../application/services/ResponseService";
 
 export class ErrorHandlerMiddleware {

@@ -1,4 +1,4 @@
-import { ValueObject } from "@/contexts/Shared/Domain/ValueObject";
+import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
 
 export type SkillLevel = "beginner" | "intermediate" | "advanced";
 

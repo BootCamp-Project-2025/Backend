@@ -14,14 +14,9 @@ export class HealthService implements IHealthService {
     private saveSampleData: SaveSampleData | null = null
   ) {}
   async getHealthStatus(): Promise<GeneralHealth> {
-    try {
-      const apiStatus = this.checkAPIHealthStatus.execute();
-      const dbStatus = await this.checkDBHealthUseCase.execute();
-      return new GeneralHealth(apiStatus, dbStatus);
-    } catch (error) {
-      console.log(error);
-      throw new Error("Server is not working");
-    }
+    const apiStatus = this.checkAPIHealthStatus.execute();
+    const dbStatus = await this.checkDBHealthUseCase.execute();
+    return new GeneralHealth(apiStatus, dbStatus);
   }
 
   async saveSampleDataToDb(

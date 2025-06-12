@@ -94,10 +94,10 @@ export class User extends AggregateRoot<UserProps> {
     if (roles.includes("FREELANCER") && !props.freelancerProfile) {
       throw new Error("Freelancer profile is required for role FREELANCER.");
     }
-
+    /*
     if (roles.includes("CLIENT") && !props.clientProfile) {
       throw new Error("Client profile is required for role CLIENT.");
-    }
+    }*/
 
     const profiles = this.filterProfilesByRoles(props, roles);
 

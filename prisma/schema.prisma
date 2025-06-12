@@ -38,21 +38,19 @@ enum UserRole {
 
 model User {
   id                 String      @id @default(uuid())
-  userName           String
+  userName           String      @default("")
   userEmail          String      @unique
-  roles              UserRole[]    @default(["CLIENT"])
+  roles              UserRole[]  @default([CLIENT])
   createdAt          DateTime    @default(now())
-
-  freelancerProfile  Freelancer? @relation("UserFreelancer")
+  freelancerProfile  Freelancer? @relation("UserFreelancer") 
   clientProfile      Client?     @relation("UserClient")
 }
 
 model Freelancer {
   id      String @id @default(uuid())
-  userId  String @unique
-  user    User   @relation("UserFreelancer", fields: [userId], references: [id])
-
-  about          String
+  userId  String @unique 
+  user    User   @relation("UserFreelancer", fields: [userId], references: [id] , onDelete: Cascade)
+  about          String          @default("")
   skills         Skill[]
   languages      Language[]
   education      Education[]
@@ -63,54 +61,52 @@ model Freelancer {
 model Client {
   id      String @id @default(uuid())
   userId  String @unique
-  user    User   @relation("UserClient", fields: [userId], references: [id])
-
-  // Otros campos del cliente
+  user    User   @relation("UserClient", fields: [userId], references: [id] , onDelete: Cascade)
 }
 
 model Skill {
   id           String     @id @default(uuid())
-  name         String
-  level        String
+  name         String     @default("")
+  level        String     @default("")
   freelancerId String
-  freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
+  freelancer   Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
 }
 
 model Language {
   id           String     @id @default(uuid())
-  name         String
-  level        String
+  name         String     @default("")
+  level        String     @default("")
   freelancerId String
-  freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
+  freelancer   Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
 }
 
 model Certification {
   id            String     @id @default(uuid())
-  certification String
-  institution   String
-  year          Int
+  certification String     @default("")
+  institution   String     @default("")
+  year          DateTime   @default(now())
   freelancerId  String
-  freelancer    Freelancer @relation(fields: [freelancerId], references: [id])
+  freelancer    Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
 }
 
 model Education {
   id           String     @id @default(uuid())
-  career       String
-  university   String
-  startDate    DateTime
-  endDate      DateTime
+  career       String     @default("")
+  university   String     @default("")
+  startDate    DateTime   @default(now())
+  endDate      DateTime   @default(now())
   freelancerId String
-  freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
+  freelancer   Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
 }
 
 model Experience {
   id           String     @id @default(uuid())
-  position     String
-  employer     String
-  country      String
-  description  String
-  startDate    DateTime
-  endDate      DateTime
+  position     String     @default("")
+  employer     String     @default("")
+  country      String     @default("")
+  description  String     @default("")
+  startDate    DateTime   @default(now())
+  endDate      DateTime   @default(now())
   freelancerId String
-  freelancer   Freelancer @relation(fields: [freelancerId], references: [id])
+  freelancer   Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
 }

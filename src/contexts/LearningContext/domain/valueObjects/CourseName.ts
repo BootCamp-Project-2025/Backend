@@ -8,7 +8,6 @@ export class CourseName extends ValueObject<CourseNameProps> {
   private constructor(props: CourseNameProps) {
     super(props);
   }
-
   public get value(): string {
     return this.props.name;
   }
@@ -19,7 +18,7 @@ export class CourseName extends ValueObject<CourseNameProps> {
     }
     return new CourseName(props);
   }
-  
+
   public static default(): CourseName {
     return new CourseName({ field: "General" });
   }

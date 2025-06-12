@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
+import "reflect-metadata";
+import "./di-container";
 import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 
+import courseRouter from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
 
@@ -12,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/health", healthRoutes);
+app.use("/api/courses", courseRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

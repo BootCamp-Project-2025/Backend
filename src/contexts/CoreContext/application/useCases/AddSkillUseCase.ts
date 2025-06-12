@@ -6,7 +6,8 @@ type props = {
   freelancerId: string;
 };
 export default class AddSkillUseCase implements IUseCase<props, User> {
-  execute({ skill: Skill, freelancerId: string }): Promise<User> {
+  execute({ skill, freelancerId }: props): Promise<User> {
+    console.log(skill, freelancerId);
     throw new Error("Method not implemented.");
   }
 }

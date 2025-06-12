@@ -4,6 +4,10 @@ import { HealthService } from "../../../infrastructure/services/HealthService";
 import { CheckDBHealthUseCase } from "../../../application/useCases/CheckDBHealthStatus";
 import { CheckAPIHealthStatus } from "../../../application/useCases/CheckAPIHealthStatus";
 import { SaveSampleData } from "../../../application/useCases/SaveSampleData";
+import { ResponseService } from "../../../../Shared/application/services/ResponseService";
+import { StatusCodes } from "http-status-codes";
+import { SuccessResponseEntity } from "../../../../../contexts/Shared/Domain/entity/SuccessResponseEntity";
+import { ErrorResponseEntity } from "../../../../../contexts/Shared/Domain/entity/ErrorResponseEntity";
 
 const checkDBHealthUseCase = new CheckDBHealthUseCase();
 const checkAPIHealthStatus = new CheckAPIHealthStatus();
@@ -16,14 +20,10 @@ const healthService = new HealthService(
 
 export default {
   async getHealthStatus(req: Request, res: Response) {
-    try {
-      const healthStatus = await healthService.getHealthStatus();
-      console.log(healthStatus);
-      if (healthStatus.dbStatus.isConnected) res.status(200).json(healthStatus);
-      else throw new Error("DB is not connected");
-    } catch (error) {
-      res.status(500).json({ status: "error", error });
-    }
+    const healthStatus = await healthService.getHealthStatus();
+    console.log(healthStatus);
+    const response = new SuccessResponseEntity(healthStatus, StatusCodes.OK);
+    ResponseService.send(res, response);
   },
 
   async saveSampleData(req: Request, res: Response) {
@@ -31,10 +31,16 @@ export default {
       console.log(req.body);
       const sampleContent = req.body;
       const sampleData = await healthService.saveSampleDataToDb(sampleContent);
-      res.status(201).json(sampleData);
+      const response = new SuccessResponseEntity(
+        sampleData,
+        StatusCodes.CREATED,
+        "Sample data saved successfully"
+      );
+      ResponseService.send(res, response);
     } catch (error) {
       console.log(error);
-      res.status(500).json(error);
+      const response = new ErrorResponseEntity();
+      ResponseService.send(res, response);
     }
   },
 };

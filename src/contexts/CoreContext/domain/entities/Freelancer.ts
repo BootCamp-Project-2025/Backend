@@ -64,4 +64,8 @@ export class Freelancer extends Entity<FreelancerProps> {
   get certifications(): Certification[] {
     return this.props.certifications;
   }
+
+  public updateAbout(newAbout: About): void {
+    this.props.about = newAbout;
+  }
 }

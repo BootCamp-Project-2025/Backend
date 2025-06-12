@@ -1,5 +1,5 @@
 import express from "express";
-import { UpdateAboutMeController } from "../controllers/UpdateAboutMeController";
+import { UpdateAboutMeController } from "../controllers/UpdateAboutController";
 
 const freelancerRouter = express.Router();
 

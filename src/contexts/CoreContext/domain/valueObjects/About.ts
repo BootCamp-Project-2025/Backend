@@ -23,9 +23,9 @@ export class About extends ValueObject<AboutProps> {
   public static create(text: string): About {
     const cleaned = this.format(text);
 
-    if (cleaned.length < this.MIN_LENGTH) {
+    /*if (cleaned.length < this.MIN_LENGTH) {
       throw new Error(`About must be at least ${this.MIN_LENGTH} characters.`);
-    }
+    }*/
 
     if (cleaned.length > this.MAX_LENGTH) {
       throw new Error(`About must be less than ${this.MAX_LENGTH} characters.`);

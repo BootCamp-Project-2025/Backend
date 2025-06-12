@@ -6,7 +6,7 @@ import { UserId } from "../domain/valueObjects/UserId";
 import { IFreelancerProfileDto } from "../domain/interfaces/dtos/IFreelancerProfileDto";
 
 export default class FreelancerMapper {
-  static persistanceToDomain(
+  static persistanceTodomain(
     userId: string,
     prismaFreelancer: PrismaFreelancer
   ): Freelancer {

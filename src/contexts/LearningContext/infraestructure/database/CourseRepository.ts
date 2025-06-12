@@ -13,17 +13,17 @@ export class CourseRepository implements ICourseRepository {
 
     if (!course) return null;
 
-    return CourseMapper.toDomain(course);
+    return CourseMapper.todomain(course);
   }
 
   async findAll(): Promise<Course[]> {
     const courses = await prismaClient.course.findMany();
-    return courses.map(CourseMapper.toDomain);
+    return courses.map(CourseMapper.todomain);
   }
 
   async insert(course: Course): Promise<Course> {
     const data = CourseMapper.toPersistence(course);
     const created = await prismaClient.course.create({ data });
-    return CourseMapper.toDomain(created);
+    return CourseMapper.todomain(created);
   }
 }

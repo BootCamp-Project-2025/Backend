@@ -8,7 +8,7 @@ import { CourseDescription } from "../domain/valueObjects/CourseDescription";
 import { CourseDTO } from "../domain/dtos/CourseDTO";
 
 export class CourseMapper {
-  static toDomain(prismaCourse: PrismaCourse): Course {
+  static todomain(prismaCourse: PrismaCourse): Course {
     const nameValue = CourseName.create({ name: prismaCourse.name });
     const fieldValue = CourseField.create({ field: prismaCourse.field });
     const requirementsValue = CourseRequirements.create({

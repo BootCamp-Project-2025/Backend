@@ -1,12 +1,12 @@
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
-import { Entity } from "@/contexts/Shared/Domain/Entity";
+import { Entity } from "@/contexts/Shared/domain/Entity";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { Certification } from "../entities/Certification";
 import { About } from "../valueObjects/About";
 import { Language } from "../valueObjects/Language";
 import { Skill } from "../valueObjects/Skill";
+import { UserId } from "../valueObjects/UserId";
 import { Education } from "./Education";
 import { Experience } from "./Experience";
-import { Certification } from "../valueObjects/Certification";
-import { UserId } from "../valueObjects/UserId";
 
 interface FreelancerProps {
   userId: UserId;

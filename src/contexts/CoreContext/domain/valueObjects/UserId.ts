@@ -1,5 +1,5 @@
-import { ValueObject } from "@/contexts/Shared/Domain/ValueObject";
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
 
 interface UserIdProps {
   value: UniqueEntityID;

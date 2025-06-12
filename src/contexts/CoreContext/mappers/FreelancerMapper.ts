@@ -1,9 +1,9 @@
-import { Freelancer } from "../domain/entities/Freelancer";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { Freelancer as PrismaFreelancer } from "@/generated/prisma";
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
+import { Freelancer } from "../domain/entities/Freelancer";
+import { IFreelancerProfileDto } from "../domain/interfaces/dtos/IFreelancerProfileDto";
 import { About } from "../domain/valueObjects/About";
 import { UserId } from "../domain/valueObjects/UserId";
-import { IFreelancerProfileDto } from "../domain/interfaces/dtos/IFreelancerProfileDto";
 
 export default class FreelancerMapper {
   static persistanceToDomain(

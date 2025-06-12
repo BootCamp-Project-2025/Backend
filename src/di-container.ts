@@ -6,7 +6,7 @@ import { CreateCourseUseCase } from "./contexts/LearningContext/application/useC
 import { CourseService } from "./contexts/LearningContext/application/services/CourseService";
 import { ICourseService } from "./contexts/LearningContext/domain/interfaces/ICourseService";
 import { CourseController } from "./contexts/LearningContext/presentation/http/controllers/CourseController";
-import { IUseCase } from "@/contexts/LearningContext/domain/interfaces/IUseCase";
+import IUseCase from "./contexts/LearningContext/domain/interfaces/IUseCase";
 import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 

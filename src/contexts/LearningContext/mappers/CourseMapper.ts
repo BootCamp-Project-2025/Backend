@@ -23,7 +23,6 @@ export class CourseMapper {
       field: fieldValue,
       requirements: requirementsValue,
       description: descriptionValue,
-
       time: prismaCourse.time,
       imgSrc: prismaCourse.imgSrc,
     };

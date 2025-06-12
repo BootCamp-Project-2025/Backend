@@ -19,7 +19,7 @@ export class CourseName extends ValueObject<CourseNameProps> {
     }
     return new CourseName(props);
   }
-
+  
   public static default(): CourseName {
     return new CourseName({ field: "General" });
   }

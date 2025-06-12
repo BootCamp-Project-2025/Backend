@@ -1,9 +1,9 @@
 import { ICourseService } from "../../domain/interfaces/ICourseService";
 import { CreateCourseUseCase } from "../../application/useCases/CreateCourseUseCase";
+import { Course } from "../../domain/aggregates/Course";
 import { CourseDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
-import { Course } from "../../domain/aggregates/Course";
-import { IUseCase } from "../../domain/interfaces/IUseCase";
+import IUseCase from "../../domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

@@ -43,9 +43,9 @@ export class Course extends AggregateRoot<CourseProps> {
     id?: UniqueEntityID
   ): Course {
     const nameValue = CourseName.create({ name: props.name });
-    const fieldValue = CourseField.create({ field: props.field });
+    const fieldValue = CourseField.create({ name: props.field });
     const requirementsValue = CourseRequirements.create({
-      requirements: props.requirements,
+      name: props.requirements,
     });
     const descriptionValue = CourseDescription.create({
       name: props.description,

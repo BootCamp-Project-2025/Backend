@@ -1,4 +1,4 @@
-import prismaClient from "@/contexts/SystemHealth/infrastructure/database/prismaClient";
+import prismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 import { User } from "../../domain/aggregates/User";
 import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
 import UserMapper from "../../mappers/UserMapper";

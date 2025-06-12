@@ -6,7 +6,8 @@ type props = {
   freelancerId: string;
 };
 export default class DeleteSkillUseCase implements IUseCase<props, Skill> {
-  execute({ skill: Skill, freelancerId: string }): Promise<Skill> {
+  execute({ skill, freelancerId }: props): Promise<Skill> {
+    console.log(skill, freelancerId);
     throw new Error("Method not implemented.");
   }
 }

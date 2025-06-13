@@ -6,13 +6,9 @@ import { CheckAPIHealthStatus } from "../../../application/useCases/CheckAPIHeal
 import { SaveSampleData } from "../../../application/useCases/SaveSampleData";
 import { ResponseService } from "../../../../Shared/application/services/ResponseService";
 import { StatusCodes } from "http-status-codes";
-<<<<<<< HEAD
-import { SuccessResponseEntity } from "../../../../../contexts/Shared/domain/entity/SuccessResponseEntity";
-import { ErrorResponseEntity } from "../../../../../contexts/Shared/domain/entity/ErrorResponseEntity";
-=======
+
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { ErrorResponseEntity } from "@/contexts/Shared/domain/entity/ErrorResponseEntity";
->>>>>>> develop
 
 const checkDBHealthUseCase = new CheckDBHealthUseCase();
 const checkAPIHealthStatus = new CheckAPIHealthStatus();

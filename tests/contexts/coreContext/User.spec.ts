@@ -15,7 +15,7 @@ import { Skill } from "@/contexts/CoreContext/domain/valueObjects/Skill";
 import { UserEmail } from "@/contexts/CoreContext/domain/valueObjects/UserEmail";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UserName } from "@/contexts/CoreContext/domain/valueObjects/UserName";
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 describe("User Aggregate", () => {
   const userName = UserName.create("George Orwell");

@@ -1,4 +1,4 @@
-import { IRepository } from "@/contexts/Shared/Domain/repository/IRepository";
+import { IRepository } from "@/contexts/Shared/domain/repository/IRepository";
 import { Client } from "../../entities/Client";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

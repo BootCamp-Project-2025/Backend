@@ -1,5 +1,5 @@
 import { container } from "tsyringe";
-import { CourseRepository } from "./contexts/LearningContext/infraestructure/database/CourseRepository";
+import { CourseRepository } from "./contexts/LearningContext/infrastructure/database/CourseRepository";
 import { ICourseRepository } from "./contexts/LearningContext/domain/interfaces/ICourseRepository";
 import { GetAllCoursesUseCase } from "./contexts/LearningContext/application/useCases/GetAllCoursesUseCase";
 import { CreateCourseUseCase } from "./contexts/LearningContext/application/useCases/CreateCourseUseCase";

@@ -1,6 +1,6 @@
 import { Freelancer } from "../domain/entities/Freelancer";
 import { Freelancer as PrismaFreelancer } from "@/generated/prisma";
-import { UniqueEntityID } from "@/contexts/Shared/Domain/UniqueEntityID";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { About } from "../domain/valueObjects/About";
 import { UserId } from "../domain/valueObjects/UserId";
 import { IFreelancerProfileDto } from "../domain/interfaces/dtos/IFreelancerProfileDto";

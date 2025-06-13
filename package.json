@@ -21,7 +21,7 @@
     "dev": "ts-node-dev -r module-alias/register --respawn --transpile-only src/main.ts",
     "build": "tsc",
     "lint": "eslint .",
-    "start": "node -r module-alias/register dist/src/main.js",
+    "start": "ts-node -r tsconfig-paths/register dist/src/main.js",
     "test": "jest --config jest.config.ts",
     "coverage": "jest --coverage",
     "format": "prettier --write .",
@@ -38,9 +38,9 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "ts-node-dev": "^2.0.0",
-    "tsc": "^2.0.4",
-    "tsyringe": "^4.10.0",
-    "tsx": "^4.19.4"
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.4",
+    "tsyringe": "^4.10.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.18",

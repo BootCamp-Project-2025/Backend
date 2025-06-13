@@ -1,5 +1,8 @@
 import { IRepository } from "@/contexts/Shared/domain/repository/IRepository";
 import { Freelancer } from "../../entities/Freelancer";
+import { Skill } from "../../valueObjects/Skill";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface IFreelancerRepository extends IRepository<Freelancer> {}
+export interface IFreelancerRepository extends IRepository<Freelancer> {
+  addSkill(freelancerId: string, skill: Skill): Promise<Skill>;
+  getSkills(freelancerId: string): Promise<Skill[]>;
+}

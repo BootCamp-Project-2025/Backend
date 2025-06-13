@@ -1,6 +1,6 @@
+import { Skill } from "../../valueObjects/Skill";
+
 export interface IFreelancerService {
-  addSkill(): void;
-  deleteSkill(): void;
-  editSkill(): void;
-  getSkills(): void;
+  addSkill(skill: Skill, freelancerId: string): Promise<Skill>;
+  getSkills(freelancerId: string): Promise<Skill[]>;
 }

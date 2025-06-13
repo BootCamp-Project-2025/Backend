@@ -1,26 +1,18 @@
-FROM node:22-alpine AS build
+FROM node:slim
 
-WORKDIR /app
+RUN apt-get update -y \
+&& apt-get install -y openssl
 
-COPY package*.json ./
-RUN npm ci
+WORKDIR /usr/src/app
+
+COPY package.json ./
 
 COPY . .
 
+RUN npm install
+
 RUN npm run build
 
-# ========================
-# Production stage
-# ========================
-FROM node:22-alpine AS production
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci --omit=dev
-
-COPY --from=build /app/dist ./dist
+CMD ["sh", "-c", "npm run db:deploy && npm start"]
 
 EXPOSE 3000
-
-CMD ["node", "dist/src/main.js"]

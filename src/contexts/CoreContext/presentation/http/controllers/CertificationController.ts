@@ -52,7 +52,7 @@ export class CertificationController implements ICertificationController {
   }
 
   async delete(req: Request, res: Response): Promise<void> {
-    const certificationId = req.params.id;
+    const certificationId = req.params.certificationId;
     await this.certificationService.delete(certificationId);
     res.status(204).send();
   }

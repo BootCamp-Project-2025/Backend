@@ -10,7 +10,6 @@ export class CertificationRepository implements ICertificationRepository {
     const certifications = await prismaClient.certification.findMany({
       where: { freelancerId },
     });
-    console.log("certifications", certifications);
     return certifications.map((cert) =>
       CertificationMapper.persistenceToDomain(cert)
     );

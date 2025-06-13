@@ -7,6 +7,7 @@ import { DeleteCertificationUseCase } from "../useCases/certifications/DeleteCer
 import { UpdateCertificationUseCase } from "../useCases/certifications/UpdateCertificationUseCase";
 import { GetCertificationByIdUseCase } from "../useCases/certifications/GetCertificationByIdUseCase";
 import { CertificationDTO } from "../../domain/interfaces/dtos/ICertificationDto";
+import CertificationMapper from "../../mappers/CertificationMapper";
 
 @injectable()
 export class CertificationService implements ICertificationService {
@@ -21,7 +22,7 @@ export class CertificationService implements ICertificationService {
     private deleteCertificationUseCase: DeleteCertificationUseCase,
     @inject("GetCertificationById")
     private getCertificationById: GetCertificationByIdUseCase
-  ) {}
+  ) { }
   getByFreelancerId(id: string): Promise<Certification[]> {
     return this.getCertificationUseCase.execute(id);
   }
@@ -37,12 +38,16 @@ export class CertificationService implements ICertificationService {
   }
   update(
     certificationId: string,
-    certification: Certification,
+    certification: CertificationDTO,
     freelancerId: string
   ): Promise<void> {
+    const certificationDomain = CertificationMapper.dtoToDomain(
+      certification,
+      certificationId
+    );
     return this.updateCertificationUseCase.execute({
       certificationId,
-      certification,
+      certification: certificationDomain,
       freelancerId,
     });
   }

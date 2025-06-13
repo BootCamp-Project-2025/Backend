@@ -1,4 +1,11 @@
+import { CertificationService } from "@/contexts/CoreContext/application/services/CertificationService";
 import { container } from "tsyringe";
+import { GetCertificationsUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationUseCase";
+import { ICertificationController } from "./contexts/CoreContext/domain/interfaces/controllers/ICertificationController";
+import { ICertificationRepository } from "./contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
+import { CertificationRepository } from "./contexts/CoreContext/infrastructure/persistence/CertificationRepository";
+import { CertificationController } from "./contexts/CoreContext/presentation/http/controllers/CertificationController";
+import { ICertificationService } from "./contexts/CoreContext/domain/interfaces/services/ICertificationService";
 import { CourseRepository } from "./contexts/LearningContext/infrastructure/database/CourseRepository";
 import { ICourseRepository } from "./contexts/LearningContext/domain/interfaces/ICourseRepository";
 import { GetAllCoursesUseCase } from "./contexts/LearningContext/application/useCases/GetAllCoursesUseCase";
@@ -10,23 +17,43 @@ import IUseCase from "./contexts/LearningContext/domain/interfaces/IUseCase";
 import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 
-container.registerSingleton<ICourseRepository>(
-  "ICourseRepository",
-  CourseRepository
-);
-container.registerSingleton<IUseCase<void, Course[]>>(
-  "GetAllCoursesUseCase",
-  GetAllCoursesUseCase
-);
-container.registerSingleton<CreateCourseUseCase>(
-  "CreateCourseUseCase",
-  CreateCourseUseCase
-);
-container.registerSingleton<ICourseService>("ICourseService", CourseService);
+// container.registerSingleton<ICourseRepository>(
+//   "ICourseRepository",
+//   CourseRepository
+// );
+// container.registerSingleton<IUseCase<void, Course[]>>(
+//   "GetAllCoursesUseCase",
+//   GetAllCoursesUseCase
+// );
+// container.registerSingleton<CreateCourseUseCase>(
+//   "CreateCourseUseCase",
+//   CreateCourseUseCase
+// );
+// container.registerSingleton<ICourseService>("ICourseService", CourseService);
 
-container.registerSingleton<ICourseController>(
-  "ICourseController",
-  CourseController
+// container.registerSingleton<ICourseController>(
+//   "ICourseController",
+//   CourseController
+// );
+
+container.register<ICertificationRepository>(
+  "ICertificationRepository",
+  CertificationRepository
+);
+
+container.registerSingleton<GetCertificationsUseCase>(
+  "GetCertificationUseCase",
+  GetCertificationsUseCase
+);
+
+container.registerSingleton<ICertificationService>(
+  "ICertificationService",
+  CertificationService
+);
+
+container.registerSingleton<ICertificationController>(
+  "ICertificationController",
+  CertificationController
 );
 
 export { container };

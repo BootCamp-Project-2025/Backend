@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
 import { About } from "../../domain/valueObjects/About";
 
-export class UpdateFreelancerAboutUseCase {
+export class UpdateAboutUseCase {
   constructor(private readonly repository: IUserRepository) {}
 
   async execute(userId: string, about: string) {

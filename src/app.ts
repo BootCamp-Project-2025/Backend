@@ -7,6 +7,7 @@ import courseRoutes from "./contexts/LearningContext/presentation/http/routes/Co
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 import userRoutes from "./contexts/CoreContext/presentation/http/routes/UserRoutes";
 import courseRouter from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
+import freelancerRoutes from "./contexts/CoreContext/presentation/http/routes/FreelancerRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
 
@@ -21,6 +22,8 @@ app.use("/api/courses", courseRouter);
 app.use("/api/courses", courseRoutes);
 
 app.use("/api/users", userRoutes);
+
+app.use("/api/users", freelancerRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

@@ -62,4 +62,60 @@ router.post("/", controller.post);
  */
 router.put("/:id/freelance", controller.freelance);
 
+//---------About
+/**
+ * @openapi
+ * /users/:id/freelancer/about:
+ *  get:
+ *      summary: Gets the 'about' field of the freelancer
+ *      responses:
+ *          200:
+ *              description: About del freelancer
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              about:
+ *                                  type: string
+ *                                  example: "Im a dev full stack..."
+ *          404:
+ *              description: Freelancer no encontrado
+ *          500:
+ *              description: Error interno
+ */
+router.get("/:id/freelance/about", controller.getAbout);
+
+/**
+ * @openapi
+ * /users/:id/freelancer/about:
+ *   put:
+ *     summary: Updates the about section of the freelancer profile
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               about:
+ *                 type: string
+ *                 example: Im an englishh teacher with 10 years of experience
+ *     responses:
+ *       200:
+ *         description: About section updated
+ *       404:
+ *         description: User or freelancer profile not found
+ *       500:
+ *         description: Server error
+ */
+router.put("/:id/freelance/about", controller.updateAbout);
+
 export default router;

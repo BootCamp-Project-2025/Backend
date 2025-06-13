@@ -12,11 +12,14 @@ export class Certification extends Entity<CertificationProps> {
     super(props, id);
   }
 
-  public static create(props: CertificationProps): Certification {
+  public static create(
+    props: CertificationProps,
+    id?: UniqueEntityID
+  ): Certification {
     if (!props.certification || !props.institution || !props.year) {
       throw new Error("All fields are required for a certification.");
     }
-    return new Certification(props);
+    return new Certification(props, id);
   }
 
   get certificationId(): UniqueEntityID {

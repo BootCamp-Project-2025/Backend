@@ -6,6 +6,10 @@ import { ICertificationRepository } from "./contexts/CoreContext/domain/interfac
 import { CertificationRepository } from "./contexts/CoreContext/infrastructure/persistence/CertificationRepository";
 import { CertificationController } from "./contexts/CoreContext/presentation/http/controllers/CertificationController";
 import { ICertificationService } from "./contexts/CoreContext/domain/interfaces/services/ICertificationService";
+import { CreateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/CreateCertificationUseCase";
+import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/UpdateCertificationUseCase";
+import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
+import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
 
 // container.registerSingleton<ICourseRepository>(
 //   "ICourseRepository",
@@ -34,6 +38,26 @@ container.register<ICertificationRepository>(
 container.registerSingleton<GetCertificationsUseCase>(
   "GetCertificationUseCase",
   GetCertificationsUseCase
+);
+
+container.registerSingleton<CreateCertificationUseCase>(
+  "CreateCertificationUseCase",
+  CreateCertificationUseCase
+);
+
+container.registerSingleton<UpdateCertificationUseCase>(
+  "UpdateCertificationUseCase",
+  UpdateCertificationUseCase
+);
+
+container.registerSingleton<DeleteCertificationUseCase>(
+  "DeleteCertificationUseCase",
+  DeleteCertificationUseCase
+);
+
+container.registerSingleton<GetCertificationByIdUseCase>(
+  "GetCertificationById",
+  GetCertificationByIdUseCase
 );
 
 container.registerSingleton<ICertificationService>(

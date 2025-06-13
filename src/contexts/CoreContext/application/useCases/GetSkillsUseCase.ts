@@ -1,9 +1,15 @@
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
-import { Skill } from "@/generated/prisma";
+import { Skill } from "../../domain/valueObjects/Skill";
+import { inject, injectable } from "tsyringe";
+import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
 
+@injectable()
 export default class GetSkillsUseCase implements IUseCase<string, Skill[]> {
-  execute(params: string): Promise<Skill[]> {
-    console.log(params);
-    throw new Error("Method not implemented.");
+  constructor(
+    @inject("IFreelancerRepository")
+    private freelancerRepository: IFreelancerRepository
+  ) {}
+  execute(freelancerId: string): Promise<Skill[]> {
+    return this.freelancerRepository.getSkills(freelancerId);
   }
 }

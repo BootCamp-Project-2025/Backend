@@ -7,7 +7,7 @@ export interface ICertificationService {
   delete(certificationId: string): Promise<void>;
   update(
     certificationId: string,
-    certification: Certification,
+    certification: CertificationDTO,
     freelancerId: string
   ): Promise<void>;
   getById(certificationId: string): Promise<Certification | null>;

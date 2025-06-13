@@ -11,18 +11,48 @@ export class CertificationRepository implements ICertificationRepository {
       where: { freelancerId },
     });
     console.log("certifications", certifications);
-    return certifications.map((cert) => CertificationMapper.toDomain(cert));
+    return certifications.map((cert) =>
+      CertificationMapper.persistenceToDomain(cert)
+    );
   }
-  create(certification: Certification): Promise<void> {
-    throw new Error("Method not implemented.");
+  async create(
+    certification: Certification,
+    freelancerId: string
+  ): Promise<void> {
+    const certificationData = CertificationMapper.toPersistence(
+      certification,
+      freelancerId
+    );
+    await prismaClient.certification.create({
+      data: certificationData,
+    });
   }
-  delete(certificationId: string): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  async delete(certificationId: string): Promise<void> {
+    await prismaClient.certification.delete({
+      where: { id: certificationId },
+    });
   }
-  update(certificationId: string, certification: Certification): Promise<void> {
-    throw new Error("Method not implemented.");
+  async update(
+    certificationId: string,
+    certification: Certification,
+    freelancerId: string
+  ): Promise<void> {
+    const certificationData = CertificationMapper.toPersistence(
+      certification,
+      freelancerId
+    );
+    await prismaClient.certification.update({
+      where: { id: certificationId },
+      data: certificationData,
+    });
   }
-  findById(certificationId: string): Promise<Certification | null> {
-    throw new Error("Method not implemented.");
+  async findById(certificationId: string): Promise<Certification | null> {
+    const certification = await prismaClient.certification.findUnique({
+      where: { id: certificationId },
+    });
+    return certification
+      ? CertificationMapper.persistenceToDomain(certification)
+      : null;
   }
 }

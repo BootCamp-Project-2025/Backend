@@ -28,6 +28,15 @@ export default class CertificationMapper {
     );
   }
 
+  static domainToDto(certification: Certification): CertificationDTO {
+    return {
+      id: certification.certificationId.toString(),
+      certification: certification.certification,
+      institution: certification.institution,
+      year: certification.year,
+    };
+  }
+
   static toPersistence(
     certification: Certification,
     freelancerId: string

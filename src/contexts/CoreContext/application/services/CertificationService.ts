@@ -8,6 +8,7 @@ import { UpdateCertificationUseCase } from "../useCases/certifications/UpdateCer
 import { GetCertificationByIdUseCase } from "../useCases/certifications/GetCertificationByIdUseCase";
 import { CertificationDTO } from "../../domain/interfaces/dtos/ICertificationDto";
 import CertificationMapper from "../../mappers/CertificationMapper";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 @injectable()
 export class CertificationService implements ICertificationService {
@@ -23,8 +24,10 @@ export class CertificationService implements ICertificationService {
     @inject("GetCertificationById")
     private getCertificationById: GetCertificationByIdUseCase
   ) { }
-  getByFreelancerId(id: string): Promise<Certification[]> {
-    return this.getCertificationUseCase.execute(id);
+  async getByFreelancerId(id: string): Promise<CertificationDTO[]> {
+    const certifications: Certification[] =
+      await this.getCertificationUseCase.execute(id);
+    return certifications.map(CertificationMapper.domainToDto);
   }
   create(certification: CertificationDTO, freelancerId: string): Promise<void> {
     return this.createCertificationUseCase.execute({
@@ -33,10 +36,15 @@ export class CertificationService implements ICertificationService {
     });
   }
 
-  delete(certificationId: string): Promise<void> {
+  async delete(certificationId: string): Promise<void> {
+    const savedCertification =
+      await this.getCertificationById.execute(certificationId);
+    if (!savedCertification) {
+      throw new ApiError(404, "Certification not found");
+    }
     return this.deleteCertificationUseCase.execute(certificationId);
   }
-  update(
+  async update(
     certificationId: string,
     certification: CertificationDTO,
     freelancerId: string
@@ -45,13 +53,27 @@ export class CertificationService implements ICertificationService {
       certification,
       certificationId
     );
+    const savedCertification =
+      await this.getCertificationById.execute(certificationId);
+    console.log("Saved Certification:", savedCertification);
+    if (!savedCertification) {
+      console.log("Certification not found");
+      throw new ApiError(404, "Certification not found");
+    }
     return this.updateCertificationUseCase.execute({
       certificationId,
       certification: certificationDomain,
       freelancerId,
     });
   }
-  getById(certificationId: string): Promise<Certification | null> {
-    return this.getCertificationById.execute(certificationId);
+  async getById(certificationId: string): Promise<CertificationDTO | null> {
+    const certification =
+      await this.getCertificationById.execute(certificationId);
+    console.log("Certification:", certification);
+    if (!certification) {
+      console.log("Certification not found");
+      throw new ApiError(404, "Certification not found");
+    }
+    return CertificationMapper.domainToDto(certification);
   }
 }

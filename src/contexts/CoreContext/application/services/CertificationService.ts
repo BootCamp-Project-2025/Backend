@@ -23,7 +23,7 @@ export class CertificationService implements ICertificationService {
     private deleteCertificationUseCase: DeleteCertificationUseCase,
     @inject("GetCertificationById")
     private getCertificationById: GetCertificationByIdUseCase
-  ) { }
+  ) {}
   async getByFreelancerId(id: string): Promise<CertificationDTO[]> {
     const certifications: Certification[] =
       await this.getCertificationUseCase.execute(id);

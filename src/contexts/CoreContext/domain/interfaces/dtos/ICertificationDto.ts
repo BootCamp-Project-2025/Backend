@@ -3,5 +3,4 @@ export interface CertificationDTO {
   id: string;
   institution: string;
   year: number;
-  freelancerId: string;
 }

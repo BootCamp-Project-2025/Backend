@@ -1,7 +1,6 @@
-import { IUserService } from "../interfaces/services/ICertificationService";
-import { Certification } from "../valueObjects/Certification";
+import { Certification } from "../entities/Certification";
 
-export class CertificationService implements IUserService {
+export class CertificationService {
   private readonly certifications: Certification[];
 
   private constructor(certifications: Certification[]) {

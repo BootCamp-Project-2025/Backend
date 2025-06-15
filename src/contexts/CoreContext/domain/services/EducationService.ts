@@ -1,37 +1,41 @@
+// import { IGetAllFreelancerEducationUseCase } from "../../application/useCases/education/IGetAllFreelancerEducationUseCase";
+import { IGetAllFreelancerEducationUseCase } from "../../application/useCases/education/GetAllFreelancerEducationUseCase";
+import { IGetFreelancerEducationUseCase } from "../../application/useCases/education/GetFreelancerEducationUseCase";
+import { ICreateFreelancerEducationUseCase } from "../../application/useCases/education/CreateFreelancerEducationUseCase";
+import { IUpdateFreelancerEducationUseCase } from "../../application/useCases/education/UpdateFreelancerEducationUseCase";
+import { IDeleteFreelancerEducationUseCase } from "../../application/useCases/education/DeleteFreelancerEducationUseCase";
+
 import { Education } from "../entities/Education";
 import { IEducationService } from "../interfaces/services/IEducationService";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class EducationService implements IEducationService {
-  private readonly educations: Education[];
-
-  private constructor(educations: Education[]) {
-    if (educations.length > 5) {
-      throw new Error("A freelancer can have up to 5 education entries.");
-    }
-
-    this.educations = educations;
+  public constructor(
+    @inject("GetAllFreelancerEducationUseCase")
+    private readonly getAllEducationUseCase: IGetAllFreelancerEducationUseCase,
+    @inject("GetFreelancerEducationUseCase")
+    private readonly getEducationUseCase: IGetFreelancerEducationUseCase,
+    @inject("CreateFreelancerEducationUseCase")
+    private readonly createEducationUseCase: ICreateFreelancerEducationUseCase,
+    @inject("UpdateFreelancerEducationUseCase")
+    private readonly updateEducationUseCase: IUpdateFreelancerEducationUseCase,
+    @inject("DeleteFreelancerEducationUseCase")
+    private readonly deleteEducationUseCase: IDeleteFreelancerEducationUseCase
+  ) {}
+  getAll(): Promise<Education[]> {
+    throw new Error("Method not implemented.");
   }
-
-  public static create(educations: Education[] = []): EducationService {
-    return new EducationService(educations);
+  get(id: string): Promise<Education | null> {
+    throw new Error("Method not implemented.");
   }
-
-  public getAll(): Education[] {
-    return [...this.educations];
+  update(id: string, object: Education): Promise<Education> {
+    throw new Error("Method not implemented.");
   }
-
-  public add(education: Education): void {
-    if (this.educations.length >= 5) {
-      throw new Error("Cannot add more than 5 education entries.");
-    }
-
-    this.educations.push(education);
+  create(T: Education): Promise<Education> {
+    throw new Error("Method not implemented.");
   }
-
-  public removeById(id: string): void {
-    const index = this.educations.findIndex((e) => e.educationId === id);
-    if (index !== -1) {
-      this.educations.splice(index, 1);
-    }
+  delete(id: string): Promise<string | void> {
+    throw new Error("Method not implemented.");
   }
 }

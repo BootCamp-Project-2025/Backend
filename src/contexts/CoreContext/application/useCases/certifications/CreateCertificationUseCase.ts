@@ -7,11 +7,12 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class CreateCertificationUseCase
   implements
-  IUseCase<{ certification: CertificationDTO; freelancerId: string }, void> {
+    IUseCase<{ certification: CertificationDTO; freelancerId: string }, void>
+{
   constructor(
     @inject("ICertificationRepository")
     private certificationRepository: ICertificationRepository
-  ) { }
+  ) {}
 
   async execute(params?: {
     certification: CertificationDTO;

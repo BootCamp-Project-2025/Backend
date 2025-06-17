@@ -21,6 +21,10 @@ export class Language extends ValueObject<LanguageProps> {
     return this.props.name;
   }
 
+  public editLevel(level: "basic" | "intermediate" | "advanced" | "native") {
+    this.props.level = level;
+  }
+
   get level(): LanguageProps["level"] {
     return this.props.level;
   }

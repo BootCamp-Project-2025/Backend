@@ -7,9 +7,9 @@ import { ExperienceService } from "@/contexts/CoreContext/domain/services/Experi
 import { LanguageService } from "@/contexts/CoreContext/domain/services/LanguageService";
 import { SkillService } from "@/contexts/CoreContext/domain/services/SkillService";
 import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
-import { Certification } from "@/contexts/CoreContext/domain/valueObjects/Certification";
-import { Language } from "@/contexts/CoreContext/domain/valueObjects/Language";
-import { Skill } from "@/contexts/CoreContext/domain/valueObjects/Skill";
+import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
+import { Language } from "@/contexts/CoreContext/domain/entities/Language";
+import { Skill } from "@/contexts/CoreContext/domain/entities/Skill";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 

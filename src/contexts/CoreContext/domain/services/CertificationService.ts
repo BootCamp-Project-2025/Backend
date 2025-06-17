@@ -1,5 +1,5 @@
 import { ICertificationService } from "../interfaces/services/ICertificationService";
-import { Certification } from "../valueObjects/Certification";
+import { Certification } from "../entities/Certification";
 
 export class CertificationService implements ICertificationService {
   private readonly certifications: Certification[];

@@ -29,6 +29,10 @@ export class Skill extends ValueObject<SkillProps> {
     return this._name;
   }
 
+  public editLevel(level: "beginner" | "intermediate" | "advanced") {
+    this.props.level = level;
+  }
+
   get level(): SkillLevel {
     return this._level;
   }

@@ -1,4 +1,4 @@
-import { Language } from "../valueObjects/Language";
+import { Language } from "../entities/Language";
 import { ILanguageService } from "../interfaces/services/ILanguageService";
 
 export class LanguageService implements ILanguageService {

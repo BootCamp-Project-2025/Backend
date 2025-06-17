@@ -1,4 +1,4 @@
-import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
+import { Entity } from "@/contexts/Shared/domain/Entity";
 
 interface CertificationProps {
   certification: string;
@@ -6,7 +6,7 @@ interface CertificationProps {
   year: number;
 }
 
-export class Certification extends ValueObject<CertificationProps> {
+export class Certification extends Entity<CertificationProps> {
   private constructor(props: CertificationProps) {
     super(props);
   }
@@ -24,6 +24,12 @@ export class Certification extends ValueObject<CertificationProps> {
 
   get institution(): string {
     return this.props.institution;
+  }
+
+  public edit(props: CertificationProps): void {
+    this.props.certification = props.certification;
+    this.props.year = props.year;
+    this.props.institution = props.institution;
   }
 
   get year(): number {

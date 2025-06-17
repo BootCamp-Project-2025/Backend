@@ -1,4 +1,4 @@
-import { Skill } from "../valueObjects/Skill";
+import { Skill } from "../entities/Skill";
 import { ISkillService } from "../interfaces/services/ISkillService";
 
 export class SkillService implements ISkillService {

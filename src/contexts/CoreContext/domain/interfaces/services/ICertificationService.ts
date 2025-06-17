@@ -1,4 +1,4 @@
-import { Certification } from "../../valueObjects/Certification";
+import { Certification } from "../../entities/Certification";
 
 export interface ICertificationService {
   getAll(): Certification[];

@@ -1,4 +1,4 @@
-import { Language } from "../../valueObjects/Language";
+import { Language } from "../../entities/Language";
 
 export interface ILanguageService {
   add(language: Language): void;

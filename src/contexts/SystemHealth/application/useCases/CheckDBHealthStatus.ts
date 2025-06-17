@@ -1,4 +1,4 @@
-import { ApiError } from "../../../../contexts/Shared/infrastructure/errors/ApiError";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { DBHealth } from "../../domain/implementations/DBHealth";
 import prismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 

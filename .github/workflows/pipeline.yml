@@ -67,6 +67,9 @@ jobs:
       - name: Log in to ACR
         run: az acr login --name projectdev2025
 
+      - name: Add Database url
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+
       - name: Build Docker image
         run: docker build -t backend-repo:dev .
 

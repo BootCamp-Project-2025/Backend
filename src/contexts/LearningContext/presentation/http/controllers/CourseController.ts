@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";

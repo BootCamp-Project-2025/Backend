@@ -1,5 +1,7 @@
 import { Skill } from "../valueObjects/Skill";
 import { ISkillService } from "../interfaces/services/ISkillService";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 export class SkillService implements ISkillService {
   private static readonly MAX_SKILLS = 10;
@@ -22,12 +24,13 @@ export class SkillService implements ISkillService {
 
   public add(skill: Skill): void {
     if (this.items.length >= SkillService.MAX_SKILLS) {
-      throw new Error("You can't add more than 10 skills.");
+      throw new ApiError(StatusCodes.CONFLICT, "max limit");
     }
 
-    if (!this.contains(skill)) {
-      this.items.push(skill);
+    if (this.contains(skill)) {
+      throw new ApiError(StatusCodes.CONFLICT, "skill repeated");
     }
+    this.items.push(skill);
   }
 
   public remove(skill: Skill): void {

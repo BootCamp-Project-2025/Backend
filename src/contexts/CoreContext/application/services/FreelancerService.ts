@@ -8,17 +8,33 @@ import { CreateSkillDto } from "../../domain/interfaces/dtos/CreateSkillDto";
 export default class FreelancerService implements IFreelancerService {
   constructor(
     @inject("AddSkillUseCase")
-    private readonly addSkillUseCase: IUseCase<CreateSkillDto, Skill>,
+    private readonly addSkillUseCase: IUseCase<CreateSkillDto, Skill[]>,
+    @inject("EditSkillUseCase")
+    private readonly EditSkillUseCase: IUseCase<CreateSkillDto, Skill>,
+    @inject("DeleteSkillUseCase")
+    private readonly deleteSkillUseCase: IUseCase<CreateSkillDto, Skill>,
     @inject("GetSkillsUseCase")
     private getSkillsUseCase: IUseCase<string, Skill[]>
   ) {}
-  addSkill = async (skill: Skill, freelancerId: string): Promise<Skill> => {
+  async editSkill(skill: Skill, freelancerId: string): Promise<Skill> {
+    return await this.EditSkillUseCase.execute({
+      skill: skill,
+      freelancerId: freelancerId,
+    });
+  }
+  async deleteSkill(skill: Skill, freelancerId: string): Promise<Skill> {
+    return await this.deleteSkillUseCase.execute({
+      skill: skill,
+      freelancerId: freelancerId,
+    });
+  }
+  async addSkill(skill: Skill, freelancerId: string): Promise<Skill[]> {
     return this.addSkillUseCase.execute({
       skill: skill,
       freelancerId: freelancerId,
     });
-  };
-  getSkills = async (freelancerId: string): Promise<Skill[]> => {
+  }
+  async getSkills(freelancerId: string): Promise<Skill[]> {
     return this.getSkillsUseCase.execute(freelancerId);
-  };
+  }
 }

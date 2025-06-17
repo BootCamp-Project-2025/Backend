@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import FreelancerService from "@/contexts/CoreContext/application/services/FreelancerService";
 
 describe("freelancer service", () => {

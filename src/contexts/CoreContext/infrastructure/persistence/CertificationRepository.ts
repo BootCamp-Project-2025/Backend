@@ -1,4 +1,4 @@
-import prismaClient from "@/contexts/Shared/infrastrucutre/database/prismaClient";
+import prismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 import { injectable } from "tsyringe";
 import { Certification } from "../../domain/entities/Certification";
 import { ICertificationRepository } from "../../domain/interfaces/repositories/ICertificationRepository";
@@ -47,9 +47,11 @@ export class CertificationRepository implements ICertificationRepository {
     });
   }
   async findById(certificationId: string): Promise<Certification | null> {
+    console.log("Finding certification by ID:", certificationId);
     const certification = await prismaClient.certification.findUnique({
       where: { id: certificationId },
     });
+    console.log("Certification found:", certification);
     return certification
       ? CertificationMapper.persistenceToDomain(certification)
       : null;

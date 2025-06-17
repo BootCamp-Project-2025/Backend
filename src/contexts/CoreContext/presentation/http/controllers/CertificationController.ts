@@ -26,7 +26,7 @@ export class CertificationController implements ICertificationController {
   }
 
   async getById(req: Request, res: Response): Promise<void> {
-    const certificationId = req.params.id;
+    const certificationId = req.params.certificationId;
     const certification =
       await this.certificationService.getById(certificationId);
     const response = new SuccessResponseEntity(

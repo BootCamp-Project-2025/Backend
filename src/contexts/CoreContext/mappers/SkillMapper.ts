@@ -18,9 +18,8 @@ export default class SkillMapper {
   }
 
   static persistanceToDomainBulk(prismaSkills: PrismaSkill[]): Skill[] {
-    return prismaSkills.map(
-      (prismaSkill: PrismaSkill) =>
-        new Skill({ name: prismaSkill.name, level: prismaSkill.level })
+    return prismaSkills.map((prismaSkill: PrismaSkill) =>
+      this.persistanceToDomain(prismaSkill)
     );
   }
   static domainToPersistance(skill: Skill): PrismaSave {
@@ -29,5 +28,9 @@ export default class SkillMapper {
       level: skill.level,
       id: new UniqueEntityID().toString(),
     };
+  }
+
+  static domainToPersistanceBulk(skills: Skill[]): PrismaSave[] {
+    return skills.map((skill: Skill) => this.domainToPersistance(skill));
   }
 }

@@ -10,16 +10,31 @@ export default class FreelancerController implements IFreelancerController {
   constructor(
     @inject("IFreelancerService") private freelancerService: IFreelancerService
   ) {}
-  getSkills = async (req: Request, res: Response): Promise<void> => {
+  public editSkill = async (req: Request, res: Response): Promise<void> => {
+    const body: ISkillDto = req.body as ISkillDto;
+    const skill: Skill = SkillMapper.dtoToDomain(body);
+    await this.freelancerService.editSkill(skill, req.params.freelancerId);
+    res.status(200).json(skill);
+  };
+  public deleteSkill = async (req: Request, res: Response): Promise<void> => {
+    const body: ISkillDto = req.body as ISkillDto;
+    const skill: Skill = SkillMapper.dtoToDomain(body);
+    await this.freelancerService.deleteSkill(skill, req.params.freelancerId);
+    res.status(200).json(skill);
+  };
+  public getSkills = async (req: Request, res: Response): Promise<void> => {
     const skills = await this.freelancerService.getSkills(
       req.params.freelancerId
     );
     res.status(200).json(skills);
   };
-  addSkill = async (req: Request, res: Response): Promise<void> => {
+  public addSkill = async (req: Request, res: Response): Promise<void> => {
     const body: ISkillDto = req.body as ISkillDto;
     const skill: Skill = SkillMapper.dtoToDomain(body);
-    await this.freelancerService.addSkill(skill, req.params.freelancerId);
-    res.status(200).json(skill);
+    const skillResponse = await this.freelancerService.addSkill(
+      skill,
+      req.params.freelancerId
+    );
+    res.status(200).json(skillResponse);
   };
 }

@@ -21,24 +21,24 @@ import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/u
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
 import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
 
-// container.registerSingleton<ICourseRepository>(
-//   "ICourseRepository",
-//   CourseRepository
-// );
-// container.registerSingleton<IUseCase<void, Course[]>>(
-//   "GetAllCoursesUseCase",
-//   GetAllCoursesUseCase
-// );
-// container.registerSingleton<CreateCourseUseCase>(
-//   "CreateCourseUseCase",
-//   CreateCourseUseCase
-// );
-// container.registerSingleton<ICourseService>("ICourseService", CourseService);
+container.registerSingleton<ICourseRepository>(
+  "ICourseRepository",
+  CourseRepository
+);
+container.registerSingleton<IUseCase<void, Course[]>>(
+  "GetAllCoursesUseCase",
+  GetAllCoursesUseCase
+);
+container.registerSingleton<CreateCourseUseCase>(
+  "CreateCourseUseCase",
+  CreateCourseUseCase
+);
+container.registerSingleton<ICourseService>("ICourseService", CourseService);
 
-// container.registerSingleton<ICourseController>(
-//   "ICourseController",
-//   CourseController
-// );
+container.registerSingleton<ICourseController>(
+  "ICourseController",
+  CourseController
+);
 
 container.register<ICertificationRepository>(
   "ICertificationRepository",

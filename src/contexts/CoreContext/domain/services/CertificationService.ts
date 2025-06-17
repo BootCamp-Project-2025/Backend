@@ -1,6 +1,7 @@
-import { Certification } from "../entities/Certification";
+import { ICertificationService } from "../interfaces/services/ICertificationService";
+import { Certification } from "../valueObjects/Certification";
 
-export class CertificationService {
+export class CertificationService implements ICertificationService {
   private readonly certifications: Certification[];
 
   private constructor(certifications: Certification[]) {

@@ -1,6 +1,6 @@
-import { Entity } from "@/contexts/Shared/domain/Entity";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserId } from "../valueObjects/UserId";
+import { Entity } from "@/contexts/Shared/domain/Entity";
 
 interface ClientProps {
   userId: UserId;

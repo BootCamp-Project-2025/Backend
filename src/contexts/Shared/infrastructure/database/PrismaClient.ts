@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../../../generated/prisma";
+import { PrismaClient } from "@/generated/prisma";
 
 class CustomPrismaClient {
   private static instance: PrismaClient;

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { ResponseService } from "../../application/services/ResponseService";
-import { ErrorResponseEntity } from "../../domain/entity/ErrorResponseEntity";
 import { ApiError } from "../errors/ApiError";
+import { ErrorResponseEntity } from "../../domain/entity/ErrorResponseEntity";
+import { ResponseService } from "../../application/services/ResponseService";
 
 export class ErrorHandlerMiddleware {
   public static handle(

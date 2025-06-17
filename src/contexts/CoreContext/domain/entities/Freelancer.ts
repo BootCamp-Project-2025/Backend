@@ -1,6 +1,5 @@
-import { Entity } from "@/contexts/Shared/domain/Entity";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { Certification } from "../entities/Certification";
+import { Entity } from "@/contexts/Shared/domain/Entity";
 import { About } from "../valueObjects/About";
 import { Language } from "../valueObjects/Language";
 import { Skill } from "../valueObjects/Skill";

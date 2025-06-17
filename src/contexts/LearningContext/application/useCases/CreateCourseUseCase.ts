@@ -3,7 +3,7 @@ import { Course } from "../../domain/aggregates/Course";
 import { CourseDTO } from "../../domain/dtos/CourseDTO";
 import { CourseName } from "../../domain/valueObjects/CourseName";
 import { CourseDescription } from "../../domain/valueObjects/CourseDescription";
-import { IUseCase } from "../../domain/interfaces/IUseCase";
+import IUseCase from "../../domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

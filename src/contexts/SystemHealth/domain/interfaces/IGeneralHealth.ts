@@ -1,5 +1,5 @@
 import { IApiHealth } from "./IApiHealth";
-import { IDBHealth } from "./IDbHealth";
+import { IDBHealth } from "./IDBHealth";
 
 export interface IGeneralHealth {
   apiStatus: IApiHealth;

@@ -1,12 +1,12 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserId } from "../valueObjects/UserId";
-import { Entity } from "@/contexts/Shared/domain/Entity";
+import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
 
 interface ClientProps {
   userId: UserId;
 }
 
-export class Client extends Entity<ClientProps> {
+export class Client extends AggregateRoot<ClientProps> {
   private constructor(props: ClientProps, id?: UniqueEntityID) {
     super(props, id);
   }

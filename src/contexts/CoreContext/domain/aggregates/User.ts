@@ -3,8 +3,10 @@ import { UserEmail } from "../valueObjects/UserEmail";
 import { UserId } from "../valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserName } from "../valueObjects/UserName";
-import { Client } from "../entities/Client";
-import { Freelancer } from "../entities/Freelancer";
+import { Client } from "./Client";
+import { Freelancer } from "../aggregates/Freelancer";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 export type UserRole = "CLIENT" | "FREELANCER";
 
@@ -12,9 +14,10 @@ export interface UserProps {
   userName: UserName;
   userEmail: UserEmail;
   roles: UserRole[];
-  clientProfile?: Client;
-  freelancerProfile?: Freelancer;
+  clientId?: UniqueEntityID;
+  freelancerId?: UniqueEntityID;
   createdAt: Date;
+  profilePictureSrc?: string;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -46,14 +49,6 @@ export class User extends AggregateRoot<UserProps> {
     return this.roles.includes("FREELANCER");
   }
 
-  get clientProfile(): Client | undefined {
-    return this.props.clientProfile;
-  }
-
-  get freelancerProfile(): Freelancer | undefined {
-    return this.props.freelancerProfile;
-  }
-
   // Methods to manage roles
   private addRole(role: UserRole): void {
     if (!this.roles.includes(role)) {
@@ -62,12 +57,12 @@ export class User extends AggregateRoot<UserProps> {
   }
 
   public assignFreelancerProfile(profile: Freelancer): void {
-    this.props.freelancerProfile = profile;
+    this.props.freelancerId = profile.id;
     this.addRole("FREELANCER");
   }
 
   private assignClientProfile(profile: Client): void {
-    this.props.clientProfile = profile;
+    this.props.clientId = profile.id;
     this.addRole("CLIENT");
   }
 
@@ -77,22 +72,28 @@ export class User extends AggregateRoot<UserProps> {
 
   private static filterProfilesByRoles(props: UserProps, roles: UserRole[]) {
     return {
-      clientProfile: roles.includes("CLIENT") ? props.clientProfile : undefined,
+      clientProfile: roles.includes("CLIENT") ? props.clientId : undefined,
       freelancerProfile: roles.includes("FREELANCER")
-        ? props.freelancerProfile
+        ? props.freelancerId
         : undefined,
     };
   }
 
   public static create(props: UserProps, id?: UniqueEntityID): User {
     if (!props.userName || !props.userEmail) {
-      throw new Error("Full name and email are required.");
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Full name and email are required."
+      );
     }
 
     const roles: UserRole[] =
       props.roles && props.roles.length > 0 ? props.roles : ["CLIENT"];
-    if (roles.includes("FREELANCER") && !props.freelancerProfile) {
-      throw new Error("Freelancer profile is required for role FREELANCER.");
+    if (roles.includes("FREELANCER") && !props.freelancerId) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Freelancer profile is required for role FREELANCER."
+      );
     }
     /*
     if (roles.includes("CLIENT") && !props.clientProfile) {
@@ -106,9 +107,10 @@ export class User extends AggregateRoot<UserProps> {
         userName: props.userName,
         userEmail: props.userEmail,
         roles,
-        clientProfile: profiles.clientProfile,
-        freelancerProfile: profiles.freelancerProfile,
+        clientId: profiles.clientProfile,
+        freelancerId: profiles.freelancerProfile,
         createdAt: props.createdAt ?? new Date(),
+        profilePictureSrc: props.profilePictureSrc ?? "",
       },
       id
     );

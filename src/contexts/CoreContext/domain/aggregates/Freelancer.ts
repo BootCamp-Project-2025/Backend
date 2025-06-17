@@ -1,12 +1,12 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { Entity } from "@/contexts/Shared/domain/Entity";
 import { About } from "../valueObjects/About";
 import { Language } from "../valueObjects/Language";
 import { Skill } from "../valueObjects/Skill";
-import { Education } from "./Education";
-import { Experience } from "./Experience";
+import { Education } from "../entities/Education";
+import { Experience } from "../entities/Experience";
 import { Certification } from "../valueObjects/Certification";
 import { UserId } from "../valueObjects/UserId";
+import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
 
 interface FreelancerProps {
   userId: UserId;
@@ -17,7 +17,7 @@ interface FreelancerProps {
   experience: Experience[];
   certifications: Certification[];
 }
-export class Freelancer extends Entity<FreelancerProps> {
+export class Freelancer extends AggregateRoot<FreelancerProps> {
   private constructor(props: FreelancerProps, id?: UniqueEntityID) {
     super(props, id);
   }

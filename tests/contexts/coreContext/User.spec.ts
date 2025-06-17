@@ -1,5 +1,5 @@
 import { User } from "@/contexts/CoreContext/domain/aggregates/User";
-import { Client } from "@/contexts/CoreContext/domain/entities/Client";
+import { Client } from "@/contexts/CoreContext/domain/aggregates/Client";
 import { Education } from "@/contexts/CoreContext/domain/entities/Education";
 import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
 import { Freelancer } from "@/contexts/CoreContext/domain/entities/Freelancer";

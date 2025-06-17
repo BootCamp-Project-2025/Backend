@@ -7,18 +7,16 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class CreateCertificationUseCase
   implements
-    IUseCase<{ certification: CertificationDTO; freelancerId: string }, void>
-{
+  IUseCase<{ certification: CertificationDTO; freelancerId: string }, void> {
   constructor(
     @inject("ICertificationRepository")
     private certificationRepository: ICertificationRepository
-  ) {}
+  ) { }
 
   async execute(params?: {
     certification: CertificationDTO;
     freelancerId: string;
   }): Promise<void> {
-    console.log("Creating certification with params:", params);
     if (!params) {
       throw new Error("Missing parameters for creating certification.");
     }

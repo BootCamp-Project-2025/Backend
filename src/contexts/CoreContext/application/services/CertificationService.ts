@@ -23,7 +23,7 @@ export class CertificationService implements ICertificationService {
     private deleteCertificationUseCase: DeleteCertificationUseCase,
     @inject("GetCertificationById")
     private getCertificationById: GetCertificationByIdUseCase
-  ) {}
+  ) { }
   async getByFreelancerId(id: string): Promise<CertificationDTO[]> {
     const certifications: Certification[] =
       await this.getCertificationUseCase.execute(id);
@@ -55,9 +55,7 @@ export class CertificationService implements ICertificationService {
     );
     const savedCertification =
       await this.getCertificationById.execute(certificationId);
-    console.log("Saved Certification:", savedCertification);
     if (!savedCertification) {
-      console.log("Certification not found");
       throw new ApiError(404, "Certification not found");
     }
     return this.updateCertificationUseCase.execute({
@@ -69,9 +67,7 @@ export class CertificationService implements ICertificationService {
   async getById(certificationId: string): Promise<CertificationDTO | null> {
     const certification =
       await this.getCertificationById.execute(certificationId);
-    console.log("Certification:", certification);
     if (!certification) {
-      console.log("Certification not found");
       throw new ApiError(404, "Certification not found");
     }
     return CertificationMapper.domainToDto(certification);

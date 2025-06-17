@@ -6,6 +6,7 @@ import { Skill } from "../valueObjects/Skill";
 import { UserId } from "../valueObjects/UserId";
 import { Education } from "./Education";
 import { Experience } from "./Experience";
+import { Certification } from "./Certification";
 
 interface FreelancerProps {
   userId: UserId;

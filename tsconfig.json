@@ -116,6 +116,11 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*.ts", "tests", "jest.config.ts"],
+  "include": [
+    "src/**/*.ts",
+    "tests",
+    "jest.config.ts",
+    "src/contexts/CoreContext/domain/OneToMany"
+  ],
   "exclude": ["node_modules", "dist/"]
 }

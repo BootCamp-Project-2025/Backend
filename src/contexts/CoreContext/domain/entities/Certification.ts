@@ -1,4 +1,5 @@
 import { Entity } from "@/contexts/Shared/domain/Entity";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 interface CertificationProps {
   certification: string;
@@ -16,6 +17,9 @@ export class Certification extends Entity<CertificationProps> {
       throw new Error("All fields are required for a certification.");
     }
     return new Certification(props);
+  }
+  get id(): UniqueEntityID {
+    return this.id;
   }
 
   get certification(): string {

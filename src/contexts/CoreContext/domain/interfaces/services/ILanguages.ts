@@ -1,6 +1,6 @@
 import { Language } from "../../entities/Language";
 
-export interface ILanguageService {
+export interface ILanguages {
   add(language: Language): void;
   remove(language: Language): void;
   getAll(): Language[];

@@ -1,3 +1,4 @@
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
 
 export type SkillLevel = "beginner" | "intermediate" | "advanced";
@@ -27,6 +28,10 @@ export class Skill extends ValueObject<SkillProps> {
 
   get name(): string {
     return this._name;
+  }
+
+  get id(): UniqueEntityID {
+    return this.id;
   }
 
   public editLevel(level: "beginner" | "intermediate" | "advanced") {

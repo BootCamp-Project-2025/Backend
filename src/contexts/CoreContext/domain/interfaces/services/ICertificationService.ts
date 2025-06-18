@@ -1,6 +1,6 @@
 import { Certification } from "../../entities/Certification";
 
-export interface ICertificationService {
+export interface ICertifications {
   getAll(): Certification[];
   add(certification: Certification): void;
   removeByName(certificationName: string): void;

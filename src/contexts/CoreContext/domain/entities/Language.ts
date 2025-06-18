@@ -1,3 +1,4 @@
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
 
 interface LanguageProps {
@@ -15,6 +16,10 @@ export class Language extends ValueObject<LanguageProps> {
       throw new Error("Language must have a name and level");
     }
     return new Language(props);
+  }
+
+  get id(): UniqueEntityID {
+    return this.id;
   }
 
   get name(): string {

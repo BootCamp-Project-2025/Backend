@@ -3,8 +3,6 @@ import { UserEmail } from "../valueObjects/UserEmail";
 import { UserId } from "../valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserName } from "../valueObjects/UserName";
-import { Client } from "./Client";
-import { Freelancer } from "../aggregates/Freelancer";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
@@ -56,13 +54,13 @@ export class User extends AggregateRoot<UserProps> {
     }
   }
 
-  public assignFreelancerProfile(profile: Freelancer): void {
-    this.props.freelancerId = profile.id;
+  public assignFreelancerProfile(profileId: UniqueEntityID): void {
+    this.props.freelancerId = profileId;
     this.addRole("FREELANCER");
   }
 
-  private assignClientProfile(profile: Client): void {
-    this.props.clientId = profile.id;
+  private assignClientProfile(profileId: UniqueEntityID): void {
+    this.props.clientId = profileId;
     this.addRole("CLIENT");
   }
 

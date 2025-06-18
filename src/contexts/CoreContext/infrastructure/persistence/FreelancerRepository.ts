@@ -36,12 +36,15 @@ export class FreelancerRepository implements IFreelancerRepository {
     }
   }
   delete(id: string): Promise<string | void> {
+    console.log(id);
     throw new Error("Method not implemented.");
   }
   create(object: Freelancer): Promise<Freelancer> {
+    console.log(object);
     throw new Error("Method not implemented.");
   }
   update(id: string, object: Freelancer): Promise<Freelancer> {
+    console.log(id, object);
     throw new Error("Method not implemented.");
   }
 }

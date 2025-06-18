@@ -13,6 +13,7 @@ export class LanguageMapper extends ArrayToArrayMapper<
     level: string;
     freelancerId: string;
   } {
+    console.log(origin);
     throw new Error("Method not implemented.");
   }
   mapPersistanceToDomain(origin: {

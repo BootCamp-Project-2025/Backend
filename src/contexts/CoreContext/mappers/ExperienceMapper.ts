@@ -17,6 +17,7 @@ export class ExperienceMapper extends ArrayToArrayMapper<
     country: string;
     description: string;
   } {
+    console.log(origin);
     throw new Error("Method not implemented.");
   }
   mapPersistanceToDomain(origin: {

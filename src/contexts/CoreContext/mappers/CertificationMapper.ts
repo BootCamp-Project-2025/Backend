@@ -14,6 +14,7 @@ export class CertificationMapper extends ArrayToArrayMapper<
     institution: string;
     year: Date;
   } {
+    console.log(origin);
     throw new Error("Method not implemented.");
   }
   mapPersistanceToDomain(origin: {

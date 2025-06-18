@@ -10,6 +10,7 @@ export class SkillMapper extends ArrayToArrayMapper<Skill, PrismaSkill> {
     level: $Enums.SkillLevel;
     freelancerId: string;
   } {
+    console.log(origin);
     throw new Error("Method not implemented.");
   }
   mapPersistanceToDomain(origin: {

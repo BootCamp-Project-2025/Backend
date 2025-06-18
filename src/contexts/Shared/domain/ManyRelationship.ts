@@ -1,18 +1,14 @@
 export abstract class ManyRelationship<T> {
   public currentItems: T[];
-  private initial: T[];
   private new: T[];
   private removed: T[];
   private edited: T[];
-  private oldOriginal: T[];
 
   constructor(initialItems?: T[]) {
     this.currentItems = initialItems ? initialItems : [];
-    this.initial = initialItems ? initialItems : [];
     this.new = [];
     this.removed = [];
     this.edited = [];
-    this.oldOriginal = [];
   }
 
   abstract compareItems(a: T, b: T): boolean;
@@ -29,25 +25,30 @@ export abstract class ManyRelationship<T> {
     return this.removed;
   }
 
+  public getEditedItems() {
+    return this.edited;
+  }
+
+  public add(item: T): void {
+    this.new.push(item);
+    this.currentItems.push(item);
+  }
+
+  public edit(item: T, index: number): void {
+    this.currentItems[index] = item;
+    this.edited.push(item);
+  }
+
+  public remove(item: T): void {
+    this.removeFromCurrent(item);
+    this.removed.push(item);
+  }
+
   private isCurrentItem(item: T): boolean {
     return (
       this.currentItems.filter((v: T) => this.compareItems(item, v)).length !==
       0
     );
-  }
-
-  private isNewItem(item: T): boolean {
-    return this.new.filter((v: T) => this.compareItems(item, v)).length !== 0;
-  }
-
-  private isRemovedItem(item: T): boolean {
-    return (
-      this.removed.filter((v: T) => this.compareItems(item, v)).length !== 0
-    );
-  }
-
-  private removeFromNew(item: T): void {
-    this.new = this.new.filter((v) => !this.compareItems(v, item));
   }
 
   private removeFromCurrent(item: T): void {
@@ -56,58 +57,7 @@ export abstract class ManyRelationship<T> {
     );
   }
 
-  private removeFromRemoved(item: T): void {
-    this.removed = this.removed.filter((v) => !this.compareItems(item, v));
-  }
-
-  private wasAddedInitially(item: T): boolean {
-    return (
-      this.initial.filter((v: T) => this.compareItems(item, v)).length !== 0
-    );
-  }
-
   public exists(item: T): boolean {
     return this.isCurrentItem(item);
-  }
-
-  public add(item: T): void {
-    if (this.isRemovedItem(item)) {
-      this.removeFromRemoved(item);
-    }
-
-    if (!this.isNewItem(item) && !this.wasAddedInitially(item)) {
-      this.new.push(item);
-    }
-
-    if (!this.isCurrentItem(item)) {
-      this.currentItems.push(item);
-    }
-  }
-
-  public getEditedItems() {
-    return this.edited;
-  }
-
-  public getOldOrinigals() {
-    return this.oldOriginal;
-  }
-
-  public edit(item: T, index: number): void {
-    this.oldOriginal.push(this.currentItems[index]);
-    this.currentItems[index] = item;
-    this.edited.push(item);
-  }
-
-  public remove(item: T): void {
-    this.removeFromCurrent(item);
-
-    if (this.isNewItem(item)) {
-      this.removeFromNew(item);
-      return;
-    }
-
-    if (!this.isRemovedItem(item)) {
-      this.removed.push(item);
-    }
   }
 }

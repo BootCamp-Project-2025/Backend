@@ -74,10 +74,10 @@ describe("Freelancer Entity", () => {
     expect(freelancer.about.value).toBe(
       "Passionate full-stack developer with 5+ years of experience."
     );
-    expect(freelancer.skills.length).toBe(2);
-    expect(freelancer.languages.length).toBe(2);
-    expect(freelancer.education.length).toBe(1);
-    expect(freelancer.experience.length).toBe(1);
-    expect(freelancer.certifications.length).toBe(1);
+    expect(freelancer.skills.getItems().length).toBe(2);
+    expect(freelancer.languages.getItems().length).toBe(2);
+    expect(freelancer.education.getItems().length).toBe(1);
+    expect(freelancer.experience.getItems().length).toBe(1);
+    expect(freelancer.certifications.getItems().length).toBe(1);
   });
 });

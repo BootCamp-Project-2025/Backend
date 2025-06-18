@@ -17,6 +17,7 @@ export default class FreelancerMapper {
   ): Freelancer {
     return Freelancer.create(
       {
+        //create mappers from eities
         userId: UserId.create(new UniqueEntityID(userId)),
         about: About.create(prismaFreelancer.about),
         skills: Skills.create([]),
@@ -34,11 +35,11 @@ export default class FreelancerMapper {
   ): IFreelancerProfileDto {
     return {
       about: freelancer.about.value,
-      skills: freelancer.skills,
-      languages: freelancer.languages,
-      education: freelancer.education,
-      experience: freelancer.experience,
-      certifications: freelancer.certifications,
+      skills: freelancer.skills.getItems(),
+      languages: freelancer.languages.getItems(),
+      education: freelancer.education.getItems(),
+      experience: freelancer.experience.getItems(),
+      certifications: freelancer.certifications.getItems(),
     };
   }
 }

@@ -1,12 +1,7 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { About } from "../valueObjects/About";
-import { Language } from "../entities/Language";
-import { Education } from "../entities/Education";
-import { Experience } from "../entities/Experience";
-import { Certification } from "../entities/Certification";
 import { UserId } from "../valueObjects/UserId";
 import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
-import { Skill } from "../entities/Skill";
 import { Languages } from "../OneToMany/Languages";
 import { Educations } from "../OneToMany/Educations";
 import { Experiences } from "../OneToMany/Experiences";
@@ -50,23 +45,23 @@ export class Freelancer extends AggregateRoot<FreelancerProps> {
     return this.props.about;
   }
 
-  get skills(): Skill[] {
-    return this.props.skills.getItems();
+  get skills(): Skills {
+    return this.props.skills;
   }
 
-  get languages(): Language[] {
-    return this.props.languages.getItems();
+  get languages(): Languages {
+    return this.props.languages;
   }
 
-  get education(): Education[] {
-    return this.props.education.getItems();
+  get education(): Educations {
+    return this.props.education;
   }
 
-  get experience(): Experience[] {
-    return this.props.experience.getItems();
+  get experience(): Experiences {
+    return this.props.experience;
   }
 
-  get certifications(): Certification[] {
-    return this.props.certifications.getItems();
+  get certifications(): Certifications {
+    return this.props.certifications;
   }
 }

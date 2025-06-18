@@ -8,15 +8,18 @@ interface CertificationProps {
 }
 
 export class Certification extends Entity<CertificationProps> {
-  private constructor(props: CertificationProps) {
-    super(props);
+  private constructor(props: CertificationProps, id: UniqueEntityID) {
+    super(props, id);
   }
 
-  public static create(props: CertificationProps): Certification {
+  public static create(
+    props: CertificationProps,
+    id: UniqueEntityID
+  ): Certification {
     if (!props.certification || !props.institution || !props.year) {
       throw new Error("All fields are required for a certification.");
     }
-    return new Certification(props);
+    return new Certification(props, id);
   }
   get id(): UniqueEntityID {
     return this.id;

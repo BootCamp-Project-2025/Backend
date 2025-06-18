@@ -9,10 +9,16 @@ import { CourseController } from "./contexts/LearningContext/presentation/http/c
 import IUseCase from "./contexts/LearningContext/domain/interfaces/IUseCase";
 import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
+import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
+import { FreelancerRepository } from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
   CourseRepository
+);
+container.registerSingleton<IFreelancerRepository>(
+  "IFreelancerRepository",
+  FreelancerRepository
 );
 container.registerSingleton<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",

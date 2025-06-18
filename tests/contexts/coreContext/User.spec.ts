@@ -30,13 +30,13 @@ describe("User Aggregate", () => {
   );
 
   const skillService = Skills.create([
-    new Skill({ name: "JavaScript", level: "advanced" }),
-    new Skill({ name: "React", level: "intermediate" }),
+    new Skill({ name: "JavaScript", level: "advanced" }, new UniqueEntityID()),
+    new Skill({ name: "React", level: "intermediate" }, new UniqueEntityID()),
   ]);
 
   const languageService = Languages.create([
-    new Language({ name: "english", level: "native" }),
-    new Language({ name: "Spanish", level: "basic" }),
+    new Language({ name: "english", level: "native" }, new UniqueEntityID()),
+    new Language({ name: "Spanish", level: "basic" }, new UniqueEntityID()),
   ]);
 
   const educationService = Educations.create();
@@ -60,11 +60,14 @@ describe("User Aggregate", () => {
   experienceService.add(experience);
 
   const certificationService = Certifications.create();
-  const certification = Certification.create({
-    certification: "AWS Certified Developer",
-    institution: "Amazon",
-    year: 2021,
-  });
+  const certification = Certification.create(
+    {
+      certification: "AWS Certified Developer",
+      institution: "Amazon",
+      year: 2021,
+    },
+    new UniqueEntityID()
+  );
   certificationService.add(certification);
 
   //Freelancer

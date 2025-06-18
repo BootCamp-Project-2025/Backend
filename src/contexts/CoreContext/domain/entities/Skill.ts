@@ -1,5 +1,5 @@
+import { Entity } from "@/contexts/Shared/domain/Entity";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
 
 export type SkillLevel = "beginner" | "intermediate" | "advanced";
 
@@ -8,12 +8,12 @@ interface SkillProps {
   level: SkillLevel;
 }
 
-export class Skill extends ValueObject<SkillProps> {
+export class Skill extends Entity<SkillProps> {
   private readonly _name: string;
   private readonly _level: SkillLevel;
 
-  constructor(props: SkillProps) {
-    super(props);
+  constructor(props: SkillProps, id: UniqueEntityID) {
+    super(props, id);
     if (!props.name || props.name.trim().length === 0) {
       throw new Error("Skill name is required");
     }
@@ -24,6 +24,12 @@ export class Skill extends ValueObject<SkillProps> {
 
     this._name = props.name.trim();
     this._level = props.level;
+  }
+  public static create(props: SkillProps, id: UniqueEntityID): Skill {
+    if (!props.name || !props.level) {
+      throw new Error("skills must have a name and level");
+    }
+    return new Skill(props, id);
   }
 
   get name(): string {

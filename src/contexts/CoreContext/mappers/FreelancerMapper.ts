@@ -1,5 +1,4 @@
 import { Freelancer } from "../domain/aggregates/Freelancer";
-import { Freelancer as PrismaFreelancer } from "@/generated/prisma";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { About } from "../domain/valueObjects/About";
 import { UserId } from "../domain/valueObjects/UserId";
@@ -9,22 +8,43 @@ import { Languages } from "../domain/OneToMany/Languages";
 import { Educations } from "../domain/OneToMany/Educations";
 import { Certifications } from "../domain/OneToMany/Certifications";
 import { Experiences } from "../domain/OneToMany/Experiences";
+import { FreelancerDao } from "../domain/interfaces/dao/FreelancerDao";
+import { SkillMapper } from "./SkillMapper";
+import { LanguageMapper } from "./LanguageMapper";
+import { EducationMapper } from "./EducationMapper";
+import { CertificationMapper } from "./CertificationMapper";
+import { ExperienceMapper } from "./ExperienceMapper";
 
 export default class FreelancerMapper {
-  static persistanceToDomain(
-    userId: string,
-    prismaFreelancer: PrismaFreelancer
-  ): Freelancer {
+  static persistanceToDomain(prismaFreelancer: FreelancerDao): Freelancer {
     return Freelancer.create(
       {
         //create mappers from eities
-        userId: UserId.create(new UniqueEntityID(userId)),
+        userId: UserId.create(new UniqueEntityID(prismaFreelancer.userId)),
         about: About.create(prismaFreelancer.about),
-        skills: Skills.create([]),
-        languages: Languages.create([]),
-        education: Educations.create([]),
-        certifications: Certifications.create([]),
-        experience: Experiences.create([]),
+        skills: Skills.create(
+          new SkillMapper().mapArrayPersistanceToDomain(prismaFreelancer.skills)
+        ),
+        languages: Languages.create(
+          new LanguageMapper().mapArrayPersistanceToDomain(
+            prismaFreelancer.skills
+          )
+        ),
+        education: Educations.create(
+          new EducationMapper().mapArrayPersistanceToDomain(
+            prismaFreelancer.education
+          )
+        ),
+        certifications: Certifications.create(
+          new CertificationMapper().mapArrayPersistanceToDomain(
+            prismaFreelancer.certifications
+          )
+        ),
+        experience: Experiences.create(
+          new ExperienceMapper().mapArrayPersistanceToDomain(
+            prismaFreelancer.experience
+          )
+        ),
       },
       new UniqueEntityID(prismaFreelancer.id)
     );

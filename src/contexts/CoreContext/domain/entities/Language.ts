@@ -1,21 +1,21 @@
+import { Entity } from "@/contexts/Shared/domain/Entity";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
 
 interface LanguageProps {
   name: string;
   level: "basic" | "intermediate" | "advanced" | "native";
 }
 
-export class Language extends ValueObject<LanguageProps> {
-  constructor(props: LanguageProps) {
-    super(props);
+export class Language extends Entity<LanguageProps> {
+  constructor(props: LanguageProps, id: UniqueEntityID) {
+    super(props, id);
   }
 
-  public static create(props: LanguageProps): Language {
+  public static create(props: LanguageProps, id: UniqueEntityID): Language {
     if (!props.name || !props.level) {
       throw new Error("Language must have a name and level");
     }
-    return new Language(props);
+    return new Language(props, id);
   }
 
   get id(): UniqueEntityID {

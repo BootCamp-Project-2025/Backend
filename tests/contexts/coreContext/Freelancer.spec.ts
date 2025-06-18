@@ -22,13 +22,16 @@ describe("Freelancer Entity", () => {
     );
 
     const skills = Skills.create([
-      new Skill({ name: "JavaScript", level: "advanced" }),
-      new Skill({ name: "React", level: "intermediate" }),
+      new Skill(
+        { name: "JavaScript", level: "advanced" },
+        new UniqueEntityID()
+      ),
+      new Skill({ name: "React", level: "intermediate" }, new UniqueEntityID()),
     ]);
 
     const languages = Languages.create([
-      new Language({ name: "english", level: "native" }),
-      new Language({ name: "Spanish", level: "basic" }),
+      new Language({ name: "english", level: "native" }, new UniqueEntityID()),
+      new Language({ name: "Spanish", level: "basic" }, new UniqueEntityID()),
     ]);
 
     const educations = Educations.create();
@@ -52,11 +55,14 @@ describe("Freelancer Entity", () => {
     experiences.add(experience);
 
     const certifications = Certifications.create();
-    const certification = Certification.create({
-      certification: "AWS Certified Developer",
-      institution: "Amazon",
-      year: 2021,
-    });
+    const certification = Certification.create(
+      {
+        certification: "AWS Certified Developer",
+        institution: "Amazon",
+        year: 2021,
+      },
+      new UniqueEntityID()
+    );
     certifications.add(certification);
 
     const freelancer = Freelancer.create({

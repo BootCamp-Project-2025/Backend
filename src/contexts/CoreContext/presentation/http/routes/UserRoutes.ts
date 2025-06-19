@@ -63,4 +63,6 @@ router.post("/", controller.post);
  */
 router.put("/:id/freelance", controller.freelance);
 
+router.get("/:id/profile", controller.getProfile);
+
 export default router;

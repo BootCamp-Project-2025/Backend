@@ -1,14 +1,17 @@
 import { User } from "../../domain/aggregates/User";
+import { IGetUserProfileDto } from "../../domain/interfaces/dtos/IGetUserProfileDto";
 import { IUserService } from "../../domain/interfaces/services/IUserService";
 import { CreateUserFreelancerProfileUseCase } from "../useCases/CreateUserFreelancerProfileUseCase";
 import { CreateUserUseCase } from "../useCases/CreateUserUseCase";
+import { GetUserProfileUseCase } from "../useCases/GetUserProfileUseCase";
 import { GetUserUseCase } from "../useCases/GetUserUseCase";
 
 export class UserService implements IUserService {
   constructor(
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly getUserUseCase: GetUserUseCase,
-    private readonly createUserFreelancerProfileUseCase: CreateUserFreelancerProfileUseCase
+    private readonly createUserFreelancerProfileUseCase: CreateUserFreelancerProfileUseCase,
+    private readonly getUserProfileUseCase: GetUserProfileUseCase
   ) {}
 
   async createFreelanceProfile(id: string): Promise<User> {
@@ -34,5 +37,8 @@ export class UserService implements IUserService {
   }
   async create(user: User): Promise<User> {
     return await this.createUserUseCase.execute(user);
+  }
+  async getProfile(userId: string): Promise<IGetUserProfileDto> {
+    return await this.getUserProfileUseCase.execute(userId);
   }
 }

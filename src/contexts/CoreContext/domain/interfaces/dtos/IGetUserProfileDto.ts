@@ -1,5 +1,6 @@
 export interface IGetUserProfileDto {
+  id: string;
   userName: string;
   userEmail: string;
-  clienProfile: object | undefined;
+  imageProfile: string | null;
 }

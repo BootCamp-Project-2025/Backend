@@ -5,6 +5,7 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserName } from "../valueObjects/UserName";
 import { Client } from "../entities/Client";
 import { Freelancer } from "../entities/Freelancer";
+import { ImageProfile } from "../valueObjects/ImageProfile";
 
 export type UserRole = "CLIENT" | "FREELANCER";
 
@@ -15,6 +16,7 @@ export interface UserProps {
   clientProfile?: Client;
   freelancerProfile?: Freelancer;
   createdAt: Date;
+  imageProfile?: ImageProfile;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -52,6 +54,10 @@ export class User extends AggregateRoot<UserProps> {
 
   get freelancerProfile(): Freelancer | undefined {
     return this.props.freelancerProfile;
+  }
+
+  get imageProfile(): ImageProfile | undefined {
+    return this.props.imageProfile;
   }
 
   // Methods to manage roles

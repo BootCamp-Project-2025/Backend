@@ -11,11 +11,6 @@ export class GetUserProfileUseCase {
       throw new Error("User not found");
     }
 
-    const userDto = UserMapper.domainToGetUserDto(user);
-    return {
-      userName: userDto.userName,
-      userEmail: userDto.userEmail,
-      clienProfile: userDto.clientProfile,
-    };
+    return UserMapper.toUserProfileDto(user);
   }
 }

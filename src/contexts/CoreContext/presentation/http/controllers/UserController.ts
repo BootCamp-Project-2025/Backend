@@ -36,4 +36,15 @@ export class UserController implements IUserController {
       console.log(error);
     }
   };
+
+  getProfile = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userId = req.params.id;
+      const profile = await this.userService.getProfile(userId);
+      res.status(200).json(profile);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
 }

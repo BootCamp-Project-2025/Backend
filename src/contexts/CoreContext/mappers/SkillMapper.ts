@@ -22,3 +22,5 @@ export class SkillMapper extends ArrayToArrayMapper<Skill, PrismaSkill> {
     return Skill.create(origin, new UniqueEntityID(origin.id));
   }
 }
+
+export const skillMapper = new SkillMapper();

@@ -8,20 +8,18 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
 @injectable()
-export default class AddSkillUseCase
-  implements IUseCase<CreateSkillDto, Skill[]>
-{
+export default class AddSkillUseCase implements IUseCase<CreateSkillDto, void> {
   constructor(
     @inject("IFreelancerRepository")
     private freelancerRepository: IFreelancerRepository
   ) {}
-  async execute({ skill, freelancerId }: CreateSkillDto): Promise<Skill[]> {
+  async execute({ skill, freelancerId }: CreateSkillDto): Promise<void> {
     try {
       const skills: Skill[] =
         await this.freelancerRepository.getSkills(freelancerId);
       const skillService: SkillService = SkillService.create(skills);
       skillService.add(skill);
-      return await this.freelancerRepository.updateSkills(
+      await this.freelancerRepository.updateSkills(
         freelancerId,
         skillService.getAll()
       );

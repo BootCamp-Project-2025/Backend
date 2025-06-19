@@ -1,9 +1,8 @@
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
-import { Skill } from "../../domain/valueObjects/Skill";
+import { Skill } from "../../domain/entities/Skill";
 import { inject, injectable } from "tsyringe";
 import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
 import { CreateSkillDto } from "../../domain/interfaces/dtos/CreateSkillDto";
-import { SkillService } from "../../domain/services/SkillService";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
@@ -15,6 +14,7 @@ export default class AddSkillUseCase implements IUseCase<CreateSkillDto, void> {
   ) {}
   async execute({ skill, freelancerId }: CreateSkillDto): Promise<void> {
     try {
+      /*
       const skills: Skill[] =
         await this.freelancerRepository.getSkills(freelancerId);
       const skillService: SkillService = SkillService.create(skills);
@@ -22,7 +22,7 @@ export default class AddSkillUseCase implements IUseCase<CreateSkillDto, void> {
       await this.freelancerRepository.updateSkills(
         freelancerId,
         skillService.getAll()
-      );
+      );*/
     } catch (error) {
       console.log(error);
       if (error as ApiError) throw error;

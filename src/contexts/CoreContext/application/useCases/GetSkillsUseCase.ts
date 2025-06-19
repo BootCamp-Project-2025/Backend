@@ -1,5 +1,5 @@
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
-import { Skill } from "../../domain/valueObjects/Skill";
+import { Skill } from "../../domain/entities/Skill";
 import { inject, injectable } from "tsyringe";
 import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
 

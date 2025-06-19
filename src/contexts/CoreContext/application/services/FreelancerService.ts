@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { IFreelancerService } from "../../domain/interfaces/services/IFreelancerService";
-import { Skill } from "../../domain/valueObjects/Skill";
+import { Skill } from "../../domain/entities/Skill";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { CreateSkillDto } from "../../domain/interfaces/dtos/CreateSkillDto";
 

@@ -12,7 +12,7 @@ export class Skill extends Entity<SkillProps> {
   private readonly _name: string;
   private readonly _level: SkillLevel;
 
-  constructor(props: SkillProps, id: UniqueEntityID) {
+  constructor(props: SkillProps, id?: UniqueEntityID) {
     super(props, id);
     if (!props.name || props.name.trim().length === 0) {
       throw new Error("Skill name is required");

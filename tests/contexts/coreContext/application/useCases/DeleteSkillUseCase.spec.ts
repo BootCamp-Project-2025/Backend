@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Skill } from "@/contexts/CoreContext/domain/valueObjects/Skill";
+import { Skill } from "@/contexts/CoreContext/domain/entities/Skill";
 import DeleteSkillUseCase from "@/contexts/CoreContext/application/useCases/DeleteSkillUseCase";
 
 jest.mock(

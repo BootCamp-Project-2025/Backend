@@ -8,22 +8,21 @@ interface CertificationProps {
 }
 
 export class Certification extends Entity<CertificationProps> {
-  private constructor(props: CertificationProps, id?: UniqueEntityID) {
+  private constructor(props: CertificationProps, id: UniqueEntityID) {
     super(props, id);
   }
 
   public static create(
     props: CertificationProps,
-    id?: UniqueEntityID
+    id: UniqueEntityID
   ): Certification {
     if (!props.certification || !props.institution || !props.year) {
       throw new Error("All fields are required for a certification.");
     }
     return new Certification(props, id);
   }
-
-  get certificationId(): UniqueEntityID {
-    return this._id;
+  get id(): UniqueEntityID {
+    return this.id;
   }
 
   get certification(): string {
@@ -32,6 +31,12 @@ export class Certification extends Entity<CertificationProps> {
 
   get institution(): string {
     return this.props.institution;
+  }
+
+  public edit(props: CertificationProps): void {
+    this.props.certification = props.certification;
+    this.props.year = props.year;
+    this.props.institution = props.institution;
   }
 
   get year(): number {

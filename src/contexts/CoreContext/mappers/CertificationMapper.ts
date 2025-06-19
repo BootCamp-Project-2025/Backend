@@ -1,52 +1,36 @@
+import { Certification as PrismaCertifcation } from "@/generated/prisma";
+import { ArrayToArrayMapper } from "./ArrayToArrayMapper";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { Certification as PrismaCertification } from "@/generated/prisma";
 import { Certification } from "../domain/entities/Certification";
-import { CertificationDTO } from "../domain/interfaces/dtos/ICertificationDto";
 
-export default class CertificationMapper {
-  static persistenceToDomain(
-    certification: PrismaCertification
-  ): Certification {
+export class CertificationMapper extends ArrayToArrayMapper<
+  Certification,
+  PrismaCertifcation
+> {
+  mapDomainToPersistance(origin: Certification): {
+    id: string;
+    freelancerId: string;
+    certification: string;
+    institution: string;
+    year: Date;
+  } {
+    console.log(origin);
+    throw new Error("Method not implemented.");
+  }
+  mapPersistanceToDomain(origin: {
+    certification: string;
+    id: string;
+    institution: string;
+    year: Date;
+    freelancerId: string;
+  }): Certification {
     return Certification.create(
       {
-        certification: certification.certification,
-        institution: certification.institution,
-        year: certification.year.getFullYear(),
+        certification: origin.certification,
+        institution: origin.institution,
+        year: origin.year.getFullYear(),
       },
-      new UniqueEntityID(certification.id)
+      new UniqueEntityID(origin.id)
     );
-  }
-
-  static dtoToDomain(certification: CertificationDTO, id?: string) {
-    return Certification.create(
-      {
-        certification: certification.certification,
-        institution: certification.institution,
-        year: certification.year,
-      },
-      id ? new UniqueEntityID(id) : new UniqueEntityID()
-    );
-  }
-
-  static domainToDto(certification: Certification): CertificationDTO {
-    return {
-      id: certification.certificationId.toString(),
-      certification: certification.certification,
-      institution: certification.institution,
-      year: certification.year,
-    };
-  }
-
-  static DomaintoPersistence(
-    certification: Certification,
-    freelancerId: string
-  ): PrismaCertification {
-    return {
-      id: certification.certificationId.toString(),
-      certification: certification.certification,
-      institution: certification.institution,
-      year: new Date(certification.year, 0, 1),
-      freelancerId: freelancerId,
-    };
   }
 }

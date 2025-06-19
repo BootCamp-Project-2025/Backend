@@ -1,4 +1,4 @@
-import { Client } from "@/contexts/CoreContext/domain/entities/Client";
+import { Client } from "@/contexts/CoreContext/domain/aggregates/Client";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 

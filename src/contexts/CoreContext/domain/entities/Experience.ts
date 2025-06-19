@@ -25,7 +25,7 @@ export class Experience extends Entity<ExperienceProps> {
     return new Experience(props, id);
   }
 
-  get experienceId(): UniqueEntityID {
+  get id(): UniqueEntityID {
     return this._id;
   }
 

@@ -1,29 +1,51 @@
 import "reflect-metadata";
 import { GetCertificationByIdUseCase } from "@/contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
-import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
+import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 describe("GetCertificationByIdUseCase", () => {
-  const mockRepo: jest.Mocked<ICertificationRepository> = {
-    findById: jest.fn(),
-  } as unknown as jest.Mocked<ICertificationRepository>;
+  const certificationMock = {
+    id: { toString: () => "cert-id" },
+  } as unknown as Certification;
 
-  const useCase = new GetCertificationByIdUseCase(mockRepo);
+  const mockFreelancer = {
+    certifications: {
+      getItems: () => [certificationMock],
+    },
+  };
 
-  it("should call getById with correct id", async () => {
-    await useCase.execute("cert-id");
-    expect(mockRepo.findById).toHaveBeenCalledWith("cert-id");
+  const mockFreelancerRepo: jest.Mocked<IFreelancerRepository> = {
+    getById: jest.fn().mockResolvedValue(mockFreelancer),
+  } as any;
+
+  const useCase = new GetCertificationByIdUseCase(mockFreelancerRepo);
+
+  it("should return certification from freelancer", async () => {
+    const result = await useCase.execute({
+      certificationId: "cert-id",
+      freelancerId: "freelancer-1",
+    });
+    expect(result).toBe(certificationMock);
   });
 
-  it("should return certification from repo", async () => {
-    const cert = { id: "cert-id" };
-    mockRepo.findById.mockResolvedValue(cert as unknown as Certification);
-    const result = await useCase.execute("cert-id");
-    expect(result).toBe(cert);
+  it("should throw error if certification not found", async () => {
+    mockFreelancer.certifications.getItems = () => [];
+    await expect(
+      useCase.execute({
+        certificationId: "not-found",
+        freelancerId: "freelancer-1",
+      })
+    ).rejects.toThrow(ApiError);
   });
 
-  it("should propagate repo errors", async () => {
-    mockRepo.findById.mockRejectedValueOnce(new Error("fail"));
-    await expect(useCase.execute("x")).rejects.toThrow("fail");
+  it("should propagate freelancer repository errors", async () => {
+    mockFreelancerRepo.getById.mockRejectedValueOnce(new Error("fail"));
+    await expect(
+      useCase.execute({
+        certificationId: "any-id",
+        freelancerId: "freelancer-1",
+      })
+    ).rejects.toThrow("fail");
   });
 });

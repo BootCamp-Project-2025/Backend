@@ -7,18 +7,17 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class GetCertificationByIdUseCase
   implements
-    IUseCase<
-      {
-        certificationId: string;
-        freelancerId: string;
-      },
-      Certification
-    >
-{
+  IUseCase<
+    {
+      certificationId: string;
+      freelancerId: string;
+    },
+    Certification
+  > {
   constructor(
     @inject("IFreelancerRepository")
     private freelancerRepository: IFreelancerRepository
-  ) {}
+  ) { }
 
   async execute({
     certificationId,

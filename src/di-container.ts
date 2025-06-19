@@ -46,17 +46,17 @@ container.registerSingleton<IFreelancerRepository>(
   FreelancerRepository
 );
 
-container.registerSingleton<IUseCase<CreateSkillDto, Skill>>(
+container.registerSingleton<IUseCase<CreateSkillDto, void>>(
   "AddSkillUseCase",
   AddSkillUseCase
 );
 
-container.registerSingleton<IUseCase<CreateSkillDto, Skill>>(
+container.registerSingleton<IUseCase<CreateSkillDto, void>>(
   "DeleteSkillUseCase",
   DeleteSkillUseCase
 );
 
-container.registerSingleton<IUseCase<CreateSkillDto, Skill>>(
+container.registerSingleton<IUseCase<CreateSkillDto, void>>(
   "EditSkillUseCase",
   EditSkillUseCase
 );

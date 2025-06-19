@@ -23,43 +23,7 @@ const controller = container.resolve(CertificationController);
  *       200:
  *         description: A list of certifications for the freelancer
  */
-router.get(
-  "/:id/certifications",
-  controller.getByFreelancerId.bind(controller)
-);
-
-/**
- * @openapi
- * /freelancer/{id}/certifications/{certificationId}:
- *   get:
- *     summary: Retrieve a certification by its ID for a specific freelancer
- *     tags:
- *       - Certifications
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: The ID of the freelancer
- *         schema:
- *           type: string
- *       - in: path
- *         name: certificationId
- *         required: true
- *         description: The ID of the certification
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: A certification object
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Certification'
- */
-router.get(
-  "/:id/certifications/:certificationId",
-  controller.getById.bind(controller)
-);
+router.get("/:id/certifications", controller.getAll.bind(controller));
 
 /**
  * @openapi

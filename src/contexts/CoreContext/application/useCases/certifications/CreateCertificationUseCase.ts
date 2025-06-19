@@ -1,7 +1,9 @@
+import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
 import { CertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/ICertificationDto";
 import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
-import CertificationMapper from "@/contexts/CoreContext/mappers/CertificationMapper";
+import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -11,18 +13,25 @@ export class CreateCertificationUseCase
 {
   constructor(
     @inject("ICertificationRepository")
-    private certificationRepository: ICertificationRepository
+    private certificationRepository: ICertificationRepository,
+    @inject("IFreelancerRepository")
+    private freelancerRepository: IFreelancerRepository
   ) {}
 
-  async execute(params?: {
+  async execute(params: {
     certification: CertificationDTO;
     freelancerId: string;
   }): Promise<void> {
-    if (!params) {
-      throw new Error("Missing parameters for creating certification.");
-    }
-    const { certification: certificationDto, freelancerId } = params;
-    const certification = CertificationMapper.dtoToDomain(certificationDto);
-    await this.certificationRepository.create(certification, freelancerId);
+    const { certification, freelancerId } = params;
+    const freelancer = await this.freelancerRepository.getById(freelancerId);
+    const certificationDomain = Certification.create(
+      { ...certification },
+      new UniqueEntityID()
+    );
+    freelancer?.certifications.add(certificationDomain);
+    await this.certificationRepository.create(
+      certificationDomain,
+      freelancerId
+    );
   }
 }

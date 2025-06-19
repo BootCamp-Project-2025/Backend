@@ -2,7 +2,7 @@ import prismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient
 import { injectable } from "tsyringe";
 import { Certification } from "../../domain/entities/Certification";
 import { ICertificationRepository } from "../../domain/interfaces/repositories/ICertificationRepository";
-import CertificationMapper from "../../mappers/CertificationMapper";
+import { CertificationMapper } from "../../mappers/CertificationMapper";
 
 @injectable()
 export class CertificationRepository implements ICertificationRepository {
@@ -11,19 +11,21 @@ export class CertificationRepository implements ICertificationRepository {
       where: { freelancerId },
     });
     return certifications.map((cert) =>
-      CertificationMapper.persistenceToDomain(cert)
+      new CertificationMapper().mapPersistanceToDomain(cert)
     );
   }
   async create(
     certification: Certification,
     freelancerId: string
   ): Promise<void> {
-    const certificationData = CertificationMapper.DomaintoPersistence(
-      certification,
-      freelancerId
+    const certificationData = new CertificationMapper().mapDomainToPersistance(
+      certification
     );
     await prismaClient.certification.create({
-      data: certificationData,
+      data: {
+        ...certificationData,
+        freelancerId: freelancerId,
+      },
     });
   }
 
@@ -37,13 +39,15 @@ export class CertificationRepository implements ICertificationRepository {
     certification: Certification,
     freelancerId: string
   ): Promise<void> {
-    const certificationData = CertificationMapper.DomaintoPersistence(
-      certification,
-      freelancerId
+    const certificationData = new CertificationMapper().mapDomainToPersistance(
+      certification
     );
     await prismaClient.certification.update({
       where: { id: certificationId },
-      data: certificationData,
+      data: {
+        ...certificationData,
+        freelancerId: freelancerId,
+      },
     });
   }
   async findById(certificationId: string): Promise<Certification | null> {
@@ -53,7 +57,7 @@ export class CertificationRepository implements ICertificationRepository {
     });
     console.log("Certification found:", certification);
     return certification
-      ? CertificationMapper.persistenceToDomain(certification)
+      ? new CertificationMapper().mapPersistanceToDomain(certification)
       : null;
   }
 }

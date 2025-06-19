@@ -1,5 +1,6 @@
-import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
+import { CertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/ICertificationDto";
 import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
+import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { inject, injectable } from "tsyringe";
@@ -10,7 +11,7 @@ export class UpdateCertificationUseCase
     IUseCase<
       {
         certificationId: string;
-        certification: Certification;
+        certification: CertificationDTO;
         freelancerId: string;
       },
       void
@@ -18,23 +19,33 @@ export class UpdateCertificationUseCase
 {
   constructor(
     @inject("ICertificationRepository")
-    private certificationRepository: ICertificationRepository
+    private certificationRepository: ICertificationRepository,
+    @inject("IFreelancerRepository")
+    private freelancerRepository: IFreelancerRepository
   ) {}
 
   async execute(params: {
     certificationId: string;
-    certification: Certification;
+    certification: CertificationDTO;
     freelancerId: string;
   }): Promise<void> {
     const { certificationId, certification, freelancerId } = params;
-    const savedCertification =
-      this.certificationRepository.findById(certificationId);
-    if (!savedCertification) {
+    const freelancer = await this.freelancerRepository.getById(freelancerId);
+
+    const certifications = freelancer?.certifications.getItems();
+    const existingCertification = certifications?.find(
+      (cert) => cert.id.toString() === certificationId
+    );
+
+    if (!existingCertification) {
       throw new ApiError(404, "Certification not found");
     }
+
+    existingCertification.edit(certification);
+
     await this.certificationRepository.update(
       certificationId,
-      certification,
+      existingCertification,
       freelancerId
     );
   }

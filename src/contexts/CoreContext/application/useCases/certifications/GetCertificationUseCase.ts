@@ -1,18 +1,19 @@
 import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
-import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
+import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 
 import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class GetCertificationsUseCase
-  implements IUseCase<string, Certification[]>
-{
+  implements IUseCase<string, Certification[]> {
   constructor(
-    @inject("ICertificationRepository") private repo: ICertificationRepository
-  ) {}
+    @inject("IFreelancerRepository")
+    private freelancerRepository: IFreelancerRepository
+  ) { }
 
   async execute(id: string): Promise<Certification[]> {
-    return await this.repo.findByFreelancerId(id);
+    const freelancer = await this.freelancerRepository.getById(id);
+    return freelancer?.certifications.getItems() ?? [];
   }
 }

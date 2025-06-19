@@ -37,7 +37,7 @@ export default class CertificationMapper {
     };
   }
 
-  static toPersistence(
+  static DomaintoPersistence(
     certification: Certification,
     freelancerId: string
   ): PrismaCertification {

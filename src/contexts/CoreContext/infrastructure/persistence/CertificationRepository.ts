@@ -18,7 +18,7 @@ export class CertificationRepository implements ICertificationRepository {
     certification: Certification,
     freelancerId: string
   ): Promise<void> {
-    const certificationData = CertificationMapper.toPersistence(
+    const certificationData = CertificationMapper.DomaintoPersistence(
       certification,
       freelancerId
     );
@@ -37,7 +37,7 @@ export class CertificationRepository implements ICertificationRepository {
     certification: Certification,
     freelancerId: string
   ): Promise<void> {
-    const certificationData = CertificationMapper.toPersistence(
+    const certificationData = CertificationMapper.DomaintoPersistence(
       certification,
       freelancerId
     );

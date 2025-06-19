@@ -8,7 +8,6 @@ import { UpdateCertificationUseCase } from "../useCases/certifications/UpdateCer
 import { GetCertificationByIdUseCase } from "../useCases/certifications/GetCertificationByIdUseCase";
 import { CertificationDTO } from "../../domain/interfaces/dtos/ICertificationDto";
 import CertificationMapper from "../../mappers/CertificationMapper";
-import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 @injectable()
 export class CertificationService implements ICertificationService {
@@ -37,11 +36,6 @@ export class CertificationService implements ICertificationService {
   }
 
   async delete(certificationId: string): Promise<void> {
-    const savedCertification =
-      await this.getCertificationById.execute(certificationId);
-    if (!savedCertification) {
-      throw new ApiError(404, "Certification not found");
-    }
     return this.deleteCertificationUseCase.execute(certificationId);
   }
   async update(
@@ -53,23 +47,16 @@ export class CertificationService implements ICertificationService {
       certification,
       certificationId
     );
-    const savedCertification =
-      await this.getCertificationById.execute(certificationId);
-    if (!savedCertification) {
-      throw new ApiError(404, "Certification not found");
-    }
+
     return this.updateCertificationUseCase.execute({
       certificationId,
       certification: certificationDomain,
       freelancerId,
     });
   }
-  async getById(certificationId: string): Promise<CertificationDTO | null> {
+  async getById(certificationId: string): Promise<CertificationDTO> {
     const certification =
       await this.getCertificationById.execute(certificationId);
-    if (!certification) {
-      throw new ApiError(404, "Certification not found");
-    }
     return CertificationMapper.domainToDto(certification);
   }
 }

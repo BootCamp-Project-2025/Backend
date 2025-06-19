@@ -6,13 +6,14 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class DeleteCertificationUseCase
-  implements IUseCase<{ certificationId: string; freelancerId: string }, void> {
+  implements IUseCase<{ certificationId: string; freelancerId: string }, void>
+{
   constructor(
     @inject("ICertificationRepository")
     private certificationRepository: ICertificationRepository,
     @inject("IFreelancerRepository")
     private freelancerRepository: IFreelancerRepository
-  ) { }
+  ) {}
 
   async execute(params: {
     certificationId: string;

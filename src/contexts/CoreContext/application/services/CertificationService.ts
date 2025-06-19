@@ -21,7 +21,7 @@ export class CertificationService implements ICertificationService {
     private deleteCertificationUseCase: DeleteCertificationUseCase,
     @inject("GetCertificationById")
     private getCertificationById: GetCertificationByIdUseCase
-  ) { }
+  ) {}
   create(certification: CertificationDTO, freelancerId: string): Promise<void> {
     return this.createCertificationUseCase.execute({
       certification,

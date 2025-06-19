@@ -6,11 +6,12 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class GetCertificationsUseCase
-  implements IUseCase<string, Certification[]> {
+  implements IUseCase<string, Certification[]>
+{
   constructor(
     @inject("IFreelancerRepository")
     private freelancerRepository: IFreelancerRepository
-  ) { }
+  ) {}
 
   async execute(id: string): Promise<Certification[]> {
     const freelancer = await this.freelancerRepository.getById(id);

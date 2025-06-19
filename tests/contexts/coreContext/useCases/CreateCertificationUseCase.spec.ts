@@ -1,15 +1,32 @@
 import "reflect-metadata";
 import { CreateCertificationUseCase } from "@/contexts/CoreContext/application/useCases/certifications/CreateCertificationUseCase";
 import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
+import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
+import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
 
 describe("CreateCertificationUseCase", () => {
-  const mockRepo: jest.Mocked<ICertificationRepository> = {
+  const mockCertificationRepo: jest.Mocked<ICertificationRepository> = {
     create: jest.fn(),
-  } as unknown as jest.Mocked<ICertificationRepository>;
+  } as any;
 
-  const useCase = new CreateCertificationUseCase(mockRepo);
+  const mockAdd = jest.fn();
 
-  it("should call repository.create with the correct arguments", async () => {
+  const mockFreelancer = {
+    certifications: {
+      add: mockAdd,
+    },
+  };
+
+  const mockFreelancerRepo: jest.Mocked<IFreelancerRepository> = {
+    getById: jest.fn().mockResolvedValue(mockFreelancer),
+  } as any;
+
+  const useCase = new CreateCertificationUseCase(
+    mockCertificationRepo,
+    mockFreelancerRepo
+  );
+
+  it("should call repository.create with the correct arguments and add to freelancer", async () => {
     const input = {
       certification: {
         id: "",
@@ -22,18 +39,21 @@ describe("CreateCertificationUseCase", () => {
 
     await useCase.execute(input);
 
-    const [[certificationArg, freelancerIdArg]] = mockRepo.create.mock.calls;
-
-    expect(freelancerIdArg).toBe("freelancer-1");
-    expect(certificationArg).toMatchObject({
-      certification: "Test",
-      institution: "Org",
-      year: 2020,
-    });
+    const calledCertification = mockAdd.mock.calls[0][0];
+    expect(mockAdd).toHaveBeenCalled();
+    expect(calledCertification).toBeInstanceOf(Certification);
+    expect(calledCertification.certification).toBe("Test");
+    expect(calledCertification.institution).toBe("Org");
+    expect(calledCertification.year).toBe(2020);
+    expect(mockCertificationRepo.create).toHaveBeenCalledWith(
+      calledCertification,
+      "freelancer-1"
+    );
   });
 
-  it("should propagate errors from repository", async () => {
-    mockRepo.create.mockRejectedValueOnce(new Error("fail"));
+  it("should propagate errors from certificationRepository", async () => {
+    mockCertificationRepo.create.mockRejectedValueOnce(new Error("fail"));
+
     await expect(
       useCase.execute({
         certification: {

@@ -1,6 +1,6 @@
 import { IRepository } from "@/contexts/Shared/domain/repository/IRepository";
-import { Freelancer } from "../../entities/Freelancer";
-import { Skill } from "../../valueObjects/Skill";
+import { Freelancer } from "../../aggregates/Freelancer";
+import { Skill } from "../../entities/Skill";
 
 export interface IFreelancerRepository extends IRepository<Freelancer> {
   editSkill(freelancerId: string, skill: Skill): Promise<Skill>;

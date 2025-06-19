@@ -1,4 +1,4 @@
-import { Skill } from "../../valueObjects/Skill";
+import { Skill } from "../../entities/Skill";
 
 export interface IFreelancerService {
   addSkill(skill: Skill, freelancerId: string): Promise<Skill[]>;

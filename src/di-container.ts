@@ -11,7 +11,7 @@ import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import FreelancerRepository from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
-import { Skill } from "./contexts/CoreContext/domain/valueObjects/Skill";
+import { Skill } from "./contexts/CoreContext/domain/entities/Skill";
 import { CreateSkillDto } from "./contexts/CoreContext/domain/interfaces/dtos/CreateSkillDto";
 import AddSkillUseCase from "./contexts/CoreContext/application/useCases/AddSkillUseCase";
 import GetSkillsUseCase from "./contexts/CoreContext/application/useCases/GetSkillsUseCase";
@@ -25,6 +25,10 @@ import EditSkillUseCase from "./contexts/CoreContext/application/useCases/EditSk
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
   CourseRepository
+);
+container.registerSingleton<IFreelancerRepository>(
+  "IFreelancerRepository",
+  FreelancerRepository
 );
 container.registerSingleton<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",

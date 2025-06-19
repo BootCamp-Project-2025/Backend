@@ -5,7 +5,7 @@ import { UserEmail } from "../domain/valueObjects/UserEmail";
 import { UserName } from "../domain/valueObjects/UserName";
 import { IGetUserDto } from "../domain/interfaces/dtos/IGetUserDto";
 import { UserDao } from "../domain/interfaces/dao/UserDao";
-import FreelancerMapper from "./FreelancerMapper";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 export default class UserMapper {
   static createUserDtoTodomain(dto: ICreateUserDto) {
@@ -30,20 +30,17 @@ export default class UserMapper {
 
   static persistanceTodomain(userDao: UserDao): User {
     try {
-      let freelancer = undefined;
-      if (userDao.freelancerProfile !== null) {
-        freelancer = FreelancerMapper.persistanceTodomain(
-          userDao.id,
-          userDao.freelancerProfile
-        );
-      }
       return User.create({
         userName: UserName.create(userDao.userName),
         userEmail: UserEmail.create(userDao.userEmail),
         roles: userDao.roles,
         createdAt: userDao.createdAt,
-        freelancerProfile: freelancer,
-        clientProfile: undefined,
+        freelancerId: userDao.freelancerProfile
+          ? new UniqueEntityID(userDao.freelancerProfile.id)
+          : undefined,
+        clientId: userDao.freelancerProfile
+          ? new UniqueEntityID(userDao.freelancerProfile.id)
+          : undefined,
       });
     } catch (e) {
       console.log(e);
@@ -52,19 +49,14 @@ export default class UserMapper {
   }
 
   static domainToGetUserDto(user: User): IGetUserDto {
-    let freelancer = undefined;
-    if (user.freelancerProfile !== undefined)
-      freelancer = FreelancerMapper.domainToFreelancerProfileDto(
-        user.freelancerProfile
-      );
     return {
       userName: user.userName.value,
       userEmail: user.email.value,
       createdAt: user.createdAt,
       roles: user.roles,
       id: user.id.toString(),
-      freelancerProfile: freelancer,
-      clientProfile: undefined,
+      freelancerProfile: user.props.freelancerId?.toString(),
+      clientProfile: user.props.clientId?.toString(),
     };
   }
 }

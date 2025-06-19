@@ -1,4 +1,4 @@
-import { $Enums, Skill as PrismaSkill } from "@/generated/prisma";
+import { Skill as PrismaSkill } from "@/generated/prisma";
 import { Skill } from "../domain/valueObjects/Skill";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import ISkillDto from "../domain/interfaces/dtos/ISkillDto";
@@ -6,7 +6,7 @@ import ISkillDto from "../domain/interfaces/dtos/ISkillDto";
 type PrismaSave = {
   name: string;
   id: string;
-  level: $Enums.SkillLevel;
+  level: "beginner" | "intermediate" | "advanced";
 };
 
 export default class SkillMapper {

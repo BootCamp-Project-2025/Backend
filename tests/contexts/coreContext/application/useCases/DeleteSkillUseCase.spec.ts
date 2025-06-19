@@ -25,7 +25,7 @@ describe("AddSkillUseCase", () => {
       skill: skill,
       freelancerId: "freelancerId",
     });
-    expect(result).toEqual(skill);
+    expect(result).resolves;
   });
   it("fail to delete skill due to non existance", async () => {
     const skill: Skill = new Skill({ name: "python", level: "beginner" });

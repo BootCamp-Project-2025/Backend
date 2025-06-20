@@ -6,6 +6,7 @@ export type SkillLevel = "beginner" | "intermediate" | "advanced";
 interface SkillProps {
   name: string;
   level: SkillLevel;
+  freelancerId: string;
 }
 
 export class Skill extends Entity<SkillProps> {
@@ -36,8 +37,12 @@ export class Skill extends Entity<SkillProps> {
     return this._name;
   }
 
+  get freelancerId(): string {
+    return this.props.freelancerId;
+  }
+
   get id(): UniqueEntityID {
-    return this.id;
+    return this._id;
   }
 
   public editLevel(level: "beginner" | "intermediate" | "advanced") {

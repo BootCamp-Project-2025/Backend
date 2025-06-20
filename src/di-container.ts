@@ -21,6 +21,8 @@ import IFreelancerController from "./contexts/CoreContext/domain/interfaces/cont
 import FreelancerController from "./contexts/CoreContext/presentation/http/controllers/FreelancerController";
 import DeleteSkillUseCase from "./contexts/CoreContext/application/useCases/DeleteSkillUseCase";
 import EditSkillUseCase from "./contexts/CoreContext/application/useCases/EditSkillUseCase";
+import { ISkillRepository } from "./contexts/CoreContext/domain/interfaces/repositories/ISkillRepository";
+import SkillRepository from "./contexts/CoreContext/infrastructure/persistence/SkillRepository";
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -29,6 +31,10 @@ container.registerSingleton<ICourseRepository>(
 container.registerSingleton<IFreelancerRepository>(
   "IFreelancerRepository",
   FreelancerRepository
+);
+container.registerSingleton<ISkillRepository>(
+  "ISkillRepository",
+  SkillRepository
 );
 container.registerSingleton<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",

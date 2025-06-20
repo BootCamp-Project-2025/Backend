@@ -5,6 +5,8 @@ import { Skill } from "@/contexts/CoreContext/domain/entities/Skill";
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 @injectable()
 export default class FreelancerController implements IFreelancerController {
   constructor(
@@ -12,15 +14,25 @@ export default class FreelancerController implements IFreelancerController {
   ) {}
   public editSkill = async (req: Request, res: Response): Promise<void> => {
     const body: ISkillDto = req.body as ISkillDto;
-    const skill: Skill = Skill.create(body, new UniqueEntityID());
-    await this.freelancerService.editSkill(skill, req.params.freelancerId);
-    res.status(200).json(skill);
+    if (body.skillId === undefined)
+      throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
+    const skill: Skill = Skill.create(
+      { ...body, freelancerId: req.params.freelancerId },
+      new UniqueEntityID(body.skillId)
+    );
+    await this.freelancerService.editSkill(skill);
+    res.status(200).json();
   };
   public deleteSkill = async (req: Request, res: Response): Promise<void> => {
     const body: ISkillDto = req.body as ISkillDto;
-    const skill: Skill = Skill.create(body, new UniqueEntityID());
-    await this.freelancerService.deleteSkill(skill, req.params.freelancerId);
-    res.status(200).json(skill);
+    if (body.skillId === undefined)
+      throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
+    const skill: Skill = Skill.create(
+      { ...body, freelancerId: req.params.freelancerId },
+      new UniqueEntityID(body.skillId)
+    );
+    await this.freelancerService.deleteSkill(skill);
+    res.status(200).json();
   };
   public getSkills = async (req: Request, res: Response): Promise<void> => {
     const skills = await this.freelancerService.getSkills(
@@ -30,11 +42,12 @@ export default class FreelancerController implements IFreelancerController {
   };
   public addSkill = async (req: Request, res: Response): Promise<void> => {
     const body: ISkillDto = req.body as ISkillDto;
-    const skill: Skill = Skill.create(body, new UniqueEntityID());
-    const skillResponse = await this.freelancerService.addSkill(
-      skill,
-      req.params.freelancerId
+    const skill: Skill = Skill.create(
+      { ...body, freelancerId: req.params.freelancerId },
+      new UniqueEntityID()
     );
-    res.status(200).json(skillResponse);
+    console.log(skill);
+    await this.freelancerService.addSkill(skill);
+    res.status(201).json();
   };
 }

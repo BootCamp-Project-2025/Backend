@@ -1,30 +1,32 @@
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
-import { Skill } from "../../domain/entities/Skill";
 import { inject, injectable } from "tsyringe";
 import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
-import { CreateSkillDto } from "../../domain/interfaces/dtos/CreateSkillDto";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { ISkillRepository } from "../../domain/interfaces/repositories/ISkillRepository";
+import { Freelancer } from "../../domain/aggregates/Freelancer";
+import { Skill } from "../../domain/entities/Skill";
 
 @injectable()
-export default class AddSkillUseCase implements IUseCase<CreateSkillDto, void> {
+export default class AddSkillUseCase implements IUseCase<Skill, void> {
   constructor(
     @inject("IFreelancerRepository")
-    private freelancerRepository: IFreelancerRepository
+    private freelancerRepository: IFreelancerRepository,
+    @inject("ISkillRepository")
+    private skillRepository: ISkillRepository
   ) {}
-  async execute({ skill, freelancerId }: CreateSkillDto): Promise<void> {
+  async execute(skill: Skill): Promise<void> {
     try {
-      /*
-      const skills: Skill[] =
-        await this.freelancerRepository.getSkills(freelancerId);
-      const skillService: SkillService = SkillService.create(skills);
-      skillService.add(skill);
-      await this.freelancerRepository.updateSkills(
-        freelancerId,
-        skillService.getAll()
-      );*/
+      const freelancer: Freelancer | null =
+        await this.freelancerRepository.getById(skill.freelancerId);
+      if (freelancer === null)
+        throw new ApiError(
+          StatusCodes.NOT_FOUND,
+          "freelancer profile donest exist"
+        );
+      freelancer.skills.add(skill);
+      await this.skillRepository.save(freelancer);
     } catch (error) {
-      console.log(error);
       if (error as ApiError) throw error;
       else
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");

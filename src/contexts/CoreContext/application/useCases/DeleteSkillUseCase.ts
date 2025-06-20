@@ -1,23 +1,37 @@
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
 import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
-import { CreateSkillDto } from "../../domain/interfaces/dtos/CreateSkillDto";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { Freelancer } from "../../domain/aggregates/Freelancer";
+import { ISkillRepository } from "../../domain/interfaces/repositories/ISkillRepository";
+import { Skill } from "../../domain/entities/Skill";
 
 @injectable()
-export default class DeleteSkillUseCase
-  implements IUseCase<CreateSkillDto, void>
-{
+export default class DeleteSkillUseCase implements IUseCase<Skill, void> {
   constructor(
     @inject("IFreelancerRepository")
-    private freelancerRepository: IFreelancerRepository
+    private freelancerRepository: IFreelancerRepository,
+    @inject("ISkillRepository")
+    private skillRepository: ISkillRepository
   ) {}
-  async execute({ skill, freelancerId }: CreateSkillDto): Promise<void> {
-    const skillID: string | undefined =
-      await this.freelancerRepository.getSkillId(freelancerId, skill);
-    if (skillID !== undefined) {
-      await this.freelancerRepository.deleteSkill(skillID);
-    } else throw new ApiError(StatusCodes.CONFLICT, "the skill doesnt exist");
+  async execute(skill: Skill): Promise<void> {
+    try {
+      const freelancer: Freelancer | null =
+        await this.freelancerRepository.getById(skill.freelancerId);
+      if (freelancer === null)
+        throw new ApiError(
+          StatusCodes.CONFLICT,
+          "the freelancer profile doesnt exist"
+        );
+      if (!freelancer.skills.exists(skill))
+        throw new ApiError(StatusCodes.BAD_REQUEST, "the skill doesnt exist");
+      freelancer.skills.remove(skill);
+      await this.skillRepository.save(freelancer);
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else
+        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");
+    }
   }
 }

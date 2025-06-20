@@ -1,15 +1,23 @@
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { Skill } from "../../domain/entities/Skill";
 import { inject, injectable } from "tsyringe";
-import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
+import { ISkillRepository } from "../../domain/interfaces/repositories/ISkillRepository";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 @injectable()
 export default class GetSkillsUseCase implements IUseCase<string, Skill[]> {
   constructor(
-    @inject("IFreelancerRepository")
-    private freelancerRepository: IFreelancerRepository
+    @inject("ISkillRepository")
+    private ISkillRepository: ISkillRepository
   ) {}
   execute(freelancerId: string): Promise<Skill[]> {
-    return this.freelancerRepository.getSkills(freelancerId);
+    try {
+      return this.ISkillRepository.getSkillsById(freelancerId);
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else
+        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");
+    }
   }
 }

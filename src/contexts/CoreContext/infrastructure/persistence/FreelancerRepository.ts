@@ -11,11 +11,11 @@ import { FreelancerDao } from "../../domain/interfaces/dao/FreelancerDao";
 
 @injectable()
 export default class FreelancerRepository implements IFreelancerRepository {
-  async editSkill(skillId: string, skill: Skill): Promise<Skill> {
+  async editSkill(freelancerId: string, skill: Skill): Promise<Skill> {
     const skillDb = skillMapper.mapDomainToPersistance(skill);
     await PrismaClient.skill.update({
       where: {
-        id: skillId,
+        id: skill.id.toString(),
       },
       data: { level: skillDb.level },
     });

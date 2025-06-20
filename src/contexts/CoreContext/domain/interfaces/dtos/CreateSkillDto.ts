@@ -1,4 +1,4 @@
-import { Skill } from "../../valueObjects/Skill";
+import { Skill } from "../../entities/Skill";
 
 export type CreateSkillDto = {
   skill: Skill;

@@ -1,12 +1,15 @@
 import { Certification } from "../../entities/Certification";
-import { CertificationDTO } from "../dtos/ICertificationDto";
+import { IGetCertificationDTO } from "../dtos/certifications/IGetCertificationDto";
 
 export interface ICertificationService {
   getAll(freelancerId: string): Promise<Certification[]>;
-  create(certification: CertificationDTO, freelancerId: string): Promise<void>;
+  create(
+    certification: IGetCertificationDTO,
+    freelancerId: string
+  ): Promise<void>;
   update(
     certificationId: string,
-    certification: CertificationDTO,
+    certification: IGetCertificationDTO,
     freelancerId: string
   ): Promise<void>;
   delete(certificationId: string, freelancerId: string): Promise<void>;

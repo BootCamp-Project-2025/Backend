@@ -5,7 +5,7 @@ import { CreateCertificationUseCase } from "../useCases/certifications/CreateCer
 import { DeleteCertificationUseCase } from "../useCases/certifications/DeleteCertificationUseCase";
 import { UpdateCertificationUseCase } from "../useCases/certifications/UpdateCertificationUseCase";
 import { GetCertificationByIdUseCase } from "../useCases/certifications/GetCertificationByIdUseCase";
-import { CertificationDTO } from "../../domain/interfaces/dtos/ICertificationDto";
+import { IGetCertificationDTO } from "../../domain/interfaces/dtos/certifications/IGetCertificationDto";
 import { ICertificationService } from "../../domain/interfaces/services/ICertificationService";
 
 @injectable()
@@ -22,7 +22,10 @@ export class CertificationService implements ICertificationService {
     @inject("GetCertificationById")
     private getCertificationById: GetCertificationByIdUseCase
   ) {}
-  create(certification: CertificationDTO, freelancerId: string): Promise<void> {
+  create(
+    certification: IGetCertificationDTO,
+    freelancerId: string
+  ): Promise<void> {
     return this.createCertificationUseCase.execute({
       certification,
       freelancerId,
@@ -30,7 +33,7 @@ export class CertificationService implements ICertificationService {
   }
   update(
     certificationId: string,
-    certification: CertificationDTO,
+    certification: IGetCertificationDTO,
     freelancerId: string
   ): Promise<void> {
     return this.updateCertificationUseCase.execute({

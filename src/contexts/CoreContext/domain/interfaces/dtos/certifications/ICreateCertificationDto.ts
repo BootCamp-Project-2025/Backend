@@ -1,6 +1,5 @@
-export interface CertificationDTO {
+export interface ICreateCertificationDTO {
   certification: string;
-  id: string;
   institution: string;
   year: number;
 }

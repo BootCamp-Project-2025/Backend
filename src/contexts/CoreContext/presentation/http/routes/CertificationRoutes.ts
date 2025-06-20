@@ -116,3 +116,34 @@ router.delete(
 );
 
 export default router;
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     CertificationDTO:
+ *       type: object
+ *       properties:
+ *         certification:
+ *           type: string
+ *           description: Name of the certification
+ *           example: "AWS Certified Developer"
+ *         id:
+ *           type: string
+ *           description: ID of the certification
+ *           example: "cert-abc123"
+ *         institution:
+ *           type: string
+ *           description: Institution that issued the certification
+ *           example: "Amazon"
+ *         year:
+ *           type: integer
+ *           format: int32
+ *           description: Year the certification was obtained
+ *           example: 2024
+ *       required:
+ *         - certification
+ *         - id
+ *         - institution
+ *         - year
+ */

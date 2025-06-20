@@ -3,7 +3,7 @@ import { UpdateCertificationUseCase } from "@/contexts/CoreContext/application/u
 import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
 import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
-import { CertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/ICertificationDto";
+import { IGetCertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/certifications/IGetCertificationDto";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 describe("UpdateCertificationUseCase", () => {
@@ -41,7 +41,7 @@ describe("UpdateCertificationUseCase", () => {
       certification: "Test",
       institution: "Test Org",
       year: 2020,
-    } satisfies CertificationDTO,
+    } satisfies IGetCertificationDTO,
     freelancerId: "freelancer-1",
   };
 

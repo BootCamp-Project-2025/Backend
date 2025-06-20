@@ -1,4 +1,4 @@
-import { CertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/ICertificationDto";
+import { ICreateCertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/certifications/ICreateCertificationDto";
 import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
 import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
@@ -11,7 +11,7 @@ export class UpdateCertificationUseCase
     IUseCase<
       {
         certificationId: string;
-        certification: CertificationDTO;
+        certification: ICreateCertificationDTO;
         freelancerId: string;
       },
       void
@@ -26,7 +26,7 @@ export class UpdateCertificationUseCase
 
   async execute(params: {
     certificationId: string;
-    certification: CertificationDTO;
+    certification: ICreateCertificationDTO;
     freelancerId: string;
   }): Promise<void> {
     const { certificationId, certification, freelancerId } = params;

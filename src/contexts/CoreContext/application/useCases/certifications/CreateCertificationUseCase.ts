@@ -1,5 +1,6 @@
 import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
-import { CertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/ICertificationDto";
+import { ICreateCertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/certifications/ICreateCertificationDto";
+import { IGetCertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/certifications/IGetCertificationDto";
 import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
 import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
@@ -9,7 +10,10 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class CreateCertificationUseCase
   implements
-    IUseCase<{ certification: CertificationDTO; freelancerId: string }, void>
+    IUseCase<
+      { certification: ICreateCertificationDTO; freelancerId: string },
+      void
+    >
 {
   constructor(
     @inject("ICertificationRepository")
@@ -19,7 +23,7 @@ export class CreateCertificationUseCase
   ) {}
 
   async execute(params: {
-    certification: CertificationDTO;
+    certification: IGetCertificationDTO;
     freelancerId: string;
   }): Promise<void> {
     const { certification, freelancerId } = params;

@@ -1,21 +1,21 @@
 import { User } from "@/contexts/CoreContext/domain/aggregates/User";
-import { Client } from "@/contexts/CoreContext/domain/entities/Client";
+import { Client } from "@/contexts/CoreContext/domain/aggregates/Client";
 import { Education } from "@/contexts/CoreContext/domain/entities/Education";
 import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
-import { Freelancer } from "@/contexts/CoreContext/domain/entities/Freelancer";
-import { CertificationService } from "@/contexts/CoreContext/domain/services/CertificationService";
-import { EducationService } from "@/contexts/CoreContext/domain/services/EducationService";
-import { ExperienceService } from "@/contexts/CoreContext/domain/services/ExperienceService";
-import { LanguageService } from "@/contexts/CoreContext/domain/services/LanguageService";
-import { SkillService } from "@/contexts/CoreContext/domain/services/SkillService";
+import { Freelancer } from "@/contexts/CoreContext/domain/aggregates/Freelancer";
 import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
-import { Certification } from "@/contexts/CoreContext/domain/valueObjects/Certification";
-import { Language } from "@/contexts/CoreContext/domain/valueObjects/Language";
-import { Skill } from "@/contexts/CoreContext/domain/valueObjects/Skill";
+import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
+import { Language } from "@/contexts/CoreContext/domain/entities/Language";
+import { Skill } from "@/contexts/CoreContext/domain/entities/Skill";
 import { UserEmail } from "@/contexts/CoreContext/domain/valueObjects/UserEmail";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UserName } from "@/contexts/CoreContext/domain/valueObjects/UserName";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { Skills } from "@/contexts/CoreContext/domain/OneToMany/Skills";
+import { Languages } from "@/contexts/CoreContext/domain/OneToMany/Languages";
+import { Educations } from "@/contexts/CoreContext/domain/OneToMany/Educations";
+import { Experiences } from "@/contexts/CoreContext/domain/OneToMany/Experiences";
+import { Certifications } from "@/contexts/CoreContext/domain/OneToMany/Certifications";
 
 describe("User Aggregate", () => {
   const userName = UserName.create("George Orwell");
@@ -29,17 +29,17 @@ describe("User Aggregate", () => {
     "Passionate full-stack developer with 5+ years of experience."
   );
 
-  const skillService = SkillService.create([
-    new Skill({ name: "JavaScript", level: "advanced" }),
-    new Skill({ name: "React", level: "intermediate" }),
+  const skillService = Skills.create([
+    new Skill({ name: "JavaScript", level: "advanced" }, new UniqueEntityID()),
+    new Skill({ name: "React", level: "intermediate" }, new UniqueEntityID()),
   ]);
 
-  const languageService = LanguageService.create([
-    new Language({ name: "english", level: "native" }),
-    new Language({ name: "Spanish", level: "basic" }),
+  const languageService = Languages.create([
+    new Language({ name: "english", level: "native" }, new UniqueEntityID()),
+    new Language({ name: "Spanish", level: "basic" }, new UniqueEntityID()),
   ]);
 
-  const educationService = EducationService.create();
+  const educationService = Educations.create();
   const education = Education.create({
     university: "MIT",
     career: "Computer Science",
@@ -48,7 +48,7 @@ describe("User Aggregate", () => {
   });
   educationService.add(education);
 
-  const experienceService = ExperienceService.create();
+  const experienceService = Experiences.create();
   const experience = Experience.create({
     position: "Frontend Developer",
     employer: "TechCorp",
@@ -59,23 +59,26 @@ describe("User Aggregate", () => {
   });
   experienceService.add(experience);
 
-  const certificationService = CertificationService.create();
-  const certification = Certification.create({
-    certification: "AWS Certified Developer",
-    institution: "Amazon",
-    year: 2021,
-  });
+  const certificationService = Certifications.create();
+  const certification = Certification.create(
+    {
+      certification: "AWS Certified Developer",
+      institution: "Amazon",
+      year: 2021,
+    },
+    new UniqueEntityID()
+  );
   certificationService.add(certification);
 
   //Freelancer
   const freelancer = Freelancer.create({
     userId,
     about,
-    skills: skillService.getAll(),
-    languages: languageService.getAll(),
-    education: educationService.getAll(),
-    experience: experienceService.getAll(),
-    certifications: certificationService.getAll(),
+    skills: skillService,
+    languages: languageService,
+    education: educationService,
+    experience: experienceService,
+    certifications: certificationService,
   });
 
   it("should create a User with CLIENT role", () => {
@@ -83,14 +86,14 @@ describe("User Aggregate", () => {
       userName,
       userEmail,
       roles: ["CLIENT"],
-      clientProfile: client,
+      clientId: new UniqueEntityID(),
       createdAt: new Date(),
     });
 
     expect(user).toBeDefined();
     expect(user.isClient).toBe(true);
-    expect(user.clientProfile).toBeDefined();
-    expect(user.freelancerProfile).toBeUndefined();
+    expect(user.props.clientId).toBeDefined();
+    expect(user.props.freelancerId).toBeUndefined();
   });
 
   it("should create a User with FREELANCER role", () => {
@@ -98,14 +101,14 @@ describe("User Aggregate", () => {
       userName,
       userEmail,
       roles: ["FREELANCER"],
-      freelancerProfile: freelancer,
+      freelancerId: new UniqueEntityID(),
       createdAt: new Date(),
     });
 
     expect(user).toBeDefined();
     expect(user.isFreelancer).toBe(true);
-    expect(user.freelancerProfile).toBeDefined();
-    expect(user.clientProfile).toBeUndefined();
+    expect(user.props.freelancerId).toBeDefined();
+    expect(user.props.clientId).toBeUndefined();
   });
 
   it("should throw if FREELANCER role is present but no profile", () => {
@@ -136,7 +139,7 @@ describe("User Aggregate", () => {
     const user = User.create({
       userName,
       userEmail,
-      clientProfile: client,
+      clientId: new UniqueEntityID(),
       createdAt: new Date(),
       roles: [],
     });
@@ -150,13 +153,13 @@ describe("User Aggregate", () => {
       userName,
       userEmail,
       roles: ["CLIENT"],
-      clientProfile: client,
+      clientId: new UniqueEntityID(),
       createdAt: new Date(),
     });
 
-    user.assignFreelancerProfile(freelancer);
+    user.assignFreelancerProfile(new UniqueEntityID());
 
     expect(user.roles).toContain("FREELANCER");
-    expect(user.freelancerProfile).toBeDefined();
+    expect(user.props.freelancerId).toBeDefined();
   });
 });

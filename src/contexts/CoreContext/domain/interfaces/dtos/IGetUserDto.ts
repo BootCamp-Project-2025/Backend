@@ -1,5 +1,4 @@
 import { UserRole } from "../../aggregates/User";
-import { IFreelancerProfileDto } from "./IFreelancerProfileDto";
 
 export interface IGetUserDto {
   id: string;
@@ -7,6 +6,6 @@ export interface IGetUserDto {
   userEmail: string;
   roles: UserRole[];
   createdAt: Date;
-  freelancerProfile: IFreelancerProfileDto | undefined;
-  clientProfile: undefined;
+  freelancerProfile: string | undefined;
+  clientProfile: string | undefined;
 }

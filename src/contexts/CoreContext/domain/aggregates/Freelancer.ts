@@ -1,23 +1,23 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { Entity } from "@/contexts/Shared/domain/Entity";
 import { About } from "../valueObjects/About";
-import { Language } from "../valueObjects/Language";
-import { Skill } from "../valueObjects/Skill";
-import { Education } from "./Education";
-import { Experience } from "./Experience";
-import { Certification } from "../valueObjects/Certification";
 import { UserId } from "../valueObjects/UserId";
+import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
+import { Languages } from "../OneToMany/Languages";
+import { Educations } from "../OneToMany/Educations";
+import { Experiences } from "../OneToMany/Experiences";
+import { Certifications } from "../OneToMany/Certifications";
+import { Skills } from "../OneToMany/Skills";
 
 interface FreelancerProps {
   userId: UserId;
   about: About;
-  skills: Skill[];
-  languages: Language[];
-  education: Education[];
-  experience: Experience[];
-  certifications: Certification[];
+  skills: Skills;
+  languages: Languages;
+  education: Educations;
+  experience: Experiences;
+  certifications: Certifications;
 }
-export class Freelancer extends Entity<FreelancerProps> {
+export class Freelancer extends AggregateRoot<FreelancerProps> {
   private constructor(props: FreelancerProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -45,23 +45,23 @@ export class Freelancer extends Entity<FreelancerProps> {
     return this.props.about;
   }
 
-  get skills(): Skill[] {
+  get skills(): Skills {
     return this.props.skills;
   }
 
-  get languages(): Language[] {
+  get languages(): Languages {
     return this.props.languages;
   }
 
-  get education(): Education[] {
+  get education(): Educations {
     return this.props.education;
   }
 
-  get experience(): Experience[] {
+  get experience(): Experiences {
     return this.props.experience;
   }
 
-  get certifications(): Certification[] {
+  get certifications(): Certifications {
     return this.props.certifications;
   }
 }

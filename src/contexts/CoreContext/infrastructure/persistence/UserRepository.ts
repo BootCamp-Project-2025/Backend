@@ -53,7 +53,7 @@ export class UserRepository implements IUserRepository {
       const dbUser = UserMapper.domainToPersistance(user);
 
       await prismaClient.user.create({
-        data: dbUser,
+        data: { ...dbUser, clientProfile: { create: {} } },
       });
       return user;
     } catch (error) {

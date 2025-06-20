@@ -1,8 +1,8 @@
 import { Education } from "../../entities/Education";
 import { Experience } from "../../entities/Experience";
-import { Certification } from "../../valueObjects/Certification";
-import { Language } from "../../valueObjects/Language";
-import { Skill } from "../../valueObjects/Skill";
+import { Certification } from "../../entities/Certification";
+import { Language } from "../../entities/Language";
+import { Skill } from "../../entities/Skill";
 
 export interface IFreelancerProfileDto {
   about: string;

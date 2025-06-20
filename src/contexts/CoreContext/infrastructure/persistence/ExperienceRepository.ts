@@ -6,6 +6,7 @@ import ExperienceMapper from "../../mappers/ExperienceMapper";
 import prismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { ExperienceDTO } from "../../domain/interfaces/dtos/IExperienceDto";
 
 @injectable()
 export class ExperienceRepository implements IExperienceRepository {
@@ -27,6 +28,7 @@ export class ExperienceRepository implements IExperienceRepository {
 
   async findById(experienceId: string): Promise<Experience | null> {
     try {
+      console.log(experienceId);
       const experience = await prismaClient.experience.findUnique({
         where: { id: experienceId },
       });
@@ -45,16 +47,21 @@ export class ExperienceRepository implements IExperienceRepository {
     }
   }
 
-  async create(experience: Experience, freelancerId: string): Promise<void> {
+  async create(
+    experience: Experience,
+    freelancerId: string
+  ): Promise<Experience> {
     try {
       const experienceData = ExperienceMapper.toPersistence(
         experience,
         freelancerId
       );
 
-      await prismaClient.experience.create({
+      const newExperience = await prismaClient.experience.create({
         data: experienceData,
       });
+
+      return ExperienceMapper.persistenceToDomain(newExperience);
     } catch (error) {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
@@ -79,6 +86,7 @@ export class ExperienceRepository implements IExperienceRepository {
         data: experienceData,
       });
     } catch (error) {
+      console.log(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "Error updating experience"

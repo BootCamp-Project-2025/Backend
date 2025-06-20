@@ -1,3 +1,4 @@
+import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
 import { ExperienceDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/IExperienceDto";
 import { IExperienceRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IExperienceRepository";
 import ExperienceMapper from "@/contexts/CoreContext/mappers/ExperienceMapper";
@@ -8,7 +9,8 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class CreateExperienceUseCase
-  implements IUseCase<{ experience: ExperienceDTO; freelancerId: string }, void>
+  implements
+    IUseCase<{ experience: ExperienceDTO; freelancerId: string }, Experience>
 {
   constructor(
     @inject("IExperienceRepository")
@@ -18,7 +20,7 @@ export class CreateExperienceUseCase
   async execute(params?: {
     experience: ExperienceDTO;
     freelancerId: string;
-  }): Promise<void> {
+  }): Promise<Experience> {
     if (!params) {
       throw new ApiError(
         StatusCodes.BAD_REQUEST,
@@ -28,6 +30,6 @@ export class CreateExperienceUseCase
 
     const { experience: experienceDto, freelancerId } = params;
     const experience = ExperienceMapper.dtoToDomain(experienceDto);
-    await this.experienceRepository.create(experience, freelancerId);
+    return await this.experienceRepository.create(experience, freelancerId);
   }
 }

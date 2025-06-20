@@ -25,7 +25,7 @@ export class ExperienceController implements IExperienceController {
   }
 
   async getById(req: Request, res: Response): Promise<void> {
-    const experienceId = req.params.id;
+    const experienceId = req.params.experienceId;
     const experience = await this.experienceService.getById(experienceId);
     const response = new SuccessResponseEntity(
       experience,
@@ -38,9 +38,13 @@ export class ExperienceController implements IExperienceController {
   async create(req: Request, res: Response): Promise<void> {
     const freelancerId = req.params.id;
     const experience = req.body;
-    await this.experienceService.create(experience, freelancerId);
+    const newExperience = await this.experienceService.create(
+      experience,
+      freelancerId
+    );
+
     const response = new SuccessResponseEntity(
-      null,
+      newExperience,
       StatusCodes.CREATED,
       "Experience created successfully"
     );
@@ -50,7 +54,7 @@ export class ExperienceController implements IExperienceController {
   async update(req: Request, res: Response): Promise<void> {
     const freelancerId = req.params.id;
     const experienceId = req.params.experienceId;
-    const experience = req.body;
+    const experience = { ...req.body };
     await this.experienceService.update(experienceId, experience, freelancerId);
     const response = new SuccessResponseEntity(null, StatusCodes.NO_CONTENT);
     ResponseService.send(res, response);

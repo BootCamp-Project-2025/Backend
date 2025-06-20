@@ -10,7 +10,10 @@ import { ExperienceDTO } from "../dtos/IExperienceDto";
 
 export interface IExperiences {
   getAll(id: string): Promise<ExperienceDTO[]>;
-  create(experience: ExperienceDTO, freelancerId: string): Promise<void>;
+  create(
+    experience: ExperienceDTO,
+    freelancerId: string
+  ): Promise<ExperienceDTO>;
   delete(experienceId: string): Promise<void>;
   update(
     experienceId: string,

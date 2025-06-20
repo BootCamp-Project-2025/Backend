@@ -24,8 +24,8 @@ export default class ExperienceMapper {
         position: experience.position,
         employer: experience.employer,
         country: experience.country,
-        startDate: experience.startDate,
-        endDate: experience.endDate,
+        startDate: new Date(experience.startDate),
+        endDate: new Date(experience.endDate),
         description: experience.description,
       },
       id ? new UniqueEntityID(id) : new UniqueEntityID()

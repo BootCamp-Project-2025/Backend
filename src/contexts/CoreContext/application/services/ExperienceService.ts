@@ -32,8 +32,15 @@ export class ExperienceService implements IExperiences {
     return experiences.map(ExperienceMapper.domainToDto);
   }
 
-  create(experience: ExperienceDTO, freelancerId: string): Promise<void> {
-    return this.createExperienceUseCase.execute({ experience, freelancerId });
+  async create(
+    experience: ExperienceDTO,
+    freelancerId: string
+  ): Promise<ExperienceDTO> {
+    const newExperience = await this.createExperienceUseCase.execute({
+      experience,
+      freelancerId,
+    });
+    return ExperienceMapper.domainToDto(newExperience);
   }
 
   async delete(experienceId: string): Promise<void> {

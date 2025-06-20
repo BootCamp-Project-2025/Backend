@@ -1,35 +1,62 @@
-import { Experience as PrismaExperience } from "@/generated/prisma";
-import { ArrayToArrayMapper } from "./ArrayToArrayMapper";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { Experience as PrismaExperience } from "@/generated/prisma";
 import { Experience } from "../domain/entities/Experience";
+import { ExperienceDTO } from "../domain/interfaces/dtos/IExperienceDto";
 
-export class ExperienceMapper extends ArrayToArrayMapper<
-  Experience,
-  PrismaExperience
-> {
-  mapDomainToPersistance(origin: Experience): {
-    id: string;
-    startDate: Date;
-    endDate: Date;
-    freelancerId: string;
-    position: string;
-    employer: string;
-    country: string;
-    description: string;
-  } {
-    console.log(origin);
-    throw new Error("Method not implemented.");
+export default class ExperienceMapper {
+  static persistenceToDomain(experience: PrismaExperience): Experience {
+    return Experience.create(
+      {
+        position: experience.position,
+        employer: experience.employer,
+        country: experience.country,
+        startDate: experience.startDate,
+        endDate: experience.endDate,
+        description: experience.description,
+      },
+      new UniqueEntityID(experience.id)
+    );
   }
-  mapPersistanceToDomain(origin: {
-    id: string;
-    position: string;
-    employer: string;
-    country: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-    freelancerId: string;
-  }): Experience {
-    return Experience.create(origin, new UniqueEntityID(origin.id));
+
+  static dtoToDomain(experience: ExperienceDTO, id?: string): Experience {
+    return Experience.create(
+      {
+        position: experience.position,
+        employer: experience.employer,
+        country: experience.country,
+        startDate: experience.startDate,
+        endDate: experience.endDate,
+        description: experience.description,
+      },
+      id ? new UniqueEntityID(id) : new UniqueEntityID()
+    );
+  }
+
+  static domainToDto(experience: Experience): ExperienceDTO {
+    return {
+      id: experience.id.toString(),
+      position: experience.position,
+      employer: experience.employer,
+      country: experience.country,
+      startDate: experience.startDate,
+      endDate: experience.endDate,
+      description: experience.description,
+    };
+  }
+
+  static toPersistence(
+    experience: Experience,
+    freelancerId: string
+  ): PrismaExperience {
+    return {
+      id: experience.id.toString(),
+      position: experience.position,
+      employer: experience.employer,
+      country: experience.country,
+      startDate: experience.startDate,
+      endDate: experience.endDate,
+      description: experience.description,
+      freelancerId,
+    };
   }
 }

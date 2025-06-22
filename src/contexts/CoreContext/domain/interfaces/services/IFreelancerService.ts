@@ -1,12 +1,10 @@
-import { User } from "../../aggregates/User";
-import { IService } from "@/contexts/Shared/domain/service/IService";
-import { Freelancer } from "../../aggregates/Freelancer";
+import { About } from "../../valueObjects/About";
 
-export interface IFreelancerService extends IService<Freelancer> {
+export interface IFreelancerService {
   addSkill(): void;
   deleteSkill(): void;
   editSkill(): void;
   getSkills(): void;
-  getAbout(id: string): Promise<string>;
-  updateAbout(id: string, about: string): Promise<User>;
+  getAbout(id: string): Promise<About>;
+  updateAbout(id: string, about: About): Promise<About>;
 }

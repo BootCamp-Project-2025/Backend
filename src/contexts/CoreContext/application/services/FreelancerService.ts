@@ -1,12 +1,17 @@
-import { User } from "../../domain/aggregates/User";
+import { inject, injectable } from "tsyringe";
 import { IFreelancerService } from "../../domain/interfaces/services/IFreelancerService";
-import { GetAboutUseCase } from "../useCases/GetAboutUseCase";
-import { UpdateAboutUseCase } from "../useCases/UpdateAboutUseCase";
+import { About } from "../../domain/valueObjects/About";
+import GetAboutUseCase from "../useCases/GetAboutUseCase";
+import UpdateAboutUseCase from "../useCases/UpdateAboutUseCase";
 
+@injectable()
 export default class FreelancerService implements IFreelancerService {
   constructor(
-    private readonly updateAboutUseCase: UpdateAboutUseCase,
-    private readonly getAboutUseCase: GetAboutUseCase
+    @inject("GetAboutUseCase")
+    private readonly getAboutUseCase: GetAboutUseCase,
+
+    @inject("UpdateAboutUseCase")
+    private readonly updateAboutUseCase: UpdateAboutUseCase
   ) {}
   addSkill(): void {
     throw new Error("Method not implemented.");
@@ -20,11 +25,12 @@ export default class FreelancerService implements IFreelancerService {
   getSkills(): void {
     throw new Error("Method not implemented.");
   }
-  async getAbout(userId: string): Promise<string> {
-    const user = await this.getAboutUseCase.execute(userId);
-    return user;
+  async getAbout(freelancerId: string): Promise<About> {
+    return this.getAboutUseCase.execute(freelancerId);
   }
-  async updateAbout(userId: string, about: string): Promise<User> {
-    return await this.updateAboutUseCase.execute(userId, about);
+
+  async updateAbout(freelancerId: string, about: About): Promise<About> {
+    await this.updateAboutUseCase.execute({ freelancerId, about });
+    return about;
   }
 }

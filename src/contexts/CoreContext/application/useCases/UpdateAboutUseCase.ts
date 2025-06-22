@@ -1,18 +1,32 @@
-import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
+import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
+import { inject, injectable } from "tsyringe";
 import { About } from "../../domain/valueObjects/About";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
+import { IAboutRepository } from "../../domain/interfaces/repositories/IAboutRepository";
 
-export class UpdateAboutUseCase {
-  constructor(private readonly repository: IUserRepository) {}
+type Input = {
+  freelancerId: string;
+  about: About;
+};
+@injectable()
+export default class UpdateAboutUseCase implements IUseCase<Input, void> {
+  constructor(
+    @inject("IAboutRepository")
+    private aboutRepository: IAboutRepository
+  ) {}
 
-  async execute(userId: string, about: string) {
-    const user = await this.repository.getById(userId);
-    if (!user) throw new Error("User not found");
+  async execute(input: Input): Promise<void> {
+    const { freelancerId, about } = input;
 
-    const freelancer = user.freelancerProfile;
-    if (!freelancer) throw new Error("User is not a freelancer");
-
-    user.freelancerProfile.updateAbout(About.create(about));
-
-    return await this.repository.update(userId, user);
+    try {
+      this.aboutRepository.create(freelancerId, about);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Server error updating About"
+      );
+    }
   }
 }

@@ -1,14 +1,26 @@
-import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
+import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
+import { inject, injectable } from "tsyringe";
+import { About } from "../../domain/valueObjects/About";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
+import { IAboutRepository } from "../../domain/interfaces/repositories/IAboutRepository";
 
-export class GetAboutUseCase {
-  constructor(private readonly userRepository: IUserRepository) {}
+@injectable()
+export default class GetAboutUseCase implements IUseCase<string, About> {
+  constructor(
+    @inject("IAboutRepository")
+    private aboutRepository: IAboutRepository
+  ) {}
 
-  async execute(userId: string): Promise<string> {
-    const user = await this.userRepository.getById(userId);
-    if (!user || !user.freelancerProfile) {
-      throw new Error("Freelancer profile not found");
+  execute(freelancerId: string): Promise<About> {
+    try {
+      return this.aboutRepository.get(freelancerId);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Server error getting About"
+      );
     }
-
-    return user.freelancerProfile.about.value;
   }
 }

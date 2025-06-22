@@ -11,6 +11,10 @@ import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import { FreelancerRepository } from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
+import { IAboutRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IAboutRepository";
+import GetAboutUseCase from "./contexts/CoreContext/application/useCases/GetAboutUseCase";
+import UpdateAboutUseCase from "./contexts/CoreContext/application/useCases/UpdateAboutUseCase";
+import { AboutRepository } from "./contexts/CoreContext/infrastructure/persistence/AboutRepository";
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -33,6 +37,21 @@ container.registerSingleton<ICourseService>("ICourseService", CourseService);
 container.registerSingleton<ICourseController>(
   "ICourseController",
   CourseController
+);
+
+//About related registrations
+container.registerSingleton<IAboutRepository>(
+  "IAboutRepository",
+  AboutRepository
+);
+container.registerSingleton<GetAboutUseCase>(
+  "GetAboutUseCase",
+  GetAboutUseCase
+);
+
+container.registerSingleton<UpdateAboutUseCase>(
+  "UpdateAboutUseCase",
+  UpdateAboutUseCase
 );
 
 export { container };

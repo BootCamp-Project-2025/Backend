@@ -63,6 +63,42 @@ router.post("/", controller.post);
  */
 router.put("/:id/freelance", controller.freelance);
 
-router.get("/:id/profile", controller.getProfile);
+/**
+ * @openapi
+ * /users/{id}/profile:
+ *   get:
+ *     summary: Retrieves the profile data of a user (client or freelancer) by ID
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user to retrieve the profile for
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Profile data successfully retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 userName:
+ *                   type: string
+ *                   example: "Pepe"
+ *                 userEmail:
+ *                   type: string
+ *                   example: "pepe@gmail.com"
+ *                 profilePictureSrc:
+ *                   type: string
+ *                   example: "https://cdn.example.com/images/pepe.png"
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.get("/:id/profile", controller.getUserProfile);
 
 export default router;

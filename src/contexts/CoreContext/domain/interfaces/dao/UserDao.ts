@@ -13,7 +13,7 @@ export type UserDao = {
   id: string;
   userName: string;
   userEmail: string;
-  imageProfile: string | null;
+  profilePicture: string | null;
   roles: UserRole[];
   createdAt: Date;
 };

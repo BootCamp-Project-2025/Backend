@@ -3,7 +3,9 @@ import { User } from "../../domain/aggregates/User";
 import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
 import UserMapper from "../../mappers/UserMapper";
 import { UserDao } from "../../domain/interfaces/dao/UserDao";
+import { injectable } from "tsyringe";
 
+@injectable()
 export class UserRepository implements IUserRepository {
   async addFreelancerProfile(id: string): Promise<User> {
     try {

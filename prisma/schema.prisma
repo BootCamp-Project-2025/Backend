@@ -51,6 +51,7 @@ model User {
   userEmail          String      @unique
   roles              UserRole[]  @default([CLIENT])
   createdAt          DateTime    @default(now())
+  profilePicture     String?
   freelancerProfile  Freelancer? @relation("UserFreelancer") 
   clientProfile      Client?     @relation("UserClient")
 }

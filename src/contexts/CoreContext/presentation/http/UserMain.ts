@@ -1,25 +1,6 @@
-import { UserService } from "../../application/services/UserService";
-import { CreateUserFreelancerProfileUseCase } from "../../application/useCases/CreateUserFreelancerProfileUseCase";
-import { CreateUserUseCase } from "../../application/useCases/CreateUserUseCase";
-import { GetUserProfileUseCase } from "../../application/useCases/GetUserProfileUseCase";
-import { GetUserUseCase } from "../../application/useCases/GetUserUseCase";
-import { UserRepository } from "../../infrastructure/persistence/UserRepository";
-import { UserController } from "./controllers/UserController";
+import { container } from "tsyringe";
+import { IUserController } from "../../domain/interfaces/controllers/IUserController";
 
-const repo = new UserRepository();
-const createUseCase = new CreateUserUseCase(repo);
-const getUserUseCase = new GetUserUseCase(repo);
-const getUserProfileUseCase = new GetUserProfileUseCase(repo);
-const createUserFreelancerProfileUseCase =
-  new CreateUserFreelancerProfileUseCase(repo);
-
-const userService = new UserService(
-  createUseCase,
-  getUserUseCase,
-  createUserFreelancerProfileUseCase,
-  getUserProfileUseCase
-);
-
-const userController = new UserController(userService);
+const userController = container.resolve<IUserController>("IUserController");
 
 export default userController;

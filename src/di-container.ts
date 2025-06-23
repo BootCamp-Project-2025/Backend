@@ -12,7 +12,6 @@ import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import FreelancerRepository from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
 import { Skill } from "./contexts/CoreContext/domain/entities/Skill";
-import { CreateSkillDto } from "./contexts/CoreContext/domain/interfaces/dtos/CreateSkillDto";
 import AddSkillUseCase from "./contexts/CoreContext/application/useCases/AddSkillUseCase";
 import GetSkillsUseCase from "./contexts/CoreContext/application/useCases/GetSkillsUseCase";
 import FreelancerService from "./contexts/CoreContext/application/services/FreelancerService";
@@ -23,6 +22,8 @@ import DeleteSkillUseCase from "./contexts/CoreContext/application/useCases/Dele
 import EditSkillUseCase from "./contexts/CoreContext/application/useCases/EditSkillUseCase";
 import { ISkillRepository } from "./contexts/CoreContext/domain/interfaces/repositories/ISkillRepository";
 import SkillRepository from "./contexts/CoreContext/infrastructure/persistence/SkillRepository";
+import { ISkillService } from "./contexts/CoreContext/domain/interfaces/services/ISkillService";
+import SkillService from "./contexts/CoreContext/application/services/SkillService";
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -46,6 +47,8 @@ container.registerSingleton<CreateCourseUseCase>(
 );
 container.registerSingleton<ICourseService>("ICourseService", CourseService);
 
+container.registerSingleton<ISkillService>("ISkillService", SkillService);
+
 container.registerSingleton<ICourseController>(
   "ICourseController",
   CourseController
@@ -56,17 +59,17 @@ container.registerSingleton<IFreelancerRepository>(
   FreelancerRepository
 );
 
-container.registerSingleton<IUseCase<CreateSkillDto, void>>(
+container.registerSingleton<IUseCase<Skill, void>>(
   "AddSkillUseCase",
   AddSkillUseCase
 );
 
-container.registerSingleton<IUseCase<CreateSkillDto, void>>(
+container.registerSingleton<IUseCase<Skill, void>>(
   "DeleteSkillUseCase",
   DeleteSkillUseCase
 );
 
-container.registerSingleton<IUseCase<CreateSkillDto, void>>(
+container.registerSingleton<IUseCase<Skill, void>>(
   "EditSkillUseCase",
   EditSkillUseCase
 );

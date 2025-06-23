@@ -3,6 +3,7 @@ import cors from "cors";
 import "reflect-metadata";
 import "./di-container";
 import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
+import freelancersRoutes from "./contexts/CoreContext/presentation/http/routes/FreelanceersRoutes";
 import courseRoutes from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 import userRoutes from "./contexts/CoreContext/presentation/http/routes/UserRoutes";
@@ -22,6 +23,7 @@ app.use("/api/courses", courseRouter);
 app.use("/api/courses", courseRoutes);
 
 app.use("/api/users", userRoutes);
+app.use("/api/freelancers", freelancersRoutes);
 
 app.use("/api/users", freelancerRoutes);
 

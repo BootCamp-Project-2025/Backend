@@ -1,13 +1,37 @@
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
-import { Skill } from "../../domain/valueObjects/Skill";
+import { inject, injectable } from "tsyringe";
+import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
+import { StatusCodes } from "http-status-codes";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { Freelancer } from "../../domain/aggregates/Freelancer";
+import { ISkillRepository } from "../../domain/interfaces/repositories/ISkillRepository";
+import { Skill } from "../../domain/entities/Skill";
 
-type props = {
-  skill: Skill;
-  freelancerId: string;
-};
-export default class EditSkillUseCase implements IUseCase<props, Skill> {
-  execute({ skill, freelancerId }: props): Promise<Skill> {
-    console.log(skill, freelancerId);
-    throw Error("");
+@injectable()
+export default class EditSkillUseCase implements IUseCase<Skill, void> {
+  constructor(
+    @inject("IFreelancerRepository")
+    private freelancerRepository: IFreelancerRepository,
+    @inject("ISkillRepository")
+    private skillRepository: ISkillRepository
+  ) {}
+  async execute(skill: Skill): Promise<void> {
+    try {
+      const freelancer: Freelancer | null =
+        await this.freelancerRepository.getById(skill.freelancerId);
+      if (freelancer === null)
+        throw new ApiError(
+          StatusCodes.CONFLICT,
+          "the freelancer profile doesnt exist"
+        );
+      if (!freelancer.skills.exists(skill))
+        throw new ApiError(StatusCodes.BAD_REQUEST, "the skill doesnt exist");
+      freelancer.skills.edit(skill);
+      await this.skillRepository.save(freelancer);
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else
+        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");
+    }
   }
 }

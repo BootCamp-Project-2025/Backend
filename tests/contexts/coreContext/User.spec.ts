@@ -30,8 +30,14 @@ describe("User Aggregate", () => {
   );
 
   const skillService = Skills.create([
-    new Skill({ name: "JavaScript", level: "advanced" }, new UniqueEntityID()),
-    new Skill({ name: "React", level: "intermediate" }, new UniqueEntityID()),
+    new Skill(
+      { name: "JavaScript", level: "advanced", freelancerId: "" },
+      new UniqueEntityID()
+    ),
+    new Skill(
+      { name: "React", level: "intermediate", freelancerId: "" },
+      new UniqueEntityID()
+    ),
   ]);
 
   const languageService = Languages.create([

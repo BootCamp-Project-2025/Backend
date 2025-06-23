@@ -1,29 +1,39 @@
 import { inject, injectable } from "tsyringe";
 import { IFreelancerService } from "../../domain/interfaces/services/IFreelancerService";
+import { Skill } from "../../domain/entities/Skill";
+import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { About } from "../../domain/valueObjects/About";
 import GetAboutUseCase from "../useCases/GetAboutUseCase";
 import UpdateAboutUseCase from "../useCases/UpdateAboutUseCase";
 
 @injectable()
+@injectable()
 export default class FreelancerService implements IFreelancerService {
   constructor(
+    @inject("AddSkillUseCase")
+    private readonly addSkillUseCase: IUseCase<Skill, Skill[]>,
+    @inject("EditSkillUseCase")
+    private readonly EditSkillUseCase: IUseCase<Skill, Skill>,
+    @inject("DeleteSkillUseCase")
+    private readonly deleteSkillUseCase: IUseCase<Skill, Skill>,
+    @inject("GetSkillsUseCase")
+    private getSkillsUseCase: IUseCase<string, Skill[]>,
     @inject("GetAboutUseCase")
     private readonly getAboutUseCase: GetAboutUseCase,
-
     @inject("UpdateAboutUseCase")
     private readonly updateAboutUseCase: UpdateAboutUseCase
   ) {}
-  addSkill(): void {
-    throw new Error("Method not implemented.");
+  async editSkill(skill: Skill): Promise<Skill> {
+    return await this.EditSkillUseCase.execute(skill);
   }
-  deleteSkill(): void {
-    throw new Error("Method not implemented.");
+  async deleteSkill(skill: Skill): Promise<Skill> {
+    return await this.deleteSkillUseCase.execute(skill);
   }
-  editSkill(): void {
-    throw new Error("Method not implemented.");
+  async addSkill(skill: Skill): Promise<Skill[]> {
+    return this.addSkillUseCase.execute(skill);
   }
-  getSkills(): void {
-    throw new Error("Method not implemented.");
+  async getSkills(freelancerId: string): Promise<Skill[]> {
+    return this.getSkillsUseCase.execute(freelancerId);
   }
   async getAbout(freelancerId: string): Promise<About> {
     return this.getAboutUseCase.execute(freelancerId);

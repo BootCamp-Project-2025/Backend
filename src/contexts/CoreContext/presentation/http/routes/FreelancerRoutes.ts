@@ -1,14 +1,16 @@
 import { Router } from "express";
 import { container } from "tsyringe";
-const controller = container.resolve(CourseController);
+import FreelancerController from "../controllers/FreelancerController";
+const controller = container.resolve(FreelancerController);
 
 const router = Router();
 
 /**
  * @openapi
- * users/:id:
+ *
+ * freelancers/:freelancerId/skill:
  *  get:
- *      summary: Retrieves the user with the id :id
+ *      summary: Retrieves the freelancer skills
  *      responses:
  *          200:
  *              description: Everything is ok and returns user
@@ -16,13 +18,13 @@ const router = Router();
  *              description: Everything is wrong
  *
  */
-router.get("/:id", controller.get);
+router.get("/:freelancerId/skill", controller.getSkills);
 
 /**
  * @openapi
- * users/:
+ * freelancers/:freelancerId/skill:
  *  post:
- *      summary: saves the user with the id :id
+ *      summary: add a new skill to the freelancer
  *      requestBody:
  *               required: true
  *               content:
@@ -30,37 +32,77 @@ router.get("/:id", controller.get);
  *                       schema:
  *                           type: object
  *                           properties:
- *                                  userName:
+ *                                  skill:
  *                                      type: string
- *                                      example: Pepe
- *                                  userEmail:
+ *                                      example: react
+ *                                  level:
  *                                      type: string
- *                                      example: Pepe@gmail.com
+ *                                      example: beginner
  *
  *      responses:
  *          201:
- *              description: Everything is ok and returns user
- *          404:
- *              description: user not found
+ *              description: Everything is ok and returns skill
  *          500:
  *              description: Everything is wrong
  *
  */
-router.post("/", controller.post);
+router.post("/:freelancerId/skill", controller.addSkill);
 
 /**
  * @openapi
- * users/:id/freelance:
- *  put:
- *      summary: Enables the user as freelancer with the id :id
+ * freelancers/:freelancerId/skill:
+ *  delete:
+ *      summary: add a new skill to the freelancer
+ *      requestBody:
+ *               required: true
+ *               content:
+ *                   application/json:
+ *                       schema:
+ *                           type: object
+ *                           properties:
+ *                                  skill:
+ *                                      type: string
+ *                                      example: react
+ *                                  level:
+ *                                      type: string
+ *                                      example: beginner
+ *
  *      responses:
- *          200:
- *              description: User enabled and freelancer profile created
+ *          201:
+ *              description: Everything is ok and returns skill
  *          500:
  *              description: Everything is wrong
  *
  */
-router.put("/:id/freelance", controller.freelance);
+router.delete("/:freelancerId/skill", controller.deleteSkill);
+
+/**
+ * @openapi
+ * freelancers/:freelancerId/skill:
+ *  put:
+ *      summary: add a new skill to the freelancer
+ *      requestBody:
+ *               required: true
+ *               content:
+ *                   application/json:
+ *                       schema:
+ *                           type: object
+ *                           properties:
+ *                                  skill:
+ *                                      type: string
+ *                                      example: react
+ *                                  level:
+ *                                      type: string
+ *                                      example: beginner
+ *
+ *      responses:
+ *          201:
+ *              description: Everything is ok and returns skill
+ *          500:
+ *              description: Everything is wrong
+ *
+ */
+router.put("/:freelancerId/skill", controller.editSkill);
 
 //---------About
 /**

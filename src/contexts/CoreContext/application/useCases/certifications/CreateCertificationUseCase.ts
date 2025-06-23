@@ -28,14 +28,14 @@ export class CreateCertificationUseCase
     certification: IGetCertificationDTO;
     freelancerId: string;
   }): Promise<void> {
-    const { certification, freelancerId } = params;
-
-    const certificationDomain = Certification.create(
-      { ...certification },
-      new UniqueEntityID()
-    );
-
     try {
+      const { certification, freelancerId } = params;
+
+      const certificationDomain = Certification.create(
+        { ...certification },
+        new UniqueEntityID()
+      );
+
       const freelancer = await this.freelancerRepository.getById(freelancerId);
 
       if (!freelancer) {
@@ -49,6 +49,7 @@ export class CreateCertificationUseCase
         freelancerId
       );
     } catch (error) {
+      console.error("Error creating certification:", error);
       if (error instanceof ApiError) {
         throw error;
       }

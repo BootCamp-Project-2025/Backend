@@ -26,10 +26,11 @@ describe("GetCertificationsUseCase", () => {
     expect(result).toBe(certificationsMock);
   });
 
-  it("should return empty array if freelancer not found", async () => {
+  it("should throw error if freelancer not found", async () => {
     mockFreelancerRepo.getById.mockResolvedValueOnce(null);
-    const result = await useCase.execute("unknown-id");
-    expect(result).toEqual([]);
+    await expect(useCase.execute("unknown-id")).rejects.toThrow(
+      "Freelancer not found"
+    );
   });
 
   it("should propagate repository errors", async () => {

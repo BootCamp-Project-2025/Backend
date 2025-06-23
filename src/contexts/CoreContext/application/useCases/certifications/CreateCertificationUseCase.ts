@@ -5,6 +5,8 @@ import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfac
 import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -27,15 +29,34 @@ export class CreateCertificationUseCase
     freelancerId: string;
   }): Promise<void> {
     const { certification, freelancerId } = params;
-    const freelancer = await this.freelancerRepository.getById(freelancerId);
+
     const certificationDomain = Certification.create(
       { ...certification },
       new UniqueEntityID()
     );
-    freelancer?.certifications.add(certificationDomain);
-    await this.certificationRepository.create(
-      certificationDomain,
-      freelancerId
-    );
+
+    try {
+      const freelancer = await this.freelancerRepository.getById(freelancerId);
+
+      if (!freelancer) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Freelancer not found");
+      }
+
+      freelancer.certifications.add(certificationDomain);
+
+      await this.certificationRepository.create(
+        certificationDomain,
+        freelancerId
+      );
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
+
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        `Failed to create certification: ${error}`
+      );
+    }
   }
 }

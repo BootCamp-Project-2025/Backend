@@ -3,6 +3,7 @@ import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfac
 import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -30,12 +31,15 @@ export class UpdateCertificationUseCase
     freelancerId: string;
   }): Promise<void> {
     const { certificationId, certification, freelancerId } = params;
-    const freelancer = await this.freelancerRepository.getById(freelancerId);
 
-    const certifications = freelancer?.certifications.getItems();
-    const existingCertification = certifications?.find(
-      (cert) => cert.id.toString() === certificationId
-    );
+    const freelancer = await this.freelancerRepository.getById(freelancerId);
+    if (!freelancer) {
+      throw new ApiError(404, "Freelancer not found");
+    }
+
+    const existingCertification = freelancer.certifications
+      .getItems()
+      .find((cert) => cert.id.toString() === certificationId);
 
     if (!existingCertification) {
       throw new ApiError(404, "Certification not found");
@@ -43,10 +47,19 @@ export class UpdateCertificationUseCase
 
     existingCertification.edit(certification);
 
-    await this.certificationRepository.update(
-      certificationId,
-      existingCertification,
-      freelancerId
-    );
+    try {
+      await this.certificationRepository.update(
+        certificationId,
+        existingCertification,
+        freelancerId
+      );
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        `Failed to update certification: ${error}`
+      );
+    }
   }
 }

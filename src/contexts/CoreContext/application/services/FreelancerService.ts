@@ -1,7 +1,5 @@
-import { inject, injectable } from "tsyringe";
+import { injectable } from "tsyringe";
 import { IFreelancerService } from "../../domain/interfaces/services/IFreelancerService";
-import { Skill } from "../../domain/entities/Skill";
-import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { About } from "../../domain/valueObjects/About";
 import GetAboutUseCase from "../useCases/GetAboutUseCase";
 import UpdateAboutUseCase from "../useCases/UpdateAboutUseCase";

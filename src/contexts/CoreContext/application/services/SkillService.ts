@@ -13,7 +13,7 @@ export default class SkillService implements ISkillService {
     @inject("AddSkillUseCase")
     private readonly addSkillUseCase: IUseCase<Skill, Skill[]>,
     @inject("EditSkillUseCase")
-    private readonly EditSkillUseCase: IUseCase<Skill, Skill>,
+    private readonly editSkillUseCase: IUseCase<Skill, Skill>,
     @inject("DeleteSkillUseCase")
     private readonly deleteSkillUseCase: IUseCase<Skill, Skill>,
     @inject("GetSkillsUseCase")
@@ -21,7 +21,7 @@ export default class SkillService implements ISkillService {
   ) {}
   async editSkill(skill: Skill): Promise<void> {
     try {
-      await this.EditSkillUseCase.execute(skill);
+      await this.editSkillUseCase.execute(skill);
       return;
     } catch (error) {
       if (error as ApiError) throw error;

@@ -19,8 +19,8 @@ export default class FreelancerController implements IFreelancerController {
       { ...body, freelancerId: req.params.freelancerId },
       new UniqueEntityID(body.skillId)
     );
-    await this.skillService.editSkill(skill);
-    res.status(200).json();
+    const data: ISkillDto = await this.skillService.editSkill(skill);
+    res.status(200).json(data);
   };
 
   public deleteSkill = async (req: Request, res: Response): Promise<void> => {
@@ -36,7 +36,9 @@ export default class FreelancerController implements IFreelancerController {
   };
 
   public getSkills = async (req: Request, res: Response): Promise<void> => {
-    const skills = await this.skillService.getSkills(req.params.freelancerId);
+    const skills: ISkillDto[] = await this.skillService.getSkills(
+      req.params.freelancerId
+    );
     res.status(200).json(skills);
   };
 
@@ -47,8 +49,8 @@ export default class FreelancerController implements IFreelancerController {
         { ...body, freelancerId: req.params.freelancerId },
         new UniqueEntityID()
       );
-      await this.skillService.addSkill(skill);
-      res.status(201).json();
+      const data: ISkillDto = await this.skillService.addSkill(skill);
+      res.status(201).json(data);
     } catch (error) {
       if (error as ApiError) throw error;
       else

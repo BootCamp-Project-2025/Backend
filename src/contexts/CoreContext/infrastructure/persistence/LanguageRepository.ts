@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { injectable } from "tsyringe";
 import { ILanguageRepository } from "../../domain/interfaces/repositories/ILanguageRepositoty";
 import { Language } from "../../domain/entities/Language";

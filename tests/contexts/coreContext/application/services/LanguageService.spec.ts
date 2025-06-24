@@ -5,12 +5,7 @@ describe("LanguageService", () => {
   let service: LanguageService;
 
   beforeEach(() => {
-    service = new LanguageService(
-      {} as any,
-      {} as any,
-      {} as any,
-      {} as any 
-    );
+    service = new LanguageService({} as any, {} as any, {} as any, {} as any);
   });
 
   it("should have addLanguage method", () => {

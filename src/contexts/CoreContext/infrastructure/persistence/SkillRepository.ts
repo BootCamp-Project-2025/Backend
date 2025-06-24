@@ -33,7 +33,6 @@ export default class SkillRepository implements ISkillRepository {
 
   async create(object: Skill): Promise<Skill> {
     const dbSkill = skillMapper.mapDomainToPersistance(object);
-    console.log(dbSkill);
     const dbData = await PrismaClient.skill.create({ data: dbSkill });
     return skillMapper.mapPersistanceToDomain(dbData);
   }

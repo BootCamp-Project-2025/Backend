@@ -66,6 +66,9 @@ router.post("/:freelancerId/skill", controller.addSkill);
  *                                  level:
  *                                      type: string
  *                                      example: beginner
+ *                                  skillId:
+ *                                      type: string
+ *                                      example: 6802cee0-72e1-4432-94a6-6a16808a86ab
  *
  *      responses:
  *          201:
@@ -94,6 +97,9 @@ router.delete("/:freelancerId/skill", controller.deleteSkill);
  *                                  level:
  *                                      type: string
  *                                      example: beginner
+ *                                  skillId:
+ *                                      type: string
+ *                                      example: 6802cee0-72e1-4432-94a6-6a16808a86ab
  *
  *      responses:
  *          201:

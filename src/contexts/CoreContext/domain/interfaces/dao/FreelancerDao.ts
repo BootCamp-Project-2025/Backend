@@ -1,4 +1,4 @@
-import { SkillLevel } from "@/generated/prisma";
+import { SkillLevel } from "../../entities/Skill";
 
 export type FreelancerDao = {
   userId: string;

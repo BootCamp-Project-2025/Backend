@@ -25,22 +25,11 @@ export default class FreelancerController implements IFreelancerController {
       const data: ISkillDto = await this.skillService.editSkill(skill);
       const response = new SuccessResponseEntity(data, StatusCodes.OK);
       ResponseService.send(res, response);
-    } catch (error) {
-      if (error instanceof ApiError) {
-        const response = {
-          success: false,
-          statusCode: error.statusCode,
-          message: error.message,
-        };
-        ResponseService.send(res, response);
-      } else {
-        const response = {
-          success: false,
-          statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-          message: "unkown error",
-        };
-        ResponseService.send(res, response);
-      }
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "an unknown error occurred "
+      );
     }
   };
 
@@ -59,22 +48,11 @@ export default class FreelancerController implements IFreelancerController {
         statusCode: StatusCodes.OK,
         message: "",
       });
-    } catch (error) {
-      if (error instanceof ApiError) {
-        const response = {
-          success: false,
-          statusCode: error.statusCode,
-          message: error.message,
-        };
-        ResponseService.send(res, response);
-      } else {
-        const response = {
-          success: false,
-          statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-          message: "unkown error",
-        };
-        ResponseService.send(res, response);
-      }
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "an unknown error occurred "
+      );
     }
   };
 
@@ -85,22 +63,11 @@ export default class FreelancerController implements IFreelancerController {
       );
       const response = new SuccessResponseEntity(skills, StatusCodes.OK);
       ResponseService.send(res, response);
-    } catch (error) {
-      if (error instanceof ApiError) {
-        const response = {
-          success: false,
-          statusCode: error.statusCode,
-          message: error.message,
-        };
-        ResponseService.send(res, response);
-      } else {
-        const response = {
-          success: false,
-          statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-          message: "unkown error",
-        };
-        ResponseService.send(res, response);
-      }
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "an unknown error occurred "
+      );
     }
   };
 
@@ -114,22 +81,11 @@ export default class FreelancerController implements IFreelancerController {
       const data: ISkillDto = await this.skillService.addSkill(skill);
       const response = new SuccessResponseEntity(data, StatusCodes.CREATED);
       ResponseService.send(res, response);
-    } catch (error) {
-      if (error instanceof ApiError) {
-        const response = {
-          success: false,
-          statusCode: error.statusCode,
-          message: error.message,
-        };
-        ResponseService.send(res, response);
-      } else {
-        const response = {
-          success: false,
-          statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-          message: "unkown error",
-        };
-        ResponseService.send(res, response);
-      }
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "an unknown error occurred "
+      );
     }
   };
 }

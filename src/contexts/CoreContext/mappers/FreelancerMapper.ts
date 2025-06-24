@@ -1,8 +1,8 @@
 import { Freelancer } from "../domain/aggregates/Freelancer";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { IFreelancerProfileDto } from "../domain/interfaces/dtos/IFreelancerProfileDto";
 import { About } from "../domain/valueObjects/About";
 import { UserId } from "../domain/valueObjects/UserId";
-import { IFreelancerProfileDto } from "../domain/interfaces/dtos/IFreelancerProfileDto";
 import { Skills } from "../domain/OneToMany/Skills";
 import { Languages } from "../domain/OneToMany/Languages";
 import { Educations } from "../domain/OneToMany/Educations";

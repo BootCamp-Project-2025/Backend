@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { HealthService } from "../../../infrastructure/services/HealthService";
 
-import { CheckDBHealthUseCase } from "../../../application/useCases/CheckDBHealthStatus";
-import { CheckAPIHealthStatus } from "../../../application/useCases/CheckAPIHealthStatus";
-import { SaveSampleData } from "../../../application/useCases/SaveSampleData";
-import { ResponseService } from "../../../../Shared/application/services/ResponseService";
 import { StatusCodes } from "http-status-codes";
-import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
-import { ErrorResponseEntity } from "@/contexts/Shared/domain/entity/ErrorResponseEntity";
+import { ResponseService } from "../../../../Shared/application/services/ResponseService";
+import { ErrorResponseEntity } from "../../../../Shared/domain/entity/ErrorResponseEntity";
+import { SuccessResponseEntity } from "../../../../Shared/domain/entity/SuccessResponseEntity";
+import { CheckAPIHealthStatus } from "../../../application/useCases/CheckAPIHealthStatus";
+import { CheckDBHealthUseCase } from "../../../application/useCases/CheckDBHealthStatus";
+import { SaveSampleData } from "../../../application/useCases/SaveSampleData";
 
 const checkDBHealthUseCase = new CheckDBHealthUseCase();
 const checkAPIHealthStatus = new CheckAPIHealthStatus();

@@ -14,9 +14,9 @@ export class GetLanguagesUseCase implements IUseCase<string, Language[]> {
 
   async execute(freelancerId: string): Promise<Language[]> {
     try {
-      return this.languageRepository.getLanguages(freelancerId);
+      return await this.languageRepository.getLanguages(freelancerId);
     } catch (error) {
-      if (error as ApiError) {
+      if (error instanceof ApiError) {
         throw error;
       } else {
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");

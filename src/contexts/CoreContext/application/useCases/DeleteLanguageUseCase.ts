@@ -7,6 +7,7 @@ import { Freelancer } from "../../domain/aggregates/Freelancer";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 @injectable()
 export class DeleteLanguageUseCase
@@ -27,13 +28,21 @@ export class DeleteLanguageUseCase
       const freelancer: Freelancer | null =
         await this.freelancerRepository.getById(freelancerId);
       if (freelancer !== null) {
-        freelancer.languages.remove(Language.create(language, language.id));
-        return this.languageRepository.deleteLanguage(language.id);
+        if (!freelancer.languages.exists(language)) {
+          throw new ApiError(
+            StatusCodes.BAD_REQUEST,
+            "the language doesnt exist"
+          );
+        }
+        freelancer.languages.remove(language);
+        return await this.languageRepository.deleteLanguage(
+          new UniqueEntityID(language.id.toString())
+        );
       }
 
       throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");
     } catch (error) {
-      if (error as ApiError) {
+      if (error instanceof ApiError) {
         throw error;
       } else {
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");

@@ -33,10 +33,15 @@ export class LanguageMapper extends ArrayToArrayMapper<
   }
 
   static persistanceTodomain(prismaLanguage: PrismaLanguage): Language {
+    const level = prismaLanguage.level as
+      | "basic"
+      | "intermediate"
+      | "advanced"
+      | "native";
     return new Language(
       {
         name: prismaLanguage.name,
-        level: prismaLanguage.level,
+        level: level,
       },
       new UniqueEntityID(prismaLanguage.id)
     );
@@ -51,28 +56,22 @@ export class LanguageMapper extends ArrayToArrayMapper<
   }
 
   static persistanceToDomainBulk(prismaSkills: PrismaLanguage[]): Language[] {
-    return prismaSkills.map(
-      (prismaLanguage: PrismaLanguage) =>
-        new Language(
-          { name: prismaLanguage.name, level: prismaLanguage.level },
-          new UniqueEntityID(prismaLanguage.id)
-        )
-    );
+    return prismaSkills.map((prismaLanguage: PrismaLanguage) => {
+      const level = prismaLanguage.level as
+        | "basic"
+        | "intermediate"
+        | "advanced"
+        | "native";
+      return new Language(
+        { name: prismaLanguage.name, level: level },
+        new UniqueEntityID(prismaLanguage.id)
+      );
+    });
   }
 
   static domainToPersistanceBulk(languages: Language[]): PrismaSave[] {
     return languages.map((language: Language) =>
       this.domainToPersistance(language)
-    );
-  }
-
-  static domainToGetLanguageDto(language: Language): ILanguageDto {
-    return new Language(
-      {
-        name: language.name,
-        level: language.level,
-      },
-      language.id
     );
   }
 
@@ -82,7 +81,7 @@ export class LanguageMapper extends ArrayToArrayMapper<
         name: dto.name,
         level: dto.level,
       },
-      dto.id
+      new UniqueEntityID(dto.id)
     );
   }
 }

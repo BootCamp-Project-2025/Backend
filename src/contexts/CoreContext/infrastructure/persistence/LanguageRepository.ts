@@ -6,17 +6,16 @@ import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { Freelancer } from "../../domain/aggregates/Freelancer";
 
 @injectable()
-export default class LanguageRepository implements ILanguageRepository {
+export default class languageRepository implements ILanguageRepository {
   async getlanguageId(
     freelancerId: string,
     language: Language
   ): Promise<string | undefined> {
     try {
       const languageId = await PrismaClient.language.findFirst({
-        where: { id: freelancerId, name: language.name },
+        where: { freelancerId: freelancerId, name: language.name },
       });
 
       return languageId?.id;
@@ -27,14 +26,11 @@ export default class LanguageRepository implements ILanguageRepository {
       );
     }
   }
-  async editLanguage(
-    languageId: string,
-    language: Language
-  ): Promise<Language> {
+  async editLanguage(language: Language): Promise<Language> {
     try {
       const dbLanguage = LanguageMapper.domainToPersistance(language);
       await PrismaClient.language.update({
-        where: { id: languageId },
+        where: { id: language.id.toString() },
         data: { level: dbLanguage.level },
       });
 
@@ -42,7 +38,7 @@ export default class LanguageRepository implements ILanguageRepository {
     } catch {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Language could not be created"
+        "Language could not be updated"
       );
     }
   }
@@ -52,9 +48,11 @@ export default class LanguageRepository implements ILanguageRepository {
   ): Promise<Language> {
     try {
       const dbLanguage = LanguageMapper.domainToPersistance(language);
-      await PrismaClient.freelancer.update({
-        where: { id: freelancerId },
-        data: { languages: { create: dbLanguage } },
+      await PrismaClient.language.create({
+        data: {
+          ...dbLanguage,
+          freelancerId: freelancerId,
+        },
       });
 
       return language;
@@ -68,43 +66,43 @@ export default class LanguageRepository implements ILanguageRepository {
   async deleteLanguage(languageId: UniqueEntityID): Promise<Language> {
     try {
       const deletedLanguage = await PrismaClient.language.delete({
-        where: { id: languageId },
+        where: { id: languageId.toString() },
       });
 
       return LanguageMapper.persistanceTodomain(deletedLanguage);
     } catch {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Language could not be created"
+        "Language could not be deleted"
       );
     }
   }
   async getLanguages(freelancerId: string): Promise<Language[]> {
     try {
-      const languagesDb = await PrismaClient.languages.findMany({
+      const languagesDb = await PrismaClient.language.findMany({
         where: { freelancerId: freelancerId },
       });
       return LanguageMapper.persistanceToDomainBulk(languagesDb);
     } catch {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Language could not be created"
+        "Languages not found"
       );
     }
   }
-  getAll(): Promise<Freelancer[]> {
+  getAll(): Promise<Language[]> {
     throw new Error("Method not implemented.");
   }
-  getById(id: string): Promise<Freelancer | null> {
+  getById(id: string): Promise<Language | null> {
     throw new Error("Method not implemented.");
   }
   delete(id: string): Promise<string | void> {
     throw new Error("Method not implemented.");
   }
-  create(object: Freelancer): Promise<Freelancer> {
+  create(object: Language): Promise<Language> {
     throw new Error("Method not implemented.");
   }
-  update(id: string, object: Freelancer): Promise<Freelancer> {
+  update(id: string, object: Language): Promise<Language> {
     throw new Error("Method not implemented.");
   }
 }

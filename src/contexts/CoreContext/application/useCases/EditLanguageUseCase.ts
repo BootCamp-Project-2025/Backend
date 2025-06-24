@@ -27,13 +27,20 @@ export class EditLanguageUseCase
       const freelancer: Freelancer | null =
         await this.freelancerRepository.getById(freelancerId);
       if (freelancer !== null) {
-        freelancer.languages.edit(Language.create(language, language.id));
-        return this.languageRepository.editLanguage(freelancerId, language);
+        if (!freelancer.languages.exists(language)) {
+          throw new ApiError(
+            StatusCodes.BAD_REQUEST,
+            "the language doesnt exist"
+          );
+        }
+
+        freelancer.languages.edit(language);
+        return await this.languageRepository.editLanguage(language);
       }
 
       throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");
     } catch (error) {
-      if (error as ApiError) {
+      if (error instanceof ApiError) {
         throw error;
       } else {
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");

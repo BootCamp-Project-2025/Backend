@@ -1,7 +1,5 @@
-import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-
 export interface ILanguageDto {
-  id: UniqueEntityID;
+  id: string;
   name: string;
   level: "basic" | "intermediate" | "advanced" | "native";
 }

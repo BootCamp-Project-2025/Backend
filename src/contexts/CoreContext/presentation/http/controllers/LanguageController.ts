@@ -10,14 +10,14 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export default class LanguageController implements ILanguageController {
   constructor(
-    @inject("ILanguagesService") private iLanguagesService: ILanguagesService
+    @inject("ILanguagesService") private languagesService: ILanguagesService
   ) {}
 
   editLanguage = async (req: Request, res: Response): Promise<void> => {
     try {
       const body: ILanguageDto = req.body as ILanguageDto;
       const language = LanguageMapper.createLanguageDtoTodomain(body);
-      await this.iLanguagesService.updateLanguage(
+      await this.languagesService.updateLanguage(
         language,
         req.params.freelancerId
       );
@@ -35,7 +35,7 @@ export default class LanguageController implements ILanguageController {
     try {
       const body: ILanguageDto = req.body as ILanguageDto;
       const language = LanguageMapper.createLanguageDtoTodomain(body);
-      await this.iLanguagesService.addLanguage(
+      await this.languagesService.addLanguage(
         language,
         req.params.freelancerId
       );
@@ -53,7 +53,7 @@ export default class LanguageController implements ILanguageController {
     try {
       const body: ILanguageDto = req.body as ILanguageDto;
       const language = LanguageMapper.createLanguageDtoTodomain(body);
-      await this.iLanguagesService.removeLanguage(
+      await this.languagesService.removeLanguage(
         language,
         req.params.freelancerId
       );
@@ -69,14 +69,13 @@ export default class LanguageController implements ILanguageController {
 
   getLanguages = async (req: Request, res: Response): Promise<void> => {
     try {
-      const languages = await this.iLanguagesService.getLanguages(
+      const languages = await this.languagesService.getLanguages(
         req.params.freelancerId
       );
-      if (languages !== null) {
-        const languagesDto = LanguageMapper.persistanceToDomainBulk(languages);
-        res.status(200).json(languagesDto);
-      } else {
+      if (languages.length === 0) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Languages not found");
+      } else {
+        res.status(200).json(languages);
       }
     } catch (error) {
       if (error as ApiError) {

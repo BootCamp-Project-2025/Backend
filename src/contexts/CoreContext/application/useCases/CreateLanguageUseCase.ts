@@ -31,7 +31,7 @@ export class CreateLanguageUseCase
         freelancer.languages.add(
           Language.create(language, new UniqueEntityID())
         );
-        return this.languageRepository.addLanguage(
+        return await this.languageRepository.addLanguage(
           freelancerId,
           freelancer.languages.getNewItems()[0]
         );
@@ -39,7 +39,7 @@ export class CreateLanguageUseCase
 
       throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");
     } catch (error) {
-      if (error as ApiError) {
+      if (error instanceof ApiError) {
         throw error;
       } else {
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");

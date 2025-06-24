@@ -1,20 +1,26 @@
+import "reflect-metadata";
 import LanguageController from "@/contexts/CoreContext/presentation/http/controllers/LanguageController";
 
-describe("freelancer controller", () => {
-  it("exist", () => {
-    expect(LanguageController).toBeDefined();
+describe("LanguageController", () => {
+  let controller: LanguageController;
+
+  beforeEach(() => {
+    controller = new LanguageController({} as any);
   });
 
-  it("has addLanguage method", () => {
-    expect(LanguageController.prototype.addLanguage).toBeDefined();
+  it("should have addLanguage method", () => {
+    expect(controller.addLanguage).toBeDefined();
   });
-  it("has removeLanguage method", () => {
-    expect(LanguageController.prototype.deleteLanguage).toBeDefined();
+
+  it("should have deleteLanguage method", () => {
+    expect(controller.deleteLanguage).toBeDefined();
   });
-  it("has updateLanguages method", () => {
-    expect(LanguageController.prototype.editLanguage).toBeDefined();
+
+  it("should have editLanguage method", () => {
+    expect(controller.editLanguage).toBeDefined();
   });
-  it("has getLanguages method", () => {
-    expect(LanguageController.prototype.getLanguages).toBeDefined();
+
+  it("should have getLanguages method", () => {
+    expect(controller.getLanguages).toBeDefined();
   });
 });

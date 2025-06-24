@@ -62,6 +62,9 @@ router.post("/:freelancerId/languages", languageController.addLanguage);
  *                       schema:
  *                           type: object
  *                           properties:
+ *                                  name:
+ *                                      type: string
+ *                                      example: English
  *                                  level:
  *                                      type: string
  *                                      example: advanced
@@ -87,7 +90,7 @@ router.put("/:freelancerId/languages", languageController.editLanguage);
  *                       schema:
  *                           type: object
  *                           properties:
- *                                  level:
+ *                                  name:
  *                                      type: string
  *                                      example: English
  *                                  level:
@@ -102,3 +105,5 @@ router.put("/:freelancerId/languages", languageController.editLanguage);
  *         description: Server error
  */
 router.delete("/:freelancerId/languages", languageController.deleteLanguage);
+
+export default router;

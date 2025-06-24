@@ -1,19 +1,31 @@
+import "reflect-metadata";
 import LanguageService from "@/contexts/CoreContext/application/services/LanguageService";
 
-describe("freelancer service", () => {
-  it("exist", () => {
-    expect(LanguageService).toBeDefined();
+describe("LanguageService", () => {
+  let service: LanguageService;
+
+  beforeEach(() => {
+    service = new LanguageService(
+      {} as any,
+      {} as any,
+      {} as any,
+      {} as any 
+    );
   });
-  it("has addLanguage method", () => {
-    expect(LanguageService.prototype.addLanguage).toBeDefined();
+
+  it("should have addLanguage method", () => {
+    expect(service.addLanguage).toBeDefined();
   });
-  it("has removeLanguage method", () => {
-    expect(LanguageService.prototype.removeLanguage).toBeDefined();
+
+  it("should have removeLanguage method", () => {
+    expect(service.removeLanguage).toBeDefined();
   });
-  it("has updateLanguage method", () => {
-    expect(LanguageService.prototype.updateLanguage).toBeDefined();
+
+  it("should have updateLanguage method", () => {
+    expect(service.updateLanguage).toBeDefined();
   });
-  it("has getLanguages method", () => {
-    expect(LanguageService.prototype.getLanguages).toBeDefined();
+
+  it("should have getLanguages method", () => {
+    expect(service.getLanguages).toBeDefined();
   });
 });

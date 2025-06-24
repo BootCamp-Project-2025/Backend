@@ -1,9 +1,10 @@
+import { IUserController } from "@/contexts/CoreContext/domain/interfaces/controllers/IUserController";
 import { Router } from "express";
-import userController from "../UserMain";
+import { container } from "tsyringe";
+
+const controller = container.resolve<IUserController>("IUserController");
 
 const router = Router();
-
-const controller = userController;
 
 /**
  * @openapi

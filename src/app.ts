@@ -7,7 +7,7 @@ import freelancersRoutes from "./contexts/CoreContext/presentation/http/routes/F
 import courseRoutes from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 import userRoutes from "./contexts/CoreContext/presentation/http/routes/UserRoutes";
-import courseRouter from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
+import certificationRoutes from "./contexts/CoreContext/presentation/http/routes/CertificationRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
 
@@ -17,16 +17,16 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/health", healthRoutes);
-app.use("/api/courses", courseRouter);
-
-app.use("/api/courses", courseRoutes);
 
 app.use("/api/users", userRoutes);
 app.use("/api/freelancers", freelancersRoutes);
 
+app.use("/api/courses", courseRoutes);
+
+app.use("/api/freelancer", certificationRoutes);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Global error handler
 app.use(ErrorHandlerMiddleware.handle);
 
 export default app;

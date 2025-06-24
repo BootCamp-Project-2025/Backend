@@ -22,7 +22,7 @@ export class Certification extends Entity<CertificationProps> {
     return new Certification(props, id);
   }
   get id(): UniqueEntityID {
-    return this.id;
+    return this._id;
   }
 
   get certification(): string {

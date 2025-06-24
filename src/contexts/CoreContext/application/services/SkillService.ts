@@ -11,18 +11,19 @@ import { StatusCodes } from "http-status-codes";
 export default class SkillService implements ISkillService {
   constructor(
     @inject("AddSkillUseCase")
-    private readonly addSkillUseCase: IUseCase<Skill, Skill[]>,
+    private readonly addSkillUseCase: IUseCase<Skill, Skill>,
     @inject("EditSkillUseCase")
-    private readonly EditSkillUseCase: IUseCase<Skill, Skill>,
+    private readonly editSkillUseCase: IUseCase<Skill, Skill>,
     @inject("DeleteSkillUseCase")
-    private readonly deleteSkillUseCase: IUseCase<Skill, Skill>,
+    private readonly deleteSkillUseCase: IUseCase<Skill, void>,
     @inject("GetSkillsUseCase")
     private getSkillsUseCase: IUseCase<string, Skill[]>
   ) {}
-  async editSkill(skill: Skill): Promise<void> {
+  async editSkill(skill: Skill): Promise<ISkillDto> {
     try {
-      await this.EditSkillUseCase.execute(skill);
-      return;
+      return skillMapper.mapDomainToDto(
+        await this.editSkillUseCase.execute(skill)
+      );
     } catch (error) {
       if (error as ApiError) throw error;
       else
@@ -38,9 +39,11 @@ export default class SkillService implements ISkillService {
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");
     }
   }
-  async addSkill(skill: Skill): Promise<void> {
+  async addSkill(skill: Skill): Promise<ISkillDto> {
     try {
-      await this.addSkillUseCase.execute(skill);
+      return skillMapper.mapDomainToDto(
+        await this.addSkillUseCase.execute(skill)
+      );
     } catch (error) {
       if (error as ApiError) throw error;
       else

@@ -8,7 +8,7 @@ const router = Router();
 /**
  * @openapi
  *
- * freelancers/:freelancerId/skill:
+ * /freelancers/:freelancerId/skill:
  *  get:
  *      summary: Retrieves the freelancer skills
  *      responses:
@@ -22,7 +22,7 @@ router.get("/:freelancerId/skill", controller.getSkills);
 
 /**
  * @openapi
- * freelancers/:freelancerId/skill:
+ * /freelancers/:freelancerId/skill:
  *  post:
  *      summary: add a new skill to the freelancer
  *      requestBody:
@@ -50,7 +50,7 @@ router.post("/:freelancerId/skill", controller.addSkill);
 
 /**
  * @openapi
- * freelancers/:freelancerId/skill:
+ * /freelancers/:freelancerId/skill:
  *  delete:
  *      summary: add a new skill to the freelancer
  *      requestBody:
@@ -66,6 +66,9 @@ router.post("/:freelancerId/skill", controller.addSkill);
  *                                  level:
  *                                      type: string
  *                                      example: beginner
+ *                                  skillId:
+ *                                      type: string
+ *                                      example: 6802cee0-72e1-4432-94a6-6a16808a86ab
  *
  *      responses:
  *          201:
@@ -78,7 +81,7 @@ router.delete("/:freelancerId/skill", controller.deleteSkill);
 
 /**
  * @openapi
- * freelancers/:freelancerId/skill:
+ * /freelancers/:freelancerId/skill:
  *  put:
  *      summary: add a new skill to the freelancer
  *      requestBody:
@@ -94,6 +97,9 @@ router.delete("/:freelancerId/skill", controller.deleteSkill);
  *                                  level:
  *                                      type: string
  *                                      example: beginner
+ *                                  skillId:
+ *                                      type: string
+ *                                      example: 6802cee0-72e1-4432-94a6-6a16808a86ab
  *
  *      responses:
  *          201:

@@ -27,7 +27,7 @@ export default class DeleteSkillUseCase implements IUseCase<Skill, void> {
       if (!freelancer.skills.exists(skill))
         throw new ApiError(StatusCodes.BAD_REQUEST, "the skill doesnt exist");
       freelancer.skills.remove(skill);
-      await this.skillRepository.save(freelancer);
+      await this.skillRepository.delete(skill.id.toString());
     } catch (error) {
       if (error as ApiError) throw error;
       else

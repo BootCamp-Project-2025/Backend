@@ -8,14 +8,14 @@ import { ISkillRepository } from "../../domain/interfaces/repositories/ISkillRep
 import { Skill } from "../../domain/entities/Skill";
 
 @injectable()
-export default class EditSkillUseCase implements IUseCase<Skill, void> {
+export default class EditSkillUseCase implements IUseCase<Skill, Skill> {
   constructor(
     @inject("IFreelancerRepository")
     private freelancerRepository: IFreelancerRepository,
     @inject("ISkillRepository")
     private skillRepository: ISkillRepository
   ) {}
-  async execute(skill: Skill): Promise<void> {
+  async execute(skill: Skill): Promise<Skill> {
     try {
       const freelancer: Freelancer | null =
         await this.freelancerRepository.getById(skill.freelancerId);
@@ -27,7 +27,16 @@ export default class EditSkillUseCase implements IUseCase<Skill, void> {
       if (!freelancer.skills.exists(skill))
         throw new ApiError(StatusCodes.BAD_REQUEST, "the skill doesnt exist");
       freelancer.skills.edit(skill);
-      await this.skillRepository.save(freelancer);
+      const savedSkill = await this.skillRepository.update(
+        freelancer.skills.getItems()[0].id.toString(),
+        freelancer.skills.getItems()[0]
+      );
+      if (savedSkill === undefined)
+        throw new ApiError(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          "skill couldnt be saved"
+        );
+      return savedSkill;
     } catch (error) {
       if (error as ApiError) throw error;
       else

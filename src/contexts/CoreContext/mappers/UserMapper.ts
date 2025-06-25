@@ -8,7 +8,7 @@ import { UserDao } from "../domain/interfaces/dao/UserDao";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 export default class UserMapper {
-  static createUserDtoToDomain(dto: ICreateUserDto) {
+  static createUserDtoTodomain(dto: ICreateUserDto) {
     return User.create({
       userName: UserName.create(dto.userName),
       userEmail: UserEmail.create(dto.userEmail),
@@ -28,7 +28,7 @@ export default class UserMapper {
     };
   }
 
-  static persistanceToDomain(userDao: UserDao): User {
+  static persistanceTodomain(userDao: UserDao): User {
     try {
       return User.create({
         userName: UserName.create(userDao.userName),

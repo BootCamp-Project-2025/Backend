@@ -1,6 +1,8 @@
+import { injectable } from "tsyringe";
 import { User } from "../../domain/aggregates/User";
 import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
 
+@injectable()
 export class CreateUserUseCase {
   constructor(private readonly repository: IUserRepository) {}
 

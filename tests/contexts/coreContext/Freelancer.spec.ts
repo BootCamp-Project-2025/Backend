@@ -23,10 +23,13 @@ describe("Freelancer Entity", () => {
 
     const skills = Skills.create([
       new Skill(
-        { name: "JavaScript", level: "advanced" },
+        { name: "JavaScript", level: "advanced", freelancerId: "" },
         new UniqueEntityID()
       ),
-      new Skill({ name: "React", level: "intermediate" }, new UniqueEntityID()),
+      new Skill(
+        { name: "React", level: "intermediate", freelancerId: "" },
+        new UniqueEntityID()
+      ),
     ]);
 
     const languages = Languages.create([

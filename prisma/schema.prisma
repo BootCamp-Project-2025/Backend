@@ -73,10 +73,15 @@ model Client {
   user    User   @relation("UserClient", fields: [userId], references: [id] , onDelete: Cascade)
 }
 
+enum SkillLevel {
+  beginner
+  intermediate
+  advanced
+}
 model Skill {
   id           String     @id @default(uuid())
   name         String     @default("")
-  level        String     @default("")
+  level        SkillLevel @default(beginner)
   freelancerId String
   freelancer   Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
 }

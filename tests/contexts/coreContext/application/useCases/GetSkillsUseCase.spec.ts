@@ -6,7 +6,7 @@ jest.mock(
   "@/contexts/CoreContext/domain/interfaces/repositories/ISkillRepository"
 );
 
-describe("AddSkillUseCase", () => {
+describe("testing GetSkillsUseCase to obtain the skills of a freelancer", () => {
   it("exist", () => {
     expect(GetSkillsUseCase).toBeDefined();
   });

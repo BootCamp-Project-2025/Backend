@@ -19,7 +19,7 @@ jest.mock(
   "@/contexts/CoreContext/domain/interfaces/repositories/ISkillRepository"
 );
 
-describe("AddSkillUseCase", () => {
+describe("testing DeleteSkillUseCase to delete skills from freelancer", () => {
   it("exist", () => {
     expect(DeleteSkillUseCase).toBeDefined();
   });
@@ -52,7 +52,7 @@ describe("AddSkillUseCase", () => {
       level: "beginner",
       freelancerId: "",
     });
-    mockRepository.save.mockResolvedValue();
+    mockRepository.delete.mockResolvedValue();
     empyFreelancer.skills.add(skill);
     mockFreelancerRepository.getById.mockResolvedValue(empyFreelancer);
 
@@ -65,7 +65,7 @@ describe("AddSkillUseCase", () => {
       level: "beginner",
       freelancerId: "",
     });
-    mockRepository.save.mockResolvedValue();
+    mockRepository.delete.mockResolvedValue();
     mockFreelancerRepository.getById.mockResolvedValue(empyFreelancer);
 
     expect(async () => await deleteSkillUseCase.execute(skill)).rejects.toThrow(

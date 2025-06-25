@@ -5,6 +5,9 @@ import { CourseName } from "../valueObjects/CourseName";
 import { CourseField } from "../valueObjects/CourseField";
 import { CourseRequirements } from "../valueObjects/CourseRequirements";
 import { CourseDescription } from "../valueObjects/CourseDescription";
+import { CourseCategory } from "../valueObjects/CourseCategory";
+import { CourseSubCategory } from "../valueObjects/CourseSubCategory";
+import { CourseLanguage } from "../valueObjects/CourseLanguage";
 
 export interface CourseProps {
   name: CourseName;
@@ -14,6 +17,9 @@ export interface CourseProps {
   imgSrc: string;
   modules?: Module[];
   time?: number;
+  category?: CourseCategory;
+  subCategory?: CourseSubCategory;
+  language?: CourseLanguage;
 }
 
 type CoursePrimitiveProps = {
@@ -24,6 +30,9 @@ type CoursePrimitiveProps = {
   time: number;
   description: string;
   imgSrc: string;
+  category: string;
+  subCategory: string;
+  language: string;
 };
 
 export class Course extends AggregateRoot<CourseProps> {
@@ -91,5 +100,17 @@ export class Course extends AggregateRoot<CourseProps> {
 
   getTime(): number {
     return this.props.time ?? 0;
+  }
+
+  getCategory(): string {
+    return this.props.category?.value ?? "";
+  }
+
+  getSubCategory(): string {
+    return this.props.subCategory?.value ?? "";
+  }
+
+  getLanguage(): string {
+    return this.props.language?.value ?? "";
   }
 }

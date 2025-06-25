@@ -6,29 +6,36 @@ import { CourseField } from "../domain/valueObjects/CourseField";
 import { CourseRequirements } from "../domain/valueObjects/CourseRequirements";
 import { CourseDescription } from "../domain/valueObjects/CourseDescription";
 import { CourseDTO } from "../domain/dtos/CourseDTO";
+import { CourseCategory } from "../domain/valueObjects/CourseCategory";
+import { CourseSubCategory } from "../domain/valueObjects/CourseSubCategory";
+import { CourseLanguage } from "../domain/valueObjects/CourseLanguage";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
-    const nameValue = CourseName.create({ name: prismaCourse.name });
-    const fieldValue = CourseField.create({ field: prismaCourse.field });
-    const requirementsValue = CourseRequirements.create({
-      requirements: prismaCourse.requirements,
-    });
-    const descriptionValue = CourseDescription.create({
-      description: prismaCourse.description,
-    });
-
-    const course: CourseProps = {
-      name: nameValue,
-      field: fieldValue,
-      requirements: requirementsValue,
-      description: descriptionValue,
-      time: prismaCourse.time,
+    const courseProps: CourseProps = {
+      name: CourseName.create({ name: prismaCourse.name }),
+      field: CourseField.create({ field: prismaCourse.field ?? "" }),
+      requirements: CourseRequirements.create({
+        requirements: prismaCourse.requirements ?? "",
+      }),
+      description: CourseDescription.create({
+        description: prismaCourse.description ?? "",
+      }),
+      time: prismaCourse.time ?? Date.now(),
       imgSrc: prismaCourse.imgSrc,
+      category: CourseCategory.create({
+        category: prismaCourse.category ?? "",
+      }),
+      subCategory: CourseSubCategory.create({
+        subCategory: prismaCourse.subCategory ?? "",
+      }),
+      language: CourseLanguage.create({
+        language: prismaCourse.language ?? "",
+      }),
     };
 
     return Course.create(
-      course,
+      courseProps,
       new UniqueEntityID(prismaCourse.id.toString())
     );
   }
@@ -42,6 +49,9 @@ export class CourseMapper {
       description: domainCourse.getDescription().value,
       time: domainCourse.getTime(),
       imgSrc: domainCourse.getImgSrc(),
+      language: domainCourse.getLanguage(),
+      category: domainCourse.getCategory(),
+      subCategory: domainCourse.getSubCategory(),
     };
   }
 
@@ -59,5 +69,28 @@ export class CourseMapper {
       description: domainCourse.props.description.value,
       imgSrc: domainCourse.props.imgSrc,
     };
+  }
+
+  static dtoToDomain(courseDto: CourseDTO): Course {
+    const courseProps: CourseProps = {
+      name: CourseName.create({ name: courseDto.name }),
+      field: CourseField.create({ field: courseDto.field ?? "" }),
+      requirements: CourseRequirements.create({
+        requirements: courseDto.requirements ?? "",
+      }),
+      description: CourseDescription.create({
+        description: courseDto.description ?? "",
+      }),
+      time: courseDto.time ?? Date.now(),
+      imgSrc: courseDto.imgSrc,
+      category: CourseCategory.create({ category: courseDto.category ?? "" }),
+      subCategory: CourseSubCategory.create({
+        subCategory: courseDto.subCategory ?? "",
+      }),
+      language: CourseLanguage.create({ language: courseDto.language ?? "" }),
+    };
+    if (courseDto.id !== null)
+      return Course.create(courseProps, new UniqueEntityID(courseDto.id));
+    return Course.create(courseProps);
   }
 }

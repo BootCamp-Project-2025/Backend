@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { container } from "tsyringe";
 import FreelancerController from "../controllers/FreelancerController";
+import educationRoutes from "./EducationRoutes";
 const controller = container.resolve(FreelancerController);
 
 const router = Router();
@@ -109,5 +110,7 @@ router.delete("/:freelancerId/skill", controller.deleteSkill);
  *
  */
 router.put("/:freelancerId/skill", controller.editSkill);
+
+router.use("/:freelancerId/educations", educationRoutes);
 
 export default router;

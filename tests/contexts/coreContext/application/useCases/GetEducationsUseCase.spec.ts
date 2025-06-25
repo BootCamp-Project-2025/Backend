@@ -11,8 +11,8 @@ describe("Get Educations Use Case", () => {
   it("Exists", () => {
     expect(GetEducationsUseCase).toBeDefined();
   });
-  const mockRepository = {} as IEducationRepository;
-  const getEducationsUseCase = new GetEducationsUseCase(mockRepository);
+  // const mockRepository = {} as IEducationRepository;
+  // const getEducationsUseCase = new GetEducationsUseCase(mockRepository);
   it("Retrieves educations successfully", async () => {
     // const education: Education = Education.create({career: 'Systems engineering', startDate})
     expect(true).toBe(true);

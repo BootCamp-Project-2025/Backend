@@ -1,7 +1,7 @@
-import { Education } from "../../entities/Education";
+import { IEducationDto } from "../dtos/IEducationDto";
 
 export interface IEducationService {
-  getAll(): Education[];
-  add(education: Education): void;
-  removeById(id: string): void;
+  getAllOfFreelancer(freelancerId: string): Promise<IEducationDto[]>;
+  addEducation(education: IEducationDto): Promise<IEducationDto>;
+  removeById(id: string): Promise<void>;
 }

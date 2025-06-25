@@ -3,6 +3,7 @@ import { Education } from "../../entities/Education";
 import { Freelancer } from "../../aggregates/Freelancer";
 
 export default interface IEducationRepository extends IRepository<Education> {
-  save(freelancer: Freelancer): Promise<void>;
-  getEducationsById(freelancerId: string): Promise<Education[]>;
+  save(freelancer: Freelancer): Promise<Education>;
+  getByFreelancerId(freelancerId: string): Promise<Education[]>;
+  add(education: Education): Education | Promise<Education>;
 }

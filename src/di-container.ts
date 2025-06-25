@@ -31,11 +31,20 @@ import { ISkillRepository } from "./contexts/CoreContext/domain/interfaces/repos
 import SkillRepository from "./contexts/CoreContext/infrastructure/persistence/SkillRepository";
 import { ISkillService } from "./contexts/CoreContext/domain/interfaces/services/ISkillService";
 import SkillService from "./contexts/CoreContext/application/services/SkillService";
+import { IEducationService } from "./contexts/CoreContext/domain/interfaces/services/IEducationService";
+import EducationService from "./contexts/CoreContext/application/services/EducationService";
+import { Education } from "./contexts/CoreContext/domain/entities/Education";
+import AddEducationUseCase from "./contexts/CoreContext/application/useCases/AddEducationUseCase";
+import GetEducationsUseCase from "./contexts/CoreContext/application/useCases/GetEducationsUseCase";
+import EditEducationUseCase from "./contexts/CoreContext/application/useCases/EditEducationUseCase";
+import DeleteEducationUseCase from "./contexts/CoreContext/application/useCases/DeleteEducationUseCase";
 
 import { CreateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/CreateCertificationUseCase";
 import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/UpdateCertificationUseCase";
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
 import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
+import { IEducationController } from "./contexts/CoreContext/domain/interfaces/controllers/IEducationController";
+import EducationController from "./contexts/CoreContext/presentation/http/controllers/EducationController";
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -71,7 +80,7 @@ container.registerSingleton<IFreelancerRepository>(
   FreelancerRepository
 );
 
-container.registerSingleton<IUseCase<Skill, void>>(
+container.registerSingleton<IUseCase<Skill, Skill>>(
   "AddSkillUseCase",
   AddSkillUseCase
 );
@@ -81,7 +90,7 @@ container.registerSingleton<IUseCase<Skill, void>>(
   DeleteSkillUseCase
 );
 
-container.registerSingleton<IUseCase<Skill, void>>(
+container.registerSingleton<IUseCase<Skill, Skill>>(
   "EditSkillUseCase",
   EditSkillUseCase
 );
@@ -139,6 +148,36 @@ container.registerSingleton<ICertificationService>(
 container.registerSingleton<ICertificationController>(
   "ICertificationController",
   CertificationController
+);
+// Education dependencies
+container.registerSingleton<IEducationController>(
+  "IEducationController",
+  EducationController
+);
+
+container.registerSingleton<IEducationService>(
+  "IEducationService",
+  EducationService
+);
+
+container.registerSingleton<IUseCase<Education, Education>>(
+  "AddEducationUseCase",
+  AddEducationUseCase
+);
+
+container.registerSingleton<IUseCase<string, Education[]>>(
+  "GetEducationsUseCase",
+  GetEducationsUseCase
+);
+
+container.registerSingleton<IUseCase<Education, Education>>(
+  "EditEducationUseCase",
+  EditEducationUseCase
+);
+
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteEducationUseCase",
+  DeleteEducationUseCase
 );
 
 export { container };

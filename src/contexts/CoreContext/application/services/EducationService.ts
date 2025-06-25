@@ -1,14 +1,49 @@
 import { IEducationService } from "@/contexts/CoreContext/domain/interfaces/services/IEducationService";
 import { Education } from "../../domain/entities/Education";
+import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
+import { inject, injectable } from "tsyringe";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { IEducationDto } from "../../domain/interfaces/dtos/IEducationDto";
+import { educationMapper } from "../../mappers/EducationMapper";
 
+@injectable()
 export default class EducationService implements IEducationService {
-  getAll(): Education[] {
-    throw new Error("Method not implemented.");
+  constructor(
+    @inject("AddEducationUseCase")
+    private readonly addEducationUseCase: IUseCase<Education, Education>,
+    @inject("EditEducationUseCase")
+    private readonly editEducationUseCase: IUseCase<Education, Education>,
+    @inject("GetEducationsUseCase")
+    private readonly getEducationsUseCase: IUseCase<string, Education[]>,
+    @inject("DeleteEducationUseCase")
+    private readonly deleteEducationUseCase: IUseCase<string, void>
+  ) {}
+  async getAllOfFreelancer(freelancerId: string): Promise<IEducationDto[]> {
+    try {
+      const educations = await this.getEducationsUseCase.execute(freelancerId);
+      return educationMapper.mapMannyDomainToDto(educations);
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else throw new ApiError();
+    }
   }
-  add(education: Education): void {
-    throw new Error("Method not implemented.");
+  async addEducation(education: IEducationDto): Promise<IEducationDto> {
+    try {
+      const educationDomain = educationMapper.mapDtoToDomain(education);
+      const newEducation =
+        await this.addEducationUseCase.execute(educationDomain);
+      return educationMapper.mapDomainToDto(newEducation);
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else throw new ApiError();
+    }
   }
-  removeById(id: string): void {
-    throw new Error("Method not implemented.");
+  async removeById(id: string): Promise<void> {
+    try {
+      await this.deleteEducationUseCase.execute(id);
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else throw new ApiError();
+    }
   }
 }

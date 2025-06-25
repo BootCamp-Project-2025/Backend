@@ -25,6 +25,7 @@ describe("AddSkillUseCase", () => {
   });
   const mockRepository = {
     save: jest.fn(),
+    delete: jest.fn(),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
 

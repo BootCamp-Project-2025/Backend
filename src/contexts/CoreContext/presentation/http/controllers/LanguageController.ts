@@ -2,6 +2,8 @@ import ILanguageController from "@/contexts/CoreContext/domain/interfaces/contro
 import { ILanguageDto } from "@/contexts/CoreContext/domain/interfaces/dtos/ILanguageDto";
 import { ILanguagesService } from "@/contexts/CoreContext/domain/interfaces/services/ILanguages";
 import { LanguageMapper } from "@/contexts/CoreContext/mappers/LanguageMapper";
+import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
+import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
@@ -21,7 +23,8 @@ export default class LanguageController implements ILanguageController {
         language,
         req.params.freelancerId
       );
-      res.status(200).json(language);
+      const response = new SuccessResponseEntity(language, StatusCodes.OK);
+      ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) {
         throw error;
@@ -39,7 +42,8 @@ export default class LanguageController implements ILanguageController {
         language,
         req.params.freelancerId
       );
-      res.status(201).json(language);
+      const response = new SuccessResponseEntity(language, StatusCodes.OK);
+      ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) {
         throw error;
@@ -57,7 +61,8 @@ export default class LanguageController implements ILanguageController {
         language,
         req.params.freelancerId
       );
-      res.status(200).json(language);
+      const response = new SuccessResponseEntity(language, StatusCodes.OK);
+      ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) {
         throw error;
@@ -75,7 +80,8 @@ export default class LanguageController implements ILanguageController {
       if (languages.length === 0) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Languages not found");
       } else {
-        res.status(200).json(languages);
+        const response = new SuccessResponseEntity(languages, StatusCodes.OK);
+        ResponseService.send(res, response);
       }
     } catch (error) {
       if (error as ApiError) {

@@ -5,9 +5,6 @@ import { CourseDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
 import IUseCase from "../../domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
-import { CourseName } from "../../domain/valueObjects/CourseName";
-import { CourseDescription } from "../../domain/valueObjects/CourseDescription";
-import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 @injectable()
 export class CourseService implements ICourseService {
@@ -36,7 +33,7 @@ export class CourseService implements ICourseService {
 
   async getCourse(courseId: string): Promise<CourseDTO> {
     const course = await this.GetCourseUseCase.execute(courseId);
-    return CourseMapper.toAplicationDTO(course);
+    return CourseMapper.domainToDto(course);
   }
 
   async deleteCourse(courseId: string): Promise<void> {
@@ -44,20 +41,9 @@ export class CourseService implements ICourseService {
   }
 
   async editCourse(id: string, courseDto: CourseDTO): Promise<CourseDTO> {
-    const courseName = CourseName.create({ name: courseDto.name });
-    const description = CourseDescription.create({
-      description: courseDto.description,
-    });
-
-    const course = Course.create(
-      {
-        name: courseName,
-        description: description,
-        imgSrc: courseDto.imgSrc,
-      },
-      new UniqueEntityID(id)
-    );
+    courseDto.id = id;
+    const course = CourseMapper.dtoToDomain(courseDto);
     const courseUpdated = await this.EditCourseUseCase.execute(course);
-    return CourseMapper.toAplicationDTO(courseUpdated);
+    return CourseMapper.domainToDto(courseUpdated);
   }
 }

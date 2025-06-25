@@ -15,7 +15,6 @@ export class EditCourseUseCase implements IUseCase<Course, Course> {
     try {
       if ((await this.courseRepository.findById(course.id.toString())) === null)
         throw new ApiError(StatusCodes.NOT_FOUND, "this course doesnt exist");
-
       return await this.courseRepository.update(course);
     } catch (error) {
       if (error instanceof ApiError) throw error;

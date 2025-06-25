@@ -93,4 +93,18 @@ export class CourseMapper {
       return Course.create(courseProps, new UniqueEntityID(courseDto.id));
     return Course.create(courseProps);
   }
+  static domainToDto(courseDto: Course): CourseDTO {
+    return {
+      id: courseDto.id.toString(),
+      name: courseDto.props.name.value,
+      description: courseDto.props.description.value,
+      imgSrc: courseDto.props.imgSrc,
+      category: courseDto.props.category?.value ?? "",
+      subCategory: courseDto.props.subCategory?.value ?? "",
+      language: courseDto.props.language?.value ?? "",
+      field: courseDto.props.field?.value ?? "",
+      time: courseDto.props.time,
+      requirements: courseDto.props.requirements?.value ?? "",
+    };
+  }
 }

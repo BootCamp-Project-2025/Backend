@@ -17,7 +17,7 @@ export class UserRepository implements IUserRepository {
         },
         include: { freelancerProfile: true, clientProfile: true },
       });
-      return UserMapper.persistanceToDomain(userDb);
+      return UserMapper.persistanceTodomain(userDb);
     } catch (e) {
       console.log(e);
       throw new Error("profile couldnt be created");
@@ -33,7 +33,7 @@ export class UserRepository implements IUserRepository {
         include: { freelancerProfile: true, clientProfile: true },
       });
       if (dbUser !== null) {
-        const user = UserMapper.persistanceToDomain(dbUser);
+        const user = UserMapper.persistanceTodomain(dbUser);
         return user;
       }
       return null;

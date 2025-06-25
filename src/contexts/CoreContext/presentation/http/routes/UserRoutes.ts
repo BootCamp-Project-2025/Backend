@@ -21,7 +21,7 @@ router.get("/:id", controller.get);
 
 /**
  * @openapi
- * /users/:
+ * /users:
  *  post:
  *      summary: saves the user with the id :id
  *      requestBody:

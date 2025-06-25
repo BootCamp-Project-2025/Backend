@@ -44,6 +44,8 @@ import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/u
 import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
 import { IEducationController } from "./contexts/CoreContext/domain/interfaces/controllers/IEducationController";
 import EducationController from "./contexts/CoreContext/presentation/http/controllers/EducationController";
+import IEducationRepository from "./contexts/CoreContext/domain/interfaces/repositories/IEducationRepository";
+import EducationRepository from "./contexts/CoreContext/infrastructure/persistence/EducationRepository";
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -175,6 +177,11 @@ container.registerSingleton<IUseCase<Education, Education>>(
 container.registerSingleton<IUseCase<string, void>>(
   "DeleteEducationUseCase",
   DeleteEducationUseCase
+);
+
+container.registerSingleton<IEducationRepository>(
+  "EducationRepository",
+  EducationRepository
 );
 
 export { container };

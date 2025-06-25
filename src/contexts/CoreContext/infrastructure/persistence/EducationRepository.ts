@@ -5,7 +5,9 @@ import { Education } from "../../domain/entities/Education";
 import IEducationRepository from "../../domain/interfaces/repositories/IEducationRepository";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { educationMapper } from "../../mappers/EducationMapper";
+import { injectable } from "tsyringe";
 
+injectable();
 export default class EducationRepository implements IEducationRepository {
   create(object: Education): Promise<void | Education> {
     throw new Error("Method not implemented.");

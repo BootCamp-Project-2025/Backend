@@ -24,7 +24,7 @@ describe("AddSkillUseCase", () => {
     expect(DeleteSkillUseCase).toBeDefined();
   });
   const mockRepository = {
-    save: jest.fn(),
+    delete: jest.fn(),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
 
@@ -51,7 +51,7 @@ describe("AddSkillUseCase", () => {
       level: "beginner",
       freelancerId: "",
     });
-    mockRepository.save.mockResolvedValue();
+    mockRepository.delete.mockResolvedValue();
     empyFreelancer.skills.add(skill);
     mockFreelancerRepository.getById.mockResolvedValue(empyFreelancer);
 
@@ -64,7 +64,7 @@ describe("AddSkillUseCase", () => {
       level: "beginner",
       freelancerId: "",
     });
-    mockRepository.save.mockResolvedValue();
+    mockRepository.delete.mockResolvedValue();
     mockFreelancerRepository.getById.mockResolvedValue(empyFreelancer);
 
     expect(async () => await deleteSkillUseCase.execute(skill)).rejects.toThrow(

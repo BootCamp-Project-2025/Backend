@@ -65,13 +65,12 @@ container.registerSingleton<ICourseController>(
   CourseController
 );
 
-
 container.registerSingleton<IFreelancerRepository>(
   "IFreelancerRepository",
   FreelancerRepository
 );
 
-container.registerSingleton<IUseCase<Skill, void>>(
+container.registerSingleton<IUseCase<Skill, Skill>>(
   "AddSkillUseCase",
   AddSkillUseCase
 );
@@ -81,7 +80,7 @@ container.registerSingleton<IUseCase<Skill, void>>(
   DeleteSkillUseCase
 );
 
-container.registerSingleton<IUseCase<Skill, void>>(
+container.registerSingleton<IUseCase<Skill, Skill>>(
   "EditSkillUseCase",
   EditSkillUseCase
 );
@@ -99,7 +98,7 @@ container.registerSingleton<IFreelancerService>(
 container.registerSingleton<IFreelancerController>(
   "IFreelancerController",
   FreelancerController
-
+);
 container.register<ICertificationRepository>(
   "ICertificationRepository",
   CertificationRepository

@@ -3,6 +3,7 @@ import IEducationRepository from "../../domain/interfaces/repositories/IEducatio
 import { Education } from "../../domain/entities/Education";
 import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
 import { inject, injectable } from "tsyringe";
+
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
@@ -16,6 +17,7 @@ export default class AddEducationUseCase
     @inject("EducationRepository")
     private educationRepository: IEducationRepository
   ) {}
+
   async execute(education: Education): Promise<Education> {
     try {
       return await this.educationRepository.add(education);

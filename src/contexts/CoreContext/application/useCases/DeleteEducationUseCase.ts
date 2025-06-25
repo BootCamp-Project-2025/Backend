@@ -13,6 +13,7 @@ export default class DeleteEducationUseCase implements IUseCase<string, void> {
     @inject("EducationRepository")
     private educationRepository: IEducationRepository
   ) {}
+
   async execute(id: string): Promise<void> {
     try {
       await this.educationRepository.delete(id);

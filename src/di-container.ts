@@ -38,7 +38,6 @@ import AddEducationUseCase from "./contexts/CoreContext/application/useCases/Add
 import GetEducationsUseCase from "./contexts/CoreContext/application/useCases/GetEducationsUseCase";
 import EditEducationUseCase from "./contexts/CoreContext/application/useCases/EditEducationUseCase";
 import DeleteEducationUseCase from "./contexts/CoreContext/application/useCases/DeleteEducationUseCase";
-
 import { CreateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/CreateCertificationUseCase";
 import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/UpdateCertificationUseCase";
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
@@ -109,7 +108,6 @@ container.registerSingleton<IFreelancerController>(
   "IFreelancerController",
   FreelancerController
 );
-
 container.register<ICertificationRepository>(
   "ICertificationRepository",
   CertificationRepository
@@ -154,7 +152,6 @@ container.registerSingleton<IEducationController>(
   "IEducationController",
   EducationController
 );
-
 container.registerSingleton<IEducationService>(
   "IEducationService",
   EducationService

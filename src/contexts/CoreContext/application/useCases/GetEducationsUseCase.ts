@@ -16,6 +16,7 @@ export default class GetEducationsUseCase
     @inject("EducationRepository")
     private educationRepository: IEducationRepository
   ) {}
+
   async execute(freelancerId: string): Promise<Education[]> {
     try {
       return await this.educationRepository.getByFreelancerId(freelancerId);

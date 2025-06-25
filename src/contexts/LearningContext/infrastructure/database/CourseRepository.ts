@@ -6,6 +6,14 @@ import { CourseMapper } from "../../mappers/CourseMapper";
 
 @injectable()
 export class CourseRepository implements ICourseRepository {
+  async update(courseDomain: Course): Promise<Course> {
+    const courseDb = CourseMapper.toPersistence(courseDomain);
+    const course = await prismaClient.course.update({
+      where: { id: courseDomain.id.toString() },
+      data: courseDb,
+    });
+    return CourseMapper.toDomain(course);
+  }
   async findById(id: string): Promise<Course | null> {
     const course = await prismaClient.course.findUnique({
       where: { id },

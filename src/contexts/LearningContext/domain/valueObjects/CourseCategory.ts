@@ -10,7 +10,7 @@ export class CourseCategory extends ValueObject<CourseCategoryProps> {
   }
 
   public get value(): string {
-    return this.props.description;
+    return this.props.category;
   }
 
   public static create(props: CourseCategoryProps): CourseCategory {

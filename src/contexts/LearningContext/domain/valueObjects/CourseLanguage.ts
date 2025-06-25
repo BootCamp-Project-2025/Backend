@@ -10,7 +10,7 @@ export class CourseLanguage extends ValueObject<CourseLanguageProps> {
   }
 
   public get value(): string {
-    return this.props.description;
+    return this.props.language;
   }
 
   public static create(props: CourseLanguageProps): CourseLanguage {

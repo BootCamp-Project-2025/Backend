@@ -14,7 +14,7 @@ export class CourseService implements ICourseService {
     @inject("GetCourseUseCase")
     private readonly GetCourseUseCase: IUseCase<string, Course>,
     @inject("EditCourseUseCase")
-    private readonly EditCourseUseCase: IUseCase<Course, Course>,
+    private readonly EditCourseUseCase: IUseCase<CourseDTO, Course>,
     @inject("DeleteCourseUseCase")
     private readonly DeleteCourseUseCase: IUseCase<string, void>,
     @inject("CreateCourseUseCase")
@@ -42,8 +42,7 @@ export class CourseService implements ICourseService {
 
   async editCourse(id: string, courseDto: CourseDTO): Promise<CourseDTO> {
     courseDto.id = id;
-    const course = CourseMapper.dtoToDomain(courseDto);
-    const courseUpdated = await this.EditCourseUseCase.execute(course);
+    const courseUpdated = await this.EditCourseUseCase.execute(courseDto);
     return CourseMapper.domainToDto(courseUpdated);
   }
 }

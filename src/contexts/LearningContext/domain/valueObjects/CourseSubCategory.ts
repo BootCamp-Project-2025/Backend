@@ -10,7 +10,7 @@ export class CourseSubCategory extends ValueObject<CourseSubCategoryProps> {
   }
 
   public get value(): string {
-    return this.props.description;
+    return this.props.subCategory;
   }
 
   public static create(props: CourseSubCategoryProps): CourseSubCategory {

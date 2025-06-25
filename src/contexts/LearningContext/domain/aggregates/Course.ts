@@ -102,15 +102,53 @@ export class Course extends AggregateRoot<CourseProps> {
     return this.props.time ?? 0;
   }
 
-  getCategory(): string {
-    return this.props.category?.value ?? "";
+  getCategory(): CourseCategory {
+    return this.props.category ?? CourseCategory.create({ category: "" });
   }
 
-  getSubCategory(): string {
-    return this.props.subCategory?.value ?? "";
+  getSubCategory(): CourseSubCategory {
+    return (
+      this.props.subCategory ?? CourseSubCategory.create({ subCategory: "" })
+    );
   }
 
-  getLanguage(): string {
-    return this.props.language?.value ?? "";
+  getLanguage(): CourseLanguage {
+    return this.props.language ?? CourseLanguage.create({ language: "" });
+  }
+
+  setName(newName: CourseName): void {
+    this.props.name = newName;
+  }
+
+  setField(newCourseField: CourseField): void {
+    this.props.field = newCourseField;
+  }
+
+  setRequirements(newCourseRequirements: CourseRequirements): void {
+    this.props.requirements = newCourseRequirements;
+  }
+
+  setDescription(newCourseDescription: CourseDescription): void {
+    this.props.description = newCourseDescription;
+  }
+
+  setImgSrc(imgSrc: string): void {
+    this.props.imgSrc = imgSrc;
+  }
+
+  setTime(newTime: number): void {
+    this.props.time = newTime;
+  }
+
+  setCategory(newCourseCategory: CourseCategory): void {
+    this.props.subCategory = newCourseCategory;
+  }
+
+  setSubCategory(newCourseSubCategory: CourseSubCategory): void {
+    this.props.category = newCourseSubCategory;
+  }
+
+  setLanguage(newCourseLanguage: CourseLanguage): void {
+    this.props.language = newCourseLanguage;
   }
 }

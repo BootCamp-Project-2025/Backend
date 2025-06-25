@@ -49,9 +49,9 @@ export class CourseMapper {
       description: domainCourse.getDescription().value,
       time: domainCourse.getTime(),
       imgSrc: domainCourse.getImgSrc(),
-      language: domainCourse.getLanguage(),
-      category: domainCourse.getCategory(),
-      subCategory: domainCourse.getSubCategory(),
+      language: domainCourse.getLanguage().value,
+      category: domainCourse.getCategory().value,
+      subCategory: domainCourse.getSubCategory().value,
     };
   }
 

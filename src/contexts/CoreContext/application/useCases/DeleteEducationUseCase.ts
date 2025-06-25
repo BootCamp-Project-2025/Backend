@@ -1,6 +1,6 @@
+import "reflect-metadata";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import IEducationRepository from "../../domain/interfaces/repositories/IEducationRepository";
-import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
 import { injectable, inject } from "tsyringe";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
@@ -8,8 +8,6 @@ import { StatusCodes } from "http-status-codes";
 @injectable()
 export default class DeleteEducationUseCase implements IUseCase<string, void> {
   constructor(
-    @inject("IFreelancerRepository")
-    private freelancerRepository: IFreelancerRepository,
     @inject("EducationRepository")
     private educationRepository: IEducationRepository
   ) {}

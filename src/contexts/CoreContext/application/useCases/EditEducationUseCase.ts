@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import IEducationRepository from "../../domain/interfaces/repositories/IEducationRepository";
 import { Education } from "../../domain/entities/Education";

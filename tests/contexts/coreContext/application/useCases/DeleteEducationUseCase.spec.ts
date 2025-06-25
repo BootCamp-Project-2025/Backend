@@ -1,7 +1,8 @@
+import DeleteEducationUseCase from "@/contexts/CoreContext/application/useCases/DeleteEducationUseCase";
 import "reflect-metadata";
 
 describe("Delete Education Use Case", () => {
-  it("Pass Test", () => {
-    expect(true).toBe(true);
+  it("Add education use case to be defined", () => {
+    expect(DeleteEducationUseCase).toBeDefined();
   });
 });

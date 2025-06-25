@@ -1,7 +1,6 @@
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import IEducationRepository from "../../domain/interfaces/repositories/IEducationRepository";
 import { Education } from "../../domain/entities/Education";
-import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
 import { inject, injectable } from "tsyringe";
 
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
@@ -12,8 +11,6 @@ export default class AddEducationUseCase
   implements IUseCase<Education, Education>
 {
   constructor(
-    @inject("IFreelancerRepository")
-    private freelancerRepository: IFreelancerRepository,
     @inject("EducationRepository")
     private educationRepository: IEducationRepository
   ) {}

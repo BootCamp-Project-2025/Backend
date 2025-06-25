@@ -9,6 +9,7 @@ import { CourseDescription } from "@/contexts/LearningContext/domain/valueObject
 import { CourseName } from "@/contexts/LearningContext/domain/valueObjects/CourseName";
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 const mockRepository: jest.Mocked<ICourseRepository> = {
   update: jest.fn(),
@@ -40,5 +41,35 @@ describe("EditCourseUseCase", () => {
       imgSrc: "imgSrc",
     };
     expect(async () => await useCase.execute(dto)).resolves;
+  });
+
+  it("id not passed", () => {
+    const course = Course.create(
+      empyCourseProps,
+      new UniqueEntityID("de12ef32r3r33r")
+    );
+    const dto: CourseDTO = {
+      id: undefined,
+      name: "name",
+      description: "description",
+      imgSrc: "imgSrc",
+    };
+    expect(async () => await useCase.execute(dto)).rejects.toThrow(ApiError);
+  });
+
+  it("course not found", () => {
+    const course = Course.create(
+      empyCourseProps,
+      new UniqueEntityID("de12ef32r3r33r")
+    );
+    mockRepository.findById.mockResolvedValue(null);
+    mockRepository.update.mockResolvedValue(course);
+    const dto: CourseDTO = {
+      id: "dasdsadsa",
+      name: "name",
+      description: "description",
+      imgSrc: "imgSrc",
+    };
+    expect(async () => await useCase.execute(dto)).rejects.toThrow(ApiError);
   });
 });

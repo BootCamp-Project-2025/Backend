@@ -11,7 +11,6 @@ import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import { FreelancerRepository } from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
-import { CourseDTO } from "./contexts/LearningContext/domain/dtos/CourseDTO";
 import { EditCourseUseCase } from "./contexts/LearningContext/application/useCases/EditCourseUseCase";
 import { DeleteCourseUseCase } from "./contexts/LearningContext/application/useCases/DeleteCourseUseCase";
 import { GetCourseUseCase } from "./contexts/LearningContext/application/useCases/GetCourseUseCase";
@@ -28,7 +27,7 @@ container.registerSingleton<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",
   GetAllCoursesUseCase
 );
-container.registerSingleton<IUseCase<CourseDTO, Course>>(
+container.registerSingleton<IUseCase<Course, Course>>(
   "EditCourseUseCase",
   EditCourseUseCase
 );

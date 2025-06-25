@@ -19,7 +19,7 @@ jest.mock(
   "@/contexts/CoreContext/domain/interfaces/repositories/ISkillRepository"
 );
 
-describe("AddSkillUseCase", () => {
+describe("testing DeleteSkillUseCase to delete skills from freelancer", () => {
   it("exist", () => {
     expect(DeleteSkillUseCase).toBeDefined();
   });

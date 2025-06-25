@@ -20,7 +20,7 @@ jest.mock(
   "@/contexts/CoreContext/domain/interfaces/repositories/ISkillRepository"
 );
 
-describe("EditSkillUseCase", () => {
+describe("testing EditSkillUseCase to change the params of a skill", () => {
   it("exist", () => {
     expect(EditSkillUseCase).toBeDefined();
   });

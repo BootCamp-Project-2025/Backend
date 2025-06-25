@@ -7,7 +7,7 @@ describe("Freelancer Education service", () => {
   });
 
   it("Has addEducation method", () => {
-    expect(EducationService.prototype.add).toBeDefined();
+    expect(EducationService.prototype.addEducation).toBeDefined();
   });
 
   it("Has removeById method", () => {
@@ -15,6 +15,6 @@ describe("Freelancer Education service", () => {
   });
 
   it("Has getAll method", () => {
-    expect(EducationService.prototype.getAll).toBeDefined();
+    expect(EducationService.prototype.getAllOfFreelancer).toBeDefined();
   });
 });

@@ -1,41 +1,49 @@
-// import { IGetAllFreelancerEducationUseCase } from "../../application/useCases/education/IGetAllFreelancerEducationUseCase";
-import { IGetAllFreelancerEducationUseCase } from "../../application/useCases/education/GetAllFreelancerEducationUseCase";
-import { IGetFreelancerEducationUseCase } from "../../application/useCases/education/GetFreelancerEducationUseCase";
-import { ICreateFreelancerEducationUseCase } from "../../application/useCases/education/CreateFreelancerEducationUseCase";
-import { IUpdateFreelancerEducationUseCase } from "../../application/useCases/education/UpdateFreelancerEducationUseCase";
-import { IDeleteFreelancerEducationUseCase } from "../../application/useCases/education/DeleteFreelancerEducationUseCase";
-
-import { Education } from "../entities/Education";
-import { IEducationService } from "../interfaces/services/IEducationService";
+import { IEducationService } from "@/contexts/CoreContext/domain/interfaces/services/IEducationService";
+import { Education } from "../../domain/entities/Education";
+import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { IEducationDto } from "../../domain/interfaces/dtos/IEducationDto";
+import { educationMapper } from "../../mappers/EducationMapper";
 
 @injectable()
-export class EducationService implements IEducationService {
-  public constructor(
-    @inject("GetAllFreelancerEducationUseCase")
-    private readonly getAllEducationUseCase: IGetAllFreelancerEducationUseCase,
-    @inject("GetFreelancerEducationUseCase")
-    private readonly getEducationUseCase: IGetFreelancerEducationUseCase,
-    @inject("CreateFreelancerEducationUseCase")
-    private readonly createEducationUseCase: ICreateFreelancerEducationUseCase,
-    @inject("UpdateFreelancerEducationUseCase")
-    private readonly updateEducationUseCase: IUpdateFreelancerEducationUseCase,
-    @inject("DeleteFreelancerEducationUseCase")
-    private readonly deleteEducationUseCase: IDeleteFreelancerEducationUseCase
+export default class EducationService implements IEducationService {
+  constructor(
+    @inject("AddEducationUseCase")
+    private readonly addEducationUseCase: IUseCase<Education, Education>,
+    @inject("EditEducationUseCase")
+    private readonly editEducationUseCase: IUseCase<Education, Education>,
+    @inject("GetEducationsUseCase")
+    private readonly getEducationsUseCase: IUseCase<string, Education[]>,
+    @inject("DeleteEducationUseCase")
+    private readonly deleteEducationUseCase: IUseCase<string, void>
   ) {}
-  getAll(): Promise<Education[]> {
-    throw new Error("Method not implemented.");
+  async getAllOfFreelancer(freelancerId: string): Promise<IEducationDto[]> {
+    try {
+      const educations = await this.getEducationsUseCase.execute(freelancerId);
+      return educationMapper.mapMannyDomainToDto(educations);
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else throw new ApiError();
+    }
   }
-  get(id: string): Promise<Education | null> {
-    throw new Error("Method not implemented.");
+  async addEducation(education: IEducationDto): Promise<IEducationDto> {
+    try {
+      const educationDomain = educationMapper.mapDtoToDomain(education);
+      const newEducation =
+        await this.addEducationUseCase.execute(educationDomain);
+      return educationMapper.mapDomainToDto(newEducation);
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else throw new ApiError();
+    }
   }
-  update(id: string, object: Education): Promise<Education> {
-    throw new Error("Method not implemented.");
-  }
-  create(T: Education): Promise<Education> {
-    throw new Error("Method not implemented.");
-  }
-  delete(id: string): Promise<string | void> {
-    throw new Error("Method not implemented.");
+  async removeById(id: string): Promise<void> {
+    try {
+      await this.deleteEducationUseCase.execute(id);
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else throw new ApiError();
+    }
   }
 }

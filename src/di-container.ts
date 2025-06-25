@@ -17,7 +17,20 @@ import IUseCase from "./contexts/LearningContext/domain/interfaces/IUseCase";
 import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
-import { FreelancerRepository } from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
+import FreelancerRepository from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
+import { Skill } from "./contexts/CoreContext/domain/entities/Skill";
+import AddSkillUseCase from "./contexts/CoreContext/application/useCases/AddSkillUseCase";
+import GetSkillsUseCase from "./contexts/CoreContext/application/useCases/GetSkillsUseCase";
+import FreelancerService from "./contexts/CoreContext/application/services/FreelancerService";
+import { IFreelancerService } from "./contexts/CoreContext/domain/interfaces/services/IFreelancerService";
+import IFreelancerController from "./contexts/CoreContext/domain/interfaces/controllers/IFreelancerController";
+import FreelancerController from "./contexts/CoreContext/presentation/http/controllers/FreelancerController";
+import DeleteSkillUseCase from "./contexts/CoreContext/application/useCases/DeleteSkillUseCase";
+import EditSkillUseCase from "./contexts/CoreContext/application/useCases/EditSkillUseCase";
+import { ISkillRepository } from "./contexts/CoreContext/domain/interfaces/repositories/ISkillRepository";
+import SkillRepository from "./contexts/CoreContext/infrastructure/persistence/SkillRepository";
+import { ISkillService } from "./contexts/CoreContext/domain/interfaces/services/ISkillService";
+import SkillService from "./contexts/CoreContext/application/services/SkillService";
 import { CreateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/CreateCertificationUseCase";
 import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/UpdateCertificationUseCase";
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
@@ -43,6 +56,10 @@ container.registerSingleton<IFreelancerRepository>(
   "IFreelancerRepository",
   FreelancerRepository
 );
+container.registerSingleton<ISkillRepository>(
+  "ISkillRepository",
+  SkillRepository
+);
 container.registerSingleton<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",
   GetAllCoursesUseCase
@@ -53,11 +70,47 @@ container.registerSingleton<CreateCourseUseCase>(
 );
 container.registerSingleton<ICourseService>("ICourseService", CourseService);
 
+container.registerSingleton<ISkillService>("ISkillService", SkillService);
+
 container.registerSingleton<ICourseController>(
   "ICourseController",
   CourseController
 );
 
+container.registerSingleton<IFreelancerRepository>(
+  "IFreelancerRepository",
+  FreelancerRepository
+);
+
+container.registerSingleton<IUseCase<Skill, Skill>>(
+  "AddSkillUseCase",
+  AddSkillUseCase
+);
+
+container.registerSingleton<IUseCase<Skill, void>>(
+  "DeleteSkillUseCase",
+  DeleteSkillUseCase
+);
+
+container.registerSingleton<IUseCase<Skill, Skill>>(
+  "EditSkillUseCase",
+  EditSkillUseCase
+);
+
+container.registerSingleton<IUseCase<string, Skill[]>>(
+  "GetSkillsUseCase",
+  GetSkillsUseCase
+);
+
+container.registerSingleton<IFreelancerService>(
+  "IFreelancerService",
+  FreelancerService
+);
+
+container.registerSingleton<IFreelancerController>(
+  "IFreelancerController",
+  FreelancerController
+);
 container.register<ICertificationRepository>(
   "ICertificationRepository",
   CertificationRepository

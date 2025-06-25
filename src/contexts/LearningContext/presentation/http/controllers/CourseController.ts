@@ -5,6 +5,8 @@ import { ICourseService } from "@/contexts/LearningContext/domain/interfaces/ICo
 import { inject, injectable } from "tsyringe";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
+import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 
 @injectable()
 export class CourseController implements ICourseController {
@@ -36,7 +38,8 @@ export class CourseController implements ICourseController {
   public getCourse = async (req: Request, res: Response): Promise<void> => {
     try {
       const course = await this.courseService.getCourse(req.params.id);
-      res.status(200).json(course);
+      const response = new SuccessResponseEntity(course, StatusCodes.OK);
+      ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof ApiError) throw error;
       console.log(error);
@@ -52,7 +55,8 @@ export class CourseController implements ICourseController {
       const id = req.params.id;
       const dto = req.body as CourseDTO;
       const course = await this.courseService.editCourse(id, dto);
-      res.status(200).json(course);
+      const response = new SuccessResponseEntity(course, StatusCodes.OK);
+      ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof ApiError) throw error;
       console.log(error);
@@ -66,7 +70,8 @@ export class CourseController implements ICourseController {
   public delete = async (req: Request, res: Response): Promise<void> => {
     try {
       await this.courseService.deleteCourse(req.params.id);
-      res.status(200).json(0);
+      const response = new SuccessResponseEntity({}, StatusCodes.OK);
+      ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof ApiError) throw error;
       console.log(error);

@@ -6,7 +6,7 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
 @injectable()
-export class EditCourseUseCase implements IUseCase<string, Course> {
+export class GetCourseUseCase implements IUseCase<string, Course> {
   constructor(
     @inject("ICourseRepository") private courseRepository: ICourseRepository
   ) {}
@@ -17,10 +17,12 @@ export class EditCourseUseCase implements IUseCase<string, Course> {
       if (course === null)
         throw new ApiError(StatusCodes.NOT_FOUND, "course not found");
       return course;
-    } catch {
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      console.log(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "error in use case"
+        "error in GetCourseUseCase"
       );
     }
   }

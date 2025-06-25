@@ -6,4 +6,5 @@ export interface ICourseRepository {
   findAll(): Promise<Course[]>;
   insert(course: Course): Promise<Course>;
   update(course: Course): Promise<Course>;
+  delete(courseId: string): Promise<void>;
 }

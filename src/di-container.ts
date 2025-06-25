@@ -13,6 +13,8 @@ import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/
 import { FreelancerRepository } from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
 import { CourseDTO } from "./contexts/LearningContext/domain/dtos/CourseDTO";
 import { EditCourseUseCase } from "./contexts/LearningContext/application/useCases/EditCourseUseCase";
+import { DeleteCourseUseCase } from "./contexts/LearningContext/application/useCases/DeleteCourseUseCase";
+import { GetCourseUseCase } from "./contexts/LearningContext/application/useCases/GetCourseUseCase";
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -29,6 +31,14 @@ container.registerSingleton<IUseCase<void, Course[]>>(
 container.registerSingleton<IUseCase<CourseDTO, Course>>(
   "EditCourseUseCase",
   EditCourseUseCase
+);
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteCourseUseCase",
+  DeleteCourseUseCase
+);
+container.registerSingleton<IUseCase<string, Course>>(
+  "GetCourseUseCase",
+  GetCourseUseCase
 );
 container.registerSingleton<CreateCourseUseCase>(
   "CreateCourseUseCase",

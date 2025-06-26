@@ -23,14 +23,15 @@ export class CourseRepository implements ICourseRepository {
   async update(courseDomain: Course): Promise<Course> {
     try {
       const courseDb = CourseMapper.toPersistence(courseDomain);
-
+      if (!(await this.nameAvailable(courseDb.name, courseDb.id)))
+        throw new ApiError(StatusCodes.CONFLICT, "name taken by other course");
       const course = await prismaClient.course.update({
         where: { id: courseDomain.id.toString() },
         data: courseDb,
       });
       return CourseMapper.toDomain(course);
     } catch (error) {
-      console.log(error);
+      if (error as ApiError) throw error;
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "error in repository"
@@ -38,10 +39,14 @@ export class CourseRepository implements ICourseRepository {
     }
   }
 
-  async nameAvailable(name: string): Promise<boolean> {
-    if (await prismaClient.course.findFirst({ where: { name: name } }))
-      return false;
-    else return true;
+  async nameAvailable(name: string, id: string): Promise<boolean> {
+    if (
+      (await prismaClient.course.findFirst({
+        where: { name: name, NOT: { id: id } },
+      })) === null
+    )
+      return true;
+    else return false;
   }
 
   async findById(id: string): Promise<Course | null> {

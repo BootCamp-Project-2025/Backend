@@ -26,8 +26,6 @@ export class EditCourseUseCase implements IUseCase<CourseDTO, Course> {
           StatusCodes.BAD_REQUEST,
           "an id is required for update"
         );
-      if (!(await this.courseRepository.nameAvailable(courseDto.name)))
-        throw new ApiError(StatusCodes.CONFLICT, "this name alredy exist");
       const course = await this.courseRepository.findById(courseDto.id);
       if (course === null)
         throw new ApiError(StatusCodes.NOT_FOUND, "this course doesnt exist");

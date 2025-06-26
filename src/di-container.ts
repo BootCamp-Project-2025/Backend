@@ -17,6 +17,16 @@ import IUseCase from "./contexts/LearningContext/domain/interfaces/IUseCase";
 import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
+import { IUserRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IUserRepository";
+import { UserRepository } from "./contexts/CoreContext/infrastructure/persistence/UserRepository";
+import { GetUserProfileUseCase } from "./contexts/CoreContext/application/useCases/GetUserProfileUseCase";
+import { IUserController } from "./contexts/CoreContext/domain/interfaces/controllers/IUserController";
+import { IUserService } from "./contexts/CoreContext/domain/interfaces/services/IUserService";
+import { UserService } from "./contexts/CoreContext/application/services/UserService";
+import { UserController } from "./contexts/CoreContext/presentation/http/controllers/UserController";
+import { CreateUserFreelancerProfileUseCase } from "./contexts/CoreContext/application/useCases/CreateUserFreelancerProfileUseCase";
+import { GetUserUseCase } from "./contexts/CoreContext/application/useCases/GetUserUseCase";
+import { CreateUserUseCase } from "./contexts/CoreContext/application/useCases/CreateUserUseCase";
 import FreelancerRepository from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
 import { Skill } from "./contexts/CoreContext/domain/entities/Skill";
 import AddSkillUseCase from "./contexts/CoreContext/application/useCases/AddSkillUseCase";
@@ -36,10 +46,37 @@ import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/u
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
 import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
 
+//User
+container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
+
+container.registerSingleton<GetUserUseCase>("GetUserUseCase", GetUserUseCase);
+
+container.registerSingleton<GetUserProfileUseCase>(
+  "GetUserProfileUseCase",
+  GetUserProfileUseCase
+);
+
+container.registerSingleton<CreateUserUseCase>(
+  "CreateUserUseCase",
+  CreateUserUseCase
+);
+
+container.registerSingleton<GetUserUseCase>("GetUserUseCase", GetUserUseCase);
+
+container.registerSingleton<CreateUserFreelancerProfileUseCase>(
+  "CreateUserFreelancerProfileUseCase",
+  CreateUserFreelancerProfileUseCase
+);
+
+container.registerSingleton<IUserService>("IUserService", UserService);
+
+container.registerSingleton<IUserController>("IUserController", UserController);
+
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
   CourseRepository
 );
+
 container.registerSingleton<IFreelancerRepository>(
   "IFreelancerRepository",
   FreelancerRepository
@@ -52,10 +89,12 @@ container.registerSingleton<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",
   GetAllCoursesUseCase
 );
+
 container.registerSingleton<CreateCourseUseCase>(
   "CreateCourseUseCase",
   CreateCourseUseCase
 );
+
 container.registerSingleton<ICourseService>("ICourseService", CourseService);
 
 container.registerSingleton<ISkillService>("ISkillService", SkillService);

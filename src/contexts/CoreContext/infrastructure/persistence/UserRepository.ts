@@ -3,7 +3,9 @@ import { User } from "../../domain/aggregates/User";
 import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
 import UserMapper from "../../mappers/UserMapper";
 import { UserDao } from "../../domain/interfaces/dao/UserDao";
+import { injectable } from "tsyringe";
 
+@injectable()
 export class UserRepository implements IUserRepository {
   async addFreelancerProfile(id: string): Promise<User> {
     try {
@@ -26,6 +28,7 @@ export class UserRepository implements IUserRepository {
   getAll(): Promise<User[]> {
     throw new Error("Method not implemented.");
   }
+
   async getById(id: string): Promise<User | null> {
     try {
       const dbUser = await prismaClient.user.findUnique({
@@ -42,6 +45,7 @@ export class UserRepository implements IUserRepository {
       throw new Error("User not found");
     }
   }
+
   delete(): Promise<string | void> {
     throw new Error("Method not implemented.");
   }
@@ -62,5 +66,17 @@ export class UserRepository implements IUserRepository {
 
   update(): Promise<User> {
     throw new Error("Method not implemented.");
+  }
+
+  async getUserProfileById(id: string): Promise<User | null> {
+    const user = await prismaClient.user.findUnique({
+      where: { id: id },
+      include: {
+        freelancerProfile: true,
+        clientProfile: true,
+      },
+    });
+    if (!user) return null;
+    return UserMapper.persistanceTodomain(user);
   }
 }

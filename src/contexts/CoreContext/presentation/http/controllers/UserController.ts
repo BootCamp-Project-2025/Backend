@@ -33,7 +33,7 @@ export class UserController implements IUserController {
   post = async (req: Request, res: Response) => {
     try {
       const dto: ICreateUserDto = req.body as ICreateUserDto;
-      const user: User = UserMapper.createUserDtoToDomain(dto);
+      const user: User = UserMapper.createUserDtoTodomain(dto);
       const data = await this.userService.create(user);
       res.status(201).json(data);
     } catch (error) {

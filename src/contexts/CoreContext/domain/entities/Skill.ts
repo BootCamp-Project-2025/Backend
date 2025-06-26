@@ -6,13 +6,14 @@ export type SkillLevel = "beginner" | "intermediate" | "advanced";
 interface SkillProps {
   name: string;
   level: SkillLevel;
+  freelancerId: string;
 }
 
 export class Skill extends Entity<SkillProps> {
   private readonly _name: string;
   private readonly _level: SkillLevel;
 
-  constructor(props: SkillProps, id: UniqueEntityID) {
+  constructor(props: SkillProps, id?: UniqueEntityID) {
     super(props, id);
     if (!props.name || props.name.trim().length === 0) {
       throw new Error("Skill name is required");
@@ -36,8 +37,12 @@ export class Skill extends Entity<SkillProps> {
     return this._name;
   }
 
+  get freelancerId(): string {
+    return this.props.freelancerId;
+  }
+
   get id(): UniqueEntityID {
-    return this.id;
+    return this._id;
   }
 
   public editLevel(level: "beginner" | "intermediate" | "advanced") {
@@ -49,6 +54,6 @@ export class Skill extends Entity<SkillProps> {
   }
 
   equals(other: Skill): boolean {
-    return this._name.toLowerCase() === other.name.toLowerCase();
+    return this.id.toString() === other.id.toString();
   }
 }

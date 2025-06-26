@@ -33,6 +33,12 @@ export class Skills extends ManyRelationship<Skill> {
       );
     }
 
+    if (this.repeatedName(skill))
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "a skill with that name alredy exist"
+      );
+
     if (!this.exists(skill)) {
       super.add(skill);
     }
@@ -49,5 +55,12 @@ export class Skills extends ManyRelationship<Skill> {
     if (index === -1)
       throw new ApiError(StatusCodes.CONTINUE, "experience doesnt exist");
     super.edit(editedSkill, index);
+  }
+
+  public repeatedName(newSkill: Skill) {
+    return (
+      this.currentItems.filter((skill: Skill) => newSkill.name === skill.name)
+        .length !== 0
+    );
   }
 }

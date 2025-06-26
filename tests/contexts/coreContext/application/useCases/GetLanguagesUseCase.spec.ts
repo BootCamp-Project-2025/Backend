@@ -5,18 +5,10 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 describe("GetLanguagesUseCase", () => {
   const mockLanguageRepo = {
-    addLanguage: jest.fn(),
     getLanguages: jest.fn(),
-    editLanguage: jest.fn(),
-    deleteLanguage: jest.fn(),
-    getlanguageId: jest.fn(),
-    getAll: jest.fn(),
-    getById: jest.fn(),
-    delete: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
   };
-  const useCase = new GetLanguagesUseCase(mockLanguageRepo);
+
+  const useCase = new GetLanguagesUseCase(mockLanguageRepo as any);
 
   it("should return all languages", async () => {
     const languageList = [

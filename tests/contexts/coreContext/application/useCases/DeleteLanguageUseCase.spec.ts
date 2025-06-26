@@ -5,23 +5,11 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 describe("DeleteLanguageUseCase", () => {
   const mockLanguageRepo = {
-    addLanguage: jest.fn(),
-    getLanguages: jest.fn(),
-    editLanguage: jest.fn(),
     deleteLanguage: jest.fn(),
-    getlanguageId: jest.fn(),
-    getAll: jest.fn(),
-    getById: jest.fn(),
-    delete: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
   };
+
   const mockFreelancerRepo = {
     getById: jest.fn(),
-    getAll: jest.fn(),
-    delete: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
   };
 
   const language = Language.create(
@@ -31,9 +19,10 @@ describe("DeleteLanguageUseCase", () => {
 
   it("should delete a language", async () => {
     const useCase = new DeleteLanguageUseCase(
-      mockLanguageRepo,
-      mockFreelancerRepo
+      mockLanguageRepo as any,
+      mockFreelancerRepo as any
     );
+
     const freelancerMock = {
       languages: {
         exists: () => true,
@@ -50,9 +39,10 @@ describe("DeleteLanguageUseCase", () => {
 
   it("should throw if freelancer not found", async () => {
     const useCase = new DeleteLanguageUseCase(
-      mockLanguageRepo,
-      mockFreelancerRepo
+      mockLanguageRepo as any,
+      mockFreelancerRepo as any
     );
+
     mockFreelancerRepo.getById.mockResolvedValue(null);
 
     await expect(

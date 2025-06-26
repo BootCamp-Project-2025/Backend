@@ -23,6 +23,7 @@ export class CourseRepository implements ICourseRepository {
   async update(courseDomain: Course): Promise<Course> {
     try {
       const courseDb = CourseMapper.toPersistence(courseDomain);
+
       const course = await prismaClient.course.update({
         where: { id: courseDomain.id.toString() },
         data: courseDb,
@@ -35,6 +36,12 @@ export class CourseRepository implements ICourseRepository {
         "error in repository"
       );
     }
+  }
+
+  async nameAvailable(name: string): Promise<boolean> {
+    if (await prismaClient.course.findFirst({ where: { name: name } }))
+      return false;
+    else return true;
   }
 
   async findById(id: string): Promise<Course | null> {

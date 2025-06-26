@@ -7,4 +7,5 @@ export interface ICourseRepository {
   insert(course: Course): Promise<Course>;
   update(course: Course): Promise<Course>;
   delete(courseId: string): Promise<void>;
+  nameAvailable(name: string): Promise<boolean>;
 }

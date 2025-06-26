@@ -9,7 +9,6 @@ import userRoutes from "./contexts/CoreContext/presentation/http/routes/UserRout
 import courseRouter from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
-import { ExperienceRoutes } from "./contexts/CoreContext/presentation/http/routes/ExperienceRoutes";
 
 const app = express();
 
@@ -20,8 +19,6 @@ app.use("/api/health", healthRoutes);
 app.use("/api/courses", courseRouter);
 
 app.use("/api/courses", courseRoutes);
-
-app.use("/api/freelancer", ExperienceRoutes);
 
 app.use("/api/users", userRoutes);
 

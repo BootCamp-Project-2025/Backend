@@ -24,6 +24,10 @@ const empyCourseProps: CourseProps = {
 
 const useCase = new EditCourseUseCase(mockRepository);
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("EditCourseUseCase", () => {
   it("exist", () => {
     expect(EditCourseUseCase).toBeDefined;

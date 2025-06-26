@@ -5,9 +5,7 @@ import {
 } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { CourseDescription } from "@/contexts/LearningContext/domain/valueObjects/CourseDescription";
 import { CourseName } from "@/contexts/LearningContext/domain/valueObjects/CourseName";
-import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { CourseController } from "@/contexts/LearningContext/presentation/http/controllers/CourseController";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { StatusCodes } from "http-status-codes";
@@ -86,7 +84,6 @@ describe("Course controller tests", () => {
   it("delete course correctly", async () => {
     const res = {} as any;
     const req = { params: { id: "testId" } } as any;
-    const course = Course.create(empyCourseProps, new UniqueEntityID("testId"));
     mockService.getCourse.mockResolvedValue(undefined);
 
     await controller.delete(req, res);

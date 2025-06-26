@@ -23,7 +23,6 @@ export class CourseRepository implements ICourseRepository {
   async update(courseDomain: Course): Promise<Course> {
     try {
       const courseDb = CourseMapper.toPersistence(courseDomain);
-      console.log(courseDb);
       const course = await prismaClient.course.update({
         where: { id: courseDomain.id.toString() },
         data: courseDb,

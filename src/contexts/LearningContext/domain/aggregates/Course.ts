@@ -141,11 +141,11 @@ export class Course extends AggregateRoot<CourseProps> {
   }
 
   setCategory(newCourseCategory: CourseCategory): void {
-    this.props.subCategory = newCourseCategory;
+    this.props.category = newCourseCategory;
   }
 
   setSubCategory(newCourseSubCategory: CourseSubCategory): void {
-    this.props.category = newCourseSubCategory;
+    this.props.subCategory = newCourseSubCategory;
   }
 
   setLanguage(newCourseLanguage: CourseLanguage): void {

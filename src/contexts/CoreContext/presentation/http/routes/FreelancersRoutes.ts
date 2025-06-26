@@ -117,7 +117,7 @@ router.put("/:freelancerId/skill", controller.editSkill);
 /**
  * @openapi
  *
- * freelancers/:freelancerId/languages:
+ * /freelancers/:freelancerId/languages:
  *  get:
  *      summary: Retrieves the freelancer languages
  *      responses:
@@ -131,7 +131,7 @@ router.get("/:freelancerId/languages", languageController.getLanguages);
 
 /**
  * @openapi
- * freelancers/:freelancerId/languages:
+ * /freelancers/:freelancerId/languages:
  *  post:
  *      summary: add a new language to the freelancer
  *      requestBody:
@@ -159,22 +159,25 @@ router.post("/:freelancerId/languages", languageController.addLanguage);
 
 /**
  * @openapi
- * freelancers/:freelancerId/languages:
+ * /freelancers/:freelancerId/languages:
  *   put:
  *     summary: Updates a language of the freelancer
- *      requestBody:
- *               required: true
- *               content:
- *                   application/json:
- *                       schema:
- *                           type: object
- *                           properties:
- *                                  name:
- *                                      type: string
- *                                      example: English
- *                                  level:
- *                                      type: string
- *                                      example: advanced
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 example: 98039295-6af2-465e-a254-0f24d40dc672
+ *               name:
+ *                 type: string
+ *                 example: English
+ *               level:
+ *                 type: string
+ *                 example: advanced
  *     responses:
  *       200:
  *         description: freelancer language updated
@@ -182,32 +185,36 @@ router.post("/:freelancerId/languages", languageController.addLanguage);
  *         description: freelancer or language not found
  *       500:
  *         description: Server error
+ *
  */
 router.put("/:freelancerId/languages", languageController.editLanguage);
 
 /**
  * @openapi
- * freelancers/:freelancerId/languages:
+ * /freelancers/:freelancerId/languages:
  *   delete:
- *     summary: delete a language of the freelancer
- *      requestBody:
- *               required: true
- *               content:
- *                   application/json:
- *                       schema:
- *                           type: object
- *                           properties:
- *                                  name:
- *                                      type: string
- *                                      example: English
- *                                  level:
- *                                      type: string
- *                                      example: advanced
+ *     summary: Delete a language of the freelancer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 example: 98039295-6af2-465e-a254-0f24d40dc672
+ *               name:
+ *                 type: string
+ *                 example: English
+ *               level:
+ *                 type: string
+ *                 example: advanced
  *     responses:
  *       200:
- *         description: freelancer language deleted
+ *         description: Freelancer language deleted
  *       404:
- *         description: freelancer or language not found
+ *         description: Freelancer or language not found
  *       500:
  *         description: Server error
  */

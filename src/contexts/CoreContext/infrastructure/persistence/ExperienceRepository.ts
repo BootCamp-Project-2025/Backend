@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { injectable } from "tsyringe";
 import { Experience } from "../../domain/entities/Experience";
 import { IExperienceRepository } from "../../domain/interfaces/repositories/IExperienceRepository";
-import ExperienceMapper from "../../mappers/ExperienceMapper";
 import prismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { ExperienceDTO } from "../../domain/interfaces/dtos/IExperienceDto";
+import { ExperienceMapper } from "../../mappers/ExperienceMapper";
 
 @injectable()
 export class ExperienceRepository implements IExperienceRepository {
@@ -15,81 +13,79 @@ export class ExperienceRepository implements IExperienceRepository {
       const experiences = await prismaClient.experience.findMany({
         where: { freelancerId },
       });
+
       return experiences.map((exp) =>
-        ExperienceMapper.persistenceToDomain(exp)
+        ExperienceMapper.prototype.mapPersistanceToDomain(exp)
       );
     } catch (error) {
+      console.log(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error fetching experiences"
+        "Error fetching experiences."
       );
     }
   }
 
   async findById(experienceId: string): Promise<Experience | null> {
     try {
-      console.log(experienceId);
       const experience = await prismaClient.experience.findUnique({
         where: { id: experienceId },
       });
 
       if (!experience) {
-        throw new ApiError(StatusCodes.NOT_FOUND, "Experience not found");
+        return null;
       }
 
-      return ExperienceMapper.persistenceToDomain(experience);
+      return ExperienceMapper.prototype.mapPersistanceToDomain(experience);
     } catch (error) {
+      console.log(error);
       if (error instanceof ApiError) throw error;
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error retrieving experience"
+        "Error retrieving experience."
       );
     }
   }
 
-  async create(
-    experience: Experience,
-    freelancerId: string
-  ): Promise<Experience> {
+  async create(experience: Experience): Promise<Experience> {
     try {
-      const experienceData = ExperienceMapper.toPersistence(
-        experience,
-        freelancerId
-      );
+      const data =
+        ExperienceMapper.prototype.mapDomainToPersistance(experience);
 
-      const newExperience = await prismaClient.experience.create({
-        data: experienceData,
+      const created = await prismaClient.experience.create({
+        data,
       });
 
-      return ExperienceMapper.persistenceToDomain(newExperience);
+      return ExperienceMapper.prototype.mapPersistanceToDomain(created);
     } catch (error) {
+      console.log(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error creating experience"
+        "Error creating experience."
       );
     }
   }
 
   async update(
     experienceId: string,
-    experience: Experience,
-    freelancerId: string
-  ): Promise<void> {
+    experience: Experience
+  ): Promise<Experience> {
     try {
-      const experienceData = ExperienceMapper.toPersistence(
-        experience,
-        freelancerId
-      );
+      const data =
+        ExperienceMapper.prototype.mapDomainToPersistance(experience);
 
-      await prismaClient.experience.update({
+      const updatedExperience = await prismaClient.experience.update({
         where: { id: experienceId },
-        data: experienceData,
+        data,
       });
+      return ExperienceMapper.prototype.mapPersistanceToDomain(
+        updatedExperience
+      );
     } catch (error) {
       console.log(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error updating experience"
+        "Error updating experience."
       );
     }
   }
@@ -100,9 +96,10 @@ export class ExperienceRepository implements IExperienceRepository {
         where: { id: experienceId },
       });
     } catch (error) {
+      console.log(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error deleting experience"
+        "Error deleting experience."
       );
     }
   }

@@ -1,84 +1,129 @@
 import { inject, injectable } from "tsyringe";
-import { Experience } from "../../domain/entities/Experience";
-import { ExperienceDTO } from "../../domain/interfaces/dtos/IExperienceDto";
-import ExperienceMapper from "../../mappers/ExperienceMapper";
-import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { IExperiences } from "../../domain/interfaces/services/IExperienceService";
+import { IExperienceDTO } from "../../domain/interfaces/dtos/IExperienceDto";
+import { Experience } from "../../domain/entities/Experience";
+import { ExperienceMapper } from "../../mappers/ExperienceMapper";
+
 import { GetExperiencesUseCase } from "../useCases/experiences/GetExperienceUseCase";
 import { CreateExperienceUseCase } from "../useCases/experiences/CreateExperienceUseCase";
 import { UpdateExperienceUseCase } from "../useCases/experiences/UpdateExperienceUseCase";
 import { DeleteExperienceUseCase } from "../useCases/experiences/DeleteExperienceUseCase";
 import { GetExperienceByIdUseCase } from "../useCases/experiences/GetExperienceById";
+
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
 @injectable()
 export class ExperienceService implements IExperiences {
   constructor(
     @inject("GetExperiencesUseCase")
-    private getExperiencesUseCase: GetExperiencesUseCase,
+    private readonly getExperiencesUseCase: GetExperiencesUseCase,
+
     @inject("CreateExperienceUseCase")
-    private createExperienceUseCase: CreateExperienceUseCase,
+    private readonly createExperienceUseCase: CreateExperienceUseCase,
+
     @inject("UpdateExperienceUseCase")
-    private updateExperienceUseCase: UpdateExperienceUseCase,
+    private readonly updateExperienceUseCase: UpdateExperienceUseCase,
+
     @inject("DeleteExperienceUseCase")
-    private deleteExperienceUseCase: DeleteExperienceUseCase,
+    private readonly deleteExperienceUseCase: DeleteExperienceUseCase,
+
     @inject("GetExperienceByIdUseCase")
-    private getExperienceByIdUseCase: GetExperienceByIdUseCase
+    private readonly getExperienceByIdUseCase: GetExperienceByIdUseCase
   ) {}
 
-  async getAll(id: string): Promise<ExperienceDTO[]> {
-    const experiences: Experience[] =
-      await this.getExperiencesUseCase.execute(id);
-    return experiences.map(ExperienceMapper.domainToDto);
+  async getAll(freelancerId: string): Promise<IExperienceDTO[]> {
+    try {
+      const experiences: Experience[] =
+        await this.getExperiencesUseCase.execute(freelancerId);
+      return experiences.map(ExperienceMapper.prototype.mapDomainToDto);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error fetching experiences"
+      );
+    }
   }
 
-  async create(
-    experience: ExperienceDTO,
-    freelancerId: string
-  ): Promise<ExperienceDTO> {
-    const newExperience = await this.createExperienceUseCase.execute({
-      experience,
-      freelancerId,
-    });
-    return ExperienceMapper.domainToDto(newExperience);
+  async getById(experienceId: string): Promise<IExperienceDTO> {
+    try {
+      const experience =
+        await this.getExperienceByIdUseCase.execute(experienceId);
+      if (!experience) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Experience not found");
+      }
+      return ExperienceMapper.prototype.mapDomainToDto(experience);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error fetching experience"
+      );
+    }
+  }
+
+  async create(dto: IExperienceDTO): Promise<IExperienceDTO> {
+    try {
+      const newExperience = await this.createExperienceUseCase.execute({
+        experience: dto,
+        freelancerId: dto.freelancerId,
+      });
+      return ExperienceMapper.prototype.mapDomainToDto(newExperience);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error creating experience"
+      );
+    }
+  }
+
+  async update(dto: IExperienceDTO): Promise<IExperienceDTO> {
+    try {
+      if (!dto.id) {
+        throw new ApiError(
+          StatusCodes.BAD_REQUEST,
+          "Experience ID is required for update"
+        );
+      }
+
+      const existing = await this.getExperienceByIdUseCase.execute(dto.id);
+      if (!existing) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Experience not found");
+      }
+
+      const domain = ExperienceMapper.prototype.mapDtoToDomain(dto);
+      const updated = await this.updateExperienceUseCase.execute({
+        experienceId: dto.id,
+        experience: domain,
+        freelancerId: dto.freelancerId,
+      });
+      return ExperienceMapper.prototype.mapDomainToDto(updated);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error updating experience"
+      );
+    }
   }
 
   async delete(experienceId: string): Promise<void> {
-    const savedExperience =
-      await this.getExperienceByIdUseCase.execute(experienceId);
-    if (!savedExperience) {
-      throw new ApiError(StatusCodes.NOT_FOUND, "Experience not found");
-    }
-    return this.deleteExperienceUseCase.execute(experienceId);
-  }
+    try {
+      const existing =
+        await this.getExperienceByIdUseCase.execute(experienceId);
+      if (!existing) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Experience not found");
+      }
 
-  async update(
-    experienceId: string,
-    experience: ExperienceDTO,
-    freelancerId: string
-  ): Promise<void> {
-    const experienceDomain = ExperienceMapper.dtoToDomain(
-      experience,
-      experienceId
-    );
-    const savedExperience =
-      await this.getExperienceByIdUseCase.execute(experienceId);
-    if (!savedExperience) {
-      throw new ApiError(StatusCodes.NOT_FOUND, "Experience not found");
+      await this.deleteExperienceUseCase.execute(experienceId);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error deleting experience"
+      );
     }
-    return this.updateExperienceUseCase.execute({
-      experienceId,
-      experience: experienceDomain,
-      freelancerId,
-    });
-  }
-
-  async getById(experienceId: string): Promise<ExperienceDTO | null> {
-    const experience =
-      await this.getExperienceByIdUseCase.execute(experienceId);
-    if (!experience) {
-      throw new ApiError(StatusCodes.NOT_FOUND, "Experience not found");
-    }
-    return ExperienceMapper.domainToDto(experience);
   }
 }

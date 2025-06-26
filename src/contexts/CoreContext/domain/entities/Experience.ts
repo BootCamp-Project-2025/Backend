@@ -10,6 +10,7 @@ interface ExperienceProps {
   startDate: Date;
   endDate: Date;
   description: string;
+  freelancerId?: string;
 }
 
 export class Experience extends Entity<ExperienceProps> {
@@ -59,6 +60,9 @@ export class Experience extends Entity<ExperienceProps> {
 
   get id(): UniqueEntityID {
     return this._id;
+  }
+  get freelancerId(): string | undefined {
+    return this.props.freelancerId;
   }
 
   get position(): string {

@@ -8,6 +8,6 @@ export interface IExperienceRepository {
     experienceId: string,
     experience: Experience,
     freelancerId: string
-  ): Promise<void>;
+  ): Promise<Experience>;
   delete(experienceId: string): Promise<void>;
 }

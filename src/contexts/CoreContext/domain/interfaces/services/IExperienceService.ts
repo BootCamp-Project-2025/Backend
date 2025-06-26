@@ -1,24 +1,9 @@
-import { ExperienceDTO } from "../dtos/IExperienceDto";
-
-/* export interface IExperiences {
-  getAll(): Experience[];
-  add(experience: Experience): void;
-  removeById(id: string): void;
-  count(): number;
-}
- */
+import { IExperienceDTO } from "../dtos/IExperienceDto";
 
 export interface IExperiences {
-  getAll(id: string): Promise<ExperienceDTO[]>;
-  create(
-    experience: ExperienceDTO,
-    freelancerId: string
-  ): Promise<ExperienceDTO>;
+  getAll(freelancerId: string): Promise<IExperienceDTO[]>;
+  getById(experienceId: string): Promise<IExperienceDTO>;
+  create(dto: IExperienceDTO): Promise<IExperienceDTO>;
+  update(dto: IExperienceDTO): Promise<IExperienceDTO>;
   delete(experienceId: string): Promise<void>;
-  update(
-    experienceId: string,
-    experience: ExperienceDTO,
-    freelancerId: string
-  ): Promise<void>;
-  getById(experienceId: string): Promise<ExperienceDTO | null>;
 }

@@ -35,6 +35,17 @@ import { CreateCertificationUseCase } from "./contexts/CoreContext/application/u
 import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/UpdateCertificationUseCase";
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
 import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
+import { ExperienceRepository } from "./contexts/CoreContext/infrastructure/persistence/ExperienceRepository";
+import { IExperienceRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IExperienceRepository";
+import { GetExperiencesUseCase } from "./contexts/CoreContext/application/useCases/experiences/GetExperienceUseCase";
+import { CreateExperienceUseCase } from "./contexts/CoreContext/application/useCases/experiences/CreateExperienceUseCase";
+import { UpdateExperienceUseCase } from "./contexts/CoreContext/application/useCases/experiences/UpdateExperienceUseCase";
+import { DeleteExperienceUseCase } from "./contexts/CoreContext/application/useCases/experiences/DeleteExperienceUseCase";
+import { GetExperienceByIdUseCase } from "./contexts/CoreContext/application/useCases/experiences/GetExperienceById";
+import { IExperiences } from "./contexts/CoreContext/domain/interfaces/services/IExperienceService";
+import { IExperienceController } from "./contexts/CoreContext/domain/interfaces/controllers/IExperienceController";
+import { ExperienceService } from "./contexts/CoreContext/application/services/ExperienceService";
+import { ExperienceController } from "./contexts/CoreContext/presentation/http/controllers/ExperienceController";
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -137,6 +148,46 @@ container.registerSingleton<ICertificationService>(
 container.registerSingleton<ICertificationController>(
   "ICertificationController",
   CertificationController
+);
+
+container.register<IExperienceRepository>(
+  "IExperienceRepository",
+  ExperienceRepository
+);
+
+container.registerSingleton<GetExperiencesUseCase>(
+  "GetExperiencesUseCase",
+  GetExperiencesUseCase
+);
+
+container.registerSingleton<CreateExperienceUseCase>(
+  "CreateExperienceUseCase",
+  CreateExperienceUseCase
+);
+
+container.registerSingleton<UpdateExperienceUseCase>(
+  "UpdateExperienceUseCase",
+  UpdateExperienceUseCase
+);
+
+container.registerSingleton<DeleteExperienceUseCase>(
+  "DeleteExperienceUseCase",
+  DeleteExperienceUseCase
+);
+
+container.registerSingleton<GetExperienceByIdUseCase>(
+  "GetExperienceByIdUseCase",
+  GetExperienceByIdUseCase
+);
+
+container.registerSingleton<IExperiences>(
+  "IExperienceService",
+  ExperienceService
+);
+
+container.registerSingleton<IExperienceController>(
+  "IExperienceController",
+  ExperienceController
 );
 
 export { container };

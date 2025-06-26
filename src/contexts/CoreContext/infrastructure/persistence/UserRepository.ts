@@ -77,6 +77,6 @@ export class UserRepository implements IUserRepository {
       },
     });
     if (!user) return null;
-    return UserMapper.persistanceToDomain(user);
+    return UserMapper.persistanceTodomain(user);
   }
 }

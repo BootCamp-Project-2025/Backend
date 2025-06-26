@@ -14,8 +14,13 @@ export class CertificationMapper extends ArrayToArrayMapper<
     institution: string;
     year: Date;
   } {
-    console.log(origin);
-    throw new Error("Method not implemented.");
+    return {
+      id: origin.id.toString(),
+      freelancerId: "freelancerId",
+      certification: origin.certification,
+      institution: origin.institution,
+      year: new Date(origin.year, 0, 1),
+    };
   }
   mapPersistanceToDomain(origin: {
     certification: string;
@@ -32,5 +37,14 @@ export class CertificationMapper extends ArrayToArrayMapper<
       },
       new UniqueEntityID(origin.id)
     );
+  }
+
+  mapDomainToDto(origin: Certification) {
+    return {
+      id: origin.id.toString(),
+      certification: origin.certification,
+      institution: origin.institution,
+      year: origin.year,
+    };
   }
 }

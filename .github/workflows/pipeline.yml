@@ -71,7 +71,7 @@ jobs:
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
 
       - name: Build Docker image
-        run: docker build --build-arg API_HOST=${{secrets.API_HOST}} -t backend-repo:dev .
+        run: docker build --build-arg API_HOST=${{secrets.API_HOST}} --build-arg API_PORT=${{secrets.API_PORT}} -t backend-repo:dev .
 
       - name: Tag Docker image
         run: docker tag backend-repo:dev projectdev2025.azurecr.io/backend-repo:dev

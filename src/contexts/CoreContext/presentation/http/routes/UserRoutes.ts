@@ -8,10 +8,19 @@ const router = Router();
 
 /**
  * @openapi
- * /users/:id:
+ * /users/{id}:
  *  get:
- *      summary: Retrieves the user with the id :id
- *      responses:
+ *     summary: Retrieves the user with the id :id
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
  *          200:
  *              description: Everything is ok and returns user
  *          500:
@@ -24,6 +33,8 @@ router.get("/:id", controller.get);
  * @openapi
  * /users/:
  *  post:
+ *      tags:
+ *       - User
  *      summary: saves the user with the id :id
  *      requestBody:
  *               required: true
@@ -52,10 +63,19 @@ router.post("/", controller.post);
 
 /**
  * @openapi
- * /users/:id/freelance:
+ * /users/{id}/freelance:
  *  put:
- *      summary: Enables the user as freelancer with the id :id
- *      responses:
+ *     summary: Enables the user as freelancer with the id :id
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
  *          200:
  *              description: User enabled and freelancer profile created
  *          500:

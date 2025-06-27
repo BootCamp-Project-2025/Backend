@@ -38,6 +38,11 @@ export class User extends AggregateRoot<UserProps> {
   get createdAt(): Date {
     return this.props.createdAt;
   }
+
+  get profilePicture() {
+    return this.props.profilePictureSrc;
+  }
+
   // Getters per profile
   get isClient(): boolean {
     return this.roles.includes("CLIENT");

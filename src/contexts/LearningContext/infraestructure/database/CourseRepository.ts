@@ -1,6 +1,6 @@
 import { ICourseRepository } from "../../domain/interfaces/ICourseRepository";
 import { Course } from "../../domain/aggregates/Course";
-import prismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
+import prismaClient from "../../../Shared/infrastructure/database/PrismaClient"; // askDaniel
 import { CourseMapper } from "../../mappers/CourseMapper";
 import { injectable } from "tsyringe";
 

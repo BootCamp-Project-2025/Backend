@@ -10,7 +10,7 @@ import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFre
 
 @injectable()
 export class EditLanguageUseCase
-  implements IUseCase<CreateLanguageDto, Language>
+  implements IUseCase<CreateLanguageDto, void | Language>
 {
   constructor(
     @inject("ILanguageRepository")
@@ -22,7 +22,7 @@ export class EditLanguageUseCase
   async execute({
     language,
     freelancerId,
-  }: CreateLanguageDto): Promise<Language> {
+  }: CreateLanguageDto): Promise<void | Language> {
     try {
       const freelancer: Freelancer | null =
         await this.freelancerRepository.getById(freelancerId);
@@ -35,7 +35,7 @@ export class EditLanguageUseCase
         }
 
         freelancer.languages.edit(language);
-        return await this.languageRepository.editLanguage(language);
+        return await this.languageRepository.update("", language);
       }
 
       throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");

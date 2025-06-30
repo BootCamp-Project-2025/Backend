@@ -2,7 +2,6 @@ import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
 import { CreateLanguageDto } from "../../domain/interfaces/dtos/CreateLanguageDto";
 import { ILanguageRepository } from "../../domain/interfaces/repositories/ILanguageRepositoty";
-import { Language } from "../../domain/entities/Language";
 import { Freelancer } from "../../domain/aggregates/Freelancer";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
@@ -11,7 +10,7 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 @injectable()
 export class DeleteLanguageUseCase
-  implements IUseCase<CreateLanguageDto, Language>
+  implements IUseCase<CreateLanguageDto, void | string>
 {
   constructor(
     @inject("ILanguageRepository")
@@ -23,7 +22,7 @@ export class DeleteLanguageUseCase
   async execute({
     language,
     freelancerId,
-  }: CreateLanguageDto): Promise<Language> {
+  }: CreateLanguageDto): Promise<void | string> {
     try {
       const freelancer: Freelancer | null =
         await this.freelancerRepository.getById(freelancerId);
@@ -35,8 +34,8 @@ export class DeleteLanguageUseCase
           );
         }
         freelancer.languages.remove(language);
-        return await this.languageRepository.deleteLanguage(
-          new UniqueEntityID(language.id.toString())
+        return await this.languageRepository.delete(
+          new UniqueEntityID(language.id.toString()).toString()
         );
       }
 

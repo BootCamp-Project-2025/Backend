@@ -153,9 +153,19 @@ router.put("/:freelancerId/skill", controller.editSkill);
 /**
  * @openapi
  *
- * /freelancers/:freelancerId/languages:
+ * /freelancers/{freelancerId}/languages:
+  
  *  get:
  *      summary: Retrieves the freelancer languages
+ *      tags:
+ *       - Language
+ *      parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
  *      responses:
  *          200:
  *              description: Everything is ok and returns freelancer languages
@@ -167,9 +177,18 @@ router.get("/:freelancerId/languages", languageController.getLanguages);
 
 /**
  * @openapi
- * /freelancers/:freelancerId/languages:
+ * /freelancers/{freelancerId}/languages:
  *  post:
  *      summary: add a new language to the freelancer
+ *      tags:
+ *       - Language
+ *      parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
  *      requestBody:
  *               required: true
  *               content:
@@ -195,9 +214,18 @@ router.post("/:freelancerId/languages", languageController.addLanguage);
 
 /**
  * @openapi
- * /freelancers/:freelancerId/languages:
+ * /freelancers/{freelancerId}/languages:
  *   put:
  *     summary: Updates a language of the freelancer
+ *     tags:
+ *       - Language
+ *     parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -227,9 +255,18 @@ router.put("/:freelancerId/languages", languageController.editLanguage);
 
 /**
  * @openapi
- * /freelancers/:freelancerId/languages:
+ * /freelancers/{freelancerId}/languages:
  *   delete:
  *     summary: Delete a language of the freelancer
+ *     tags:
+ *       - Language
+ *     parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:

@@ -15,7 +15,7 @@ describe("EditLanguageUseCase", () => {
   const getByIdMock = jest.fn();
 
   const mockLanguageRepo: ILanguageRepository = {
-    editLanguage: editLanguageMock,
+    update: editLanguageMock,
   } as unknown as ILanguageRepository;
 
   const freelancerMock = {
@@ -41,7 +41,7 @@ describe("EditLanguageUseCase", () => {
 
     expect(result).toEqual(language);
     expect(freelancerMock.languages.edit).toHaveBeenCalledWith(language);
-    expect(editLanguageMock).toHaveBeenCalledWith(language);
+    expect(editLanguageMock).toHaveBeenCalledWith("", language);
   });
 
   it("should throw if language doesn't exist", async () => {

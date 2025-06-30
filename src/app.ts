@@ -4,6 +4,7 @@ import "reflect-metadata";
 import "./di-container";
 import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
 import freelancersRoutes from "./contexts/CoreContext/presentation/http/routes/FreelancersRoutes";
+import certificationRoutes from "./contexts/CoreContext/presentation/http/routes/CertificationRoutes";
 import courseRoutes from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 import userRoutes from "./contexts/CoreContext/presentation/http/routes/UserRoutes";
@@ -22,9 +23,9 @@ app.use("/api/freelancers", freelancersRoutes);
 
 app.use("/api/courses", courseRoutes);
 
-app.use("/api/users", userRoutes);
+app.use("/api/freelancer", certificationRoutes);
 
-app.use("/api/freelancers", freelancersRoutes);
+app.use("/api/users", userRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

@@ -5,7 +5,7 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 describe("DeleteLanguageUseCase", () => {
   const mockLanguageRepo = {
-    deleteLanguage: jest.fn(),
+    delete: jest.fn(),
   };
 
   const mockFreelancerRepo = {
@@ -31,7 +31,7 @@ describe("DeleteLanguageUseCase", () => {
     };
 
     mockFreelancerRepo.getById.mockResolvedValue(freelancerMock);
-    mockLanguageRepo.deleteLanguage.mockResolvedValue(language);
+    mockLanguageRepo.delete.mockResolvedValue(language);
 
     const result = await useCase.execute({ language, freelancerId: "id" });
     expect(result).toEqual(language);

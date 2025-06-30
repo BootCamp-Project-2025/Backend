@@ -9,7 +9,7 @@ import { StatusCodes } from "http-status-codes";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 @injectable()
-export default class languageRepository implements ILanguageRepository {
+export default class LanguageRepository implements ILanguageRepository {
   async getlanguageId(
     freelancerId: string,
     language: Language
@@ -24,22 +24,6 @@ export default class languageRepository implements ILanguageRepository {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "Language not found"
-      );
-    }
-  }
-  async editLanguage(language: Language): Promise<Language> {
-    try {
-      const dbLanguage = LanguageMapper.domainToPersistance(language);
-      await PrismaClient.language.update({
-        where: { id: language.id.toString() },
-        data: { level: dbLanguage.level },
-      });
-
-      return language;
-    } catch {
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Language could not be updated"
       );
     }
   }
@@ -64,20 +48,6 @@ export default class languageRepository implements ILanguageRepository {
       );
     }
   }
-  async deleteLanguage(languageId: UniqueEntityID): Promise<Language> {
-    try {
-      const deletedLanguage = await PrismaClient.language.delete({
-        where: { id: languageId.toString() },
-      });
-
-      return LanguageMapper.persistanceTodomain(deletedLanguage);
-    } catch {
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Language could not be deleted"
-      );
-    }
-  }
   async getLanguages(freelancerId: string): Promise<Language[]> {
     try {
       const languagesDb = await PrismaClient.language.findMany({
@@ -97,13 +67,37 @@ export default class languageRepository implements ILanguageRepository {
   getById(id: string): Promise<Language | null> {
     throw new Error("Method not implemented.");
   }
-  delete(id: string): Promise<string | void> {
+  async delete(id: string): Promise<string | void> {
+    try {
+      await PrismaClient.language.delete({
+        where: { id: id },
+      });
+
+      return "Language deleted";
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Language could not be deleted"
+      );
+    }
+  }
+  async create(object: Language): Promise<Language> {
     throw new Error("Method not implemented.");
   }
-  create(object: Language): Promise<Language> {
-    throw new Error("Method not implemented.");
-  }
-  update(id: string, object: Language): Promise<Language> {
-    throw new Error("Method not implemented.");
+  async update(id: string, object: Language): Promise<Language> {
+    try {
+      const dbLanguage = LanguageMapper.domainToPersistance(object);
+      await PrismaClient.language.update({
+        where: { id: object.id.toString() },
+        data: { level: dbLanguage.level },
+      });
+
+      return object;
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Language could not be updated"
+      );
+    }
   }
 }

@@ -196,7 +196,7 @@ container.registerSingleton<ILanguageRepository>(
   "ILanguageRepository",
   LanguageRepository
 );
-container.registerSingleton<IUseCase<CreateLanguageDto, Language>>(
+container.registerSingleton<IUseCase<CreateLanguageDto, void | Language>>(
   "EditLanguageUseCase",
   EditLanguageUseCase
 );
@@ -204,7 +204,7 @@ container.registerSingleton<IUseCase<CreateLanguageDto, Language>>(
   "CreateLanguageUseCase",
   CreateLanguageUseCase
 );
-container.registerSingleton<IUseCase<CreateLanguageDto, Language>>(
+container.registerSingleton<IUseCase<CreateLanguageDto, void | string>>(
   "DeleteLanguageUseCase",
   DeleteLanguageUseCase
 );

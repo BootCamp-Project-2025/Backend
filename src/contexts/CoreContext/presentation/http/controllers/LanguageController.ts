@@ -61,7 +61,10 @@ export default class LanguageController implements ILanguageController {
         language,
         req.params.freelancerId
       );
-      const response = new SuccessResponseEntity(language, StatusCodes.OK);
+      const response = new SuccessResponseEntity(
+        "Language removed",
+        StatusCodes.OK
+      );
       ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) {

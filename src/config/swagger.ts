@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import swaggerJSDoc from "swagger-jsdoc";
 import { SwaggerOptions } from "swagger-ui-express";
 

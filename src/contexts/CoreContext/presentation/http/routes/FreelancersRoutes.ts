@@ -11,9 +11,18 @@ const router = Router();
 /**
  * @openapi
  *
- * /freelancers/:freelancerId/skill:
+ * /freelancers/{freelancerId}/skill:
  *  get:
  *      summary: Retrieves the freelancer skills
+ *      tags:
+ *       - Skill
+ *      parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
  *      responses:
  *          200:
  *              description: Everything is ok and returns user
@@ -25,9 +34,18 @@ router.get("/:freelancerId/skill", controller.getSkills);
 
 /**
  * @openapi
- * /freelancers/:freelancerId/skill:
+ * /freelancers/{freelancerId}/skill:
  *  post:
  *      summary: add a new skill to the freelancer
+ *      tags:
+ *       - Skill
+ *      parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
  *      requestBody:
  *               required: true
  *               content:
@@ -35,7 +53,7 @@ router.get("/:freelancerId/skill", controller.getSkills);
  *                       schema:
  *                           type: object
  *                           properties:
- *                                  skill:
+ *                                  name:
  *                                      type: string
  *                                      example: react
  *                                  level:
@@ -53,9 +71,18 @@ router.post("/:freelancerId/skill", controller.addSkill);
 
 /**
  * @openapi
- * /freelancers/:freelancerId/skill:
+ * /freelancers/{freelancerId}/skill:
  *  delete:
  *      summary: add a new skill to the freelancer
+ *      tags:
+ *       - Skill
+ *      parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
  *      requestBody:
  *               required: true
  *               content:
@@ -63,7 +90,7 @@ router.post("/:freelancerId/skill", controller.addSkill);
  *                       schema:
  *                           type: object
  *                           properties:
- *                                  skill:
+ *                                  name:
  *                                      type: string
  *                                      example: react
  *                                  level:
@@ -84,9 +111,18 @@ router.delete("/:freelancerId/skill", controller.deleteSkill);
 
 /**
  * @openapi
- * /freelancers/:freelancerId/skill:
+ * /freelancers/{freelancerId}/skill:
  *  put:
  *      summary: add a new skill to the freelancer
+ *      tags:
+ *       - Skill
+ *      parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
  *      requestBody:
  *               required: true
  *               content:
@@ -94,7 +130,7 @@ router.delete("/:freelancerId/skill", controller.deleteSkill);
  *                       schema:
  *                           type: object
  *                           properties:
- *                                  skill:
+ *                                  name:
  *                                      type: string
  *                                      example: react
  *                                  level:

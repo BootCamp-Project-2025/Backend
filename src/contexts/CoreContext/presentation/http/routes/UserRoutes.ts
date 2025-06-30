@@ -1,16 +1,26 @@
+import { IUserController } from "@/contexts/CoreContext/domain/interfaces/controllers/IUserController";
 import { Router } from "express";
-import userController from "../UserMain";
+import { container } from "tsyringe";
+
+const controller = container.resolve<IUserController>("IUserController");
 
 const router = Router();
 
-const controller = userController;
-
 /**
  * @openapi
- * /users/:id:
+ * /users/{id}:
  *  get:
- *      summary: Retrieves the user with the id :id
- *      responses:
+ *     summary: Retrieves the user with the id :id
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
  *          200:
  *              description: Everything is ok and returns user
  *          500:
@@ -23,6 +33,8 @@ router.get("/:id", controller.get);
  * @openapi
  * /users/:
  *  post:
+ *      tags:
+ *       - User
  *      summary: saves the user with the id :id
  *      requestBody:
  *               required: true
@@ -51,10 +63,19 @@ router.post("/", controller.post);
 
 /**
  * @openapi
- * /users/:id/freelance:
+ * /users/{id}/freelance:
  *  put:
- *      summary: Enables the user as freelancer with the id :id
- *      responses:
+ *     summary: Enables the user as freelancer with the id :id
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
  *          200:
  *              description: User enabled and freelancer profile created
  *          500:
@@ -62,5 +83,43 @@ router.post("/", controller.post);
  *
  */
 router.put("/:id/freelance", controller.freelance);
+
+/**
+ * @openapi
+ * /users/{id}/profile:
+ *   get:
+ *     summary: Retrieves the profile data of a user (client or freelancer) by ID
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user to retrieve the profile for
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Profile data successfully retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 userName:
+ *                   type: string
+ *                   example: "Pepe"
+ *                 userEmail:
+ *                   type: string
+ *                   example: "pepe@gmail.com"
+ *                 profilePictureSrc:
+ *                   type: string
+ *                   example: "https://cdn.example.com/images/pepe.png"
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.get("/:id/profile", controller.getUserProfile);
 
 export default router;

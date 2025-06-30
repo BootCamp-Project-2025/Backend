@@ -1,7 +1,8 @@
 import swaggerJSDoc from "swagger-jsdoc";
 import { SwaggerOptions } from "swagger-ui-express";
 
-const API_PORT = process.env.API_PORT;
+const API_PORT = process.env.API_PORT ?? 3000;
+const API_HOST = process.env.API_HOST ?? "localhost";
 
 const swaggerOptions: SwaggerOptions = {
   swaggerDefinition: {
@@ -13,7 +14,7 @@ const swaggerOptions: SwaggerOptions = {
     },
     servers: [
       {
-        url: `http://localhost:${API_PORT}/api`,
+        url: `http://40.77.20.173:${API_PORT}/api`,
       },
     ],
   },

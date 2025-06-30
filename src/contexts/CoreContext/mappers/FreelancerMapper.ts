@@ -27,7 +27,7 @@ export default class FreelancerMapper {
         ),
         languages: Languages.create(
           new LanguageMapper().mapArrayPersistanceToDomain(
-            prismaFreelancer.skills
+            prismaFreelancer.languages
           )
         ),
         education: Educations.create(

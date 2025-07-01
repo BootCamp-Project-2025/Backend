@@ -71,7 +71,7 @@ model Freelancer {
 model Client {
   id      String @id @default(uuid())
   userId  String @unique
-  dateOfBirth   DateTime @default(now())
+  dateOfBirth   DateTime?
   country   String @default("")
   phoneNumber   String @default("")
   city  String @default("")

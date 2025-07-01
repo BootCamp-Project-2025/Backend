@@ -56,6 +56,19 @@ import { IEducationController } from "./contexts/CoreContext/domain/interfaces/c
 import EducationController from "./contexts/CoreContext/presentation/http/controllers/EducationController";
 import IEducationRepository from "./contexts/CoreContext/domain/interfaces/repositories/IEducationRepository";
 import EducationRepository from "./contexts/CoreContext/infrastructure/persistence/EducationRepository";
+import { ILanguageRepository } from "./contexts/CoreContext/domain/interfaces/repositories/ILanguageRepositoty";
+import LanguageRepository from "./contexts/CoreContext/infrastructure/persistence/LanguageRepository";
+import { EditLanguageUseCase } from "./contexts/CoreContext/application/useCases/EditLanguageUseCase";
+import { CreateLanguageDto } from "./contexts/CoreContext/domain/interfaces/dtos/CreateLanguageDto";
+import { Language } from "./contexts/CoreContext/domain/entities/Language";
+import { CreateLanguageUseCase } from "./contexts/CoreContext/application/useCases/CreateLanguageUseCase";
+import { DeleteLanguageUseCase } from "./contexts/CoreContext/application/useCases/DeleteLanguageUseCase";
+import { GetLanguagesUseCase } from "./contexts/CoreContext/application/useCases/GetLanguagesUseCase";
+import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/services/ILanguages";
+import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
+import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
+import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
+
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -221,6 +234,38 @@ container.registerSingleton<IUseCase<string, void>>(
 container.registerSingleton<IEducationRepository>(
   "EducationRepository",
   EducationRepository
+);
+
+// Language
+
+container.registerSingleton<ILanguageRepository>(
+  "ILanguageRepository",
+  LanguageRepository
+);
+container.registerSingleton<IUseCase<CreateLanguageDto, void | Language>>(
+  "EditLanguageUseCase",
+  EditLanguageUseCase
+);
+container.registerSingleton<IUseCase<CreateLanguageDto, Language>>(
+  "CreateLanguageUseCase",
+  CreateLanguageUseCase
+);
+container.registerSingleton<IUseCase<CreateLanguageDto, void | string>>(
+  "DeleteLanguageUseCase",
+  DeleteLanguageUseCase
+);
+container.registerSingleton<IUseCase<string, Language[]>>(
+  "GetLanguagesUseCase",
+  GetLanguagesUseCase
+);
+container.registerSingleton<ILanguagesService>(
+  "ILanguagesService",
+  LanguageService
+);
+
+container.registerSingleton<ILanguageController>(
+  "ILanguageController",
+  LanguageController
 );
 
 export { container };

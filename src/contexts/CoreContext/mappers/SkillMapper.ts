@@ -1,5 +1,5 @@
-import { Skill } from "../domain/entities/Skill";
-import { $Enums, Skill as PrismaSkill } from "@/generated/prisma";
+import { Skill, SkillLevel } from "../domain/entities/Skill";
+import { Skill as PrismaSkill } from "@/generated/prisma";
 import { ArrayToArrayMapper } from "./ArrayToArrayMapper";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import ISkillDto from "../domain/interfaces/dtos/ISkillDto";
@@ -8,7 +8,7 @@ export class SkillMapper extends ArrayToArrayMapper<Skill, PrismaSkill> {
   mapDomainToPersistance(origin: Skill): {
     name: string;
     id: string;
-    level: $Enums.SkillLevel;
+    level: SkillLevel;
     freelancerId: string;
   } {
     return {
@@ -21,7 +21,7 @@ export class SkillMapper extends ArrayToArrayMapper<Skill, PrismaSkill> {
   mapPersistanceToDomain(origin: {
     name: string;
     id: string;
-    level: $Enums.SkillLevel;
+    level: SkillLevel;
     freelancerId: string;
   }): Skill {
     return Skill.create(origin, new UniqueEntityID(origin.id));

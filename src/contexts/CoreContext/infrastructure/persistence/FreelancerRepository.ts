@@ -97,6 +97,9 @@ export default class FreelancerRepository implements IFreelancerRepository {
           "freelancer profile not found"
         );
     } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
       console.log(error);
       throw new Error("database error");
     }

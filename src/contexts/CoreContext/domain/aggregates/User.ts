@@ -1,10 +1,10 @@
 import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
-import { UserEmail } from "../valueObjects/UserEmail";
-import { UserId } from "../valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserName } from "../valueObjects/UserName";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { UserEmail } from "../valueObjects/UserEmail";
+import { UserId } from "../valueObjects/UserId";
 
 export type UserRole = "CLIENT" | "FREELANCER";
 
@@ -38,6 +38,11 @@ export class User extends AggregateRoot<UserProps> {
   get createdAt(): Date {
     return this.props.createdAt;
   }
+
+  get profilePicture() {
+    return this.props.profilePictureSrc;
+  }
+
   // Getters per profile
   get isClient(): boolean {
     return this.roles.includes("CLIENT");

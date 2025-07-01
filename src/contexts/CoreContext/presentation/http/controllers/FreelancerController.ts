@@ -7,55 +7,99 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { ISkillService } from "@/contexts/CoreContext/domain/interfaces/services/ISkillService";
+import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
+import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
+import { IFreelancerService } from "@/contexts/CoreContext/domain/interfaces/services/IFreelancerService";
 
 @injectable()
 export default class FreelancerController implements IFreelancerController {
-  constructor(@inject("ISkillService") private skillService: ISkillService) {}
+  constructor(
+    @inject("ISkillService") private skillService: ISkillService,
+    @inject("IFreelancerService")
+    private freelancerService: IFreelancerService
+  ) {}
 
   public editSkill = async (req: Request, res: Response): Promise<void> => {
-    const body: ISkillDto = req.body as ISkillDto;
-    if (body.skillId === undefined)
-      throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
-    const skill: Skill = Skill.create(
-      { ...body, freelancerId: req.params.freelancerId },
-      new UniqueEntityID(body.skillId)
-    );
-    await this.skillService.editSkill(skill);
-    res.status(200).json();
+    try {
+      const body: ISkillDto = req.body as ISkillDto;
+      if (body.skillId === undefined)
+        throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
+      const skill: Skill = Skill.create(
+        { ...body, freelancerId: req.params.freelancerId },
+        new UniqueEntityID(body.skillId)
+      );
+      const data: ISkillDto = await this.skillService.editSkill(skill);
+      const response = new SuccessResponseEntity(data, StatusCodes.OK);
+      ResponseService.send(res, response);
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "an unknown error occurred "
+      );
+    }
   };
 
   public deleteSkill = async (req: Request, res: Response): Promise<void> => {
-    const body: ISkillDto = req.body as ISkillDto;
-    if (body.skillId === undefined)
-      throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
-    const skill: Skill = Skill.create(
-      { ...body, freelancerId: req.params.freelancerId },
-      new UniqueEntityID(body.skillId)
-    );
-    await this.skillService.deleteSkill(skill);
-    res.status(200).json();
+    try {
+      const body: ISkillDto = req.body as ISkillDto;
+      if (body.skillId === undefined)
+        throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
+      const skill: Skill = Skill.create(
+        { ...body, freelancerId: req.params.freelancerId },
+        new UniqueEntityID(body.skillId)
+      );
+      await this.skillService.deleteSkill(skill);
+      ResponseService.send(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: "",
+      });
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "an unknown error occurred "
+      );
+    }
   };
 
   public getSkills = async (req: Request, res: Response): Promise<void> => {
-    const skills = await this.skillService.getSkills(req.params.freelancerId);
-    res.status(200).json(skills);
+    try {
+      const skills: ISkillDto[] = await this.skillService.getSkills(
+        req.params.freelancerId
+      );
+      const response = new SuccessResponseEntity(skills, StatusCodes.OK);
+      ResponseService.send(res, response);
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "an unknown error occurred "
+      );
+    }
   };
 
   public addSkill = async (req: Request, res: Response): Promise<void> => {
-    const body: ISkillDto = req.body as ISkillDto;
-    const skill: Skill = Skill.create(
-      { ...body, freelancerId: req.params.freelancerId },
-      new UniqueEntityID()
-    );
-    console.log(skill);
-    await this.freelancerService.addSkill(skill);
-    res.status(201).json();
+    try {
+      const body: ISkillDto = req.body as ISkillDto;
+      const skill: Skill = Skill.create(
+        { ...body, freelancerId: req.params.freelancerId },
+        new UniqueEntityID()
+      );
+      const data: ISkillDto = await this.skillService.addSkill(skill);
+      const response = new SuccessResponseEntity(data, StatusCodes.CREATED);
+      ResponseService.send(res, response);
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "an unknown error occurred "
+      );
+    }
   };
 
   public getAbout = async (req: Request, res: Response): Promise<void> => {
     try {
       const freelancerId = req.params.freelancerId;
+
       const about: About | null =
         await this.freelancerService.getAbout(freelancerId);
 
@@ -63,15 +107,16 @@ export default class FreelancerController implements IFreelancerController {
         throw new ApiError(StatusCodes.NOT_FOUND, "About not found");
       }
 
-      res.status(StatusCodes.OK).json({ about: about.value });
-    } catch (error) {
-      if (error instanceof ApiError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        res
-          .status(StatusCodes.INTERNAL_SERVER_ERROR)
-          .json({ message: "Internal server error" });
-      }
+      const response = new SuccessResponseEntity(
+        { about: about.value },
+        StatusCodes.OK
+      );
+      ResponseService.send(res, response);
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "An unknown error occurred"
+      );
     }
   };
 
@@ -87,14 +132,20 @@ export default class FreelancerController implements IFreelancerController {
       const aboutVO = About.create(about);
       await this.freelancerService.updateAbout(freelancerId, aboutVO);
 
-      res
-        .status(StatusCodes.OK)
-        .json({ message: "About updated successfully" });
+      const response = new SuccessResponseEntity(
+        { message: "About updated successfully" },
+        StatusCodes.OK
+      );
+      ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof Error && error.message.includes("About")) {
         throw new ApiError(StatusCodes.BAD_REQUEST, error.message);
       }
-      throw error;
+
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "An unknown error occurred"
+      );
     }
   };
 }

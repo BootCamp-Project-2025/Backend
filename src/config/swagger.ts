@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import swaggerJSDoc from "swagger-jsdoc";
 import { SwaggerOptions } from "swagger-ui-express";
 
-const API_PORT = process.env.API_PORT;
+const API_PORT = process.env.API_PORT ?? 3000;
+const API_HOST = process.env.API_HOST ?? "localhost";
 
 const swaggerOptions: SwaggerOptions = {
   swaggerDefinition: {

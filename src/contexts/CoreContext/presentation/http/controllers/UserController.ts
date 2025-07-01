@@ -4,9 +4,14 @@ import { ICreateUserDto } from "@/contexts/CoreContext/domain/interfaces/dtos/IC
 import { IUserService } from "@/contexts/CoreContext/domain/interfaces/services/IUserService";
 import UserMapper from "@/contexts/CoreContext/mappers/UserMapper";
 import { Request, Response } from "express";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class UserController implements IUserController {
-  constructor(private userService: IUserService) {}
+  constructor(
+    @inject("IUserService")
+    private userService: IUserService
+  ) {}
   freelance = async (req: Request, res: Response) => {
     const user = await this.userService.createFreelanceProfile(req.params.id);
     res.status(200).json(user);
@@ -34,6 +39,21 @@ export class UserController implements IUserController {
     } catch (error) {
       res.status(500).json(error);
       console.log(error);
+    }
+  };
+
+  getUserProfile = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userId = req.params.id;
+      const profile = await this.userService.getClientProfile(userId);
+      if (!profile) {
+        res.status(404).json({ message: "Client Profile not found" });
+        return;
+      }
+      res.status(200).json(profile);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
     }
   };
 }

@@ -54,6 +54,6 @@ export class Skill extends Entity<SkillProps> {
   }
 
   equals(other: Skill): boolean {
-    return this._name.toLowerCase() === other.name.toLowerCase();
+    return this.id.toString() === other.id.toString();
   }
 }

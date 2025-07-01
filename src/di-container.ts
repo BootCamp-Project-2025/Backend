@@ -45,6 +45,18 @@ import { CreateCertificationUseCase } from "./contexts/CoreContext/application/u
 import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/UpdateCertificationUseCase";
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
 import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
+import { ILanguageRepository } from "./contexts/CoreContext/domain/interfaces/repositories/ILanguageRepositoty";
+import LanguageRepository from "./contexts/CoreContext/infrastructure/persistence/LanguageRepository";
+import { EditLanguageUseCase } from "./contexts/CoreContext/application/useCases/EditLanguageUseCase";
+import { CreateLanguageDto } from "./contexts/CoreContext/domain/interfaces/dtos/CreateLanguageDto";
+import { Language } from "./contexts/CoreContext/domain/entities/Language";
+import { CreateLanguageUseCase } from "./contexts/CoreContext/application/useCases/CreateLanguageUseCase";
+import { DeleteLanguageUseCase } from "./contexts/CoreContext/application/useCases/DeleteLanguageUseCase";
+import { GetLanguagesUseCase } from "./contexts/CoreContext/application/useCases/GetLanguagesUseCase";
+import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/services/ILanguages";
+import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
+import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
+import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
 import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/SyncUserUseCase";
 import { User } from "./contexts/CoreContext/domain/aggregates/User";
 import { IAuthController } from "./contexts/CoreContext/domain/interfaces/controllers/IAuthController";
@@ -187,6 +199,38 @@ container.registerSingleton<ICertificationService>(
 container.registerSingleton<ICertificationController>(
   "ICertificationController",
   CertificationController
+);
+
+// Language
+
+container.registerSingleton<ILanguageRepository>(
+  "ILanguageRepository",
+  LanguageRepository
+);
+container.registerSingleton<IUseCase<CreateLanguageDto, void | Language>>(
+  "EditLanguageUseCase",
+  EditLanguageUseCase
+);
+container.registerSingleton<IUseCase<CreateLanguageDto, Language>>(
+  "CreateLanguageUseCase",
+  CreateLanguageUseCase
+);
+container.registerSingleton<IUseCase<CreateLanguageDto, void | string>>(
+  "DeleteLanguageUseCase",
+  DeleteLanguageUseCase
+);
+container.registerSingleton<IUseCase<string, Language[]>>(
+  "GetLanguagesUseCase",
+  GetLanguagesUseCase
+);
+container.registerSingleton<ILanguagesService>(
+  "ILanguagesService",
+  LanguageService
+);
+
+container.registerSingleton<ILanguageController>(
+  "ILanguageController",
+  LanguageController
 );
 
 //

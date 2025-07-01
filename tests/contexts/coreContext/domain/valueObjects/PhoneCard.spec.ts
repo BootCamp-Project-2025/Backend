@@ -18,12 +18,16 @@ describe("PhoneNumber", () => {
 
     it("should throw if phone is null", () => {
       expect(() => PhoneNumber.create(null as any)).toThrow(ApiError);
-      expect(() => PhoneNumber.create(null as any)).toThrow("Phone is Required");
+      expect(() => PhoneNumber.create(null as any)).toThrow(
+        "Phone is Required"
+      );
     });
 
     it("should throw if phone is undefined", () => {
       expect(() => PhoneNumber.create(undefined as any)).toThrow(ApiError);
-      expect(() => PhoneNumber.create(undefined as any)).toThrow("Phone is Required");
+      expect(() => PhoneNumber.create(undefined as any)).toThrow(
+        "Phone is Required"
+      );
     });
 
     it("should throw if phone is an empty string", () => {
@@ -32,7 +36,9 @@ describe("PhoneNumber", () => {
     });
 
     it("should throw if phone is in an invalid format", () => {
-      expect(() => PhoneNumber.create("abc-def-ghij")).toThrow("Phone is not valid");
+      expect(() => PhoneNumber.create("abc-def-ghij")).toThrow(
+        "Phone is not valid"
+      );
     });
   });
 

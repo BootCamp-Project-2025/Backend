@@ -6,23 +6,24 @@ import { StatusCodes } from "http-status-codes";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import UserMapper from "@/contexts/CoreContext/mappers/UserMapper";
 import { UserController } from "@/contexts/CoreContext/presentation/http/controllers/UserController";
+import { AuthController } from "@/contexts/CoreContext/presentation/http/controllers/AuthController";
 
 jest.mock("@/contexts/Shared/application/services/ResponseService");
 jest.mock("@/contexts/CoreContext/mappers/UserMapper");
 
-describe("UserController.syncUser", () => {
+describe("AuthController.syncUser", () => {
   let userService: any;
-  let controller: UserController;
+  let controller: AuthController;
   let req: any;
   let res: any;
 
   beforeEach(() => {
-    jest.clearAllMocks(); // 🔑 Limpia llamadas e implementaciones anteriores
+    jest.clearAllMocks();
 
     userService = {
       syncUser: jest.fn(),
     };
-    controller = new UserController(userService);
+    controller = new AuthController(userService);
 
     req = {
       user: {
@@ -44,7 +45,7 @@ describe("UserController.syncUser", () => {
       dto: true,
     }));
     (ResponseService.send as jest.Mock).mockImplementation(
-      (_res, _entity) => {}
+      (_res, _entity) => { }
     );
   });
 

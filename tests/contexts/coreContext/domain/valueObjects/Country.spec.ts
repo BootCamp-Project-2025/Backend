@@ -16,7 +16,9 @@ describe("Country", () => {
 
     it("should throw ApiError if value is undefined", () => {
       expect(() => Country.create(undefined as any)).toThrow(ApiError);
-      expect(() => Country.create(undefined as any)).toThrow("Country is required");
+      expect(() => Country.create(undefined as any)).toThrow(
+        "Country is required"
+      );
     });
 
     it("should throw ApiError if value is null", () => {

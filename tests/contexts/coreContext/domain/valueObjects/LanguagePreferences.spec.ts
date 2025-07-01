@@ -16,22 +16,32 @@ describe("LanguagePreference", () => {
 
     it("should throw if language is null", () => {
       expect(() => LanguagePreference.create(null as any)).toThrow(ApiError);
-      expect(() => LanguagePreference.create(null as any)).toThrow("LanguagePreference is required");
+      expect(() => LanguagePreference.create(null as any)).toThrow(
+        "LanguagePreference is required"
+      );
     });
 
     it("should throw if language is undefined", () => {
-      expect(() => LanguagePreference.create(undefined as any)).toThrow(ApiError);
-      expect(() => LanguagePreference.create(undefined as any)).toThrow("LanguagePreference is required");
+      expect(() => LanguagePreference.create(undefined as any)).toThrow(
+        ApiError
+      );
+      expect(() => LanguagePreference.create(undefined as any)).toThrow(
+        "LanguagePreference is required"
+      );
     });
 
     it("should throw if language is empty", () => {
       expect(() => LanguagePreference.create("")).toThrow(ApiError);
-      expect(() => LanguagePreference.create("")).toThrow("LanguagePreference is required");
+      expect(() => LanguagePreference.create("")).toThrow(
+        "LanguagePreference is required"
+      );
     });
 
     it("should throw if language is not valid", () => {
       expect(() => LanguagePreference.create("Klingon")).toThrow(ApiError);
-      expect(() => LanguagePreference.create("Klingon")).toThrow("Invalid LanguagePreference");
+      expect(() => LanguagePreference.create("Klingon")).toThrow(
+        "Invalid LanguagePreference"
+      );
     });
   });
 

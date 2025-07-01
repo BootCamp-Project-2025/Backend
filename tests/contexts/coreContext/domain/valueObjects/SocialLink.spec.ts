@@ -14,17 +14,20 @@ describe("SocialLink", () => {
     });
 
     it("should throw if url is missing", () => {
-      expect(() =>
-        SocialLink.create({ platform: "youtube", url: "" })
-      ).toThrow(ApiError);
-      expect(() =>
-        SocialLink.create({ platform: "youtube", url: "" })
-      ).toThrow("SocialLink is required");
+      expect(() => SocialLink.create({ platform: "youtube", url: "" })).toThrow(
+        ApiError
+      );
+      expect(() => SocialLink.create({ platform: "youtube", url: "" })).toThrow(
+        "SocialLink is required"
+      );
     });
 
     it("should throw if platform is invalid", () => {
       expect(() =>
-        SocialLink.create({ platform: "tiktok" as any, url: "https://tiktok.com" })
+        SocialLink.create({
+          platform: "tiktok" as any,
+          url: "https://tiktok.com",
+        })
       ).toThrow("Invalid SocialLink");
     });
 

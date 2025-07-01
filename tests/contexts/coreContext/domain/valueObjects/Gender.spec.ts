@@ -16,7 +16,9 @@ describe("Gender", () => {
 
     it("should throw ApiError if gender is undefined", () => {
       expect(() => Gender.create(undefined as any)).toThrow(ApiError);
-      expect(() => Gender.create(undefined as any)).toThrow("Gender is required");
+      expect(() => Gender.create(undefined as any)).toThrow(
+        "Gender is required"
+      );
     });
 
     it("should throw ApiError if gender is null", () => {
@@ -26,7 +28,9 @@ describe("Gender", () => {
 
     it("should throw ApiError if gender is invalid", () => {
       expect(() => Gender.create("apache helicopter")).toThrow(ApiError);
-      expect(() => Gender.create("apache helicopter")).toThrow("Invalid Gender");
+      expect(() => Gender.create("apache helicopter")).toThrow(
+        "Invalid Gender"
+      );
     });
   });
 
@@ -48,7 +52,7 @@ describe("Gender", () => {
     });
 
     it("should allow only lowercase 'male', 'female', 'other'", () => {
-      ["male", "female", "other"].forEach(valid => {
+      ["male", "female", "other"].forEach((valid) => {
         expect(() => Gender.create(valid)).not.toThrow();
       });
     });

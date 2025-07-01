@@ -12,25 +12,33 @@ describe("DateOfBirth", () => {
 
     it("should throw ApiError if date is undefined", () => {
       expect(() => DateOfBirth.create(undefined as any)).toThrow(ApiError);
-      expect(() => DateOfBirth.create(undefined as any)).toThrow("Date of birth required");
+      expect(() => DateOfBirth.create(undefined as any)).toThrow(
+        "Date of birth required"
+      );
     });
 
     it("should throw ApiError if date is null", () => {
       expect(() => DateOfBirth.create(null as any)).toThrow(ApiError);
-      expect(() => DateOfBirth.create(null as any)).toThrow("Date of birth required");
+      expect(() => DateOfBirth.create(null as any)).toThrow(
+        "Date of birth required"
+      );
     });
 
     it("should throw ApiError if date is in the future", () => {
       const futureDate = new Date();
       futureDate.setDate(futureDate.getDate() + 1);
       expect(() => DateOfBirth.create(futureDate)).toThrow(ApiError);
-      expect(() => DateOfBirth.create(futureDate)).toThrow("Invalid date of birth");
+      expect(() => DateOfBirth.create(futureDate)).toThrow(
+        "Invalid date of birth"
+      );
     });
 
     it("should throw ApiError if date is before 1990-01-01", () => {
       const oldDate = new Date("1985-10-10");
       expect(() => DateOfBirth.create(oldDate)).toThrow(ApiError);
-      expect(() => DateOfBirth.create(oldDate)).toThrow("Invalid date of birth");
+      expect(() => DateOfBirth.create(oldDate)).toThrow(
+        "Invalid date of birth"
+      );
     });
   });
 

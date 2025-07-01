@@ -9,10 +9,13 @@ import { injectable } from "tsyringe";
 
 injectable();
 export default class EducationRepository implements IEducationRepository {
-  create(object: Education): Promise<void | Education> {
+  save(freelancer: Freelancer): Promise<Education> {
     throw new Error("Method not implemented.");
   }
-  async add(education: Education): Promise<Education> {
+  add(education: Education): Education | Promise<Education> {
+    throw new Error("Method not implemented.");
+  }
+  async create(education: Education): Promise<Education> {
     try {
       const educationPersistence =
         educationMapper.mapDomainToPersistance(education);
@@ -53,9 +56,6 @@ export default class EducationRepository implements IEducationRepository {
       if (error as ApiError) throw error;
       else throw new ApiError();
     }
-  }
-  async save(freelancer: Freelancer): Promise<Education> {
-    throw new Error("Method not implemented.");
   }
   async getEducationsById(freelancerId: string): Promise<Education[]> {
     throw new Error("Method not implemented.");

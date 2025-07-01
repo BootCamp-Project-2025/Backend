@@ -69,7 +69,6 @@ import LanguageService from "./contexts/CoreContext/application/services/Languag
 import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
 
-
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
 

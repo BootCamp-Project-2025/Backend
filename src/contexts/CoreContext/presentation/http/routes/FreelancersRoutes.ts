@@ -149,7 +149,6 @@ router.delete("/:freelancerId/skill", controller.deleteSkill);
  */
 router.put("/:freelancerId/skill", controller.editSkill);
 
-
 router.use("/:freelancerId/educations", educationRoutes);
 
 //---------Language

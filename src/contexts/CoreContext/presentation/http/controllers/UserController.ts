@@ -16,7 +16,7 @@ export class UserController implements IUserController {
   constructor(
     @inject("IUserService")
     private userService: IUserService
-  ) {}
+  ) { }
   freelance = async (req: Request, res: Response) => {
     const user = await this.userService.createFreelanceProfile(req.params.id);
     res.status(200).json(user);
@@ -65,7 +65,6 @@ export class UserController implements IUserController {
   syncUser = async (req: Request, res: Response) => {
     try {
       const tokenData = req.user;
-      console.log("Token Data:", tokenData);
       if (!tokenData) {
         throw new ApiError(StatusCodes.UNAUTHORIZED, "Unauthorized");
       }

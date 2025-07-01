@@ -1,5 +1,4 @@
 import { ICourseService } from "../../domain/interfaces/ICourseService";
-import { CreateCourseUseCase } from "../useCases/CreateCourseUseCase";
 import { Course } from "../../domain/aggregates/Course";
 import { CourseDTO, CourseIdDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
@@ -20,7 +19,7 @@ export class CourseService implements ICourseService {
 
     @inject("DeleteCourseUseCase")
     private readonly deleteCourseUseCase: IUseCase<string, void>
-  ) { }
+  ) {}
 
   async getAllCourses(): Promise<CourseIdDTO[]> {
     const courses = await this.getAllCoursesUseCase.execute();

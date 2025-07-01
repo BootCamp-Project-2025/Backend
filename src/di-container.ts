@@ -47,6 +47,10 @@ import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/u
 import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
 import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/SyncUserUseCase";
 import { User } from "./contexts/CoreContext/domain/aggregates/User";
+import { IAuthController } from "./contexts/CoreContext/domain/interfaces/controllers/IAuthController";
+import { AuthController } from "./contexts/CoreContext/presentation/http/controllers/AuthController";
+import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
+import { AuthService } from "./contexts/CoreContext/application/services/AuthService";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -184,5 +188,10 @@ container.registerSingleton<ICertificationController>(
   "ICertificationController",
   CertificationController
 );
+
+//
+
+container.registerSingleton<IAuthService>("IAuthService", AuthService);
+container.registerSingleton<IAuthController>("IAuthController", AuthController);
 
 export { container };

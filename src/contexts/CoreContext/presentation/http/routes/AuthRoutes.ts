@@ -1,9 +1,8 @@
-import { IUserController } from "@/contexts/CoreContext/domain/interfaces/controllers/IUserController";
 import { container } from "tsyringe";
 import { Router } from "express";
 import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
-const controller = container.resolve<IUserController>("IUserController");
-
+import { IAuthController } from "@/contexts/CoreContext/domain/interfaces/controllers/IAuthController";
+const controller = container.resolve<IAuthController>("IAuthController");
 const router = Router();
 /**
  *  @openapi

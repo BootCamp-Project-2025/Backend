@@ -3,12 +3,7 @@ import { IUserController } from "@/contexts/CoreContext/domain/interfaces/contro
 import { ICreateUserDto } from "@/contexts/CoreContext/domain/interfaces/dtos/ICreateUserDto";
 import { IUserService } from "@/contexts/CoreContext/domain/interfaces/services/IUserService";
 import UserMapper from "@/contexts/CoreContext/mappers/UserMapper";
-import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
-import { ErrorResponseEntity } from "@/contexts/Shared/domain/entity/ErrorResponseEntity";
-import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
-import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -59,40 +54,6 @@ export class UserController implements IUserController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
-    }
-  };
-
-  syncUser = async (req: Request, res: Response) => {
-    try {
-      const tokenData = req.user;
-      if (!tokenData) {
-        throw new ApiError(StatusCodes.UNAUTHORIZED, "Unauthorized");
-      }
-
-      const dto: ICreateUserDto = {
-        id: tokenData.id ?? "Unknown ID",
-        userName: tokenData.name ?? "Unknown User",
-        userEmail: tokenData.email ?? "Unknown Email",
-        profilePictureSrc: "https://example.com/default-profile.png",
-      };
-
-      const user: User = UserMapper.createUserDtoTodomain(dto);
-
-      const data = await this.userService.syncUser(user);
-      const response = new SuccessResponseEntity(
-        UserMapper.domainToGetUserDto(data),
-        StatusCodes.CREATED,
-        "User created successfully"
-      );
-      ResponseService.send(res, response);
-    } catch {
-      ResponseService.send(
-        res,
-        new ErrorResponseEntity(
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          "Internal server error"
-        )
-      );
     }
   };
 }

@@ -39,7 +39,6 @@ declare module "express" {
 export function verifyToken(requiredRoles: string[] = []): RequestHandler {
   return (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(" ")[1];
-    console.log("Token:", token);
     if (!token) {
       const error = new ErrorResponseEntity(
         StatusCodes.UNAUTHORIZED,

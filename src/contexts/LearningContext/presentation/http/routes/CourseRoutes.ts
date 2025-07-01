@@ -1,14 +1,11 @@
 import { Router } from "express";
 import { container } from "tsyringe";
 import { CourseController } from "../controllers/CourseController";
-import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 
 const courseRouter = Router();
 const controller = container.resolve(CourseController);
 
-courseRouter.use(verifyToken(["roles"]));
-
-/**)
+/**
  * @openapi
  * /courses:
  *   get:

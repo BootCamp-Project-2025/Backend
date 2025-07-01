@@ -22,8 +22,8 @@ export class CourseService implements ICourseService {
     private readonly updateCourseUseCase: IUseCase<CourseIdDTO, Course>,
 
     @inject("DeleteCourseUseCase")
-    private readonly deleteCourseUseCase: IUseCase<string, void>,
-  ) { }
+    private readonly deleteCourseUseCase: IUseCase<string, void>
+  ) {}
 
   async getAllCourses(): Promise<CourseIdDTO[]> {
     const courses = await this.getAllCoursesUseCase.execute();

@@ -8,7 +8,7 @@ import { inject, injectable } from "tsyringe";
 export class CourseController implements ICourseController {
   constructor(
     @inject("ICourseService") private readonly courseService: ICourseService
-  ) { }
+  ) {}
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -34,7 +34,10 @@ export class CourseController implements ICourseController {
   /**
    * PUT /courses/:id
    */
-  public updateCourse = async (req: Request, res: Response): Promise<Response> => {
+  public updateCourse = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
     try {
       const { id } = req.params;
       const dto = req.body as CourseDTO;
@@ -50,7 +53,10 @@ export class CourseController implements ICourseController {
   /**
    * DELETE /courses/:id
    */
-  public deleteCourse = async (req: Request, res: Response): Promise<Response> => {
+  public deleteCourse = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
     try {
       const { id } = req.params;
       await this.courseService.deleteCourse(id);

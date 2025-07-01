@@ -44,7 +44,7 @@ describe("AuthController.syncUser", () => {
       dto: true,
     }));
     (ResponseService.send as jest.Mock).mockImplementation(
-      (_res, _entity) => { }
+      (_res, _entity) => {}
     );
   });
 

@@ -17,7 +17,7 @@ describe("Freelancer Entity", () => {
   it("should create a valid Freelancer with all properties", () => {
     const userId = UserId.create(new UniqueEntityID());
 
-    const about = About.create(
+    const about = About.update(
       "Passionate full-stack developer with 5+ years of experience."
     );
 

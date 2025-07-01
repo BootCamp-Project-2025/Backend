@@ -22,7 +22,7 @@ export class About extends ValueObject<AboutProps> {
     return text.trim();
   }
 
-  public static create(text: string): About {
+  public static update(text: string): About {
     const cleaned = this.format(text);
 
     if (cleaned.length < this.MIN_LENGTH) {

@@ -344,8 +344,8 @@ router.get("/:freelancerId/about", controller.getAbout);
  *         description: About section updated
  *       404:
  *         description: Freelancer profile not found
- *       500:
- *         description: Server error
+ *       400:
+ *         description: Bad request error
  */
 router.put("/:freelanceId/about", controller.updateAbout);
 

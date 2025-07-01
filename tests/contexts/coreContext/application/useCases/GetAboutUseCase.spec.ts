@@ -12,7 +12,7 @@ describe("GetAboutUseCase", () => {
   beforeEach(() => {
     aboutRepository = {
       get: jest.fn(),
-      create: jest.fn(),
+      update: jest.fn(),
     };
 
     useCase = new GetAboutUseCase(aboutRepository);
@@ -20,7 +20,7 @@ describe("GetAboutUseCase", () => {
 
   it("should return About when repository resolves", async () => {
     const freelancerId = "freelancer-123";
-    const about = About.create("A".repeat(60));
+    const about = About.update("A".repeat(60));
 
     aboutRepository.get.mockResolvedValue(about);
 

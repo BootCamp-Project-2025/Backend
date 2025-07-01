@@ -129,7 +129,7 @@ export default class FreelancerController implements IFreelancerController {
         throw new ApiError(StatusCodes.BAD_REQUEST, "About text is required");
       }
 
-      const aboutVO = About.create(about);
+      const aboutVO = About.update(about);
       await this.freelancerService.updateAbout(freelancerId, aboutVO);
 
       const response = new SuccessResponseEntity(

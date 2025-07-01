@@ -25,7 +25,7 @@ describe("User Aggregate", () => {
   //Client
   const client = Client.create({ userId });
 
-  const about = About.create(
+  const about = About.update(
     "Passionate full-stack developer with 5+ years of experience."
   );
 

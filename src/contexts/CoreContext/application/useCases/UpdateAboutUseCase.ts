@@ -20,7 +20,7 @@ export default class UpdateAboutUseCase implements IUseCase<Input, void> {
     const { freelancerId, about } = input;
 
     try {
-      this.aboutRepository.create(freelancerId, about);
+      this.aboutRepository.update(freelancerId, about);
     } catch (error) {
       if (error instanceof ApiError) throw error;
       throw new ApiError(

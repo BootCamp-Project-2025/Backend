@@ -40,7 +40,7 @@ describe("testing AddSkillUseCase component to add skills to freelancer", () => 
     const skills: Skill[] = [];
     const emptyFreelancer: Freelancer = Freelancer.create({
       userId: UserId.create(new UniqueEntityID()),
-      about: About.create(
+      about: About.update(
         "Lorem ipsum dolor sit amet, consectetur adipiscing."
       ),
       skills: Skills.create(skills),
@@ -69,7 +69,7 @@ describe("testing AddSkillUseCase component to add skills to freelancer", () => 
     );
     const emptyFreelancer: Freelancer = Freelancer.create({
       userId: UserId.create(new UniqueEntityID()),
-      about: About.create(
+      about: About.update(
         "Lorem ipsum dolor sit amet, consectetur adipiscing."
       ),
       skills: Skills.create(skills),
@@ -97,7 +97,7 @@ describe("testing AddSkillUseCase component to add skills to freelancer", () => 
     ];
     const emptyFreelancer: Freelancer = Freelancer.create({
       userId: UserId.create(new UniqueEntityID()),
-      about: About.create(
+      about: About.update(
         "Lorem ipsum dolor sit amet, consectetur adipiscing."
       ),
       skills: Skills.create(skills),

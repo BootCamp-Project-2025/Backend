@@ -35,7 +35,7 @@ describe("testing EditSkillUseCase to change the params of a skill", () => {
   } as any;
   const empyFreelancer: Freelancer = Freelancer.create({
     userId: UserId.create(new UniqueEntityID()),
-    about: About.create("Lorem ipsum dolor sit amet, consectetur adipiscing."),
+    about: About.update("Lorem ipsum dolor sit amet, consectetur adipiscing."),
     skills: Skills.create([]),
     languages: Languages.create([]),
     education: Educations.create([]),

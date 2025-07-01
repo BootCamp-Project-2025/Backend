@@ -34,7 +34,7 @@ describe("testing DeleteSkillUseCase to delete skills from freelancer", () => {
   } as any;
   const empyFreelancer: Freelancer = Freelancer.create({
     userId: UserId.create(new UniqueEntityID()),
-    about: About.create("Lorem ipsum dolor sit amet, consectetur adipiscing."),
+    about: About.update("Lorem ipsum dolor sit amet, consectetur adipiscing."),
     skills: Skills.create([]),
     languages: Languages.create([]),
     education: Educations.create([]),

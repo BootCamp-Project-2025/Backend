@@ -17,7 +17,7 @@ export class AboutRepository implements IAboutRepository {
       if (!user) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Not user found");
       }
-      return About.create(user.about);
+      return About.update(user.about);
     } catch (error) {
       console.error(error);
       throw new ApiError(
@@ -27,7 +27,7 @@ export class AboutRepository implements IAboutRepository {
     }
   }
 
-  async create(freelancerId: string, newAbout: About): Promise<void> {
+  async update(freelancerId: string, newAbout: About): Promise<void> {
     try {
       await prismaClient.freelancer.update({
         where: { id: freelancerId },

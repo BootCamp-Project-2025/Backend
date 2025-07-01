@@ -36,8 +36,8 @@ export class AuthController implements IAuthController {
       const data = await this.authService.syncUser(user);
       const response = new SuccessResponseEntity(
         UserMapper.domainToGetUserDto(data),
-        StatusCodes.CREATED,
-        "User created successfully"
+        StatusCodes.OK,
+        "User synced successfully"
       );
       ResponseService.send(res, response);
     } catch (error) {

@@ -44,7 +44,7 @@ describe("AuthController.syncUser", () => {
       dto: true,
     }));
     (ResponseService.send as jest.Mock).mockImplementation(
-      (_res, _entity) => {}
+      (_res, _entity) => { }
     );
   });
 
@@ -71,8 +71,8 @@ describe("AuthController.syncUser", () => {
     );
 
     const responseArg = (ResponseService.send as jest.Mock).mock.calls[0][1];
-    expect(responseArg.statusCode).toBe(StatusCodes.CREATED);
-    expect(responseArg.message).toBe("User created successfully");
+    expect(responseArg.statusCode).toBe(StatusCodes.OK);
+    expect(responseArg.message).toBe("User synced successfully");
   });
 
   it("should send UNAUTHORIZED error if req.user is missing", async () => {

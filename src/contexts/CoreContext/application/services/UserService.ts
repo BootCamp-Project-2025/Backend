@@ -6,6 +6,7 @@ import { CreateUserFreelancerProfileUseCase } from "../useCases/CreateUserFreela
 import { CreateUserUseCase } from "../useCases/CreateUserUseCase";
 import { GetUserProfileUseCase } from "../useCases/GetUserProfileUseCase";
 import { GetUserUseCase } from "../useCases/GetUserUseCase";
+import { UpdateUserUseCase } from "../useCases/UpdateUserUseCase";
 
 @injectable()
 export class UserService implements IUserService {
@@ -17,7 +18,9 @@ export class UserService implements IUserService {
     @inject("CreateUserFreelancerProfileUseCase")
     private readonly createUserFreelancerProfileUseCase: CreateUserFreelancerProfileUseCase,
     @inject("GetUserProfileUseCase")
-    private readonly getUserProfileUseCase: GetUserProfileUseCase
+    private readonly getUserProfileUseCase: GetUserProfileUseCase,
+    @inject("UpdateUserUseCase")
+    private readonly updateUserUseCase: UpdateUserUseCase
   ) {}
   async createFreelanceProfile(id: string): Promise<User> {
     const updatedUser =
@@ -37,8 +40,8 @@ export class UserService implements IUserService {
   getAll(): Promise<User[]> {
     throw new Error("Method not implemented.");
   }
-  update(): Promise<User> {
-    throw new Error("Method not implemented.");
+  update(id: string, userData: User): Promise<User> {
+    return this.updateUserUseCase.execute({ userId: id, userData });
   }
   async create(user: User): Promise<User> {
     return await this.createUserUseCase.execute(user);

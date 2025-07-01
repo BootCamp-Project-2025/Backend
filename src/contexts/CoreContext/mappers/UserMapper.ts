@@ -67,6 +67,7 @@ export default class UserMapper {
       id: user.id.toString(),
       freelancerProfile: user.props.freelancerId?.toString(),
       clientProfile: user.props.clientId?.toString(),
+      profilePictureSrc: user.profilePicture ?? undefined,
     };
   }
   static domainToClientProfileDto(user: User): IGetUserProfileDto {

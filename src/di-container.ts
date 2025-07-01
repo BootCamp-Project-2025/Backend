@@ -63,6 +63,7 @@ import { IAuthController } from "./contexts/CoreContext/domain/interfaces/contro
 import { AuthController } from "./contexts/CoreContext/presentation/http/controllers/AuthController";
 import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
 import { AuthService } from "./contexts/CoreContext/application/services/AuthService";
+import { UpdateUserUseCase } from "./contexts/CoreContext/application/useCases/UpdateUserUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -84,6 +85,11 @@ container.registerSingleton<GetUserUseCase>("GetUserUseCase", GetUserUseCase);
 container.registerSingleton<CreateUserFreelancerProfileUseCase>(
   "CreateUserFreelancerProfileUseCase",
   CreateUserFreelancerProfileUseCase
+);
+
+container.registerSingleton<UpdateUserUseCase>(
+  "UpdateUserUseCase",
+  UpdateUserUseCase
 );
 
 container.registerSingleton<IUserService>("IUserService", UserService);

@@ -90,8 +90,19 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  update(): Promise<User> {
-    throw new Error("Method not implemented.");
+  async update(userId: string, userData: User): Promise<User> {
+    const user = await prismaClient.user.update({
+      where: { id: userId },
+      data: {
+        userName: userData.userName.value,
+        profilePicture: userData.profilePicture,
+      },
+      include: {
+        freelancerProfile: true,
+        clientProfile: true,
+      },
+    });
+    return UserMapper.persistanceTodomain(user);
   }
 
   async getUserProfileById(id: string): Promise<User | null> {

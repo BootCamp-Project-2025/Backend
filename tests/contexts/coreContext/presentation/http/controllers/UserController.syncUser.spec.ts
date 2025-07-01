@@ -36,9 +36,16 @@ describe("UserController.syncUser", () => {
       json: jest.fn(),
     };
 
-    (UserMapper.createUserDtoTodomain as jest.Mock).mockImplementation(dto => ({ ...dto, domain: true }));
-    (UserMapper.domainToGetUserDto as jest.Mock).mockImplementation(user => ({ ...user, dto: true }));
-    (ResponseService.send as jest.Mock).mockImplementation((_res, _entity) => { });
+    (UserMapper.createUserDtoTodomain as jest.Mock).mockImplementation(
+      (dto) => ({ ...dto, domain: true })
+    );
+    (UserMapper.domainToGetUserDto as jest.Mock).mockImplementation((user) => ({
+      ...user,
+      dto: true,
+    }));
+    (ResponseService.send as jest.Mock).mockImplementation(
+      (_res, _entity) => {}
+    );
   });
 
   it("should sync user and send success response", async () => {
@@ -54,7 +61,9 @@ describe("UserController.syncUser", () => {
       profilePictureSrc: "https://example.com/default-profile.png",
     });
 
-    expect(userService.syncUser).toHaveBeenCalledWith(expect.objectContaining({ id: "user-id" }));
+    expect(userService.syncUser).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "user-id" })
+    );
     expect(UserMapper.domainToGetUserDto).toHaveBeenCalledWith(syncedUser);
     expect(ResponseService.send).toHaveBeenCalledWith(
       res,

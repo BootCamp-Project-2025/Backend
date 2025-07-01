@@ -6,4 +6,5 @@ export interface IUserService extends IService<User> {
   addRole(role: string): Promise<void>;
   createFreelanceProfile(id: string): Promise<User>;
   getClientProfile(userId: string): Promise<IGetUserProfileDto>;
+  syncUser(user: User): Promise<User>;
 }

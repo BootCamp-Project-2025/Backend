@@ -45,6 +45,8 @@ import { CreateCertificationUseCase } from "./contexts/CoreContext/application/u
 import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/UpdateCertificationUseCase";
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
 import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
+import { CreateUserIfNotExistsUseCase } from "./contexts/CoreContext/application/useCases/CreateUserIfNotExistsUseCase";
+import { User } from "./contexts/CoreContext/domain/aggregates/User";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -71,6 +73,11 @@ container.registerSingleton<CreateUserFreelancerProfileUseCase>(
 container.registerSingleton<IUserService>("IUserService", UserService);
 
 container.registerSingleton<IUserController>("IUserController", UserController);
+
+container.registerSingleton<IUseCase<User, User>>(
+  "CreateUserIfNotExistsUseCase",
+  CreateUserIfNotExistsUseCase
+);
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",

@@ -53,9 +53,35 @@ export class UserRepository implements IUserRepository {
   async create(user: User): Promise<User> {
     try {
       const dbUser = UserMapper.domainToPersistance(user);
-
+      console.log("dbUser", dbUser);
       await prismaClient.user.create({
-        data: { ...dbUser, clientProfile: { create: {} } },
+        data: {
+          ...dbUser,
+          clientProfile: {
+            create: {
+              socialLink: {
+                create: [
+                  {
+                    platform: "LINKEDIN",
+                    url: "",
+                  },
+                  {
+                    platform: "FACEBOOK",
+                    url: "",
+                  },
+                  {
+                    platform: "INSTAGRAM",
+                    url: "",
+                  },
+                  {
+                    platform: "YOUTUBE",
+                    url: "",
+                  },
+                ],
+              },
+            },
+          },
+        },
       });
       return user;
     } catch (error) {

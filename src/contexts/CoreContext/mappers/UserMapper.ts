@@ -10,13 +10,16 @@ import { IGetUserProfileDto } from "../domain/interfaces/dtos/IGetUserProfileDto
 
 export default class UserMapper {
   static createUserDtoTodomain(dto: ICreateUserDto) {
-    return User.create({
-      userName: UserName.create(dto.userName),
-      userEmail: UserEmail.create(dto.userEmail),
-      roles: ["CLIENT"],
-      createdAt: new Date(),
-      profilePictureSrc: dto.profilePictureSrc,
-    });
+    return User.create(
+      {
+        userName: UserName.create(dto.userName),
+        userEmail: UserEmail.create(dto.userEmail),
+        roles: ["CLIENT"],
+        createdAt: new Date(),
+        profilePictureSrc: dto.profilePictureSrc,
+      },
+      new UniqueEntityID(dto.id)
+    );
   }
 
   static domainToPersistance(user: User): PrismaUser {
@@ -33,19 +36,22 @@ export default class UserMapper {
 
   static persistanceTodomain(userDao: UserDao): User {
     try {
-      return User.create({
-        userName: UserName.create(userDao.userName),
-        userEmail: UserEmail.create(userDao.userEmail),
-        roles: userDao.roles,
-        createdAt: userDao.createdAt,
-        profilePictureSrc: userDao.profilePicture ?? undefined,
-        freelancerId: userDao.freelancerProfile
-          ? new UniqueEntityID(userDao.freelancerProfile.id)
-          : undefined,
-        clientId: userDao.freelancerProfile
-          ? new UniqueEntityID(userDao.freelancerProfile.id)
-          : undefined,
-      });
+      return User.create(
+        {
+          userName: UserName.create(userDao.userName),
+          userEmail: UserEmail.create(userDao.userEmail),
+          roles: userDao.roles,
+          createdAt: userDao.createdAt,
+          profilePictureSrc: userDao.profilePicture ?? undefined,
+          freelancerId: userDao.freelancerProfile
+            ? new UniqueEntityID(userDao.freelancerProfile.id)
+            : undefined,
+          clientId: userDao.clientProfile
+            ? new UniqueEntityID(userDao.clientProfile.id)
+            : undefined,
+        },
+        new UniqueEntityID(userDao.id)
+      );
     } catch (e) {
       console.log(e);
       throw new Error("cant mapp persistance to domain");

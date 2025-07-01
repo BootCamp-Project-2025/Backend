@@ -6,6 +6,7 @@ import { CreateUserFreelancerProfileUseCase } from "../useCases/CreateUserFreela
 import { CreateUserUseCase } from "../useCases/CreateUserUseCase";
 import { GetUserProfileUseCase } from "../useCases/GetUserProfileUseCase";
 import { GetUserUseCase } from "../useCases/GetUserUseCase";
+import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 
 @injectable()
 export class UserService implements IUserService {
@@ -17,9 +18,10 @@ export class UserService implements IUserService {
     @inject("CreateUserFreelancerProfileUseCase")
     private readonly createUserFreelancerProfileUseCase: CreateUserFreelancerProfileUseCase,
     @inject("GetUserProfileUseCase")
-    private readonly getUserProfileUseCase: GetUserProfileUseCase
+    private readonly getUserProfileUseCase: GetUserProfileUseCase,
+    @inject("SyncUserUseCase")
+    private readonly syncUserUseCase: IUseCase<User, User>
   ) {}
-
   async createFreelanceProfile(id: string): Promise<User> {
     const updatedUser =
       await this.createUserFreelancerProfileUseCase.execute(id);
@@ -46,5 +48,9 @@ export class UserService implements IUserService {
   }
   async getClientProfile(userId: string): Promise<IGetUserProfileDto> {
     return await this.getUserProfileUseCase.execute(userId);
+  }
+
+  async syncUser(user: User): Promise<User> {
+    return await this.syncUserUseCase.execute(user);
   }
 }

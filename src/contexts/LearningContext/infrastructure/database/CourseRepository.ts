@@ -26,4 +26,17 @@ export class CourseRepository implements ICourseRepository {
     const created = await prismaClient.course.create({ data });
     return CourseMapper.toDomain(created);
   }
+
+  async update(course: Course): Promise<Course> {
+    const data = CourseMapper.toPersistence(course);
+    const updated = await prismaClient.course.update({
+      where: { id: course.id.toString() },
+      data,
+    });
+    return CourseMapper.toDomain(updated);
+  }
+
+  async delete(id: string): Promise<void> {
+    await prismaClient.course.delete({ where: { id } });
+  }
 }

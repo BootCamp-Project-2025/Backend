@@ -45,6 +45,8 @@ import { CreateCertificationUseCase } from "./contexts/CoreContext/application/u
 import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/UpdateCertificationUseCase";
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
 import { GetCertificationByIdUseCase } from "./contexts/CoreContext/application/useCases/certifications/GetCertificationByIdUseCase";
+import { UpdateCourseUseCase } from "@/contexts/LearningContext/application/useCases/UpdateCourseUseCase";
+import { DeleteCourseUseCase } from "@/contexts/LearningContext/application/useCases/DeleteCourseUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -94,6 +96,9 @@ container.registerSingleton<CreateCourseUseCase>(
   "CreateCourseUseCase",
   CreateCourseUseCase
 );
+
+container.registerSingleton("UpdateCourseUseCase", UpdateCourseUseCase);
+container.registerSingleton("DeleteCourseUseCase", DeleteCourseUseCase);
 
 container.registerSingleton<ICourseService>("ICourseService", CourseService);
 

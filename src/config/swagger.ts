@@ -14,7 +14,7 @@ const swaggerOptions: SwaggerOptions = {
     },
     servers: [
       {
-        url: `http://40.77.20.173:3000:${API_PORT}/api`,
+        url: `http://localhost:${API_PORT}/api`,
       },
     ],
   },

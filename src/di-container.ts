@@ -17,6 +17,16 @@ import IUseCase from "./contexts/LearningContext/domain/interfaces/IUseCase";
 import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
+import { IUserRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IUserRepository";
+import { UserRepository } from "./contexts/CoreContext/infrastructure/persistence/UserRepository";
+import { GetUserProfileUseCase } from "./contexts/CoreContext/application/useCases/GetUserProfileUseCase";
+import { IUserController } from "./contexts/CoreContext/domain/interfaces/controllers/IUserController";
+import { IUserService } from "./contexts/CoreContext/domain/interfaces/services/IUserService";
+import { UserService } from "./contexts/CoreContext/application/services/UserService";
+import { UserController } from "./contexts/CoreContext/presentation/http/controllers/UserController";
+import { CreateUserFreelancerProfileUseCase } from "./contexts/CoreContext/application/useCases/CreateUserFreelancerProfileUseCase";
+import { GetUserUseCase } from "./contexts/CoreContext/application/useCases/GetUserUseCase";
+import { CreateUserUseCase } from "./contexts/CoreContext/application/useCases/CreateUserUseCase";
 import FreelancerRepository from "./contexts/CoreContext/infrastructure/persistence/FreelancerRepository";
 import { Skill } from "./contexts/CoreContext/domain/entities/Skill";
 import AddSkillUseCase from "./contexts/CoreContext/application/useCases/AddSkillUseCase";
@@ -46,11 +56,50 @@ import { IExperiences } from "./contexts/CoreContext/domain/interfaces/services/
 import { IExperienceController } from "./contexts/CoreContext/domain/interfaces/controllers/IExperienceController";
 import { ExperienceService } from "./contexts/CoreContext/application/services/ExperienceService";
 import { ExperienceController } from "./contexts/CoreContext/presentation/http/controllers/ExperienceController";
+import { ILanguageRepository } from "./contexts/CoreContext/domain/interfaces/repositories/ILanguageRepositoty";
+import LanguageRepository from "./contexts/CoreContext/infrastructure/persistence/LanguageRepository";
+import { EditLanguageUseCase } from "./contexts/CoreContext/application/useCases/EditLanguageUseCase";
+import { CreateLanguageDto } from "./contexts/CoreContext/domain/interfaces/dtos/CreateLanguageDto";
+import { Language } from "./contexts/CoreContext/domain/entities/Language";
+import { CreateLanguageUseCase } from "./contexts/CoreContext/application/useCases/CreateLanguageUseCase";
+import { DeleteLanguageUseCase } from "./contexts/CoreContext/application/useCases/DeleteLanguageUseCase";
+import { GetLanguagesUseCase } from "./contexts/CoreContext/application/useCases/GetLanguagesUseCase";
+import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/services/ILanguages";
+import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
+import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
+import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
+
+//User
+container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
+
+container.registerSingleton<GetUserUseCase>("GetUserUseCase", GetUserUseCase);
+
+container.registerSingleton<GetUserProfileUseCase>(
+  "GetUserProfileUseCase",
+  GetUserProfileUseCase
+);
+
+container.registerSingleton<CreateUserUseCase>(
+  "CreateUserUseCase",
+  CreateUserUseCase
+);
+
+container.registerSingleton<GetUserUseCase>("GetUserUseCase", GetUserUseCase);
+
+container.registerSingleton<CreateUserFreelancerProfileUseCase>(
+  "CreateUserFreelancerProfileUseCase",
+  CreateUserFreelancerProfileUseCase
+);
+
+container.registerSingleton<IUserService>("IUserService", UserService);
+
+container.registerSingleton<IUserController>("IUserController", UserController);
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
   CourseRepository
 );
+
 container.registerSingleton<IFreelancerRepository>(
   "IFreelancerRepository",
   FreelancerRepository
@@ -63,10 +112,12 @@ container.registerSingleton<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",
   GetAllCoursesUseCase
 );
+
 container.registerSingleton<CreateCourseUseCase>(
   "CreateCourseUseCase",
   CreateCourseUseCase
 );
+
 container.registerSingleton<ICourseService>("ICourseService", CourseService);
 
 container.registerSingleton<ISkillService>("ISkillService", SkillService);
@@ -150,6 +201,7 @@ container.registerSingleton<ICertificationController>(
   CertificationController
 );
 
+// experience
 container.register<IExperienceRepository>(
   "IExperienceRepository",
   ExperienceRepository
@@ -188,6 +240,38 @@ container.registerSingleton<IExperiences>(
 container.registerSingleton<IExperienceController>(
   "IExperienceController",
   ExperienceController
+);
+
+// Language
+
+container.registerSingleton<ILanguageRepository>(
+  "ILanguageRepository",
+  LanguageRepository
+);
+container.registerSingleton<IUseCase<CreateLanguageDto, void | Language>>(
+  "EditLanguageUseCase",
+  EditLanguageUseCase
+);
+container.registerSingleton<IUseCase<CreateLanguageDto, Language>>(
+  "CreateLanguageUseCase",
+  CreateLanguageUseCase
+);
+container.registerSingleton<IUseCase<CreateLanguageDto, void | string>>(
+  "DeleteLanguageUseCase",
+  DeleteLanguageUseCase
+);
+container.registerSingleton<IUseCase<string, Language[]>>(
+  "GetLanguagesUseCase",
+  GetLanguagesUseCase
+);
+container.registerSingleton<ILanguagesService>(
+  "ILanguagesService",
+  LanguageService
+);
+
+container.registerSingleton<ILanguageController>(
+  "ILanguageController",
+  LanguageController
 );
 
 export { container };

@@ -45,6 +45,8 @@ export class CreateExperienceUseCase
         freelancerId,
       });
 
+      freelancer.experience.add(experience);
+
       const created = await this.experienceRepository.create(
         experience,
         freelancerId

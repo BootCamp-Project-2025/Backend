@@ -5,5 +5,5 @@ export interface IExperiences {
   getById(experienceId: string): Promise<IExperienceDTO>;
   create(dto: IExperienceDTO): Promise<IExperienceDTO>;
   update(dto: IExperienceDTO): Promise<IExperienceDTO>;
-  delete(experienceId: string): Promise<void>;
+  delete(experienceId: string, freelancerId: string): Promise<void>;
 }

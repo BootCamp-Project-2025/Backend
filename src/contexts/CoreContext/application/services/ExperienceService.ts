@@ -109,12 +109,19 @@ export class ExperienceService implements IExperiences {
     }
   }
 
-  async delete(experienceId: string): Promise<void> {
+  async delete(experienceId: string, freelancerId: string): Promise<void> {
     try {
       const existing =
         await this.getExperienceByIdUseCase.execute(experienceId);
       if (!existing) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Experience not found");
+      }
+
+      if (existing.props.freelancerId !== freelancerId) {
+        throw new ApiError(
+          StatusCodes.FORBIDDEN,
+          "This freelancer is not authorized to delete this experience."
+        );
       }
 
       await this.deleteExperienceUseCase.execute(experienceId);

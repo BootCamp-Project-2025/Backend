@@ -118,7 +118,8 @@ export class ExperienceController implements IExperienceController {
   async delete(req: Request, res: Response): Promise<void> {
     try {
       const experienceId = req.params.experienceId;
-      await this.experienceService.delete(experienceId);
+      const freelancerId = req.params.freelancerId;
+      await this.experienceService.delete(experienceId, freelancerId);
       const response = new SuccessResponseEntity(null, StatusCodes.NO_CONTENT);
       ResponseService.send(res, response);
     } catch (error) {

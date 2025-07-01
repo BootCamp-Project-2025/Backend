@@ -51,7 +51,14 @@ describe("CreateExperienceUseCase", () => {
       description: "x",
       freelancerId: "123",
     };
-    freelancerRepoMock.getById.mockResolvedValue({ id: "123" });
+
+    freelancerRepoMock.getById.mockResolvedValue({
+      id: "123",
+      experience: {
+        add: jest.fn(),
+      },
+    });
+
     experienceRepoMock.create.mockResolvedValue(fakeExperience);
 
     const result = await createExperienceUseCase.execute({

@@ -1,4 +1,4 @@
-'import "reflect-metadata"';
+import "reflect-metadata";
 import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
 import { IAboutRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IAboutRepository";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";

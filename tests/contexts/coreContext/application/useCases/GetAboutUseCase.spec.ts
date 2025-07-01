@@ -1,4 +1,4 @@
-'import "reflect-metadata"';
+import "reflect-metadata";
 import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
 import { IAboutRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IAboutRepository";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
@@ -42,7 +42,10 @@ describe("GetAboutUseCase", () => {
 
   it("should wrap unknown errors in ApiError", async () => {
     const freelancerId = "freelancer-789";
-    const genericError = new Error("Unexpected failure");
+    const genericError = new ApiError(
+      StatusCodes.NOT_FOUND,
+      "Unexpected failure"
+    );
 
     aboutRepository.get.mockRejectedValue(genericError);
 

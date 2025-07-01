@@ -13,7 +13,7 @@ describe("GetUserProfileUseCase", () => {
       userName: UserName.create("Pepe"),
       userEmail: UserEmail.create("pepe@gmail.com"),
       roles: ["CLIENT"],
-      profilePictureSrc: "http://img.png",
+      profilePicture: "http://img.png",
       createdAt: new Date(),
       clientId: new UniqueEntityID(),
     });

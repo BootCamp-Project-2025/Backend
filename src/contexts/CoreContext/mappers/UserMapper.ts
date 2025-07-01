@@ -15,7 +15,7 @@ export default class UserMapper {
       userEmail: UserEmail.create(dto.userEmail),
       roles: ["CLIENT"],
       createdAt: new Date(),
-      profilePictureSrc: dto.profilePictureSrc,
+      profilePicture: dto.profilePictureSrc,
     });
   }
 
@@ -24,7 +24,7 @@ export default class UserMapper {
     return {
       id: user.id.toString(),
       userName: user.userName.value,
-      userEmail: user.email.value,
+      userEmail: user.userEmail.value,
       profilePicture: user.profilePicture ?? null,
       roles: roles2,
       createdAt: user.createdAt,
@@ -38,7 +38,7 @@ export default class UserMapper {
         userEmail: UserEmail.create(userDao.userEmail),
         roles: userDao.roles,
         createdAt: userDao.createdAt,
-        profilePictureSrc: userDao.profilePicture ?? undefined,
+        profilePicture: userDao.profilePicture ?? undefined,
         freelancerId: userDao.freelancerProfile
           ? new UniqueEntityID(userDao.freelancerProfile.id)
           : undefined,
@@ -55,7 +55,7 @@ export default class UserMapper {
   static domainToGetUserDto(user: User): IGetUserDto {
     return {
       userName: user.userName.value,
-      userEmail: user.email.value,
+      userEmail: user.userEmail.value,
       createdAt: user.createdAt,
       roles: user.roles,
       id: user.id.toString(),
@@ -66,7 +66,7 @@ export default class UserMapper {
   static domainToClientProfileDto(user: User): IGetUserProfileDto {
     return {
       userName: user.userName.value,
-      userEmail: user.email.value,
+      userEmail: user.userEmail.value,
       profilePicture: user.profilePicture ?? "",
     };
   }

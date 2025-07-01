@@ -1,8 +1,5 @@
 import { ICourseService } from "../../domain/interfaces/ICourseService";
 import { CreateCourseUseCase } from "../useCases/CreateCourseUseCase";
-import { GetAllCoursesUseCase } from "../useCases/GetAllCoursesUseCase";
-import { UpdateCourseUseCase } from "../useCases/UpdateCourseUseCase";
-import { DeleteCourseUseCase } from "../useCases/DeleteCourseUseCase";
 import { Course } from "../../domain/aggregates/Course";
 import { CourseDTO, CourseIdDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
@@ -16,14 +13,14 @@ export class CourseService implements ICourseService {
     private readonly getAllCoursesUseCase: IUseCase<void, Course[]>,
 
     @inject("CreateCourseUseCase")
-    private readonly createCourseUseCase: CreateCourseUseCase,
+    private readonly createCourseUseCase: IUseCase<CourseDTO, Course>,
 
     @inject("UpdateCourseUseCase")
     private readonly updateCourseUseCase: IUseCase<CourseIdDTO, Course>,
 
     @inject("DeleteCourseUseCase")
     private readonly deleteCourseUseCase: IUseCase<string, void>
-  ) {}
+  ) { }
 
   async getAllCourses(): Promise<CourseIdDTO[]> {
     const courses = await this.getAllCoursesUseCase.execute();

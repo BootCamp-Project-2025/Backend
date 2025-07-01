@@ -20,13 +20,13 @@ export class PhoneNumber extends ValueObject<PhoneNumberProps> {
     return regex.test(phone);
   }
 
-  private static create(phone: string): PhoneNumber {
+  public static create(phone: string): PhoneNumber {
     if (!phone) {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Phone is Required");
     }
 
-    if (!this.isValidPhoneNumber) {
-      throw new ApiError(StatusCodes.BAD_GATEWAY, "Phone is not valid");
+    if (!this.isValidPhoneNumber(phone)) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Phone is not valid");
     }
     return new PhoneNumber({ value: phone });
   }

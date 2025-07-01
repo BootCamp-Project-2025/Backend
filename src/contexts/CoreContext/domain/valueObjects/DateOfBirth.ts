@@ -16,17 +16,17 @@ export class DateOfBirth extends ValueObject<DateOfBirthProps> {
   }
 
   private static isValidDate(date: Date): boolean {
-    if (date > new Date()) return false;
-    if (date < new Date("1/1/1990")) return false;
-    return true;
+    const now = new Date();
+    const min = new Date("1990-01-01");
+    return date <= now && date >= min;
   }
 
-  public static create(date: Date): DateOfBirth {
+  public static create(date: Date | null | undefined): DateOfBirth {
     if (!date) {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Date of birth required");
     }
 
-    if (!this.isValidDate) {
+    if (!this.isValidDate(date)) {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid date of birth");
     }
 

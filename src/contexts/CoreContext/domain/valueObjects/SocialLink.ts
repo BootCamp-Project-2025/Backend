@@ -35,7 +35,7 @@ export class SocialLink extends ValueObject<SocialLinkProps> {
       throw new ApiError(StatusCodes.BAD_REQUEST, "SocialLink is required");
     }
 
-    if (!this.isValidLink(url) && !this.isValidPlatform(platform)) {
+    if (!this.isValidLink(url) || !this.isValidPlatform(platform)) {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid SocialLink");
     }
 

@@ -20,11 +20,12 @@ export class Country extends ValueObject<CountryProps> {
   }
 
   private static isValid(value: string): boolean {
-    return countries.isValid(value);
+    const code = countries.getAlpha2Code(value, "en");
+    return Boolean(code);
   }
 
-  public static create(value: string): Country {
-    if (!value) {
+  public static create(value: string | null | undefined): Country {
+    if (!value || value.trim() === "") {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Country is required");
     }
 

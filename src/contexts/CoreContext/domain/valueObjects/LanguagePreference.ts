@@ -17,9 +17,9 @@ export class LanguagePreference extends ValueObject<LanguagePreferenceProps> {
   }
 
   private static isValid(value: string): boolean {
-    return ISO6391.getAllNames().some(
-      (code) => ISO6391.getName(code).toLowerCase() === value.toLowerCase()
-    );
+    return ISO6391.getAllNames()
+      .map((name) => name.toLowerCase())
+      .includes(value.toLowerCase());
   }
 
   public static create(value: string): LanguagePreference {

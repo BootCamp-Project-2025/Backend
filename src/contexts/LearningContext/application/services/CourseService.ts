@@ -1,6 +1,6 @@
 import { ICourseService } from "../../domain/interfaces/ICourseService";
 import { Course } from "../../domain/aggregates/Course";
-import { CourseDTO, CourseIdDTO } from "../../domain/dtos/CourseDTO";
+import { CourseDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
 import IUseCase from "../../domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
@@ -15,13 +15,13 @@ export class CourseService implements ICourseService {
     private readonly createCourseUseCase: IUseCase<CourseDTO, Course>,
 
     @inject("UpdateCourseUseCase")
-    private readonly updateCourseUseCase: IUseCase<CourseIdDTO, Course>,
+    private readonly updateCourseUseCase: IUseCase<CourseDTO, Course>,
 
     @inject("DeleteCourseUseCase")
     private readonly deleteCourseUseCase: IUseCase<string, void>
   ) {}
 
-  async getAllCourses(): Promise<CourseIdDTO[]> {
+  async getAllCourses(): Promise<CourseDTO[]> {
     const courses = await this.getAllCoursesUseCase.execute();
     return courses.map(CourseMapper.toAplicationDTO);
   }
@@ -32,7 +32,7 @@ export class CourseService implements ICourseService {
   }
 
   async updateCourse(id: string, courseDto: CourseDTO): Promise<CourseDTO> {
-    const input: CourseIdDTO = { id, ...courseDto };
+    const input: CourseDTO = { id, ...courseDto };
     const updated = await this.updateCourseUseCase.execute(input);
     return CourseMapper.toAplicationDTO(updated);
   }

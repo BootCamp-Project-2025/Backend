@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { UpdateCourseUseCase } from "../../../../../src/contexts/LearningContext/application/useCases/UpdateCourseUseCase";
 import { ICourseRepository } from "../../../../../src/contexts/LearningContext/domain/interfaces/ICourseRepository";
-import { CourseIdDTO } from "../../../../../src/contexts/LearningContext/domain/dtos/CourseDTO";
+import { CourseDTO } from "../../../../../src/contexts/LearningContext/domain/dtos/CourseDTO";
 import { Course } from "../../../../../src/contexts/LearningContext/domain/aggregates/Course";
 import { CourseMapper } from "../../../../../src/contexts/LearningContext/mappers/CourseMapper";
 
@@ -24,7 +24,7 @@ describe("UpdateCourseUseCase", () => {
   });
 
   it("should map the DTO to a domain Course and call repo.update with it", async () => {
-    const input: CourseIdDTO = {
+    const input: CourseDTO = {
       id: "course-1",
       name: "Updated Name",
       description: "Updated Description",

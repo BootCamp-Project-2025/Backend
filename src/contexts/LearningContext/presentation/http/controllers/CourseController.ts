@@ -3,6 +3,10 @@ import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { ICourseService } from "@/contexts/LearningContext/domain/interfaces/ICourseService";
 import { inject, injectable } from "tsyringe";
+import { StatusCodes } from "http-status-codes";
+import { ResponseService } from "../../../../Shared/application/services/ResponseService";
+import { ErrorResponseEntity } from "../../../../Shared/domain/entity/ErrorResponseEntity";
+import { SuccessResponseEntity } from "../../../../Shared/domain/entity/SuccessResponseEntity";
 
 @injectable()
 export class CourseController implements ICourseController {
@@ -13,58 +17,64 @@ export class CourseController implements ICourseController {
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {
       const courses = await this.courseService.getAllCourses();
-      res.status(200).json(courses);
+      const response = new SuccessResponseEntity(courses, StatusCodes.OK);
+      return ResponseService.send(res, response);
     } catch (error) {
       console.error("Error in CourseController.getAllCourses:", error);
-      res.status(500).json({ message: "Internal server error" });
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Internal server error"
+      );
+      return ResponseService.send(res, response);
     }
   };
 
-  public create = async (req: Request, res: Response): Promise<Response> => {
+  public create = async (req: Request, res: Response): Promise<void> => {
     try {
       const dto = req.body as CourseDTO;
       const result = await this.courseService.create(dto);
-      return res.status(201).json(result);
+      const response = new SuccessResponseEntity(result, StatusCodes.CREATED);
+      return ResponseService.send(res, response);
     } catch (error) {
       console.error("Error in CourseController.create:", error);
-      return res.status(500).json({ message: "Internal server error" });
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Internal server error"
+      );
+      return ResponseService.send(res, response);
     }
   };
 
-  /**
-   * PUT /courses/:id
-   */
-  public updateCourse = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
+  public updateCourse = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const dto = req.body as CourseDTO;
-      // if your service method is called `update`, rename accordingly:
       const updated = await this.courseService.updateCourse(id, dto);
-      return res.status(200).json(updated);
+      const response = new SuccessResponseEntity(updated, StatusCodes.OK);
+      return ResponseService.send(res, response);
     } catch (error) {
       console.error("Error in CourseController.updateCourse:", error);
-      return res.status(500).json({ message: "Internal server error" });
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Internal server error"
+      );
+      return ResponseService.send(res, response);
     }
   };
 
-  /**
-   * DELETE /courses/:id
-   */
-  public deleteCourse = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
+  public deleteCourse = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       await this.courseService.deleteCourse(id);
-      // 204: No Content
-      return res.sendStatus(204);
+      const response = new SuccessResponseEntity(StatusCodes.NO_CONTENT);
+      return ResponseService.send(res, response);
     } catch (error) {
       console.error("Error in CourseController.deleteCourse:", error);
-      return res.status(500).json({ message: "Internal server error" });
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Internal server error"
+      );
+      return ResponseService.send(res, response);
     }
   };
 }

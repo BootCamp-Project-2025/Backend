@@ -5,7 +5,7 @@ import { CourseName } from "../domain/valueObjects/CourseName";
 import { CourseField } from "../domain/valueObjects/CourseField";
 import { CourseRequirements } from "../domain/valueObjects/CourseRequirements";
 import { CourseDescription } from "../domain/valueObjects/CourseDescription";
-import { CourseDTO, CourseIdDTO } from "../domain/dtos/CourseDTO";
+import { CourseDTO } from "../domain/dtos/CourseDTO";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
@@ -53,7 +53,7 @@ export class CourseMapper {
     };
   }
 
-  static toAplicationDTO(domainCourse: Course): CourseIdDTO {
+  static toAplicationDTO(domainCourse: Course): CourseDTO {
     return {
       id: domainCourse.id.toString(),
       name: domainCourse.props.name.value,
@@ -62,7 +62,7 @@ export class CourseMapper {
     };
   }
 
-  static fromDTO(dto: CourseIdDTO): Course {
+  static fromDTO(dto: CourseDTO): Course {
     const nameVO = CourseName.create({ name: dto.name });
     const descVO = CourseDescription.create({ description: dto.description });
 

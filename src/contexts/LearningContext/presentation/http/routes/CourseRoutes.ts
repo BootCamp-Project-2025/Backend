@@ -90,10 +90,7 @@ courseRouter.post("/", async (req, res, next) => {
  */
 courseRouter.put("/:id", async (req, res, next) => {
   try {
-    // if your controller method is named updateCourse:
     await controller.updateCourse(req, res);
-    // if it’s named update, use:
-    // await controller.update(req, res);
   } catch (err) {
     next(err);
   }
@@ -119,10 +116,7 @@ courseRouter.put("/:id", async (req, res, next) => {
  */
 courseRouter.delete("/:id", async (req, res, next) => {
   try {
-    // if your controller method is named deleteCourse:
     await controller.deleteCourse(req, res);
-    // if it’s named remove or delete, use:
-    // await controller.remove(req, res);
   } catch (err) {
     next(err);
   }

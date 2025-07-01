@@ -1,9 +1,6 @@
 import "reflect-metadata";
 import { CourseService } from "../../../../../src/contexts/LearningContext/application/services/CourseService";
-import {
-  CourseDTO,
-  CourseIdDTO,
-} from "../../../../../src/contexts/LearningContext/domain/dtos/CourseDTO";
+import { CourseDTO } from "../../../../../src/contexts/LearningContext/domain/dtos/CourseDTO";
 import { Course } from "../../../../../src/contexts/LearningContext/domain/aggregates/Course";
 import { CourseMapper } from "../../../../../src/contexts/LearningContext/mappers/CourseMapper";
 
@@ -33,7 +30,7 @@ describe("CourseService", () => {
       const fakeDomainCourses: Course[] = [{} as Course];
       getAllCoursesUseCase.execute.mockResolvedValue(fakeDomainCourses);
 
-      const fakeDTO: CourseIdDTO = {
+      const fakeDTO: CourseDTO = {
         id: "1",
         name: "n",
         description: "d",
@@ -55,7 +52,7 @@ describe("CourseService", () => {
 
   describe("create", () => {
     it("should call createCourseUseCase and return the created DTO", async () => {
-      const inputDto: CourseIdDTO = {
+      const inputDto: CourseDTO = {
         id: "abc",
         name: "Nuevo",
         description: "Descripcion",
@@ -64,7 +61,7 @@ describe("CourseService", () => {
       const fakeDomain: Course = {} as unknown as Course;
       createCourseUseCase.execute.mockResolvedValue(fakeDomain);
 
-      const fakeCreatedDto: CourseIdDTO = { ...inputDto };
+      const fakeCreatedDto: CourseDTO = { ...inputDto };
       jest
         .spyOn(CourseMapper, "toAplicationDTO")
         .mockReturnValue(fakeCreatedDto);
@@ -78,7 +75,7 @@ describe("CourseService", () => {
   describe("updateCourse", () => {
     it("should call updateCourseUseCase with id + dto and return the updated DTO", async () => {
       const id = "123";
-      const updateDto: CourseIdDTO = {
+      const updateDto: CourseDTO = {
         id: "abc",
         name: "Upd",
         description: "DescUpd",
@@ -87,7 +84,7 @@ describe("CourseService", () => {
       const fakeDomain: Course = {} as unknown as Course;
       updateCourseUseCase.execute.mockResolvedValue(fakeDomain);
 
-      const fakeUpdatedDto: CourseIdDTO = { ...updateDto };
+      const fakeUpdatedDto: CourseDTO = { ...updateDto };
       jest
         .spyOn(CourseMapper, "toAplicationDTO")
         .mockReturnValue(fakeUpdatedDto);

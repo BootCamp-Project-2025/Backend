@@ -5,7 +5,6 @@ import { ErrorResponseEntity } from "@/contexts/Shared/domain/entity/ErrorRespon
 import { StatusCodes } from "http-status-codes";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import UserMapper from "@/contexts/CoreContext/mappers/UserMapper";
-import { UserController } from "@/contexts/CoreContext/presentation/http/controllers/UserController";
 import { AuthController } from "@/contexts/CoreContext/presentation/http/controllers/AuthController";
 
 jest.mock("@/contexts/Shared/application/services/ResponseService");
@@ -45,7 +44,7 @@ describe("AuthController.syncUser", () => {
       dto: true,
     }));
     (ResponseService.send as jest.Mock).mockImplementation(
-      (_res, _entity) => { }
+      (_res, _entity) => {}
     );
   });
 

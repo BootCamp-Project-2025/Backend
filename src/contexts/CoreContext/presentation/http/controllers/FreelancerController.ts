@@ -9,6 +9,7 @@ import { StatusCodes } from "http-status-codes";
 import { ISkillService } from "@/contexts/CoreContext/domain/interfaces/services/ISkillService";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
+
 @injectable()
 export default class FreelancerController implements IFreelancerController {
   constructor(@inject("ISkillService") private skillService: ISkillService) {}

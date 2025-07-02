@@ -41,6 +41,13 @@ import { ISkillRepository } from "./contexts/CoreContext/domain/interfaces/repos
 import SkillRepository from "./contexts/CoreContext/infrastructure/persistence/SkillRepository";
 import { ISkillService } from "./contexts/CoreContext/domain/interfaces/services/ISkillService";
 import SkillService from "./contexts/CoreContext/application/services/SkillService";
+import { IEducationService } from "./contexts/CoreContext/domain/interfaces/services/IEducationService";
+import EducationService from "./contexts/CoreContext/application/services/EducationService";
+import { Education } from "./contexts/CoreContext/domain/entities/Education";
+import AddEducationUseCase from "./contexts/CoreContext/application/useCases/AddEducationUseCase";
+import GetEducationsUseCase from "./contexts/CoreContext/application/useCases/GetEducationsUseCase";
+import EditEducationUseCase from "./contexts/CoreContext/application/useCases/EditEducationUseCase";
+import DeleteEducationUseCase from "./contexts/CoreContext/application/useCases/DeleteEducationUseCase";
 import { CreateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/CreateCertificationUseCase";
 import { UpdateCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/UpdateCertificationUseCase";
 import { DeleteCertificationUseCase } from "./contexts/CoreContext/application/useCases/certifications/DeleteCertificationUseCase";
@@ -56,6 +63,10 @@ import { IExperiences } from "./contexts/CoreContext/domain/interfaces/services/
 import { IExperienceController } from "./contexts/CoreContext/domain/interfaces/controllers/IExperienceController";
 import { ExperienceService } from "./contexts/CoreContext/application/services/ExperienceService";
 import { ExperienceController } from "./contexts/CoreContext/presentation/http/controllers/ExperienceController";
+import { IEducationController } from "./contexts/CoreContext/domain/interfaces/controllers/IEducationController";
+import EducationController from "./contexts/CoreContext/presentation/http/controllers/EducationController";
+import IEducationRepository from "./contexts/CoreContext/domain/interfaces/repositories/IEducationRepository";
+import EducationRepository from "./contexts/CoreContext/infrastructure/persistence/EducationRepository";
 import { ILanguageRepository } from "./contexts/CoreContext/domain/interfaces/repositories/ILanguageRepositoty";
 import LanguageRepository from "./contexts/CoreContext/infrastructure/persistence/LanguageRepository";
 import { EditLanguageUseCase } from "./contexts/CoreContext/application/useCases/EditLanguageUseCase";
@@ -199,6 +210,40 @@ container.registerSingleton<ICertificationService>(
 container.registerSingleton<ICertificationController>(
   "ICertificationController",
   CertificationController
+);
+// Education dependencies
+container.registerSingleton<IEducationController>(
+  "IEducationController",
+  EducationController
+);
+container.registerSingleton<IEducationService>(
+  "IEducationService",
+  EducationService
+);
+
+container.registerSingleton<IUseCase<Education, Education>>(
+  "AddEducationUseCase",
+  AddEducationUseCase
+);
+
+container.registerSingleton<IUseCase<string, Education[]>>(
+  "GetEducationsUseCase",
+  GetEducationsUseCase
+);
+
+container.registerSingleton<IUseCase<Education, Education>>(
+  "EditEducationUseCase",
+  EditEducationUseCase
+);
+
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteEducationUseCase",
+  DeleteEducationUseCase
+);
+
+container.registerSingleton<IEducationRepository>(
+  "EducationRepository",
+  EducationRepository
 );
 
 // experience

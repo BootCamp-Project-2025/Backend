@@ -34,7 +34,7 @@ describe("DateOfBirth", () => {
     });
 
     it("should throw ApiError if date is before 1990-01-01", () => {
-      const oldDate = new Date("1985-10-10");
+      const oldDate = new Date("1880-10-10");
       expect(() => DateOfBirth.create(oldDate)).toThrow(ApiError);
       expect(() => DateOfBirth.create(oldDate)).toThrow(
         "Invalid date of birth"

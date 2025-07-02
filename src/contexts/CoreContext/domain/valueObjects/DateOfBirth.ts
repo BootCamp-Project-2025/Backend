@@ -17,7 +17,7 @@ export class DateOfBirth extends ValueObject<DateOfBirthProps> {
 
   private static isValidDate(date: Date): boolean {
     const now = new Date();
-    const min = new Date("1990-01-01");
+    const min = new Date("1900-01-01");
     return date <= now && date >= min;
   }
 

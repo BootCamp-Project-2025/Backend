@@ -41,19 +41,4 @@ export class UserController implements IUserController {
       console.log(error);
     }
   };
-
-  getUserProfile = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const userId = req.params.id;
-      const profile = await this.userService.getClientProfile(userId);
-      if (!profile) {
-        res.status(404).json({ message: "Client Profile not found" });
-        return;
-      }
-      res.status(200).json(profile);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  };
 }

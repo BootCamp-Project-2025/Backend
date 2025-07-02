@@ -24,6 +24,7 @@ describe("testing DeleteSkillUseCase to delete skills from freelancer", () => {
     expect(DeleteSkillUseCase).toBeDefined();
   });
   const mockRepository = {
+    save: jest.fn(),
     delete: jest.fn(),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;

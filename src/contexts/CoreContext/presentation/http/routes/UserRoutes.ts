@@ -31,7 +31,7 @@ router.get("/:id", controller.get);
 
 /**
  * @openapi
- * /users/:
+ * /users:
  *  post:
  *      tags:
  *       - User

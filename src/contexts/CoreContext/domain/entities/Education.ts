@@ -6,6 +6,7 @@ interface EducationProps {
   university: string;
   startDate: Date;
   finishDate: Date;
+  freelancerId: string;
 }
 
 export class Education extends Entity<EducationProps> {

@@ -49,7 +49,7 @@ export class CreateCertificationUseCase
         freelancerId
       );
     } catch (error) {
-      console.error("Error creating certification:", error);
+      console.log("Error creating certification:", error);
       if (error instanceof ApiError) {
         throw error;
       }

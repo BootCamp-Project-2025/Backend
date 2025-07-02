@@ -51,6 +51,7 @@ describe("User Aggregate", () => {
     career: "Computer Science",
     startDate: new Date("2015-09-01"),
     finishDate: new Date("2019-06-30"),
+    freelancerId: "",
   });
   educationService.add(education);
 

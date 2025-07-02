@@ -19,7 +19,6 @@ import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import { IUserRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IUserRepository";
 import { UserRepository } from "./contexts/CoreContext/infrastructure/persistence/UserRepository";
-import { GetUserProfileUseCase } from "./contexts/CoreContext/application/useCases/GetUserProfileUseCase";
 import { IUserController } from "./contexts/CoreContext/domain/interfaces/controllers/IUserController";
 import { IUserService } from "./contexts/CoreContext/domain/interfaces/services/IUserService";
 import { UserService } from "./contexts/CoreContext/application/services/UserService";
@@ -73,11 +72,6 @@ import LanguageController from "./contexts/CoreContext/presentation/http/control
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
 
 container.registerSingleton<GetUserUseCase>("GetUserUseCase", GetUserUseCase);
-
-container.registerSingleton<GetUserProfileUseCase>(
-  "GetUserProfileUseCase",
-  GetUserProfileUseCase
-);
 
 container.registerSingleton<CreateUserUseCase>(
   "CreateUserUseCase",

@@ -15,7 +15,7 @@ export class UserController implements IUserController {
   constructor(
     @inject("IUserService")
     private userService: IUserService
-  ) { }
+  ) {}
 
   freelance = async (req: Request, res: Response) => {
     const userId = req.user?.id;

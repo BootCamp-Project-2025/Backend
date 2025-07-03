@@ -15,11 +15,9 @@ export class UserService implements IUserService {
     private readonly getUserUseCase: GetUserUseCase,
     @inject("CreateUserFreelancerProfileUseCase")
     private readonly createUserFreelancerProfileUseCase: CreateUserFreelancerProfileUseCase,
-    @inject("GetUserProfileUseCase")
-    private readonly getUserProfileUseCase: GetUserProfileUseCase,
     @inject("UpdateUserUseCase")
     private readonly updateUserUseCase: UpdateUserUseCase
-  ) { }
+  ) {}
   async createFreelanceProfile(id: string): Promise<User> {
     const updatedUser =
       await this.createUserFreelancerProfileUseCase.execute(id);

@@ -28,7 +28,7 @@ export class AuthController implements IAuthController {
         id: tokenData.id ?? "Unknown ID",
         userName: tokenData.name ?? "Unknown User",
         userEmail: tokenData.email ?? "Unknown Email",
-        profilePictureSrc: "https://example.com/default-profile.png",
+        profilePicture: "",
       };
 
       const user: User = UserMapper.createUserDtoTodomain(dto);

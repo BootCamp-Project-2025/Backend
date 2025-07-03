@@ -79,6 +79,10 @@ import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/serv
 import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
 import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
+import IModuleController from "./contexts/LearningContext/domain/interfaces/IModuleController";
+import ModuleController from "./contexts/LearningContext/presentation/http/controllers/ModuleController";
+import IModuleService from "./contexts/LearningContext/domain/interfaces/IModuleService";
+import ModuleService from "./contexts/LearningContext/application/services/ModuleService";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -167,6 +171,13 @@ container.registerSingleton<IFreelancerService>(
   "IFreelancerService",
   FreelancerService
 );
+
+container.registerSingleton<IModuleController>(
+  "IModuleController",
+  ModuleController
+);
+
+container.registerSingleton<IModuleService>("IModuleService", ModuleService);
 
 container.registerSingleton<IFreelancerController>(
   "IFreelancerController",

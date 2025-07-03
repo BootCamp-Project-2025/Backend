@@ -9,6 +9,9 @@ export class CourseController implements ICourseController {
   constructor(
     @inject("ICourseService") private readonly courseService: ICourseService
   ) {}
+  getCompleteCourse(req: Request, res: Response): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {

@@ -1,8 +1,10 @@
 import "reflect-metadata";
-import IModuleService
 
-jest.mock("@/contexts/Shared/application/services/ResponseService", () => ({
-  ResponseService: {
-    send: jest.fn(),
-  },
-}));
+jest.mock(
+  "@/contexts/LearningContext/domain/interfaces/IModuleService",
+  () => ({
+    ResponseService: {
+      send: jest.fn(),
+    },
+  })
+);

@@ -33,7 +33,19 @@ model Module{
   author   Course @relation(fields: [CourseId], references: [id])
   CourseId String
   name   String   @unique
+  lessons Lesson[]
 }
+
+model Lesson{
+  id      String      @id @default(uuid())
+  author   Module @relation(fields: [moduleId], references: [id])
+  description String
+  resources String[]
+  videoUrls String[]
+  moduleId String
+  title   String   @unique
+}
+
 
 model SampleData {
   id String @id @default(uuid())

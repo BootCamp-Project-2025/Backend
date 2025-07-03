@@ -8,11 +8,11 @@ const router = Router();
 
 /**
  * @openapi
- * /freelancer/{freelancerId}/educations:
+ * /freelancers/{freelancerId}/educations:
  *   get:
- *     summary: Retrieve certifications by freelancer ID
+ *     summary: Get all educations of a freelancer
  *     tags:
- *       - Educations
+ *       - Education
  *     parameters:
  *       - in: path
  *         name: freelancerId
@@ -28,11 +28,11 @@ router.get("", controller.getAllOfFreelancer);
 
 /**
  * @openapi
- * /freelancer/{freelancerId}/educations:
+ * /freelancers/{freelancerId}/educations:
  *   post:
  *     summary: Create a new education for a freelancer
  *     tags:
- *       - Educations
+ *       - Education
  *     parameters:
  *       - in: path
  *         name: freelancerId
@@ -54,11 +54,11 @@ router.post("", controller.create);
 
 /**
  * @openapi
- * /freelancer/{freelancerId}/educations/{educationId}:
+ * /freelancers/{freelancerId}/educations/{educationId}:
  *   delete:
  *     summary: Delete an education of a freelancer
  *     tags:
- *       - Educations
+ *       - Education
  *     parameters:
  *       - in: path
  *         name: freelancerId

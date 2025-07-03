@@ -6,7 +6,6 @@ import { UserName } from "../domain/valueObjects/UserName";
 import { IGetUserDto } from "../domain/interfaces/dtos/IGetUserDto";
 import { UserDao } from "../domain/interfaces/dao/UserDao";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { IGetUserProfileDto } from "../domain/interfaces/dtos/IGetUserProfileDto";
 
 export default class UserMapper {
   static createUserDtoTodomain(dto: ICreateUserDto) {
@@ -15,7 +14,7 @@ export default class UserMapper {
       userEmail: UserEmail.create(dto.userEmail),
       roles: ["CLIENT"],
       createdAt: new Date(),
-      profilePictureSrc: dto.profilePictureSrc,
+      profilePicture: dto.profilePicture,
     });
   }
 
@@ -38,7 +37,7 @@ export default class UserMapper {
         userEmail: UserEmail.create(userDao.userEmail),
         roles: userDao.roles,
         createdAt: userDao.createdAt,
-        profilePictureSrc: userDao.profilePicture ?? undefined,
+        profilePicture: userDao.profilePicture ?? undefined,
         freelancerId: userDao.freelancerProfile
           ? new UniqueEntityID(userDao.freelancerProfile.id)
           : undefined,
@@ -61,13 +60,7 @@ export default class UserMapper {
       id: user.id.toString(),
       freelancerProfile: user.props.freelancerId?.toString(),
       clientProfile: user.props.clientId?.toString(),
-    };
-  }
-  static domainToClientProfileDto(user: User): IGetUserProfileDto {
-    return {
-      userName: user.userName.value,
-      userEmail: user.email.value,
-      profilePicture: user.profilePicture ?? "",
+      profilePicture: user.profilePicture,
     };
   }
 }

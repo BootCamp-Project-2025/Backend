@@ -8,4 +8,5 @@ export interface IGetUserDto {
   createdAt: Date;
   freelancerProfile: string | undefined;
   clientProfile: string | undefined;
+  profilePicture: string | undefined;
 }

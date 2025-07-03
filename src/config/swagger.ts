@@ -13,6 +13,11 @@ const swaggerOptions: SwaggerOptions = {
       version: "0.0.1",
       description: "API for LTCrowd app",
     },
+    tags: [
+      {
+        name: "User",
+      },
+    ],
     servers: [
       {
         url: `http://localhost:${API_PORT}/api`,

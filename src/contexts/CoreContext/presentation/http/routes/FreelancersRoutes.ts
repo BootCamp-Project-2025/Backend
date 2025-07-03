@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { container } from "tsyringe";
 import FreelancerController from "../controllers/FreelancerController";
+import { ExperienceRoutes } from "./ExperienceRoutes";
 import educationRoutes from "./EducationRoutes";
 import LanguageController from "../controllers/LanguageController";
 const languageController = container.resolve(LanguageController);
@@ -11,9 +12,9 @@ const router = Router();
 /**
  * @openapi
  *
- * /freelancers/{freelancerId}/skill:
+ * /freelancers/{freelancerId}/skills:
  *  get:
- *      summary: Retrieves the freelancer skills
+ *      summary: Get all skills of a freelancer
  *      tags:
  *       - Skill
  *      parameters:
@@ -30,13 +31,13 @@ const router = Router();
  *              description: Everything is wrong
  *
  */
-router.get("/:freelancerId/skill", controller.getSkills);
+router.get("/:freelancerId/skills", controller.getSkills);
 
 /**
  * @openapi
- * /freelancers/{freelancerId}/skill:
+ * /freelancers/{freelancerId}/skills:
  *  post:
- *      summary: add a new skill to the freelancer
+ *      summary: Create a new skill for a freelancer
  *      tags:
  *       - Skill
  *      parameters:
@@ -67,53 +68,13 @@ router.get("/:freelancerId/skill", controller.getSkills);
  *              description: Everything is wrong
  *
  */
-router.post("/:freelancerId/skill", controller.addSkill);
+router.post("/:freelancerId/skills", controller.addSkill);
 
 /**
  * @openapi
- * /freelancers/{freelancerId}/skill:
- *  delete:
- *      summary: add a new skill to the freelancer
- *      tags:
- *       - Skill
- *      parameters:
- *       - in: path
- *         name: freelancerId
- *         required: true
- *         description: The ID of the freelancer
- *         schema:
- *           type: string
- *      requestBody:
- *               required: true
- *               content:
- *                   application/json:
- *                       schema:
- *                           type: object
- *                           properties:
- *                                  name:
- *                                      type: string
- *                                      example: react
- *                                  level:
- *                                      type: string
- *                                      example: beginner
- *                                  skillId:
- *                                      type: string
- *                                      example: 6802cee0-72e1-4432-94a6-6a16808a86ab
- *
- *      responses:
- *          201:
- *              description: Everything is ok and returns skill
- *          500:
- *              description: Everything is wrong
- *
- */
-router.delete("/:freelancerId/skill", controller.deleteSkill);
-
-/**
- * @openapi
- * /freelancers/{freelancerId}/skill:
+ * /freelancers/{freelancerId}/skills:
  *  put:
- *      summary: add a new skill to the freelancer
+ *      summary: Update a skill of a freelancer
  *      tags:
  *       - Skill
  *      parameters:
@@ -147,8 +108,49 @@ router.delete("/:freelancerId/skill", controller.deleteSkill);
  *              description: Everything is wrong
  *
  */
-router.put("/:freelancerId/skill", controller.editSkill);
+router.put("/:freelancerId/skills", controller.editSkill);
 
+/**
+ * @openapi
+ * /freelancers/{freelancerId}/skills:
+ *  delete:
+ *      summary: Delete a skill of a freelancer
+ *      tags:
+ *       - Skill
+ *      parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
+ *      requestBody:
+ *               required: true
+ *               content:
+ *                   application/json:
+ *                       schema:
+ *                           type: object
+ *                           properties:
+ *                                  name:
+ *                                      type: string
+ *                                      example: react
+ *                                  level:
+ *                                      type: string
+ *                                      example: beginner
+ *                                  skillId:
+ *                                      type: string
+ *                                      example: 6802cee0-72e1-4432-94a6-6a16808a86ab
+ *
+ *      responses:
+ *          201:
+ *              description: Everything is ok and returns skill
+ *          500:
+ *              description: Everything is wrong
+ *
+ */
+router.delete("/:freelancerId/skills", controller.deleteSkill);
+
+router.use("/:freelancerId/experiences", ExperienceRoutes);
 router.use("/:freelancerId/educations", educationRoutes);
 
 //---------Language
@@ -158,7 +160,7 @@ router.use("/:freelancerId/educations", educationRoutes);
  * /freelancers/{freelancerId}/languages:
   
  *  get:
- *      summary: Retrieves the freelancer languages
+ *      summary: Get all languages of a freelancer
  *      tags:
  *       - Language
  *      parameters:
@@ -181,7 +183,7 @@ router.get("/:freelancerId/languages", languageController.getLanguages);
  * @openapi
  * /freelancers/{freelancerId}/languages:
  *  post:
- *      summary: add a new language to the freelancer
+ *      summary: Create a new language for a freelancer
  *      tags:
  *       - Language
  *      parameters:
@@ -218,7 +220,7 @@ router.post("/:freelancerId/languages", languageController.addLanguage);
  * @openapi
  * /freelancers/{freelancerId}/languages:
  *   put:
- *     summary: Updates a language of the freelancer
+ *     summary: Update a language of a freelancer
  *     tags:
  *       - Language
  *     parameters:
@@ -259,7 +261,7 @@ router.put("/:freelancerId/languages", languageController.editLanguage);
  * @openapi
  * /freelancers/{freelancerId}/languages:
  *   delete:
- *     summary: Delete a language of the freelancer
+ *     summary: Delete a language of a freelancer
  *     tags:
  *       - Language
  *     parameters:

@@ -26,10 +26,4 @@ export class CourseRepository implements ICourseRepository {
     const created = await prismaClient.course.create({ data });
     return CourseMapper.toDomain(created);
   }
-
-  async insert(course: Course): Promise<Course> {
-    const data = CourseMapper.toPersistence(course);
-    const created = await prismaClient.course.create({ data });
-    return CourseMapper.toDomain(created);
-  }
 }

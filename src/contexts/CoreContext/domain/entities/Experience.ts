@@ -1,5 +1,7 @@
 import { Entity } from "@/contexts/Shared/domain/Entity";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 interface ExperienceProps {
   position: string;
@@ -8,6 +10,7 @@ interface ExperienceProps {
   startDate: Date;
   endDate: Date;
   description: string;
+  freelancerId?: string;
 }
 
 export class Experience extends Entity<ExperienceProps> {
@@ -19,14 +22,47 @@ export class Experience extends Entity<ExperienceProps> {
     props: ExperienceProps,
     id?: UniqueEntityID
   ): Experience {
-    if (!props.position || !props.employer || !props.country) {
-      throw new Error("Position, employer and country are required.");
+    const errors: string[] = [];
+
+    if (!props.position || typeof props.position !== "string") {
+      errors.push("Position must be a non-empty string.");
     }
+
+    if (!props.employer || typeof props.employer !== "string") {
+      errors.push("Employer must be a non-empty string.");
+    }
+
+    if (!props.country || typeof props.country !== "string") {
+      errors.push("Country must be a non-empty string.");
+    }
+
+    if (
+      !(props.startDate instanceof Date) ||
+      isNaN(props.startDate.getTime())
+    ) {
+      errors.push("Start date must be a valid Date object.");
+    }
+
+    if (!(props.endDate instanceof Date) || isNaN(props.endDate.getTime())) {
+      errors.push("End date must be a valid Date object.");
+    }
+
+    if (!props.description || typeof props.description !== "string") {
+      errors.push("Description must be a non-empty string.");
+    }
+
+    if (errors.length > 0) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, errors.join(" "));
+    }
+
     return new Experience(props, id);
   }
 
   get id(): UniqueEntityID {
     return this._id;
+  }
+  get freelancerId(): string | undefined {
+    return this.props.freelancerId;
   }
 
   get position(): string {

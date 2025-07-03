@@ -14,6 +14,7 @@ export default class ModuleController implements IModuleController {
   constructor(
     @inject("IModuleService") private readonly moduleService: IModuleService
   ) {}
+
   async create(req: Request, res: Response): Promise<void> {
     const moduleDto: ModuleDTO = req.body as ModuleDTO;
     const module: Module = ModuleMapper.DtoToDomain(moduleDto);
@@ -26,9 +27,10 @@ export default class ModuleController implements IModuleController {
     );
     ResponseService.send(res, response);
   }
+
   async delete(req: Request, res: Response): Promise<void> {
-    const freelancerString: string = req.params.freelancerId;
-    await this.moduleService.delete(freelancerString);
+    const moduleId: string = req.params.freelancerId;
+    await this.moduleService.delete(moduleId);
     const response = new SuccessResponseEntity(
       {},
       StatusCodes.OK,
@@ -36,12 +38,14 @@ export default class ModuleController implements IModuleController {
     );
     ResponseService.send(res, response);
   }
+
   async update(req: Request, res: Response): Promise<void> {
     const moduleDto: ModuleDTO = req.body as ModuleDTO;
-    const freelancerString: string = req.params.freelancerId;
-    moduleDto.id = freelancerString;
+    moduleDto.id = req.params.moduleId;
+    console.log("ModuleDto", moduleDto);
     const module: Module = ModuleMapper.DtoToDomain(moduleDto);
-    const resposeData = await this.moduleService.update(module);
+    const responseDomain: Module = await this.moduleService.update(module);
+    const resposeData = ModuleMapper.DomainToDto(responseDomain);
     const response = new SuccessResponseEntity(
       resposeData,
       StatusCodes.OK,
@@ -49,9 +53,11 @@ export default class ModuleController implements IModuleController {
     );
     ResponseService.send(res, response);
   }
+
   async getAll(req: Request, res: Response): Promise<void> {
     const freelancerString: string = req.params.freelancerId;
-    const resposeData = await this.moduleService.getById(freelancerString);
+    const resposeDomain = await this.moduleService.getAll(freelancerString);
+    const resposeData = ModuleMapper.bulkDomainToDto(resposeDomain);
     const response = new SuccessResponseEntity(
       resposeData,
       StatusCodes.OK,

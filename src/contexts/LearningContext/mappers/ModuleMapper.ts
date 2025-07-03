@@ -4,6 +4,14 @@ import { Module } from "../domain/entities/Module";
 import LessonMapper from "./LessonMapper";
 
 export default class ModuleMapper {
+  static bulkDtoToDomain(moduleDtos: ModuleDTO[]): Module[] {
+    return moduleDtos.map((moduleDto) => ModuleMapper.DtoToDomain(moduleDto));
+  }
+
+  static bulkDomainToDto(modules: Module[]): ModuleDTO[] {
+    return modules.map((module) => ModuleMapper.DomainToDto(module));
+  }
+
   static DtoToDomain(moduleDto: ModuleDTO): Module {
     return Module.create(
       {

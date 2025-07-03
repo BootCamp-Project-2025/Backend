@@ -44,9 +44,67 @@ describe("ModuleController", () => {
       StatusCodes.CREATED,
       "Module saved successfully"
     );
-
     expect(ModuleService.create).toHaveBeenCalledWith(mockObject);
-    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledWith(response);
+  });
+
+  it("should call moduleService update with correct parameters", async () => {
+    const module = { id: "12345", name: "Test Module", lessons: [] };
+    const req = {
+      body: { name: module.name, lessons: module.lessons },
+      params: {
+        moduleId: module.id,
+      },
+    } as any;
+    const mockObject = ModuleMapper.DtoToDomain(module);
+    ModuleService.update.mockResolvedValue(mockObject);
+    const res = mockResponse();
+
+    await controller.update(req, res);
+
+    const response = new SuccessResponseEntity(
+      module,
+      StatusCodes.OK,
+      "Module updated successfully"
+    );
+    expect(ModuleService.update).toHaveBeenCalledWith(mockObject);
+    expect(res.json).toHaveBeenCalledWith(response);
+  });
+  it("should call moduleService delete with correct parameters", async () => {
+    const res = mockResponse();
+    const req = { params: { moduleId: "testId" } } as any;
+
+    await controller.delete(req, res);
+
+    const response = new SuccessResponseEntity(
+      {},
+      StatusCodes.OK,
+      "Module deleted successfully"
+    );
+    expect(ModuleService.delete).toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith(response);
+  });
+
+  it("should call moduleService getAll with correct parameters", async () => {
+    const modules = [
+      { id: "12345", name: "Test Module", lessons: [] },
+      { id: "123456", name: "Test Module2", lessons: [] },
+    ];
+    const req = {
+      params: { courseId: "courseIdTest" },
+    } as any;
+    const mockObjects = ModuleMapper.bulkDtoToDomain(modules);
+    ModuleService.getAll.mockResolvedValue(mockObjects);
+    const res = mockResponse();
+
+    await controller.getAll(req, res);
+
+    const response = new SuccessResponseEntity(
+      modules,
+      StatusCodes.OK,
+      "Obtained modules successfully"
+    );
+    expect(ModuleService.getAll).toHaveBeenCalled();
     expect(res.json).toHaveBeenCalledWith(response);
   });
 });

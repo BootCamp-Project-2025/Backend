@@ -14,10 +14,7 @@ export default class ModuleService implements IModuleService {
   update(module: Module): Promise<Module> {
     throw new Error("Method not implemented.");
   }
-  getAll(freelancerId: string): Promise<Module[]> {
-    throw new Error("Method not implemented.");
-  }
-  getById(moduleId: string): Promise<Module> {
+  getAll(courseId: string): Promise<Module[]> {
     throw new Error("Method not implemented.");
   }
 }

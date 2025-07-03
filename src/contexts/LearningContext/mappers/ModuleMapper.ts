@@ -16,7 +16,7 @@ export default class ModuleMapper {
     );
   }
 
-  static DomainToDTO(module: Module): ModuleDTO {
+  static DomainToDto(module: Module): ModuleDTO {
     return {
       id: module.id.toString(),
       name: module.props.name,

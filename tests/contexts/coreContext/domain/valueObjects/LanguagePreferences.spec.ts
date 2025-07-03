@@ -15,19 +15,21 @@ describe("LanguagePreference", () => {
     });
 
     it("should throw if language is null", () => {
-      expect(() => LanguagePreference.create(null as any)).toThrow(ApiError);
-      expect(() => LanguagePreference.create(null as any)).toThrow(
-        "LanguagePreference is required"
-      );
+      expect(() =>
+        LanguagePreference.create(null as unknown as string)
+      ).toThrow(ApiError);
+      expect(() =>
+        LanguagePreference.create(null as unknown as string)
+      ).toThrow("LanguagePreference is required");
     });
 
     it("should throw if language is undefined", () => {
-      expect(() => LanguagePreference.create(undefined as any)).toThrow(
-        ApiError
-      );
-      expect(() => LanguagePreference.create(undefined as any)).toThrow(
-        "LanguagePreference is required"
-      );
+      expect(() =>
+        LanguagePreference.create(undefined as unknown as string)
+      ).toThrow(ApiError);
+      expect(() =>
+        LanguagePreference.create(undefined as unknown as string)
+      ).toThrow("LanguagePreference is required");
     });
 
     it("should throw if language is empty", () => {

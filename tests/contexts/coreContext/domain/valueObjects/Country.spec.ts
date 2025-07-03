@@ -10,24 +10,28 @@ describe("Country", () => {
     });
 
     it("should throw ApiError if value is an empty string", () => {
-      expect(() => Country.create("")).toThrowError(ApiError);
+      expect(() => Country.create("")).toThrow(ApiError);
       expect(() => Country.create("")).toThrow("Country is required");
     });
 
     it("should throw ApiError if value is undefined", () => {
-      expect(() => Country.create(undefined as any)).toThrow(ApiError);
-      expect(() => Country.create(undefined as any)).toThrow(
+      expect(() => Country.create(undefined as unknown as string)).toThrow(
+        ApiError
+      );
+      expect(() => Country.create(undefined as unknown as string)).toThrow(
         "Country is required"
       );
     });
 
     it("should throw ApiError if value is null", () => {
-      expect(() => Country.create(null as any)).toThrow(ApiError);
-      expect(() => Country.create(null as any)).toThrow("Country is required");
+      expect(() => Country.create(null as unknown as string)).toThrow(ApiError);
+      expect(() => Country.create(null as unknown as string)).toThrow(
+        "Country is required"
+      );
     });
 
     it("should throw ApiError if value is an invalid country", () => {
-      expect(() => Country.create("Narnia")).toThrowError(ApiError);
+      expect(() => Country.create("Narnia")).toThrow(ApiError);
       expect(() => Country.create("Narnia")).toThrow("Invalid Country");
     });
   });

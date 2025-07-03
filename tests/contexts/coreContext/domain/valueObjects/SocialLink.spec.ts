@@ -25,7 +25,7 @@ describe("SocialLink", () => {
     it("should throw if platform is invalid", () => {
       expect(() =>
         SocialLink.create({
-          platform: "tiktok" as any,
+          platform: "tiktok" as unknown as SocialLink["platform"],
           url: "https://tiktok.com",
         })
       ).toThrow("Invalid SocialLink");
@@ -33,7 +33,10 @@ describe("SocialLink", () => {
 
     it("should throw if both platform and url are invalid", () => {
       expect(() =>
-        SocialLink.create({ platform: "invalid" as any, url: "badurl" })
+        SocialLink.create({
+          platform: "invalid" as unknown as SocialLink["platform"],
+          url: "badurl",
+        })
       ).toThrow("Invalid SocialLink");
     });
   });

@@ -17,15 +17,19 @@ describe("PhoneNumber", () => {
     });
 
     it("should throw if phone is null", () => {
-      expect(() => PhoneNumber.create(null as any)).toThrow(ApiError);
-      expect(() => PhoneNumber.create(null as any)).toThrow(
+      expect(() => PhoneNumber.create(null as unknown as string)).toThrow(
+        ApiError
+      );
+      expect(() => PhoneNumber.create(null as unknown as string)).toThrow(
         "Phone is Required"
       );
     });
 
     it("should throw if phone is undefined", () => {
-      expect(() => PhoneNumber.create(undefined as any)).toThrow(ApiError);
-      expect(() => PhoneNumber.create(undefined as any)).toThrow(
+      expect(() => PhoneNumber.create(undefined as unknown as string)).toThrow(
+        ApiError
+      );
+      expect(() => PhoneNumber.create(undefined as unknown as string)).toThrow(
         "Phone is Required"
       );
     });

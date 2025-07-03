@@ -15,15 +15,19 @@ describe("Gender", () => {
     });
 
     it("should throw ApiError if gender is undefined", () => {
-      expect(() => Gender.create(undefined as any)).toThrow(ApiError);
-      expect(() => Gender.create(undefined as any)).toThrow(
+      expect(() => Gender.create(undefined as unknown as string)).toThrow(
+        ApiError
+      );
+      expect(() => Gender.create(undefined as unknown as string)).toThrow(
         "Gender is required"
       );
     });
 
     it("should throw ApiError if gender is null", () => {
-      expect(() => Gender.create(null as any)).toThrow(ApiError);
-      expect(() => Gender.create(null as any)).toThrow("Gender is required");
+      expect(() => Gender.create(null as unknown as string)).toThrow(ApiError);
+      expect(() => Gender.create(null as unknown as string)).toThrow(
+        "Gender is required"
+      );
     });
 
     it("should throw ApiError if gender is invalid", () => {

@@ -1,26 +1,52 @@
 import "reflect-metadata";
+
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { SyncUserUseCase } from "@/contexts/CoreContext/application/useCases/SyncUserUseCase";
+import type { User } from "@/contexts/CoreContext/domain/aggregates/User";
 
 describe("SyncUserUseCase", () => {
-  const mockUser = { id: { toValue: jest.fn() }, name: "Test User" } as any;
-  let repository: any;
-  let useCase: any;
+  let mockUserId: { toValue: jest.Mock<string, []> };
+  let mockUser: User;
+  let repository: {
+    getById: jest.Mock<Promise<User | null>, [string]>;
+    create: jest.Mock<Promise<User>, [User]>;
+    addFreelancerProfile: jest.Mock;
+    getUserProfileById: jest.Mock;
+    getAll: jest.Mock;
+    delete: jest.Mock;
+    update: jest.Mock;
+  };
+  let useCase: SyncUserUseCase;
 
   beforeEach(() => {
+    mockUserId = {
+      toValue: jest.fn(),
+    };
+
+    mockUser = {
+      id: mockUserId,
+      name: "Test User",
+    } as unknown as User;
+
     repository = {
       getById: jest.fn(),
       create: jest.fn(),
+      addFreelancerProfile: jest.fn(),
+      getUserProfileById: jest.fn(),
+      getAll: jest.fn(),
+      delete: jest.fn(),
+      update: jest.fn(),
     };
-    useCase =
-      new (require("@/contexts/CoreContext/application/useCases/SyncUserUseCase").SyncUserUseCase)(
-        repository
-      );
+
+    useCase = new SyncUserUseCase(repository);
   });
 
   it("should return existing user if found", async () => {
     repository.getById.mockResolvedValue(mockUser);
-    mockUser.id.toValue.mockReturnValue("user-id");
+    mockUserId.toValue.mockReturnValue("user-id");
+
     const result = await useCase.execute(mockUser);
+
     expect(repository.getById).toHaveBeenCalledWith("user-id");
     expect(result).toBe(mockUser);
     expect(repository.create).not.toHaveBeenCalled();
@@ -29,8 +55,10 @@ describe("SyncUserUseCase", () => {
   it("should create and return new user if not found", async () => {
     repository.getById.mockResolvedValue(null);
     repository.create.mockResolvedValue(mockUser);
-    mockUser.id.toValue.mockReturnValue("user-id");
+    mockUserId.toValue.mockReturnValue("user-id");
+
     const result = await useCase.execute(mockUser);
+
     expect(repository.getById).toHaveBeenCalledWith("user-id");
     expect(repository.create).toHaveBeenCalledWith(mockUser);
     expect(result).toBe(mockUser);
@@ -38,7 +66,8 @@ describe("SyncUserUseCase", () => {
 
   it("should throw ApiError on repository error", async () => {
     repository.getById.mockRejectedValue(new Error("DB error"));
-    mockUser.id.toValue.mockReturnValue("user-id");
+    mockUserId.toValue.mockReturnValue("user-id");
+
     await expect(useCase.execute(mockUser)).rejects.toBeInstanceOf(ApiError);
   });
 });

@@ -7,14 +7,19 @@ import { ResponseService } from "@/contexts/Shared/application/services/Response
 import UserMapper from "@/contexts/CoreContext/mappers/UserMapper";
 import { AuthController } from "@/contexts/CoreContext/presentation/http/controllers/AuthController";
 
+import { Request, Response } from "express";
+import { User } from "@/contexts/CoreContext/domain/aggregates/User";
+
 jest.mock("@/contexts/Shared/application/services/ResponseService");
 jest.mock("@/contexts/CoreContext/mappers/UserMapper");
 
 describe("AuthController.syncUser", () => {
-  let userService: any;
+  let userService: {
+    syncUser: jest.Mock<Promise<User>, [User]>;
+  };
   let controller: AuthController;
-  let req: any;
-  let res: any;
+  let req: Request;
+  let res: Response;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -22,6 +27,7 @@ describe("AuthController.syncUser", () => {
     userService = {
       syncUser: jest.fn(),
     };
+
     controller = new AuthController(userService);
 
     req = {
@@ -30,11 +36,12 @@ describe("AuthController.syncUser", () => {
         name: "Test User",
         email: "test@example.com",
       },
-    };
+    } as unknown as Request;
+
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-    };
+    } as unknown as Response;
 
     (UserMapper.createUserDtoTodomain as jest.Mock).mockImplementation(
       (dto) => ({ ...dto, domain: true })
@@ -43,13 +50,16 @@ describe("AuthController.syncUser", () => {
       ...user,
       dto: true,
     }));
-    (ResponseService.send as jest.Mock).mockImplementation(
-      (_res, _entity) => {}
-    );
+    (ResponseService.send as jest.Mock).mockImplementation(() => {});
   });
 
   it("should sync user and send success response", async () => {
-    const syncedUser = { id: "user-id", name: "Test User", domain: true };
+    const syncedUser: User = {
+      id: "user-id",
+      name: "Test User",
+      domain: true,
+    } as unknown as User;
+
     userService.syncUser.mockResolvedValue(syncedUser);
 
     await controller.syncUser(req, res);
@@ -58,13 +68,15 @@ describe("AuthController.syncUser", () => {
       id: "user-id",
       userName: "Test User",
       userEmail: "test@example.com",
-      profilePictureSrc: "https://example.com/default-profile.png",
+      profilePicture: "",
     });
 
     expect(userService.syncUser).toHaveBeenCalledWith(
       expect.objectContaining({ id: "user-id" })
     );
+
     expect(UserMapper.domainToGetUserDto).toHaveBeenCalledWith(syncedUser);
+
     expect(ResponseService.send).toHaveBeenCalledWith(
       res,
       expect.any(SuccessResponseEntity)

@@ -11,15 +11,19 @@ describe("DateOfBirth", () => {
     });
 
     it("should throw ApiError if date is undefined", () => {
-      expect(() => DateOfBirth.create(undefined as any)).toThrow(ApiError);
-      expect(() => DateOfBirth.create(undefined as any)).toThrow(
+      expect(() => DateOfBirth.create(undefined as unknown as Date)).toThrow(
+        ApiError
+      );
+      expect(() => DateOfBirth.create(undefined as unknown as Date)).toThrow(
         "Date of birth required"
       );
     });
 
     it("should throw ApiError if date is null", () => {
-      expect(() => DateOfBirth.create(null as any)).toThrow(ApiError);
-      expect(() => DateOfBirth.create(null as any)).toThrow(
+      expect(() => DateOfBirth.create(null as unknown as Date)).toThrow(
+        ApiError
+      );
+      expect(() => DateOfBirth.create(null as unknown as Date)).toThrow(
         "Date of birth required"
       );
     });

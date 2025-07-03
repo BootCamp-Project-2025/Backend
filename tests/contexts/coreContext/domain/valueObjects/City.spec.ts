@@ -11,10 +11,10 @@ describe("City", () => {
   });
 
   it("should throw an ApiError if value is undefined", () => {
-    expect(() => City.create(undefined as any)).toThrow("City is required");
+    expect(() => City.create(undefined as unknown as string)).toThrow("City is required");
   });
 
   it("should throw an ApiError if value is null", () => {
-    expect(() => City.create(null as any)).toThrow("City is required");
+    expect(() => City.create(null as unknown as string)).toThrow("City is required");
   });
 });

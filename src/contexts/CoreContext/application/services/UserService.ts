@@ -1,10 +1,8 @@
 import { inject, injectable } from "tsyringe";
 import { User } from "../../domain/aggregates/User";
-import { IGetUserProfileDto } from "../../domain/interfaces/dtos/IGetUserProfileDto";
 import { IUserService } from "../../domain/interfaces/services/IUserService";
 import { CreateUserFreelancerProfileUseCase } from "../useCases/CreateUserFreelancerProfileUseCase";
 import { CreateUserUseCase } from "../useCases/CreateUserUseCase";
-import { GetUserProfileUseCase } from "../useCases/GetUserProfileUseCase";
 import { GetUserUseCase } from "../useCases/GetUserUseCase";
 import { UpdateUserUseCase } from "../useCases/UpdateUserUseCase";
 
@@ -21,7 +19,7 @@ export class UserService implements IUserService {
     private readonly getUserProfileUseCase: GetUserProfileUseCase,
     @inject("UpdateUserUseCase")
     private readonly updateUserUseCase: UpdateUserUseCase
-  ) {}
+  ) { }
   async createFreelanceProfile(id: string): Promise<User> {
     const updatedUser =
       await this.createUserFreelancerProfileUseCase.execute(id);
@@ -45,8 +43,5 @@ export class UserService implements IUserService {
   }
   async create(user: User): Promise<User> {
     return await this.createUserUseCase.execute(user);
-  }
-  async getClientProfile(userId: string): Promise<IGetUserProfileDto> {
-    return await this.getUserProfileUseCase.execute(userId);
   }
 }

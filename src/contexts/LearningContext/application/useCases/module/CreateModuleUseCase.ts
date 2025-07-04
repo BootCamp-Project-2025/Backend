@@ -12,7 +12,7 @@ export default class CreateModuleUseCase implements IUseCase<Module, Module> {
   constructor(
     @inject("IModuleRepository")
     private readonly moduleRepository: IModuleRepository,
-    @inject("IFreelancerRepository")
+    @inject("ICourseRepository")
     private readonly courseRepository: ICourseRepository
   ) {}
   async execute(newModule: Module): Promise<Module> {
@@ -24,10 +24,11 @@ export default class CreateModuleUseCase implements IUseCase<Module, Module> {
         throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");
       course.props.modules.add(newModule);
       const moduleDto = ModuleMapper.DomainToDto(newModule);
-      await this.moduleRepository.create(moduleDto);
-      return newModule;
+      const moduleDb = await this.moduleRepository.create(moduleDto);
+      return ModuleMapper.DtoToDomain(moduleDb);
     } catch (error) {
       if (error instanceof ApiError) throw error;
+      console.error(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "error executing the create"

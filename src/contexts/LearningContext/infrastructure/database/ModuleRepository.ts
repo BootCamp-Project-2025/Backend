@@ -23,7 +23,7 @@ export class ModuleRepository implements IModuleRepository {
 
   async create(module: Required<ModuleDTO>): Promise<ModuleDTO> {
     try {
-      PrismaClient.module.create({
+      await PrismaClient.module.create({
         data: {
           id: module.id,
           name: module.name,
@@ -31,7 +31,8 @@ export class ModuleRepository implements IModuleRepository {
           courseId: module.courseId,
         },
       });
-    } catch {
+    } catch (error) {
+      console.log(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "Error saving the module on the database"

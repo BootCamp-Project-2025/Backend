@@ -1,12 +1,13 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { Entity } from "../../../Shared/domain/Entity";
-import { Lesson } from "./Lesson";
 import { SyllabusSectionTitle } from "../valueObjects/SyllabusSectionTitle";
+import { Lessons } from "../OneToMany/Lessons";
 
 interface ModuleProps {
   courseId: string;
   name: SyllabusSectionTitle;
-  lessons: Lesson[];
+  position: number;
+  lessons: Lessons;
 }
 
 export class Module extends Entity<ModuleProps> {
@@ -15,7 +16,7 @@ export class Module extends Entity<ModuleProps> {
   }
   public static create(props: ModuleProps, id?: UniqueEntityID): Module {
     return new Module(
-      { ...props, lessons: props.lessons ? props.lessons : [] },
+      { ...props, lessons: props.lessons ? props.lessons : Lessons.create([]) },
       id
     );
   }

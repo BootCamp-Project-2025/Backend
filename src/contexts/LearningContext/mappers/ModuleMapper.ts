@@ -3,6 +3,7 @@ import { ModuleDTO } from "../domain/dtos/ModuleDTO";
 import { Module } from "../domain/entities/Module";
 import LessonMapper from "./LessonMapper";
 import { SyllabusSectionTitle } from "../domain/valueObjects/SyllabusSectionTitle";
+import { Lessons } from "../domain/OneToMany/Lessons";
 
 export default class ModuleMapper {
   static bulkDtoToDomain(moduleDtos: ModuleDTO[]): Module[] {
@@ -18,9 +19,10 @@ export default class ModuleMapper {
       {
         courseId: moduleDto.courseId ?? "",
         name: SyllabusSectionTitle.create({ title: moduleDto.name }),
-        lessons: moduleDto.lessons.map((lesson) =>
-          LessonMapper.DtoToDomain(lesson)
+        lessons: Lessons.create(
+          moduleDto.lessons?.map((lesson) => LessonMapper.DtoToDomain(lesson))
         ),
+        position: moduleDto.position,
       },
       new UniqueEntityID(moduleDto.id)
     );
@@ -30,9 +32,11 @@ export default class ModuleMapper {
     return {
       id: module.id.toString(),
       name: module.props.name.props.title,
-      lessons: module.props.lessons.map((lesson) =>
-        LessonMapper.DomainToDTO(lesson)
-      ),
+      lessons: module.props.lessons
+        .getItems()
+        .map((lesson) => LessonMapper.DomainToDTO(lesson)),
+      courseId: module.props.courseId,
+      position: module.props.position,
     };
   }
 }

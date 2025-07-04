@@ -1,29 +1,29 @@
 import { ManyRelationship } from "@/contexts/Shared/domain/ManyRelationship";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { Module } from "../entities/Module";
+import { Lesson } from "../entities/Lesson";
 
-export class Modules extends ManyRelationship<Module> {
-  compareItems(a: Module, b: Module): boolean {
+export class Lessons extends ManyRelationship<Lesson> {
+  compareItems(a: Lesson, b: Lesson): boolean {
     return a.equals(b);
   }
 
-  public static create(modules: Module[] = []): Modules {
-    return new Modules(modules);
+  public static create(lessons: Lesson[] = []): Lessons {
+    return new Lessons(lessons);
   }
 
-  public edit(editedModule: Module): void {
+  public edit(editedLesson: Lesson): void {
     const index = this.getItems().findIndex((module) =>
-      module.id.equals(editedModule.id)
+      module.id.equals(editedLesson.id)
     );
 
-    super.edit(editedModule, index);
+    super.edit(editedLesson, index);
   }
 
   public removeById(id: string): void {
     const index = this.getItems().findIndex((e) => e.id.toString() === id);
     if (index === -1)
-      throw new ApiError(StatusCodes.CONTINUE, "module doesnt exist");
+      throw new ApiError(StatusCodes.CONTINUE, "lesson doesnt exist");
     super.remove(this.getItems()[index]);
   }
 }

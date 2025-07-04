@@ -58,6 +58,6 @@ courseRouter.post("/", async (req, res, next) => {
   }
 });
 
-courseRouter.use("/{courseId}/modules", moduleRouter);
+courseRouter.use("/:courseId/modules", moduleRouter);
 
 export default courseRouter;

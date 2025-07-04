@@ -1,9 +1,11 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { Entity } from "../../../Shared/domain/Entity";
 import { Lesson } from "./Lesson";
+import { SyllabusSectionTitle } from "../valueObjects/SyllabusSectionTitle";
 
 interface ModuleProps {
-  name: string;
+  courseId: string;
+  name: SyllabusSectionTitle;
   lessons: Lesson[];
 }
 

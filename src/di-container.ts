@@ -83,6 +83,11 @@ import IModuleController from "./contexts/LearningContext/domain/interfaces/IMod
 import ModuleController from "./contexts/LearningContext/presentation/http/controllers/ModuleController";
 import IModuleService from "./contexts/LearningContext/domain/interfaces/IModuleService";
 import ModuleService from "./contexts/LearningContext/application/services/ModuleService";
+import GetAllModulesUseCase from "./contexts/LearningContext/application/useCases/module/GetAllModulesUseCase";
+import DeleteModuleUseCase from "./contexts/LearningContext/application/useCases/module/DeleteModuleUseCase";
+import CreateModuleUseCase from "./contexts/LearningContext/application/useCases/module/CreateModuleUseCase";
+import UpdateModuleUseCase from "./contexts/LearningContext/application/useCases/module/UpdateModuleUseCase";
+import { Module } from "./contexts/LearningContext/domain/entities/Module";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -178,6 +183,26 @@ container.registerSingleton<IModuleController>(
 );
 
 container.registerSingleton<IModuleService>("IModuleService", ModuleService);
+
+container.registerSingleton<IUseCase<string, Module[]>>(
+  "GetAllModulesUseCase",
+  GetAllModulesUseCase
+);
+
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteModuleUseCase",
+  DeleteModuleUseCase
+);
+
+container.registerSingleton<IUseCase<Module, Module>>(
+  "CreateModuleUseCase",
+  CreateModuleUseCase
+);
+
+container.registerSingleton<IUseCase<Module, Module>>(
+  "UpdateModuleUseCase",
+  UpdateModuleUseCase
+);
 
 container.registerSingleton<IFreelancerController>(
   "IFreelancerController",

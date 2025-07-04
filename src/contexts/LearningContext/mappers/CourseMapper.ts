@@ -6,6 +6,7 @@ import { CourseField } from "../domain/valueObjects/CourseField";
 import { CourseRequirements } from "../domain/valueObjects/CourseRequirements";
 import { CourseDescription } from "../domain/valueObjects/CourseDescription";
 import { CourseDTO } from "../domain/dtos/CourseDTO";
+import { Modules } from "../domain/OneToMany/Modules";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {

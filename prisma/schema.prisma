@@ -30,6 +30,7 @@ model Course{
 
 model Module{
   id      String      @id @default(uuid())
+  position Int
   author   Course @relation(fields: [CourseId], references: [id])
   CourseId String
   name   String   @unique
@@ -38,14 +39,23 @@ model Module{
 
 model Lesson{
   id      String      @id @default(uuid())
+  position Int
   author   Module @relation(fields: [moduleId], references: [id])
   description String
-  resources String[]
+  resources Resource[]
   videoUrls String[]
   moduleId String
   title   String   @unique
+  
 }
 
+model Resource{
+  id      String      @id @default(uuid())
+  author   Lesson @relation(fields: [LessonId], references: [id])
+  name   String   @unique
+  url   String   @unique
+  LessonId String
+}
 
 model SampleData {
   id String @id @default(uuid())

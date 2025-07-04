@@ -7,6 +7,7 @@ import { ResponseService } from "@/contexts/Shared/application/services/Response
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { StatusCodes } from "http-status-codes";
+import { educationMapper } from "@/contexts/CoreContext/mappers/EducationMapper";
 
 @injectable()
 export default class EducationController implements IEducationController {
@@ -52,10 +53,14 @@ export default class EducationController implements IEducationController {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public update = async (req: Request, res: Response): Promise<void> => {
     try {
-      throw new ApiError(StatusCodes.NOT_IMPLEMENTED, "server error");
+      const { freelancerId } = req.params;
+      req.body.id = req.params.educationId;
+      const education: IEducationDto = req.body as IEducationDto;
+      await this.educationService.updateEducation(education, freelancerId);
+      const response = new SuccessResponseEntity(education, StatusCodes.OK);
+      ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) throw error;
       else
@@ -65,8 +70,13 @@ export default class EducationController implements IEducationController {
 
   public delete = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { educationId } = req.params;
-      await this.educationService.removeById(educationId);
+      req.body.id = req.params.educationId;
+      const body: IEducationDto = req.body as IEducationDto;
+      const education = educationMapper.mapDtoToDomain(body);
+      await this.educationService.removeById(
+        education,
+        req.params.freelancerId
+      );
       const response = new SuccessResponseEntity({}, StatusCodes.NO_CONTENT);
       ResponseService.send(res, response);
     } catch (error) {

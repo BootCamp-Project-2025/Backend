@@ -88,7 +88,7 @@ export default class LanguageRepository implements ILanguageRepository {
     try {
       const dbLanguage = LanguageMapper.domainToPersistance(object);
       await PrismaClient.language.update({
-        where: { id: object.id.toString() },
+        where: { id: id },
         data: { level: dbLanguage.level },
       });
 

@@ -1,3 +1,4 @@
+import { Language } from "@/contexts/CoreContext/domain/entities/Language";
 import ILanguageController from "@/contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
 import { ILanguageDto } from "@/contexts/CoreContext/domain/interfaces/dtos/ILanguageDto";
 import { ILanguagesService } from "@/contexts/CoreContext/domain/interfaces/services/ILanguages";
@@ -17,13 +18,15 @@ export default class LanguageController implements ILanguageController {
 
   editLanguage = async (req: Request, res: Response): Promise<void> => {
     try {
+      req.body.id = req.params.languageId;
       const body: ILanguageDto = req.body as ILanguageDto;
       const language = LanguageMapper.createLanguageDtoTodomain(body);
-      await this.languagesService.updateLanguage(
+      const data = await this.languagesService.updateLanguage(
         language,
         req.params.freelancerId
       );
-      const response = new SuccessResponseEntity(language, StatusCodes.OK);
+      const datadto: ILanguageDto = LanguageMapper.mapDomainToDto(data);
+      const response = new SuccessResponseEntity(datadto, StatusCodes.OK);
       ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) {
@@ -38,11 +41,12 @@ export default class LanguageController implements ILanguageController {
     try {
       const body: ILanguageDto = req.body as ILanguageDto;
       const language = LanguageMapper.createLanguageDtoTodomain(body);
-      await this.languagesService.addLanguage(
+      const data = await this.languagesService.addLanguage(
         language,
         req.params.freelancerId
       );
-      const response = new SuccessResponseEntity(language, StatusCodes.OK);
+      const datadto: ILanguageDto = LanguageMapper.mapDomainToDto(data);
+      const response = new SuccessResponseEntity(datadto, StatusCodes.OK);
       ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) {
@@ -55,6 +59,7 @@ export default class LanguageController implements ILanguageController {
 
   deleteLanguage = async (req: Request, res: Response): Promise<void> => {
     try {
+      req.body.id = req.params.languageId;
       const body: ILanguageDto = req.body as ILanguageDto;
       const language = LanguageMapper.createLanguageDtoTodomain(body);
       await this.languagesService.removeLanguage(
@@ -80,10 +85,13 @@ export default class LanguageController implements ILanguageController {
       const languages = await this.languagesService.getLanguages(
         req.params.freelancerId
       );
+      const data = languages.map((row: Language) => {
+        return LanguageMapper.mapDomainToDto(row);
+      });
       if (languages.length === 0) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Languages not found");
       } else {
-        const response = new SuccessResponseEntity(languages, StatusCodes.OK);
+        const response = new SuccessResponseEntity(data, StatusCodes.OK);
         ResponseService.send(res, response);
       }
     } catch (error) {

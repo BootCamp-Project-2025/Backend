@@ -5,6 +5,8 @@ import { Education } from "../../domain/entities/Education";
 import { inject, injectable } from "tsyringe";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { Freelancer } from "../../domain/aggregates/Freelancer";
+import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
 
 @injectable()
 export default class AddEducationUseCase
@@ -12,12 +14,32 @@ export default class AddEducationUseCase
 {
   constructor(
     @inject("EducationRepository")
-    private educationRepository: IEducationRepository
+    private educationRepository: IEducationRepository,
+    @inject("IFreelancerRepository")
+    private freelancerRepository: IFreelancerRepository
   ) {}
 
   async execute(education: Education): Promise<Education> {
     try {
-      return await this.educationRepository.add(education);
+      const freelancer: Freelancer | null =
+        await this.freelancerRepository.getById(education.freelancerId);
+      console.log("create", education);
+      if (freelancer !== null) {
+        console.log("freelancer", freelancer);
+        freelancer.education.add(Education.create(education));
+
+        console.log(
+          "educations",
+          freelancer.education.getItems(),
+          "new",
+          freelancer.education.getNewItems()[0]
+        );
+        return await this.educationRepository.create(
+          freelancer.education.getNewItems()[0]
+        );
+      }
+
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");
     } catch (error) {
       if (error as ApiError) throw error;
       else

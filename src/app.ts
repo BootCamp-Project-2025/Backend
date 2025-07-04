@@ -13,7 +13,13 @@ import { swaggerDocs } from "./config/swagger";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://172.178.45.183/"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/health", healthRoutes);

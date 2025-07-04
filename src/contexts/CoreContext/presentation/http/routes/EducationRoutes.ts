@@ -2,9 +2,8 @@ import { Router } from "express";
 import { container } from "tsyringe";
 import EducationController from "../controllers/EducationController";
 
+export const EducationRoutes = Router({ mergeParams: true });
 const controller = container.resolve(EducationController);
-
-const router = Router();
 
 /**
  * @openapi
@@ -24,7 +23,7 @@ const router = Router();
  *       200:
  *         description: A list of education of the freelancer
  */
-router.get("", controller.getAllOfFreelancer);
+EducationRoutes.get("", controller.getAllOfFreelancer);
 
 /**
  * @openapi
@@ -50,7 +49,38 @@ router.get("", controller.getAllOfFreelancer);
  *       201:
  *         description: Education created successfully
  */
-router.post("", controller.create);
+EducationRoutes.post("", controller.create);
+
+/**
+ * @openapi
+ * /freelancers/{freelancerId}/educations/{educationId}:
+ *   put:
+ *     summary: Update a education of a freelancer
+ *     tags:
+ *       - Education
+ *     parameters:
+ *       - in: path
+ *         name: freelancerId
+ *         required: true
+ *         description: The ID of the freelancer
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/EducationDTO'
+ *     responses:
+ *       200:
+ *         description: freelancer language updated
+ *       404:
+ *         description: freelancer or language not found
+ *       500:
+ *         description: Server error
+ *
+ */
+EducationRoutes.put("/:educationId", controller.update);
 
 /**
  * @openapi
@@ -76,9 +106,7 @@ router.post("", controller.create);
  *       204:
  *         description: Education deleted successfully
  */
-router.delete("/:educationId", controller.delete);
-
-export default router;
+EducationRoutes.delete("/:educationId", controller.delete);
 
 /**
  * @openapi

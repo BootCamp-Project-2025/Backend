@@ -15,7 +15,7 @@ export class CertificationController implements ICertificationController {
   ) {}
 
   async getAll(req: Request, res: Response): Promise<void> {
-    const freelancerId = req.params.id;
+    const freelancerId = req.params.freelancerId;
     const certifications = (
       await this.certificationService.getAll(freelancerId)
     ).map((cert) => new CertificationMapper().mapDomainToDto(cert));
@@ -28,7 +28,7 @@ export class CertificationController implements ICertificationController {
   }
 
   async create(req: Request, res: Response): Promise<void> {
-    const freelancerId = req.params.id;
+    const freelancerId = req.params.freelancerId;
     const certification = req.body;
     await this.certificationService.create(certification, freelancerId);
     const response = new SuccessResponseEntity(
@@ -40,7 +40,7 @@ export class CertificationController implements ICertificationController {
   }
 
   async update(req: Request, res: Response): Promise<void> {
-    const freelancerId = req.params.id;
+    const freelancerId = req.params.freelancerId;
     const certificationId = req.params.certificationId;
     const certification = req.body;
     await this.certificationService.update(
@@ -53,7 +53,7 @@ export class CertificationController implements ICertificationController {
   }
 
   async delete(req: Request, res: Response): Promise<void> {
-    const freelancerId = req.params.id;
+    const freelancerId = req.params.freelancerId;
     const certificationId = req.params.certificationId;
     await this.certificationService.delete(certificationId, freelancerId);
     const response = new SuccessResponseEntity(null, StatusCodes.NO_CONTENT);

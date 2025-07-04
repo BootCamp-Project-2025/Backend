@@ -1,5 +1,7 @@
 import IModuleRepository from "@/contexts/LearningContext/domain/interfaces/IModuleRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -12,8 +14,11 @@ export default class DeleteModuleUseCase implements IUseCase<string, void> {
     try {
       await this.moduleRepository.delete(moduleId);
     } catch (error) {
-      console.error("Error in UpdateModuleUseCase:", error);
-      throw error; // Re-throw the error after logging it
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "error executing the delete"
+      );
     }
   }
 }

@@ -31,8 +31,8 @@ model Course{
 model Module{
   id      String      @id @default(uuid())
   position Int
-  author   Course @relation(fields: [CourseId], references: [id])
-  CourseId String
+  author   Course @relation(fields: [courseId], references: [id])
+  courseId String
   name   String   @unique
   lessons Lesson[]
 }

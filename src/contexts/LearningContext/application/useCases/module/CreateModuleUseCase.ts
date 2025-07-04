@@ -27,8 +27,11 @@ export default class CreateModuleUseCase implements IUseCase<Module, Module> {
       await this.moduleRepository.create(moduleDto);
       return newModule;
     } catch (error) {
-      console.error("Error in UpdateModuleUseCase:", error);
-      throw error;
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "error executing the create"
+      );
     }
   }
 }

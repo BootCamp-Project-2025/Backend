@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import IModuleController from "@/contexts/LearningContext/domain/interfaces/IModuleController";
 import IModuleService from "@/contexts/LearningContext/domain/interfaces/IModuleService";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { ModuleDTO } from "@/contexts/LearningContext/domain/dtos/ModuleDTO";
 import { Module } from "@/contexts/LearningContext/domain/entities/Module";
 import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
@@ -10,6 +10,7 @@ import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessRe
 import { StatusCodes } from "http-status-codes";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 
+@injectable()
 export default class ModuleController implements IModuleController {
   constructor(
     @inject("IModuleService") private readonly moduleService: IModuleService

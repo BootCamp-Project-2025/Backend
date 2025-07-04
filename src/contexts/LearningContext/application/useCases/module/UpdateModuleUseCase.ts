@@ -1,23 +1,29 @@
-import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import { Module } from "@/contexts/LearningContext/domain/entities/Module";
 import IModuleRepository from "@/contexts/LearningContext/domain/interfaces/IModuleRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
+import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
 export default class UpdateModuleUseCase implements IUseCase<Module, Module> {
   constructor(
     @inject("IModuleRepository")
-    private readonly moduleRepository: IModuleRepository,
-    @inject("IFreelancerRepository")
-    private readonly freelancerRepository: IFreelancerRepository
+    private readonly moduleRepository: IModuleRepository
   ) {}
-  execute(newModule: Module): Promise<Module> {
+  async execute(newModule: Module): Promise<Module> {
     try {
-      throw new Error("Method not implemented.");
+      const moduleDto = await this.moduleRepository.update(
+        ModuleMapper.DomainToDto(newModule)
+      );
+      return ModuleMapper.DtoToDomain(moduleDto);
     } catch (error) {
-      console.error("Error in UpdateModuleUseCase:", error);
-      throw error; // Re-throw the error after logging it
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "error executing the update"
+      );
     }
   }
 }

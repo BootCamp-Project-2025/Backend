@@ -88,6 +88,8 @@ import DeleteModuleUseCase from "./contexts/LearningContext/application/useCases
 import CreateModuleUseCase from "./contexts/LearningContext/application/useCases/module/CreateModuleUseCase";
 import UpdateModuleUseCase from "./contexts/LearningContext/application/useCases/module/UpdateModuleUseCase";
 import { Module } from "./contexts/LearningContext/domain/entities/Module";
+import { ModuleRepository } from "./contexts/LearningContext/infrastructure/database/ModuleRepository";
+import IModuleRepository from "./contexts/LearningContext/domain/interfaces/IModuleRepository";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -183,6 +185,11 @@ container.registerSingleton<IModuleController>(
 );
 
 container.registerSingleton<IModuleService>("IModuleService", ModuleService);
+
+container.registerSingleton<IModuleRepository>(
+  "IModuleRepository",
+  ModuleRepository
+);
 
 container.registerSingleton<IUseCase<string, Module[]>>(
   "GetAllModulesUseCase",

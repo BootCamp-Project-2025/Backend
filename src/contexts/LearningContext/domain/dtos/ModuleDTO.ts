@@ -1,8 +1,9 @@
 import { LessonDTO } from "./LessonDTO";
 
 export interface ModuleDTO {
-  courseId?: string;
+  courseId: string;
+  position: number;
   id?: string;
   name: string;
-  lessons: LessonDTO[];
+  lessons?: LessonDTO[];
 }

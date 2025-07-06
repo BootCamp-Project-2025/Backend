@@ -34,7 +34,7 @@ moduleRouter.post("", controller.create);
 
 /**
  * @openapi
- * /courses/{courseId}/modules/{moduleId}:
+ * /courses/modules/{moduleId}:
  *   put:
  *     summary: Update a module
  *     tags:
@@ -47,7 +47,7 @@ moduleRouter.put("/:moduleId", controller.update);
 
 /**
  * @openapi
- * /courses/{courseId}/modules/{moduleId}:
+ * /courses/modules/{moduleId}:
  *   delete:
  *     summary: Delete a module
  *     tags:

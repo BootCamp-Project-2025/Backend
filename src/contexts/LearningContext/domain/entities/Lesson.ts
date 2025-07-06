@@ -11,6 +11,7 @@ interface LessonProps {
   description: string;
   resources: LessonResource[];
   videoUrls: string[];
+  position: number;
 }
 
 export class Lesson extends Entity<LessonProps> {

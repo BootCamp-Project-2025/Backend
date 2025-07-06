@@ -10,18 +10,20 @@ export default class LessonMapper {
         description: lessonDto.description,
         videoUrls: lessonDto.videoUrls,
         resources: lessonDto.resources,
+        position: lessonDto.position,
       },
       new UniqueEntityID(lessonDto.id)
     );
   }
 
-  static DomainToDTO(lesson: Lesson): LessonDTO {
+  static DomainToDto(lesson: Lesson): LessonDTO {
     return {
       id: lesson.id.toString(),
       title: lesson.props.title,
       description: lesson.props.description,
       videoUrls: lesson.props.videoUrls,
       resources: lesson.props.resources,
+      position: lesson.props.position,
     };
   }
 }

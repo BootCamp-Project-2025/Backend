@@ -2,7 +2,6 @@ import { LessonResource } from "../entities/Lesson";
 
 export interface LessonDTO {
   id?: string;
-  moduleId: string;
   position: number;
   title: string;
   description: string;

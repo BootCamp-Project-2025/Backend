@@ -4,6 +4,7 @@ import ModuleController from "@/contexts/LearningContext/presentation/http/contr
 import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { StatusCodes } from "http-status-codes";
+import { ModuleDTO } from "@/contexts/LearningContext/domain/dtos/ModuleDTO";
 
 const ModuleService = {
   create: jest.fn(),
@@ -31,9 +32,15 @@ describe("ModuleController", () => {
 
   it("should call moduleService create with correct parameters", async () => {
     const req = {
-      body: { id: "asd", name: "Test Module", lessons: [] },
+      body: { id: "asd", title: "Test Module", lessons: [], position: 1 },
+      params: { courseId: "courseIdTest" },
     } as any;
-    const mockObject = ModuleMapper.DtoToDomain(req.body);
+    const mockObject = ModuleMapper.DtoToDomain({
+      id: "asd",
+      title: "Test Module",
+      lessons: [],
+      position: 1,
+    });
     ModuleService.create.mockResolvedValue(mockObject);
     const res = mockResponse();
 
@@ -44,14 +51,26 @@ describe("ModuleController", () => {
       StatusCodes.CREATED,
       "Module saved successfully"
     );
-    expect(ModuleService.create).toHaveBeenCalledWith(mockObject);
+    expect(ModuleService.create).toHaveBeenCalledWith(
+      mockObject,
+      "courseIdTest"
+    );
     expect(res.json).toHaveBeenCalledWith(response);
   });
 
   it("should call moduleService update with correct parameters", async () => {
-    const module = { id: "12345", name: "Test Module", lessons: [] };
+    const module: ModuleDTO = {
+      id: "12345",
+      title: "Test Module",
+      lessons: [],
+      position: 1,
+    };
     const req = {
-      body: { name: module.name, lessons: module.lessons },
+      body: {
+        title: module.title,
+        lessons: module.lessons,
+        position: module.position,
+      },
       params: {
         moduleId: module.id,
       },
@@ -86,9 +105,9 @@ describe("ModuleController", () => {
   });
 
   it("should call moduleService getAll with correct parameters", async () => {
-    const modules = [
-      { id: "12345", name: "Test Module", lessons: [] },
-      { id: "123456", name: "Test Module2", lessons: [] },
+    const modules: ModuleDTO[] = [
+      { id: "12345", title: "Test Module", lessons: [], position: 1 },
+      { id: "123456", title: "Test Module2", lessons: [], position: 1 },
     ];
     const req = {
       params: { courseId: "courseIdTest" },

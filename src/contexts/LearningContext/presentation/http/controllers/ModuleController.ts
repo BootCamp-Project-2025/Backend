@@ -65,7 +65,6 @@ export default class ModuleController implements IModuleController {
     try {
       const moduleDto: ModuleDTO = req.body as ModuleDTO;
       moduleDto.id = req.params.moduleId;
-      console.log("ModuleDto", moduleDto);
       const module: Module = ModuleMapper.DtoToDomain(moduleDto);
       const responseDomain: Module = await this.moduleService.update(module);
       const resposeData = ModuleMapper.DomainToDto(responseDomain);
@@ -93,7 +92,7 @@ export default class ModuleController implements IModuleController {
       const response = new SuccessResponseEntity(
         resposeData,
         StatusCodes.OK,
-        "Obtained course module"
+        "Obtained modules successfully"
       );
       ResponseService.send(res, response);
     } catch (error) {

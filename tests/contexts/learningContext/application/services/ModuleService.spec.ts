@@ -26,12 +26,16 @@ describe("ModuleService", () => {
   it("should create a module", async () => {
     const module = ModuleMapper.DtoToDomain({
       id: "1",
-      name: "Test Module",
+      title: "Test Module",
       lessons: [],
+      position: 1,
     });
     createModuleUseCase.execute.mockResolvedValue(module);
-    const result = await moduleService.create(module);
-    expect(createModuleUseCase.execute).toHaveBeenCalledWith(module);
+    const result = await moduleService.create(module, "courseId");
+    expect(createModuleUseCase.execute).toHaveBeenCalledWith({
+      courseId: "courseId",
+      module: module,
+    });
     expect(result).toEqual(module);
   });
 
@@ -43,8 +47,9 @@ describe("ModuleService", () => {
   it("should update a module", async () => {
     const module = ModuleMapper.DtoToDomain({
       id: "1",
-      name: "Test Module",
+      title: "Test Module",
       lessons: [],
+      position: 1,
     });
     updateModuleUseCase.execute.mockResolvedValue(module);
     const result = await moduleService.update(module);
@@ -56,13 +61,15 @@ describe("ModuleService", () => {
     const module = ModuleMapper.bulkDtoToDomain([
       {
         id: "1",
-        name: "Test Module",
+        title: "Test Module",
         lessons: [],
+        position: 1,
       },
       {
         id: "2",
-        name: "Test Modul2",
+        title: "Test Modul2",
         lessons: [],
+        position: 1,
       },
     ]);
     getAllModulesUseCase.execute.mockResolvedValue(module);

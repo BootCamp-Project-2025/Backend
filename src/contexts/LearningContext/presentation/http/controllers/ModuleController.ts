@@ -19,9 +19,11 @@ export default class ModuleController implements IModuleController {
   create = async (req: Request, res: Response): Promise<void> => {
     try {
       const moduleDto: ModuleDTO = req.body as ModuleDTO;
-      moduleDto.courseId = req.params.courseId;
       const module: Module = ModuleMapper.DtoToDomain(moduleDto);
-      const moduleDomain: Module = await this.moduleService.create(module);
+      const moduleDomain: Module = await this.moduleService.create(
+        module,
+        req.params.courseId
+      );
       const resposeData = ModuleMapper.DomainToDto(moduleDomain);
       const response = new SuccessResponseEntity(
         resposeData,

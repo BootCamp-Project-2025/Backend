@@ -9,7 +9,13 @@ import { StatusCodes } from "http-status-codes";
 export default class ModuleService implements IModuleService {
   constructor(
     @inject("CreateModuleUseCase")
-    private readonly createModuleUseCase: IUseCase<Module, Module>,
+    private readonly createModuleUseCase: IUseCase<
+      {
+        module: Module;
+        courseId: string;
+      },
+      Module
+    >,
     @inject("DeleteModuleUseCase")
     private readonly deleteModuleUseCase: IUseCase<string, void>,
     @inject("UpdateModuleUseCase")
@@ -17,9 +23,9 @@ export default class ModuleService implements IModuleService {
     @inject("GetAllModulesUseCase")
     private readonly getAllModulesUseCase: IUseCase<string, Module[]>
   ) {}
-  async create(module: Module): Promise<Module> {
+  async create(module: Module, courseId: string): Promise<Module> {
     try {
-      return await this.createModuleUseCase.execute(module);
+      return await this.createModuleUseCase.execute({ module, courseId });
     } catch (error) {
       if (error instanceof ApiError) throw error;
       console.error(error);

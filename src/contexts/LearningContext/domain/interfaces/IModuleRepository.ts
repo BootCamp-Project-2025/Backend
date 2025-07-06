@@ -1,8 +1,8 @@
-import { ModuleDTO } from "../dtos/ModuleDTO";
+import { Module } from "../entities/Module";
 
 export default interface IModuleRepository {
-  findByCourseId(courseId: string): Promise<ModuleDTO[]>;
-  create(module: ModuleDTO): Promise<ModuleDTO>;
+  findByCourseId(courseId: string): Promise<Module[]>;
+  create(module: Module, courseId: string): Promise<Module>;
   delete(moduleId: string): Promise<void>;
-  update(module: ModuleDTO): Promise<ModuleDTO>;
+  update(module: Module): Promise<Module>;
 }

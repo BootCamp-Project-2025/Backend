@@ -17,8 +17,7 @@ export default class ModuleMapper {
   static DtoToDomain(moduleDto: ModuleDTO): Module {
     return Module.create(
       {
-        courseId: moduleDto.courseId ?? "",
-        name: SyllabusSectionTitle.create({ title: moduleDto.name }),
+        title: SyllabusSectionTitle.create({ title: moduleDto.title }),
         lessons: Lessons.create(
           moduleDto.lessons?.map((lesson) => LessonMapper.DtoToDomain(lesson))
         ),
@@ -31,11 +30,10 @@ export default class ModuleMapper {
   static DomainToDto(module: Module): ModuleDTO {
     return {
       id: module.id.toString(),
-      name: module.props.name.props.title,
+      title: module.props.title.props.title,
       lessons: module.props.lessons
         .getItems()
-        .map((lesson) => LessonMapper.DomainToDTO(lesson)),
-      courseId: module.props.courseId,
+        .map((lesson) => LessonMapper.DomainToDto(lesson)),
       position: module.props.position,
     };
   }

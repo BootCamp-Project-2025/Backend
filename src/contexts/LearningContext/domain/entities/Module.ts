@@ -4,8 +4,7 @@ import { SyllabusSectionTitle } from "../valueObjects/SyllabusSectionTitle";
 import { Lessons } from "../OneToMany/Lessons";
 
 interface ModuleProps {
-  courseId: string;
-  name: SyllabusSectionTitle;
+  title: SyllabusSectionTitle;
   position: number;
   lessons: Lessons;
 }

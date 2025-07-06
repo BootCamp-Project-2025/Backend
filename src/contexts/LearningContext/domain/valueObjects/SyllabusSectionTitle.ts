@@ -12,7 +12,7 @@ export class SyllabusSectionTitle extends ValueObject<SyllabusSectionTitleProps>
   }
 
   public get value(): string {
-    return this.props.requirements;
+    return this.props.title;
   }
 
   public static create(props: SyllabusSectionTitleProps): SyllabusSectionTitle {

@@ -1,7 +1,6 @@
 import { Module } from "@/contexts/LearningContext/domain/entities/Module";
 import IModuleRepository from "@/contexts/LearningContext/domain/interfaces/IModuleRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
-import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
@@ -14,10 +13,7 @@ export default class UpdateModuleUseCase implements IUseCase<Module, Module> {
   ) {}
   async execute(newModule: Module): Promise<Module> {
     try {
-      const moduleDto = await this.moduleRepository.update(
-        ModuleMapper.DomainToDto(newModule)
-      );
-      return ModuleMapper.DtoToDomain(moduleDto);
+      return await this.moduleRepository.update(newModule);
     } catch (error) {
       if (error instanceof ApiError) throw error;
       throw new ApiError(

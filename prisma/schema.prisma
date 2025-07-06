@@ -33,7 +33,7 @@ model Module{
   position Int
   author   Course @relation(fields: [courseId], references: [id])
   courseId String
-  name   String   @unique
+  title   String
   lessons Lesson[]
 }
 
@@ -45,7 +45,7 @@ model Lesson{
   resources Resource[]
   videoUrls String[]
   moduleId String
-  title   String   @unique
+  title   String
   
 }
 

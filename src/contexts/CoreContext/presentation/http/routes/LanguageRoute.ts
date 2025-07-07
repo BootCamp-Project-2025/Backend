@@ -129,19 +129,6 @@ LanguageRoutes.put("/:languageId", controller.editLanguage);
  *         schema:
  *           type: string
  *         required: true
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: English
- *               level:
- *                 type: string
- *                 example: advanced
  *     responses:
  *       200:
  *         description: Freelancer language deleted

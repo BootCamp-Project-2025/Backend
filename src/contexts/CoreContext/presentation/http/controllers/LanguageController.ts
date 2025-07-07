@@ -59,11 +59,8 @@ export default class LanguageController implements ILanguageController {
 
   deleteLanguage = async (req: Request, res: Response): Promise<void> => {
     try {
-      req.body.id = req.params.languageId;
-      const body: ILanguageDto = req.body as ILanguageDto;
-      const language = LanguageMapper.createLanguageDtoTodomain(body);
       await this.languagesService.removeLanguage(
-        language,
+        req.params.languageId,
         req.params.freelancerId
       );
       const response = new SuccessResponseEntity(

@@ -7,7 +7,6 @@ import { ResponseService } from "@/contexts/Shared/application/services/Response
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { StatusCodes } from "http-status-codes";
-import { educationMapper } from "@/contexts/CoreContext/mappers/EducationMapper";
 
 @injectable()
 export default class EducationController implements IEducationController {
@@ -70,11 +69,10 @@ export default class EducationController implements IEducationController {
 
   public delete = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { freelancerId } = req.params;
-      req.body.id = req.params.educationId;
-      const body: IEducationDto = req.body as IEducationDto;
-      const education = educationMapper.mapDtoToDomain(body);
-      await this.educationService.removeById(education, freelancerId);
+      await this.educationService.removeById(
+        req.params.educationId,
+        req.params.freelancerId
+      );
       const response = new SuccessResponseEntity(
         "Education removed",
         StatusCodes.NO_CONTENT

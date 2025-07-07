@@ -6,11 +6,11 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { Freelancer } from "../../domain/aggregates/Freelancer";
 import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
-import { CreateEducationDto } from "../../domain/interfaces/dtos/CreateEducationDto";
+import { DeleteEducationDto } from "../../domain/interfaces/dtos/DeleteEducationDto";
 
 @injectable()
 export default class DeleteEducationUseCase
-  implements IUseCase<CreateEducationDto, void | string>
+  implements IUseCase<DeleteEducationDto, void>
 {
   constructor(
     @inject("EducationRepository")
@@ -20,24 +20,29 @@ export default class DeleteEducationUseCase
   ) {}
 
   async execute({
-    education,
+    educationId,
     freelancerId,
-  }: CreateEducationDto): Promise<void | string> {
+  }: DeleteEducationDto): Promise<void> {
     try {
       const freelancer: Freelancer | null =
         await this.freelancerRepository.getById(freelancerId);
-      if (freelancer !== null) {
-        if (!freelancer.education.exists(education)) {
-          throw new ApiError(
-            StatusCodes.BAD_REQUEST,
-            "the language doesnt exist"
-          );
-        }
-        freelancer.education.remove(education);
-        return await this.educationRepository.delete(education.id.toString());
+      if (freelancer === null) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");
+      }  
+      const educations = freelancer.education.getItems();
+      const education = educations.find(
+        (row) => row.id.toString() === educationId
+      );
+
+      if (!education) {
+        throw new ApiError(
+          StatusCodes.NOT_FOUND,
+          "the education doesnt exist"
+        );
       }
 
-      throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");
+      freelancer.education.remove(education);
+      await this.educationRepository.delete(education.id.toString());
     } catch (error) {
       if (error as ApiError) throw error;
       else

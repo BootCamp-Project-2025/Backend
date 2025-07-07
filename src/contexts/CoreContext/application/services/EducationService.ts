@@ -6,6 +6,7 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { IEducationDto } from "../../domain/interfaces/dtos/IEducationDto";
 import { educationMapper } from "../../mappers/EducationMapper";
 import { CreateEducationDto } from "../../domain/interfaces/dtos/CreateEducationDto";
+import { DeleteEducationDto } from "../../domain/interfaces/dtos/DeleteEducationDto";
 
 @injectable()
 export default class EducationService implements IEducationService {
@@ -20,10 +21,7 @@ export default class EducationService implements IEducationService {
     @inject("GetEducationsUseCase")
     private readonly getEducationsUseCase: IUseCase<string, Education[]>,
     @inject("DeleteEducationUseCase")
-    private readonly deleteEducationUseCase: IUseCase<
-      CreateEducationDto,
-      void | string
-    >
+    private readonly deleteEducationUseCase: IUseCase<DeleteEducationDto, void>
   ) {}
   async getAllOfFreelancer(freelancerId: string): Promise<IEducationDto[]> {
     try {
@@ -45,13 +43,10 @@ export default class EducationService implements IEducationService {
       else throw new ApiError();
     }
   }
-  async removeById(
-    education: Education,
-    freelancerId: string
-  ): Promise<void | string> {
+  async removeById(educationId: string, freelancerId: string): Promise<void> {
     try {
       await this.deleteEducationUseCase.execute({
-        education: education,
+        educationId: educationId,
         freelancerId: freelancerId,
       });
     } catch (error) {

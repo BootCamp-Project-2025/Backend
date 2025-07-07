@@ -127,23 +127,10 @@ SkillRoutes.put("/:skillId", controller.editSkill);
  *         schema:
  *           type: string
  *         required: true
- *      requestBody:
- *               required: true
- *               content:
- *                   application/json:
- *                       schema:
- *                           type: object
- *                           properties:
- *                                  name:
- *                                      type: string
- *                                      example: react
- *                                  level:
- *                                      type: string
- *                                      example: beginner
  *
  *      responses:
  *          201:
- *              description: Everything is ok and returns skill
+ *              description: Everything is ok
  *          500:
  *              description: Everything is wrong
  *

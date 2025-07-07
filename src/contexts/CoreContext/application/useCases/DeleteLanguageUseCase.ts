@@ -1,16 +1,16 @@
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
-import { CreateLanguageDto } from "../../domain/interfaces/dtos/CreateLanguageDto";
 import { ILanguageRepository } from "../../domain/interfaces/repositories/ILanguageRepositoty";
 import { Freelancer } from "../../domain/aggregates/Freelancer";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { DeleteLanguageDto } from "../../domain/interfaces/dtos/DeleteLanguageDto";
 
 @injectable()
 export class DeleteLanguageUseCase
-  implements IUseCase<CreateLanguageDto, void | string>
+  implements IUseCase<DeleteLanguageDto, void>
 {
   constructor(
     @inject("ILanguageRepository")
@@ -20,26 +20,32 @@ export class DeleteLanguageUseCase
   ) {}
 
   async execute({
-    language,
+    languageId,
     freelancerId,
-  }: CreateLanguageDto): Promise<void | string> {
+  }: DeleteLanguageDto): Promise<void> {
     try {
       const freelancer: Freelancer | null =
         await this.freelancerRepository.getById(freelancerId);
-      if (freelancer !== null) {
-        if (!freelancer.languages.exists(language)) {
-          throw new ApiError(
-            StatusCodes.BAD_REQUEST,
-            "the language doesnt exist"
-          );
-        }
-        freelancer.languages.remove(language);
-        return await this.languageRepository.delete(
-          new UniqueEntityID(language.id.toString()).toString()
+      if (freelancer === null) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");
+      }
+
+      const languages = freelancer.languages.getItems();
+      const language = languages.find(
+        (row) => row.id.toString() === languageId
+      );
+
+      if (!language) {
+        throw new ApiError(
+          StatusCodes.NOT_FOUND,
+          "the language doesnt exist"
         );
       }
 
-      throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");
+      freelancer.languages.remove(language);
+      await this.languageRepository.delete(
+        new UniqueEntityID(languageId).toString()
+      );
     } catch (error) {
       if (error instanceof ApiError) {
         throw error;

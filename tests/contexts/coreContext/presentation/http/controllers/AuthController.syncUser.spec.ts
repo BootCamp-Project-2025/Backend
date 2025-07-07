@@ -16,6 +16,7 @@ jest.mock("@/contexts/CoreContext/mappers/UserMapper");
 describe("AuthController.syncUser", () => {
   let userService: {
     syncUser: jest.Mock<Promise<User>, [User]>;
+    updateUserRoles: jest.Mock<any, any>;
   };
   let controller: AuthController;
   let req: Request;
@@ -26,6 +27,7 @@ describe("AuthController.syncUser", () => {
 
     userService = {
       syncUser: jest.fn(),
+      updateUserRoles: jest.fn(),
     };
 
     controller = new AuthController(userService);
@@ -50,7 +52,7 @@ describe("AuthController.syncUser", () => {
       ...user,
       dto: true,
     }));
-    (ResponseService.send as jest.Mock).mockImplementation(() => {});
+    (ResponseService.send as jest.Mock).mockImplementation(() => { });
   });
 
   it("should sync user and send success response", async () => {

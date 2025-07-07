@@ -1,0 +1,59 @@
+{
+  // Place your Backend workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+
+  "Value Object Template": {
+    "prefix": "vo",
+    "body": [
+      "import { ValueObject } from \"@/contexts/Shared/domain/ValueObject\";",
+      "import { ApiError } from \"@/contexts/Shared/infrastructure/errors/ApiError\";",
+      "import { StatusCodes } from \"http-status-codes\";",
+      "",
+      "interface ${1:Name}Props {",
+      "  value: ${2:Type};",
+      "}",
+      "",
+      "export class ${1:Name} extends ValueObject<${1:Name}Props> {",
+      "  get value(): ${2:Type} {",
+      "    return this.props.value;",
+      "  }",
+      "",
+      "  private constructor(props: ${1:Name}Props) {",
+      "    super(props);",
+      "  }",
+      "",
+      "  private static isValid(value: ${2:Type}): boolean {",
+      "    // TODO: Add validation logic here",
+      "    return true;",
+      "  }",
+      "",
+      "  public static create(value: ${2:Type}): ${1:Name} {",
+      "    if (!value) {",
+      "      throw new ApiError(StatusCodes.BAD_REQUEST, \"${1:Name} is required\");",
+      "    }",
+      "    ",
+      "    if (!this.isValid(value)) {",
+      "      throw new ApiError(StatusCodes.BAD_REQUEST, \"Invalid ${1:Name}\");",
+      "    }",
+      "",
+      "    return new ${1:Name}({ value });",
+      "  }",
+      "}",
+    ],
+    "description": "Create a value object class",
+  },
+}

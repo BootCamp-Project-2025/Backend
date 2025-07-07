@@ -16,7 +16,47 @@ export class AuthController implements IAuthController {
   constructor(
     @inject("IAuthService")
     private authService: IAuthService
-  ) {}
+  ) { }
+
+  updateUserRoles = async (req: Request, res: Response): Promise<void> => {
+    try {
+      console.log("Updating user roles controller start", Date.now());
+      const tokenData = req.user;
+      if (!tokenData) {
+        throw new ApiError(StatusCodes.UNAUTHORIZED, "Unauthorized");
+      }
+
+      const { role } = req.body;
+      if (!role) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Role is required");
+      }
+
+      const user: User = UserMapper.createUserDtoTodomain({
+        id: tokenData.id ?? "Unknown ID",
+        userName: tokenData.name ?? "Unknown User",
+        userEmail: tokenData.email ?? "Unknown Email",
+        profilePicture: "",
+      });
+
+      await this.authService.updateUserRoles(user, role);
+      const response = new SuccessResponseEntity(
+        null,
+        StatusCodes.OK,
+        "User roles updated successfully"
+      );
+      ResponseService.send(res, response);
+      console.log("Updating user roles controller end", Date.now());
+    } catch (error) {
+      console.error("Error updating user roles:", error);
+      ResponseService.send(
+        res,
+        new ErrorResponseEntity(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          "Internal server error"
+        )
+      );
+    }
+  };
 
   syncUser = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -30,6 +70,8 @@ export class AuthController implements IAuthController {
         userEmail: tokenData.email ?? "Unknown Email",
         profilePicture: "",
       };
+
+      console.log("Syncing user controller start", dto);
 
       const user: User = UserMapper.createUserDtoTodomain(dto);
 

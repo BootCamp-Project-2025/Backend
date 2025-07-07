@@ -1,4 +1,4 @@
-jest.spyOn(console, "error").mockImplementation(() => { });
+jest.spyOn(console, "error").mockImplementation(() => void 0);
 
 import "reflect-metadata";
 import { CourseController } from "../../../../../../src/contexts/LearningContext/presentation/http/controllers/CourseController";

@@ -48,7 +48,7 @@ export class CourseController implements ICourseController {
       }
       const response = new ErrorResponseEntity(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        message = message,
+        message,
       );
       console.log(response)
       return ResponseService.send(res, response);

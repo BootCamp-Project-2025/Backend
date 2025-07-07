@@ -52,7 +52,7 @@ describe("AuthController.syncUser", () => {
       ...user,
       dto: true,
     }));
-    (ResponseService.send as jest.Mock).mockImplementation(() => { });
+    (ResponseService.send as jest.Mock).mockImplementation(() => {});
   });
 
   it("should sync user and send success response", async () => {

@@ -11,9 +11,15 @@ export default class UpdateLessonUseCase implements IUseCase<Lesson, Lesson> {
     @inject("ILessonRepository")
     private readonly lessonRepository: ILessonRepository
   ) {}
-  async execute(newLesson: Lesson): Promise<Lesson> {
+  async execute(lesson: Lesson): Promise<Lesson> {
     try {
-      return await this.lessonRepository.update(newLesson);
+      const existingLesson = await this.lessonRepository.findById(
+        lesson.id.toString()
+      );
+      if (!existingLesson) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Lesson not found");
+      }
+      return await this.lessonRepository.update(lesson);
     } catch (error) {
       if (error instanceof ApiError) throw error;
       throw new ApiError(

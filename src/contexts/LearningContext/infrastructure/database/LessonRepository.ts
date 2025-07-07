@@ -7,6 +7,23 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
 export default class LessonRepository implements ILessonRepository {
+  async findById(lessonId: string): Promise<Lesson | null> {
+    try {
+      const lessonDb = await PrismaClient.lesson.findUnique({
+        where: { id: lessonId },
+        include: { resources: true },
+      });
+      if (!lessonDb) return null;
+      return LessonMapper.DtoToDomain(lessonDb);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "unkown error on database"
+      );
+    }
+  }
   async create(lesson: Lesson, moduleId: string): Promise<Lesson> {
     try {
       const lessonDto: LessonDTO = LessonMapper.DomainToDto(lesson);
@@ -48,7 +65,10 @@ export default class LessonRepository implements ILessonRepository {
       const lessonDb = await PrismaClient.lesson.update({
         data: {
           ...lessonDto,
-          resources: { create: lessonDto.resources },
+          resources: {
+            deleteMany: {},
+            create: lessonDto.resources,
+          },
         },
         include: { resources: true },
         where: { id: lessonDto.id },

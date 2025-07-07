@@ -12,6 +12,10 @@ export default class DeleteLessonUseCase implements IUseCase<string, void> {
   ) {}
   async execute(lessonId: string): Promise<void> {
     try {
+      const existingLesson = await this.lessonRepository.findById(lessonId);
+      if (!existingLesson) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Lesson not found");
+      }
       await this.lessonRepository.delete(lessonId);
     } catch (error) {
       if (error instanceof ApiError) throw error;

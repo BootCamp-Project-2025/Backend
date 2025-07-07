@@ -1,11 +1,14 @@
 import { Router } from "express";
 import { container } from "tsyringe";
 import ModuleController from "../controllers/ModuleController";
+import lessonRouter from "./LessonRoute";
 
 const controller = container.resolve(ModuleController);
 
 const moduleRouter = Router({ mergeParams: true });
 
+moduleRouter.use("/:moduleId/lessons", lessonRouter);
+moduleRouter.use("/lessons", lessonRouter);
 /**
  * @openapi
  * /courses/{courseId}/modules:
@@ -17,7 +20,7 @@ const moduleRouter = Router({ mergeParams: true });
  *       200:
  *         description: A list of courses
  */
-moduleRouter.get("", controller.getAll);
+moduleRouter.get("/", controller.getAll);
 
 /**
  * @openapi
@@ -30,7 +33,7 @@ moduleRouter.get("", controller.getAll);
  *       200:
  *         description: A list of courses
  */
-moduleRouter.post("", controller.create);
+moduleRouter.post("/", controller.create);
 
 /**
  * @openapi

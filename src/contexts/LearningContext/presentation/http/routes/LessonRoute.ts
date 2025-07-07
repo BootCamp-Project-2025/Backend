@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { container } from "tsyringe";
-import ModuleController from "../controllers/ModuleController";
+import LessonController from "../controllers/LessonController";
 
-const controller = container.resolve(ModuleController);
+const controller = container.resolve(LessonController);
 
 const lessonRouter = Router({ mergeParams: true });
 
@@ -17,7 +17,7 @@ const lessonRouter = Router({ mergeParams: true });
  *       200:
  *         description: lesson created
  */
-lessonRouter.post("", controller.create);
+lessonRouter.post("/", controller.create);
 
 /**
  * @openapi

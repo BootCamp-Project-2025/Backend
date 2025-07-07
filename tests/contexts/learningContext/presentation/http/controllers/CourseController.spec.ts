@@ -6,7 +6,7 @@ import { ICourseService } from "../../../../../../src/contexts/LearningContext/d
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { ResponseService } from "../../../../../../src/contexts/Shared/application/services/ResponseService";
-import { SuccessResponseEntity, ISuccessResponseEntity } from "../../../../../../src/contexts/Shared/domain/entity/SuccessResponseEntity";
+import { SuccessResponseEntity } from "../../../../../../src/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { ErrorResponseEntity } from "../../../../../../src/contexts/Shared/domain/entity/ErrorResponseEntity";
 import { CourseDTO } from "../../../../../../src/contexts/LearningContext/domain/dtos/CourseDTO";
 

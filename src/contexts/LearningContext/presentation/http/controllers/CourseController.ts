@@ -7,7 +7,6 @@ import { StatusCodes } from "http-status-codes";
 import { ResponseService } from "../../../../Shared/application/services/ResponseService";
 import { ErrorResponseEntity } from "../../../../Shared/domain/entity/ErrorResponseEntity";
 import { SuccessResponseEntity } from "../../../../Shared/domain/entity/SuccessResponseEntity";
-import { ErrorHandlerMiddleware } from "@/contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 @injectable()

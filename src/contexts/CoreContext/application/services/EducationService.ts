@@ -20,7 +20,10 @@ export default class EducationService implements IEducationService {
     @inject("GetEducationsUseCase")
     private readonly getEducationsUseCase: IUseCase<string, Education[]>,
     @inject("DeleteEducationUseCase")
-    private readonly deleteEducationUseCase: IUseCase<Education, void>
+    private readonly deleteEducationUseCase: IUseCase<
+      CreateEducationDto,
+      void | string
+    >
   ) {}
   async getAllOfFreelancer(freelancerId: string): Promise<IEducationDto[]> {
     try {
@@ -42,9 +45,15 @@ export default class EducationService implements IEducationService {
       else throw new ApiError();
     }
   }
-  async removeById(education: Education): Promise<void> {
+  async removeById(
+    education: Education,
+    freelancerId: string
+  ): Promise<void | string> {
     try {
-      await this.deleteEducationUseCase.execute(education);
+      await this.deleteEducationUseCase.execute({
+        education: education,
+        freelancerId: freelancerId,
+      });
     } catch (error) {
       if (error as ApiError) throw error;
       else throw new ApiError();

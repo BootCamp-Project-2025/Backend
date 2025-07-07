@@ -51,11 +51,9 @@ export class CertificationRepository implements ICertificationRepository {
     });
   }
   async findById(certificationId: string): Promise<Certification | null> {
-    console.log("Finding certification by ID:", certificationId);
     const certification = await prismaClient.certification.findUnique({
       where: { id: certificationId },
     });
-    console.log("Certification found:", certification);
     return certification
       ? new CertificationMapper().mapPersistanceToDomain(certification)
       : null;

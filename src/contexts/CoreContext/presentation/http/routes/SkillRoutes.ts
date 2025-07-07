@@ -106,7 +106,7 @@ SkillRoutes.post("", controller.addSkill);
  *              description: Everything is wrong
  *
  */
-SkillRoutes.put("skillId", controller.editSkill);
+SkillRoutes.put("/:skillId", controller.editSkill);
 
 /**
  * @openapi
@@ -148,4 +148,4 @@ SkillRoutes.put("skillId", controller.editSkill);
  *              description: Everything is wrong
  *
  */
-SkillRoutes.delete("skillId", controller.deleteSkill);
+SkillRoutes.delete("/:skillId", controller.deleteSkill);

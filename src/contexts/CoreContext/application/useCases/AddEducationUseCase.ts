@@ -23,17 +23,9 @@ export default class AddEducationUseCase
     try {
       const freelancer: Freelancer | null =
         await this.freelancerRepository.getById(education.freelancerId);
-      console.log("create", education);
       if (freelancer !== null) {
-        console.log("freelancer", freelancer);
         freelancer.education.add(Education.create(education));
 
-        console.log(
-          "educations",
-          freelancer.education.getItems(),
-          "new",
-          freelancer.education.getNewItems()[0]
-        );
         return await this.educationRepository.create(
           freelancer.education.getNewItems()[0]
         );

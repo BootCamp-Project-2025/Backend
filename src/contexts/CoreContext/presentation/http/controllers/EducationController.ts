@@ -70,14 +70,15 @@ export default class EducationController implements IEducationController {
 
   public delete = async (req: Request, res: Response): Promise<void> => {
     try {
+      const { freelancerId } = req.params;
       req.body.id = req.params.educationId;
       const body: IEducationDto = req.body as IEducationDto;
       const education = educationMapper.mapDtoToDomain(body);
-      await this.educationService.removeById(
-        education,
-        req.params.freelancerId
+      await this.educationService.removeById(education, freelancerId);
+      const response = new SuccessResponseEntity(
+        "Education removed",
+        StatusCodes.NO_CONTENT
       );
-      const response = new SuccessResponseEntity({}, StatusCodes.NO_CONTENT);
       ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) throw error;

@@ -6,11 +6,11 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { Freelancer } from "../../domain/aggregates/Freelancer";
 import { IFreelancerRepository } from "../../domain/interfaces/repositories/IFreelancerRepository";
-import { Education } from "../../domain/entities/Education";
+import { CreateEducationDto } from "../../domain/interfaces/dtos/CreateEducationDto";
 
 @injectable()
 export default class DeleteEducationUseCase
-  implements IUseCase<Education, void>
+  implements IUseCase<CreateEducationDto, void | string>
 {
   constructor(
     @inject("EducationRepository")
@@ -19,10 +19,13 @@ export default class DeleteEducationUseCase
     private freelancerRepository: IFreelancerRepository
   ) {}
 
-  async execute(education: Education): Promise<void> {
+  async execute({
+    education,
+    freelancerId,
+  }: CreateEducationDto): Promise<void | string> {
     try {
       const freelancer: Freelancer | null =
-        await this.freelancerRepository.getById(education.freelancerId);
+        await this.freelancerRepository.getById(freelancerId);
       if (freelancer !== null) {
         if (!freelancer.education.exists(education)) {
           throw new ApiError(
@@ -31,7 +34,7 @@ export default class DeleteEducationUseCase
           );
         }
         freelancer.education.remove(education);
-        await this.educationRepository.delete(education.id.toString());
+        return await this.educationRepository.delete(education.id.toString());
       }
 
       throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");

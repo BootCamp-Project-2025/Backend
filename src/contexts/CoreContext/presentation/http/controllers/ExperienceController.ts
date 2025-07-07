@@ -17,7 +17,6 @@ export class ExperienceController implements IExperienceController {
 
   async getAll(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.params);
       const freelancerId = req.params.freelancerId;
       if (!freelancerId) {
         throw new ApiError(

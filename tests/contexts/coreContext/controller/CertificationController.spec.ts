@@ -33,7 +33,7 @@ describe("CertificationController", () => {
     );
     mockService.getAll.mockResolvedValue([cert]);
 
-    const req = { params: { id: "freelancer-id" } } as any;
+    const req = { params: { freelancerId: "freelancer-id" } } as any;
 
     await controller.getAll(req, res);
 
@@ -50,7 +50,7 @@ describe("CertificationController", () => {
 
   it("should create a certification", async () => {
     const req = {
-      params: { id: "freelancer-id" },
+      params: { freelancerId: "freelancer-id" },
       body: { certification: "cert", institution: "inst", year: 2024 },
     } as any;
 
@@ -68,7 +68,7 @@ describe("CertificationController", () => {
 
   it("should update a certification", async () => {
     const req = {
-      params: { id: "freelancer-id", certificationId: "cert-id" },
+      params: { freelancerId: "freelancer-id", certificationId: "cert-id" },
       body: { certification: "updated", institution: "inst", year: 2025 },
     } as any;
 
@@ -89,7 +89,7 @@ describe("CertificationController", () => {
 
   it("should delete a certification", async () => {
     const req = {
-      params: { id: "freelancer-id", certificationId: "cert-id" },
+      params: { freelancerId: "freelancer-id", certificationId: "cert-id" },
     } as any;
 
     await controller.delete(req, res);

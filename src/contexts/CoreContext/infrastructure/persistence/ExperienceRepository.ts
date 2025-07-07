@@ -49,10 +49,8 @@ export class ExperienceRepository implements IExperienceRepository {
 
   async create(experience: Experience): Promise<Experience> {
     try {
-      console.log(experience);
       const data =
         ExperienceMapper.prototype.mapDomainToPersistance(experience);
-      console.log(data);
       const created = await prismaClient.experience.create({
         data,
       });

@@ -65,6 +65,12 @@ EducationRoutes.post("", controller.create);
  *         description: The ID of the freelancer
  *         schema:
  *           type: string
+ *       - in: path
+ *         name: educationId
+ *         required: true
+ *         description: The ID of the education to update
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -99,9 +105,15 @@ EducationRoutes.put("/:educationId", controller.update);
  *       - in: path
  *         name: educationId
  *         required: true
- *         description: The ID of the certification to delete
+ *         description: The ID of the education to delete
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/EducationDTO'
  *     responses:
  *       204:
  *         description: Education deleted successfully

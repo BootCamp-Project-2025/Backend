@@ -7,6 +7,7 @@ import { injectable, inject } from "tsyringe";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { CreateEducationDto } from "../../domain/interfaces/dtos/CreateEducationDto";
+import { Freelancer } from "../../domain/aggregates/Freelancer";
 
 @injectable()
 export default class EditEducationUseCase
@@ -24,8 +25,8 @@ export default class EditEducationUseCase
     education,
   }: CreateEducationDto): Promise<void | Education> {
     try {
-      console.log("usecase", freelancerId, education);
-      const freelancer = await this.freelancerRepository.getById(freelancerId);
+      const freelancer: Freelancer | null =
+        await this.freelancerRepository.getById(freelancerId);
       if (freelancer !== null) {
         if (!freelancer.education.exists(education)) {
           throw new ApiError(
@@ -33,7 +34,6 @@ export default class EditEducationUseCase
             "education not found"
           );
         }
-        console.log("usecase edit", freelancerId, education);
 
         freelancer.education.edit(education);
         return this.educationRepository.update(

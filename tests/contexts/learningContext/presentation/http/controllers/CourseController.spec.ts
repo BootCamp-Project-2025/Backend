@@ -21,11 +21,11 @@ describe("CourseController", () => {
       create: jest.fn(),
       updateCourse: jest.fn(),
       deleteCourse: jest.fn(),
-    } as any;
+    };
 
     controller = new CourseController(serviceMock);
     req = {};
-    res = {} as any;
+    res = {} as Response;
 
     jest.spyOn(ResponseService, "send").mockReturnValue(undefined);
   });
@@ -44,10 +44,10 @@ describe("CourseController", () => {
       expect(serviceMock.getAllCourses).toHaveBeenCalledTimes(1);
       const [, entity] = (ResponseService.send as jest.Mock).mock.calls[0];
       expect(entity).toBeInstanceOf(SuccessResponseEntity);
-      expect((entity as SuccessResponseEntity<ISuccessResponseEntity<any>>).statusCode).toBe(
+      expect((entity as SuccessResponseEntity<CourseDTO>).statusCode).toBe(
         StatusCodes.OK
       );
-      expect((entity as SuccessResponseEntity<ISuccessResponseEntity<any>>).data).toEqual(fake);
+      expect((entity as SuccessResponseEntity<CourseDTO>).data).toEqual(fake);
     });
 
     it("should send 500 with ErrorResponseEntity on failure", async () => {
@@ -77,10 +77,10 @@ describe("CourseController", () => {
       expect(serviceMock.create).toHaveBeenCalledWith(dto);
       const [, entity] = (ResponseService.send as jest.Mock).mock.calls[0];
       expect(entity).toBeInstanceOf(SuccessResponseEntity);
-      expect((entity as SuccessResponseEntity<ISuccessResponseEntity<any>>).statusCode).toBe(
+      expect((entity as SuccessResponseEntity<CourseDTO>).statusCode).toBe(
         StatusCodes.CREATED
       );
-      expect((entity as SuccessResponseEntity<ISuccessResponseEntity<any>>).data).toEqual(dto);
+      expect((entity as SuccessResponseEntity<CourseDTO>).data).toEqual(dto);
     });
 
     it("should send 500 with ErrorResponseEntity on failure", async () => {
@@ -109,10 +109,10 @@ describe("CourseController", () => {
       expect(serviceMock.updateCourse).toHaveBeenCalledWith("42", dto);
       const [, entity] = (ResponseService.send as jest.Mock).mock.calls[0];
       expect(entity).toBeInstanceOf(SuccessResponseEntity);
-      expect((entity as SuccessResponseEntity<ISuccessResponseEntity<any>>).statusCode).toBe(
+      expect((entity as SuccessResponseEntity<CourseDTO>).statusCode).toBe(
         StatusCodes.OK
       );
-      expect((entity as SuccessResponseEntity<ISuccessResponseEntity<any>>).data).toEqual(dto);
+      expect((entity as SuccessResponseEntity<CourseDTO>).data).toEqual(dto);
     });
 
     it("should send 500 with ErrorResponseEntity on failure", async () => {
@@ -140,7 +140,7 @@ describe("CourseController", () => {
       expect(serviceMock.deleteCourse).toHaveBeenCalledWith("99");
       const [, entity] = (ResponseService.send as jest.Mock).mock.calls[0];
       expect(entity).toBeInstanceOf(SuccessResponseEntity);
-      expect((entity as SuccessResponseEntity<ISuccessResponseEntity<any>>).statusCode).toBe(
+      expect((entity as SuccessResponseEntity<CourseDTO>).statusCode).toBe(
         StatusCodes.OK
       );
     });

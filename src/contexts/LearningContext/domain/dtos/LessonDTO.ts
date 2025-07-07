@@ -1,4 +1,4 @@
-import { LessonResource } from "../entities/Lesson";
+import { LessonResourceProps } from "../valueObjects/LessonResource";
 
 export interface LessonDTO {
   id?: string;
@@ -6,5 +6,5 @@ export interface LessonDTO {
   title: string;
   description: string;
   videoUrls: string[];
-  resources: LessonResource[];
+  resources: LessonResourceProps[];
 }

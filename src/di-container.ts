@@ -90,6 +90,16 @@ import UpdateModuleUseCase from "./contexts/LearningContext/application/useCases
 import { Module } from "./contexts/LearningContext/domain/entities/Module";
 import { ModuleRepository } from "./contexts/LearningContext/infrastructure/database/ModuleRepository";
 import IModuleRepository from "./contexts/LearningContext/domain/interfaces/IModuleRepository";
+import ILessonController from "./contexts/LearningContext/domain/interfaces/ILessonController";
+import LessonController from "./contexts/LearningContext/presentation/http/controllers/LessonController";
+import ILessonService from "./contexts/LearningContext/domain/interfaces/ILessonService";
+import LessonService from "./contexts/LearningContext/application/services/LessonService";
+import ILessonRepository from "./contexts/LearningContext/domain/interfaces/ILessonRepository";
+import LessonRepository from "./contexts/LearningContext/infrastructure/database/LessonRepository";
+import { Lesson } from "./contexts/LearningContext/domain/entities/Lesson";
+import CreateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/CreateLessonUseCase";
+import DeleteLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/DeleteLessonUseCase";
+import UpdateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/UpdateLessonUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -179,6 +189,38 @@ container.registerSingleton<IFreelancerService>(
   FreelancerService
 );
 
+container.registerSingleton<ILessonController>(
+  "ILessonController",
+  LessonController
+);
+
+container.registerSingleton<ILessonService>("ILessonService", LessonService);
+
+container.registerSingleton<ILessonRepository>(
+  "ILessonRepository",
+  LessonRepository
+);
+
+container.registerSingleton<
+  IUseCase<
+    {
+      lesson: Lesson;
+      moduleId: string;
+    },
+    Lesson
+  >
+>("CreateLessonUseCase", CreateLessonUseCase);
+
+container.registerSingleton<IUseCase<Lesson, Lesson>>(
+  "UpdateLessonUseCase",
+  UpdateLessonUseCase
+);
+
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteLessonUseCase",
+  DeleteLessonUseCase
+);
+
 container.registerSingleton<IModuleController>(
   "IModuleController",
   ModuleController
@@ -201,10 +243,15 @@ container.registerSingleton<IUseCase<string, void>>(
   DeleteModuleUseCase
 );
 
-container.registerSingleton<IUseCase<Module, Module>>(
-  "CreateModuleUseCase",
-  CreateModuleUseCase
-);
+container.registerSingleton<
+  IUseCase<
+    {
+      module: Module;
+      courseId: string;
+    },
+    Module
+  >
+>("CreateModuleUseCase", CreateModuleUseCase);
 
 container.registerSingleton<IUseCase<Module, Module>>(
   "UpdateModuleUseCase",

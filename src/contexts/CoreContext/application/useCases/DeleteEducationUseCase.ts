@@ -28,17 +28,14 @@ export default class DeleteEducationUseCase
         await this.freelancerRepository.getById(freelancerId);
       if (freelancer === null) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");
-      }  
+      }
       const educations = freelancer.education.getItems();
       const education = educations.find(
         (row) => row.id.toString() === educationId
       );
 
       if (!education) {
-        throw new ApiError(
-          StatusCodes.NOT_FOUND,
-          "the education doesnt exist"
-        );
+        throw new ApiError(StatusCodes.NOT_FOUND, "the education doesnt exist");
       }
 
       freelancer.education.remove(education);

@@ -31,9 +31,12 @@ describe("DeleteExperienceUseCase", () => {
   });
 
   it("should throw error if experienceId is missing", async () => {
-    await expect(deleteExperienceUseCase.execute({experienceId: "", freelancerId: "freelancerId"})).rejects.toThrowError(
-      "Missing experience ID"
-    );
+    await expect(
+      deleteExperienceUseCase.execute({
+        experienceId: "",
+        freelancerId: "freelancerId",
+      })
+    ).rejects.toThrowError("Missing experience ID");
   });
 
   it("should call repository delete", async () => {

@@ -47,23 +47,32 @@ describe("testing DeleteSkillUseCase to delete skills from freelancer", () => {
     mockRepository
   );
   it("successful skill delete", async () => {
-    const skill = new Skill({
-      name: "python",
-      level: "beginner",
-      freelancerId: "",
-    }, new UniqueEntityID("skillId")); 
+    const skill = new Skill(
+      {
+        name: "python",
+        level: "beginner",
+        freelancerId: "",
+      },
+      new UniqueEntityID("skillId")
+    );
     mockRepository.delete.mockResolvedValue();
     empyFreelancer.skills.add(skill);
     mockFreelancerRepository.getById.mockResolvedValue(empyFreelancer);
 
-    const result = await deleteSkillUseCase.execute({skillId: "skillId", freelancerId: "freelanceId"});
+    const result = await deleteSkillUseCase.execute({
+      skillId: "skillId",
+      freelancerId: "freelanceId",
+    });
     expect(result).resolves;
   });
   it("fail to delete skill due to non existance", async () => {
     mockFreelancerRepository.getById.mockResolvedValue(empyFreelancer);
 
     await expect(
-      deleteSkillUseCase.execute({ skillId: "skillId", freelancerId: "freelanceId" })
+      deleteSkillUseCase.execute({
+        skillId: "skillId",
+        freelancerId: "freelanceId",
+      })
     ).rejects.toThrow("the skill doesnt exist");
   });
 });

@@ -36,10 +36,7 @@ export class DeleteLanguageUseCase
       );
 
       if (!language) {
-        throw new ApiError(
-          StatusCodes.NOT_FOUND,
-          "the language doesnt exist"
-        );
+        throw new ApiError(StatusCodes.NOT_FOUND, "the language doesnt exist");
       }
 
       freelancer.languages.remove(language);

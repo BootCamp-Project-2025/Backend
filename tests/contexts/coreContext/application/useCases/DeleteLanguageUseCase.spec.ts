@@ -35,7 +35,10 @@ describe("DeleteLanguageUseCase", () => {
     mockLanguageRepo.findById.mockResolvedValue(language);
     mockLanguageRepo.delete.mockResolvedValue(undefined);
 
-    const result = await useCase.execute({ languageId: "languageId", freelancerId: "id" });
+    const result = await useCase.execute({
+      languageId: "languageId",
+      freelancerId: "id",
+    });
     expect(result).toBeUndefined();
     expect(mockLanguageRepo.delete).toHaveBeenCalledWith("languageId");
     expect(freelancerMock.languages.remove).toHaveBeenCalledWith(language);

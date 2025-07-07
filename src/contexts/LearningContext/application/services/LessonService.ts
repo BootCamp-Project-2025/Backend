@@ -8,7 +8,7 @@ import { Lesson } from "../../domain/entities/Lesson";
 @injectable()
 export default class LessonService implements ILessonService {
   constructor(
-    @inject("CreateModuleUseCase")
+    @inject("CreateLessonUseCase")
     private readonly createLessonUseCase: IUseCase<
       {
         lesson: Lesson;
@@ -16,9 +16,9 @@ export default class LessonService implements ILessonService {
       },
       Lesson
     >,
-    @inject("DeleteModuleUseCase")
+    @inject("DeleteLessonUseCase")
     private readonly deleteLessonUseCase: IUseCase<string, void>,
-    @inject("UpdateModuleUseCase")
+    @inject("UpdateLessonUseCase")
     private readonly updateLessonUseCase: IUseCase<Lesson, Lesson>
   ) {}
   async create(lesson: Lesson, moduleId: string): Promise<Lesson> {

@@ -13,7 +13,7 @@ import LessonMapper from "@/contexts/LearningContext/mappers/LessonMapper";
 @injectable()
 export default class LessonController implements ILessonController {
   constructor(
-    @inject("IModuleService") private readonly lessonService: ILessonService
+    @inject("ILessonService") private readonly lessonService: ILessonService
   ) {}
 
   create = async (req: Request, res: Response): Promise<void> => {

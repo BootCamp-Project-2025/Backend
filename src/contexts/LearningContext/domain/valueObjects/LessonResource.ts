@@ -27,7 +27,7 @@ export class LessonResource extends ValueObject<LessonResourceProps> {
     if (!props.name || typeof props.name !== "string")
       throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid name value");
     if (!props.url || typeof props.url !== "string")
-      throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid name value");
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid url value");
     return new LessonResource(props);
   }
 }

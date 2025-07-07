@@ -14,7 +14,7 @@ export default class LessonRepository implements ILessonRepository {
         include: { resources: true },
       });
       if (!lessonDb) return null;
-      return LessonMapper.DtoToDomain(lessonDb);
+      return LessonMapper.PersistanceToDomain(lessonDb);
     } catch (error) {
       console.log(error);
       if (error instanceof ApiError) throw error;
@@ -35,7 +35,7 @@ export default class LessonRepository implements ILessonRepository {
         },
         include: { resources: true },
       });
-      return LessonMapper.DtoToDomain(lessonDb);
+      return LessonMapper.PersistanceToDomain(lessonDb);
     } catch (error) {
       console.log(error);
       if (error instanceof ApiError) throw error;
@@ -73,7 +73,7 @@ export default class LessonRepository implements ILessonRepository {
         include: { resources: true },
         where: { id: lessonDto.id },
       });
-      return LessonMapper.DtoToDomain(lessonDb);
+      return LessonMapper.PersistanceToDomain(lessonDb);
     } catch (error) {
       console.log(error);
       if (error instanceof ApiError) throw error;

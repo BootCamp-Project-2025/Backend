@@ -5,6 +5,8 @@ import { SyllabusSectionTitle } from "../domain/valueObjects/SyllabusSectionTitl
 import { LessonDescription } from "../domain/valueObjects/LessonDescription";
 import { LessonVideoUrl } from "../domain/valueObjects/LessonVideoUrl";
 import { LessonResource } from "../domain/valueObjects/LessonResource";
+import { LessonDb } from "../domain/dtos/Dbtypes";
+import { Decimal } from "@prisma/client/runtime/library";
 
 export default class LessonMapper {
   static DtoToDomain(lessonDto: LessonDTO): Lesson {
@@ -38,5 +40,40 @@ export default class LessonMapper {
       })),
       position: lesson.props.position,
     };
+  }
+
+  static DomainToPersistance(lesson: Lesson, moduleId: string): LessonDb {
+    return {
+      id: lesson.id.toString(),
+      moduleId: moduleId,
+      title: lesson.props.title.value,
+      description: lesson.props.description.value,
+      videoUrls: lesson.props.videoUrls.map((videoUrl) => videoUrl.value),
+      resources: lesson.props.resources.map((resource) => ({
+        name: resource.name,
+        url: resource.url,
+        LessonId: lesson.id.toString(),
+      })),
+      position: new Decimal(lesson.props.position),
+    };
+  }
+
+  static PersistanceToDomain(lessonDto: LessonDb): Lesson {
+    return Lesson.create(
+      {
+        title: SyllabusSectionTitle.create({ title: lessonDto.title }),
+        description: LessonDescription.create({
+          description: lessonDto.description,
+        }),
+        videoUrls: lessonDto.videoUrls.map((url) =>
+          LessonVideoUrl.create({ url: url })
+        ),
+        resources: lessonDto.resources.map((resource) =>
+          LessonResource.create({ name: resource.name, url: resource.url })
+        ),
+        position: lessonDto.position.toNumber(),
+      },
+      new UniqueEntityID(lessonDto.id)
+    );
   }
 }

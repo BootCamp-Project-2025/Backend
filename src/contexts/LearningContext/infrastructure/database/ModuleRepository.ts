@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { injectable } from "tsyringe";
 import ModuleMapper from "../../mappers/ModuleMapper";
 import { Module } from "../../domain/entities/Module";
+import { ModuleDb } from "../../domain/dtos/Dbtypes";
 
 @injectable()
 export class ModuleRepository implements IModuleRepository {
@@ -14,8 +15,9 @@ export class ModuleRepository implements IModuleRepository {
       const moduleDb = await PrismaClient.module.findMany({
         where: { courseId: courseId },
         include: { lessons: { include: { resources: true } } },
+        orderBy: { position: "asc" },
       });
-      return ModuleMapper.bulkDtoToDomain(moduleDb);
+      return ModuleMapper.bulkPersistanceToDomain(moduleDb);
     } catch (error) {
       console.log(error);
       if (error instanceof ApiError) throw error;
@@ -33,7 +35,7 @@ export class ModuleRepository implements IModuleRepository {
         include: { lessons: { include: { resources: true } } },
       });
       if (moduleDb === null) return null;
-      return ModuleMapper.DtoToDomain(moduleDb);
+      return ModuleMapper.PersistanceToDomain(moduleDb);
     } catch (error) {
       console.log(error);
       if (error instanceof ApiError) throw error;
@@ -46,16 +48,35 @@ export class ModuleRepository implements IModuleRepository {
 
   async create(module: Module, courseId: string): Promise<Module> {
     try {
-      const moduleDto: ModuleDTO = ModuleMapper.DomainToDto(module);
+      const moduleDto: ModuleDb = ModuleMapper.DomainToPersistance(
+        module,
+        courseId
+      );
       const moduleDb = await PrismaClient.module.create({
         data: {
           id: moduleDto.id,
           title: moduleDto.title,
           position: moduleDto.position,
           courseId: courseId,
+          lessons: {
+            create: moduleDto.lessons.map((lesson) => ({
+              id: lesson.id,
+              videoUrls: lesson.videoUrls,
+              description: lesson.description,
+              title: lesson.title,
+              position: lesson.position,
+              resources: {
+                create: lesson.resources.map((resource) => ({
+                  name: resource.name,
+                  url: resource.url,
+                })),
+              },
+            })),
+          },
         },
+        include: { lessons: { include: { resources: true } } },
       });
-      return ModuleMapper.DtoToDomain(moduleDb);
+      return ModuleMapper.PersistanceToDomain(moduleDb);
     } catch (error) {
       console.log(error);
       if (error instanceof ApiError) throw error;
@@ -88,8 +109,9 @@ export class ModuleRepository implements IModuleRepository {
           title: moduleDto.title,
           position: moduleDto.position,
         },
+        include: { lessons: { include: { resources: true } } },
       });
-      return ModuleMapper.DtoToDomain(moduleDb);
+      return ModuleMapper.PersistanceToDomain(moduleDb);
     } catch (error) {
       console.log(error);
       if (error instanceof ApiError) throw error;

@@ -16,7 +16,7 @@ export class AuthController implements IAuthController {
   constructor(
     @inject("IAuthService")
     private authService: IAuthService
-  ) { }
+  ) {}
 
   updateUserRoles = async (req: Request, res: Response): Promise<void> => {
     try {

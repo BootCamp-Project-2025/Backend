@@ -8,11 +8,12 @@ import { User } from "@/contexts/CoreContext/domain/aggregates/User";
 
 @injectable()
 export class UpdateRoleUseCase
-  implements IUseCase<{ user: User; role: string }, void> {
+  implements IUseCase<{ user: User; role: string }, void>
+{
   constructor(
     @inject("IAuthManagerService") private authService: IExternarlAuthService,
     @inject("IUserRepository") private userRepository: IUserRepository
-  ) { }
+  ) {}
 
   async execute(
     params?: { user: User; role: string } | undefined

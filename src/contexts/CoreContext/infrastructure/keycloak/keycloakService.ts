@@ -4,7 +4,7 @@ import { keycloakAxios } from "../../../Shared/infrastructure/axiosInstance";
 
 @injectable()
 export class KeycloakService implements IExternarlAuthService {
-  constructor() { }
+  constructor() {}
 
   keycloakUrl = process.env.KEYCLOAK_URL || "http://localhost:8080/auth";
   keycloakRealm = process.env.KEYCLOAK_REALM || "LTCrowd";
@@ -19,7 +19,6 @@ export class KeycloakService implements IExternarlAuthService {
     params.append("grant_type", "client_credentials");
     params.append("client_id", this.keycloakClientId);
     params.append("client_secret", this.keycloakClientSecret);
-    console.log("Admin token", Date.now());
 
     try {
       const response = await keycloakAxios.post(
@@ -49,7 +48,6 @@ export class KeycloakService implements IExternarlAuthService {
   public async getRealmRoles(
     token: string
   ): Promise<Array<{ id: string; name: string }>> {
-    console.log("Getting realm roles", Date.now());
     try {
       const response = await keycloakAxios.get(
         `/admin/realms/${this.keycloakRealm}/roles`,
@@ -76,16 +74,12 @@ export class KeycloakService implements IExternarlAuthService {
 
   public async updateUserRoles(userId: string, role: string): Promise<void> {
     const token = await this.getAdminToken();
-    console.log("Updating user roles extService start", Date.now());
 
     const realmRoles = await this.getRealmRoles(token);
-    console.log(role);
+
     const assignedRoles = realmRoles.filter((realmRole) => {
-      console.log("Against:", role);
       if (realmRole.name === role) return realmRole;
     });
-
-    console.log("Assigned Roles:", assignedRoles);
 
     try {
       const response = await keycloakAxios.post(
@@ -103,8 +97,6 @@ export class KeycloakService implements IExternarlAuthService {
           `Failed to update user roles: ${response.status} ${response.statusText}`
         );
       }
-
-      console.log("Updating user roles extService start", Date.now());
     } catch (error) {
       throw new Error(
         `Error updating user roles: ${error instanceof Error ? error.message : String(error)}`

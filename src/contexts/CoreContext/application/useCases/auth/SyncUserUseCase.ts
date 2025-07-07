@@ -11,7 +11,7 @@ export class SyncUserUseCase implements IUseCase<User, User | null> {
   constructor(
     @inject("IUserRepository")
     private readonly repository: IUserRepository
-  ) { }
+  ) {}
 
   async execute(user: User) {
     try {

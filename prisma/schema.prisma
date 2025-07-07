@@ -30,8 +30,8 @@ model Course{
 
 model Module{
   id      String      @id @default(uuid())
-  position Int
-  author   Course @relation(fields: [courseId], references: [id])
+  position Decimal
+  author   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId String
   title   String
   lessons Lesson[]
@@ -39,8 +39,8 @@ model Module{
 
 model Lesson{
   id      String      @id @default(uuid())
-  position Int
-  author   Module @relation(fields: [moduleId], references: [id])
+  position Decimal
+  author   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   description String
   resources Resource[]
   videoUrls String[]
@@ -51,7 +51,7 @@ model Lesson{
 
 model Resource{
   id      String      @id @default(uuid())
-  author   Lesson @relation(fields: [LessonId], references: [id])
+  author   Lesson @relation(fields: [LessonId], references: [id], onDelete: Cascade)
   name   String   @unique
   url   String   @unique
   LessonId String

@@ -85,7 +85,7 @@ describe("CourseRepository (Prisma)", () => {
           time: 2,
           imgSrc: "i2",
         },
-      ] as any[];
+      ];
 
       (prismaClient.course.findMany as jest.Mock).mockResolvedValue(raws);
 

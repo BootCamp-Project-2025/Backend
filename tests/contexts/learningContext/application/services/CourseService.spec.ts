@@ -18,10 +18,10 @@ describe("CourseService", () => {
     deleteCourseUseCase = { execute: jest.fn() };
 
     service = new CourseService(
-      getAllCoursesUseCase as any,
-      createCourseUseCase as any,
-      updateCourseUseCase as any,
-      deleteCourseUseCase as any
+      getAllCoursesUseCase,
+      createCourseUseCase,
+      updateCourseUseCase,
+      deleteCourseUseCase
     );
   });
 

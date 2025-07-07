@@ -19,7 +19,6 @@ export default class EditEducationUseCase
     @inject("EducationRepository")
     private educationRepository: IEducationRepository
   ) {}
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute({
     freelancerId,
     education,

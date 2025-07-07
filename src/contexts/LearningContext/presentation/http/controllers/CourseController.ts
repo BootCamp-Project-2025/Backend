@@ -7,12 +7,14 @@ import { StatusCodes } from "http-status-codes";
 import { ResponseService } from "../../../../Shared/application/services/ResponseService";
 import { ErrorResponseEntity } from "../../../../Shared/domain/entity/ErrorResponseEntity";
 import { SuccessResponseEntity } from "../../../../Shared/domain/entity/SuccessResponseEntity";
+import { ErrorHandlerMiddleware } from "@/contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 @injectable()
 export class CourseController implements ICourseController {
   constructor(
     @inject("ICourseService") private readonly courseService: ICourseService
-  ) {}
+  ) { }
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -35,12 +37,21 @@ export class CourseController implements ICourseController {
       const result = await this.courseService.create(dto);
       const response = new SuccessResponseEntity(result, StatusCodes.CREATED);
       return ResponseService.send(res, response);
-    } catch (error) {
-      console.error("Error in CourseController.create:", error);
+    } catch (e) {
+      const error = e as PrismaClientKnownRequestError;
+      console.error("Error in CourseController.create:",
+        error);
+      let message = '';
+      if (
+        error.code === 'P2002' && (error.meta?.target as string[])?.includes('name')
+      ) {
+        message = " That course name already exists, please chose another."
+      }
       const response = new ErrorResponseEntity(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Internal server error"
+        message = message,
       );
+      console.log(response)
       return ResponseService.send(res, response);
     }
   };

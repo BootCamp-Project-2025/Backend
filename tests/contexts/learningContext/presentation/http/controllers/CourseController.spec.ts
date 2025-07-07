@@ -1,4 +1,4 @@
-jest.spyOn(console, "error").mockImplementation(() => {});
+jest.spyOn(console, "error").mockImplementation(() => { });
 
 import "reflect-metadata";
 import { CourseController } from "../../../../../../src/contexts/LearningContext/presentation/http/controllers/CourseController";
@@ -142,7 +142,7 @@ describe("CourseController", () => {
       expect(entity).toBeInstanceOf(SuccessResponseEntity);
       expect((entity as SuccessResponseEntity<any>).statusCode).toBe(
         StatusCodes.OK
-      ); // ajustado a 200 según implementación actual
+      );
     });
 
     it("should send 500 with ErrorResponseEntity on failure", async () => {

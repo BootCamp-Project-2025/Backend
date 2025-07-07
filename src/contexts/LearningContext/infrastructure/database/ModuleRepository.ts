@@ -18,19 +18,35 @@ export class ModuleRepository implements IModuleRepository {
       return ModuleMapper.bulkDtoToDomain(moduleDb);
     } catch (error) {
       console.log(error);
-      if (error instanceof Error)
-        throw new ApiError(
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          error.message.split("Argument")[1] ?? error.message
-        );
-      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "unkown error");
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "unkown error on database"
+      );
+    }
+  }
+
+  async findById(moduleId: string): Promise<Module | null> {
+    try {
+      const moduleDb = await PrismaClient.module.findUnique({
+        where: { id: moduleId },
+        include: { lessons: { include: { resources: true } } },
+      });
+      if (moduleDb === null) return null;
+      return ModuleMapper.DtoToDomain(moduleDb);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "unkown error on database"
+      );
     }
   }
 
   async create(module: Module, courseId: string): Promise<Module> {
     try {
       const moduleDto: ModuleDTO = ModuleMapper.DomainToDto(module);
-      console.log(moduleDto.title);
       const moduleDb = await PrismaClient.module.create({
         data: {
           id: moduleDto.id,
@@ -42,12 +58,11 @@ export class ModuleRepository implements IModuleRepository {
       return ModuleMapper.DtoToDomain(moduleDb);
     } catch (error) {
       console.log(error);
-      if (error instanceof Error)
-        throw new ApiError(
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          error.message.split("Argument")[1] ?? error.message
-        );
-      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "unkown error");
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "unkown error on database"
+      );
     }
   }
 
@@ -56,12 +71,11 @@ export class ModuleRepository implements IModuleRepository {
       await PrismaClient.module.delete({ where: { id: moduleId } });
     } catch (error) {
       console.log(error);
-      if (error instanceof Error)
-        throw new ApiError(
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          error.message.split("Argument")[1] ?? error.message
-        );
-      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "unkown error");
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "unkown error on database"
+      );
     }
   }
 
@@ -78,12 +92,11 @@ export class ModuleRepository implements IModuleRepository {
       return ModuleMapper.DtoToDomain(moduleDb);
     } catch (error) {
       console.log(error);
-      if (error instanceof Error)
-        throw new ApiError(
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          error.message.split("Argument")[1] ?? error.message
-        );
-      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "unkown error");
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "unkown error on database"
+      );
     }
   }
 }

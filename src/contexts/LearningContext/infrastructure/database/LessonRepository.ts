@@ -21,12 +21,11 @@ export default class LessonRepository implements ILessonRepository {
       return LessonMapper.DtoToDomain(lessonDb);
     } catch (error) {
       console.log(error);
-      if (error instanceof Error)
-        throw new ApiError(
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          error.message.split("Argument")[1] ?? error.message
-        );
-      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "unkown error");
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "unkown error on database"
+      );
     }
   }
   async delete(lessonId: string): Promise<void> {
@@ -36,12 +35,11 @@ export default class LessonRepository implements ILessonRepository {
       });
     } catch (error) {
       console.log(error);
-      if (error instanceof Error)
-        throw new ApiError(
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          error.message.split("Argument")[1] ?? error.message
-        );
-      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "unkown error");
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "unkown error on database"
+      );
     }
   }
   async update(lesson: Lesson): Promise<Lesson> {
@@ -58,12 +56,11 @@ export default class LessonRepository implements ILessonRepository {
       return LessonMapper.DtoToDomain(lessonDb);
     } catch (error) {
       console.log(error);
-      if (error instanceof Error)
-        throw new ApiError(
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          error.message.split("Argument")[1] ?? error.message
-        );
-      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "unkown error");
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "unkown error on database"
+      );
     }
   }
 }

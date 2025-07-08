@@ -35,6 +35,7 @@ export default class EducationController implements IEducationController {
     try {
       const { freelancerId } = req.params;
       const education: IEducationDto = req.body as IEducationDto;
+      console.log(education);
       const newEducation: IEducationDto =
         await this.educationService.addEducation({
           ...education,

@@ -9,10 +9,28 @@ import { StatusCodes } from "http-status-codes";
 import { ISkillService } from "@/contexts/CoreContext/domain/interfaces/services/ISkillService";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
+import { IFreelancerService } from "@/contexts/CoreContext/domain/interfaces/services/IFreelancerService";
+import FreelancerMapper from "@/contexts/CoreContext/mappers/FreelancerMapper";
+import { ErrorResponseEntity } from "@/contexts/Shared/domain/entity/ErrorResponseEntity";
 
 @injectable()
 export default class FreelancerController implements IFreelancerController {
-  constructor(@inject("ISkillService") private skillService: ISkillService) {}
+  constructor(
+    @inject("IFreelancerService") private freelancerService: IFreelancerService,
+    @inject("ISkillService") private skillService: ISkillService
+  ) {}
+  public getAll = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const freelancersDomain = await this.freelancerService.getAll();
+      const freelancers = FreelancerMapper.manyDomainToDto(freelancersDomain);
+      const response = new SuccessResponseEntity(freelancers);
+      ResponseService.send(res, response);
+    } catch (error) {
+      console.log(error);
+      const response = new ErrorResponseEntity();
+      ResponseService.send(res, response);
+    }
+  };
 
   public editSkill = async (req: Request, res: Response): Promise<void> => {
     try {

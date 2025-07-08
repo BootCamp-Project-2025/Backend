@@ -78,6 +78,8 @@ import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/serv
 import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
 import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
+import { Freelancer } from "./contexts/CoreContext/domain/aggregates/Freelancer";
+import { GetAllFreelancersUseCase } from "./contexts/CoreContext/application/useCases/GetAllFreelancersUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -130,6 +132,11 @@ container.registerSingleton<ISkillService>("ISkillService", SkillService);
 container.registerSingleton<ICourseController>(
   "ICourseController",
   CourseController
+);
+
+container.registerSingleton<IUseCase<null, Freelancer[]>>(
+  "IGetAllFreelancerUseCase",
+  GetAllFreelancersUseCase
 );
 
 container.registerSingleton<IFreelancerRepository>(

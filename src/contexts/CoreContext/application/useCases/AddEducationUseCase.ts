@@ -17,7 +17,7 @@ export default class AddEducationUseCase
 
   async execute(education: Education): Promise<Education> {
     try {
-      return await this.educationRepository.add(education);
+      return await this.educationRepository.create(education);
     } catch (error) {
       if (error as ApiError) throw error;
       else

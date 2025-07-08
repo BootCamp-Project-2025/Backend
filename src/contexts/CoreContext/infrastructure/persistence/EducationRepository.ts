@@ -23,8 +23,8 @@ export default class EducationRepository implements IEducationRepository {
         data: {
           career: educationPersistence.career,
           university: educationPersistence.university,
-          startDate: educationPersistence.startDate,
-          endDate: educationPersistence.endDate,
+          startDate: new Date(educationPersistence.startDate).toISOString(),
+          endDate: new Date(educationPersistence.endDate).toISOString(),
           freelancer: {
             connect: {
               id: educationPersistence.freelancerId,

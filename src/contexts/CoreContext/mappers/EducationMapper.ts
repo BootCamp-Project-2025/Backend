@@ -47,8 +47,14 @@ export class EducationMapper extends ArrayToArrayMapper<
     startDate: Date;
     endDate: Date;
   } {
-    console.log(origin);
-    throw new Error("Method not implemented.");
+    return {
+      id: origin.educationId,
+      freelancerId: origin.id.toString(),
+      career: origin.career,
+      university: origin.university,
+      startDate: origin.startDate,
+      endDate: origin.finishDate,
+    };
   }
   mapPersistanceToDomain(origin: {
     id: string;

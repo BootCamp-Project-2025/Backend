@@ -12,6 +12,23 @@ const router = Router();
 /**
  * @openapi
  *
+ * /freelancers:
+ *  get:
+ *      summary: Get all freelancers
+ *      tags:
+ *       - Freelancers
+ *      responses:
+ *          200:
+ *              description: Everything is ok and returns all Freelancers
+ *          500:
+ *              description: Everything is wrong
+ *
+ */
+router.get("/", controller.getAll);
+
+/**
+ * @openapi
+ *
  * /freelancers/{freelancerId}/skills:
  *  get:
  *      summary: Get all skills of a freelancer

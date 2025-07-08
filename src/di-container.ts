@@ -338,7 +338,6 @@ container.registerSingleton<ILanguageController>(
   LanguageController
 );
 
-
 container.registerSingleton<IAuthService>("IAuthService", AuthService);
 container.registerSingleton<IAuthController>("IAuthController", AuthController);
 

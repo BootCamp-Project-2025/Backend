@@ -27,7 +27,7 @@ export class CourseRepository implements ICourseRepository {
     const created = await prismaClient.course.create({ data });
     return CourseMapper.toDomain(created);
   }
-
+  // eslint-disable-next-line class-methods-use-this
   async update(course: Course): Promise<Course> {
     const data = CourseMapper.toPersistence(course);
     const updated = await prismaClient.course.update({
@@ -36,11 +36,11 @@ export class CourseRepository implements ICourseRepository {
     });
     return CourseMapper.toDomain(updated);
   }
-
+  // eslint-disable-next-line class-methods-use-this
   async delete(id: string): Promise<void> {
     await prismaClient.course.delete({ where: { id } });
   }
-
+  // eslint-disable-next-line class-methods-use-this
   async enrollInCourse(course: Course, user: User): Promise<void> {
     const enrollment = await prismaClient.enrollment.create({
       data: {
@@ -53,7 +53,7 @@ export class CourseRepository implements ICourseRepository {
       throw new Error("Enrollment failed CourseRepository.enrollInCourse");
     }
   }
-
+  // eslint-disable-next-line class-methods-use-this
   async isUserEnrolled(courseId: string, userId: string): Promise<boolean> {
     const enrollment = await prismaClient.enrollment.findFirst({
       where: {
@@ -61,6 +61,6 @@ export class CourseRepository implements ICourseRepository {
         userId,
       },
     });
-    return !!enrollment;
+    return Boolean(enrollment);
   }
 }

@@ -1,4 +1,4 @@
-import "reflect-metadata"
+import "reflect-metadata";
 import { User } from "@/contexts/CoreContext/domain/aggregates/User";
 import { IUserRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IUserRepository";
 import { EnrollInCourseUseCase } from "@/contexts/LearningContext/application/useCases/EnrollInCourseUseCase";
@@ -46,14 +46,19 @@ describe("EnrollInCourseUseCase", () => {
 
     expect(courseRepository.findById).toHaveBeenCalledWith(courseId);
     expect(userRepository.getById).toHaveBeenCalledWith(userId);
-    expect(courseRepository.isUserEnrolled).toHaveBeenCalledWith(courseId, userId);
+    expect(courseRepository.isUserEnrolled).toHaveBeenCalledWith(
+      courseId,
+      userId
+    );
     expect(courseRepository.enrollInCourse).toHaveBeenCalledWith(course, user);
   });
 
   it("throws NOT_FOUND if course does not exist", async () => {
     courseRepository.findById.mockResolvedValue(null);
 
-    await expect(useCase.execute({ courseId, userId })).rejects.toThrow(ApiError);
+    await expect(useCase.execute({ courseId, userId })).rejects.toThrow(
+      ApiError
+    );
     await expect(useCase.execute({ courseId, userId })).rejects.toMatchObject({
       statusCode: StatusCodes.NOT_FOUND,
       message: "Course not found",
@@ -65,7 +70,9 @@ describe("EnrollInCourseUseCase", () => {
     courseRepository.findById.mockResolvedValue(course);
     userRepository.getById.mockResolvedValue(null);
 
-    await expect(useCase.execute({ courseId, userId })).rejects.toThrow(ApiError);
+    await expect(useCase.execute({ courseId, userId })).rejects.toThrow(
+      ApiError
+    );
     await expect(useCase.execute({ courseId, userId })).rejects.toMatchObject({
       statusCode: StatusCodes.NOT_FOUND,
       message: "User not found",
@@ -78,11 +85,16 @@ describe("EnrollInCourseUseCase", () => {
     userRepository.getById.mockResolvedValue(user);
     courseRepository.isUserEnrolled.mockResolvedValue(true);
 
-    await expect(useCase.execute({ courseId, userId })).rejects.toThrow(ApiError);
+    await expect(useCase.execute({ courseId, userId })).rejects.toThrow(
+      ApiError
+    );
     await expect(useCase.execute({ courseId, userId })).rejects.toMatchObject({
       statusCode: StatusCodes.CONFLICT,
       message: "User is already enrolled",
     });
-    expect(courseRepository.isUserEnrolled).toHaveBeenCalledWith(courseId, userId);
+    expect(courseRepository.isUserEnrolled).toHaveBeenCalledWith(
+      courseId,
+      userId
+    );
   });
 });

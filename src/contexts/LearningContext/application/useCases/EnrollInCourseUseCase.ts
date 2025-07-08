@@ -20,11 +20,11 @@ export class EnrollInCourseUseCase
 
     const course = await this.courseRepository.findById(courseId);
     if (!course) {
-      throw new ApiError(StatusCodes.NOT_FOUND, `Course not found`);
+      throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");
     }
     const user = await this.userRepository.getById(userId);
     if (!user) {
-      throw new ApiError(StatusCodes.NOT_FOUND, `User not found`);
+      throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
     }
     const isEnrolled = await this.courseRepository.isUserEnrolled(
       courseId,
@@ -32,7 +32,7 @@ export class EnrollInCourseUseCase
     );
 
     if (isEnrolled) {
-      throw new ApiError(StatusCodes.CONFLICT, `User is already enrolled`);
+      throw new ApiError(StatusCodes.CONFLICT, "User is already enrolled");
     }
 
     await this.courseRepository.enrollInCourse(course, user);

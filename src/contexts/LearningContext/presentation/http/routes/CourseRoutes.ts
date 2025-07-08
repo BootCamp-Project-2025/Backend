@@ -9,9 +9,9 @@ const controller = container.resolve(CourseController);
  * @openapi
  * /courses:
  *   get:
- *     summary: Retrieve all courses
+ *     summary: Get all courses
  *     tags:
- *       - Courses
+ *       - Course
  *     responses:
  *       200:
  *         description: A list of courses
@@ -24,7 +24,7 @@ courseRouter.get("/", controller.getAllCourses);
  *   post:
  *     summary: Create a new course
  *     tags:
- *       - Courses
+ *       - Course
  *     requestBody:
  *       required: true
  *       content:

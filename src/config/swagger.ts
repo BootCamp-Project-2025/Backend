@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import swaggerJSDoc from "swagger-jsdoc";
 import { SwaggerOptions } from "swagger-ui-express";
 
@@ -12,6 +13,11 @@ const swaggerOptions: SwaggerOptions = {
       version: "0.0.1",
       description: "API for LTCrowd app",
     },
+    tags: [
+      {
+        name: "User",
+      },
+    ],
     servers: [
       {
         url: `http://${API_HOST}:${API_PORT}/api`,

@@ -26,6 +26,7 @@ model Course{
   description    String
   imgSrc String
   modules Module[]
+  enrollments Enrollment[]
 }
 
 model Module{
@@ -54,6 +55,16 @@ model User {
   profilePicture     String?
   freelancerProfile  Freelancer? @relation("UserFreelancer") 
   clientProfile      Client?     @relation("UserClient")
+  enrollments        Enrollment[]
+}
+
+model Enrollment {
+  id          String   @id @default(uuid())
+  course      Course   @relation(fields: [courseId], references: [id])
+  courseId    String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  enrollmentDate DateTime @default(now())
 }
 
 model Freelancer {

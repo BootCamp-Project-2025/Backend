@@ -57,4 +57,6 @@ courseRouter.post("/", async (req, res, next) => {
   }
 });
 
+courseRouter.post("/:courseId/enrollments", controller.enrollInCourse);
+
 export default courseRouter;

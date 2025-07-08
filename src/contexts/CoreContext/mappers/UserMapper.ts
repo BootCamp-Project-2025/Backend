@@ -32,19 +32,22 @@ export default class UserMapper {
 
   static persistanceTodomain(userDao: UserDao): User {
     try {
-      return User.create({
-        userName: UserName.create(userDao.userName),
-        userEmail: UserEmail.create(userDao.userEmail),
-        roles: userDao.roles,
-        createdAt: userDao.createdAt,
-        profilePicture: userDao.profilePicture ?? undefined,
-        freelancerId: userDao.freelancerProfile
-          ? new UniqueEntityID(userDao.freelancerProfile.id)
-          : undefined,
-        clientId: userDao.freelancerProfile
-          ? new UniqueEntityID(userDao.freelancerProfile.id)
-          : undefined,
-      });
+      return User.create(
+        {
+          userName: UserName.create(userDao.userName),
+          userEmail: UserEmail.create(userDao.userEmail),
+          roles: userDao.roles,
+          createdAt: userDao.createdAt,
+          profilePicture: userDao.profilePicture ?? undefined,
+          freelancerId: userDao.freelancerProfile
+            ? new UniqueEntityID(userDao.freelancerProfile.id)
+            : undefined,
+          clientId: userDao.freelancerProfile
+            ? new UniqueEntityID(userDao.freelancerProfile.id)
+            : undefined,
+        },
+        new UniqueEntityID(userDao.id)
+      );
     } catch (e) {
       console.log(e);
       throw new Error("cant mapp persistance to domain");

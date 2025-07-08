@@ -78,6 +78,9 @@ import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/serv
 import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
 import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
+import { IEnrollmentService } from "./contexts/LearningContext/domain/interfaces/IEnrollmentService";
+import { EnrollmentService } from "./contexts/LearningContext/application/services/EnrollmentService";
+import { EnrollInCourseUseCase } from "./contexts/LearningContext/application/useCases/EnrollInCourseUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -312,5 +315,14 @@ container.registerSingleton<ILanguageController>(
   "ILanguageController",
   LanguageController
 );
+
+container.registerSingleton<IEnrollmentService>(
+  "IEnrollmentService",
+  EnrollmentService
+);
+
+container.registerSingleton<
+  IUseCase<{ courseId: string; userId: string }, void>
+>("EnrollInCourseUseCase", EnrollInCourseUseCase);
 
 export { container };

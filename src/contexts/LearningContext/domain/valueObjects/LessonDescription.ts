@@ -18,6 +18,11 @@ export class LessonDescription extends ValueObject<LessonDescriptionProps> {
   public static create(props: LessonDescriptionProps): LessonDescription {
     if (typeof props.description !== "string")
       throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid description value");
+    if (props.description.length < 30 || props.description.length > 1000)
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Description must be between 30 and 1000 characters long"
+      );
     return new LessonDescription(props);
   }
 }

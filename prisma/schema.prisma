@@ -52,8 +52,8 @@ model Lesson{
 model Resource{
   id      String      @id @default(uuid())
   author   Lesson @relation(fields: [LessonId], references: [id], onDelete: Cascade)
-  name   String   @unique
-  url   String   @unique
+  name   String 
+  url   String   
   LessonId String
 }
 

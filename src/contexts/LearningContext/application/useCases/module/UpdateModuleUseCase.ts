@@ -13,6 +13,14 @@ export default class UpdateModuleUseCase implements IUseCase<Module, Module> {
   ) {}
   async execute(newModule: Module): Promise<Module> {
     try {
+      const module = await this.moduleRepository.findById(
+        newModule.id.toString()
+      );
+      if (module === null) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Module not found");
+      }
+      if (module.props.title === newModule.props.title)
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Module not changed");
       return await this.moduleRepository.update(newModule);
     } catch (error) {
       if (error instanceof ApiError) throw error;

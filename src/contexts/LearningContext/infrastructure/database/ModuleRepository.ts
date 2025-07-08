@@ -1,5 +1,4 @@
 import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
-import { ModuleDTO } from "../../domain/dtos/ModuleDTO";
 import IModuleRepository from "../../domain/interfaces/IModuleRepository";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
@@ -102,7 +101,7 @@ export class ModuleRepository implements IModuleRepository {
 
   async update(module: Module): Promise<Module> {
     try {
-      const moduleDto: ModuleDTO = ModuleMapper.DomainToDto(module);
+      const moduleDto = ModuleMapper.DomainToDto(module);
       const moduleDb = await PrismaClient.module.update({
         where: { id: moduleDto.id },
         data: {

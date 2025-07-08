@@ -19,6 +19,8 @@ export default class UpdateLessonUseCase implements IUseCase<Lesson, Lesson> {
       if (!existingLesson) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Lesson not found");
       }
+      if (existingLesson.compareTo(lesson))
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Lesson not changed");
       return await this.lessonRepository.update(lesson);
     } catch (error) {
       if (error instanceof ApiError) throw error;

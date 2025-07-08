@@ -72,6 +72,7 @@ export class CourseMapper {
       name: nameVO,
       description: descVO,
       imgSrc: dto.imgSrc,
+      modules: Modules.create([]),
     };
 
     return Course.create(props, new UniqueEntityID(dto.id));

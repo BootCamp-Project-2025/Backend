@@ -21,6 +21,7 @@ describe("CourseController", () => {
       create: jest.fn(),
       updateCourse: jest.fn(),
       deleteCourse: jest.fn(),
+      publish: jest.fn(),
     };
 
     controller = new CourseController(serviceMock);

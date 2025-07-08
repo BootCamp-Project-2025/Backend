@@ -100,6 +100,7 @@ import { Lesson } from "./contexts/LearningContext/domain/entities/Lesson";
 import CreateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/CreateLessonUseCase";
 import DeleteLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/DeleteLessonUseCase";
 import UpdateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/UpdateLessonUseCase";
+import { PublishCourseUseCase } from "./contexts/LearningContext/application/useCases/PublishCourseUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -148,6 +149,11 @@ container.registerSingleton<IUseCase<void, Course[]>>(
 container.registerSingleton<CreateCourseUseCase>(
   "CreateCourseUseCase",
   CreateCourseUseCase
+);
+
+container.registerSingleton<IUseCase<string, boolean>>(
+  "PublishCourseUseCase",
+  PublishCourseUseCase
 );
 
 container.registerSingleton<ICourseService>("ICourseService", CourseService);

@@ -3,6 +3,8 @@ import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { ICourseService } from "@/contexts/LearningContext/domain/interfaces/ICourseService";
 import { inject, injectable } from "tsyringe";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 @injectable()
 export class CourseController implements ICourseController {
@@ -31,6 +33,21 @@ export class CourseController implements ICourseController {
     } catch (error) {
       console.error("Error in CourseController.create:", error);
       return res.status(500).json({ message: "Internal server error" });
+    }
+  };
+
+  public publish = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id = req.params.id;
+      const result = await this.courseService.publish(id);
+      res.status(201).json({ published: result });
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      console.error(error);
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error accessing the publish service"
+      );
     }
   };
 }

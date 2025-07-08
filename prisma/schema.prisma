@@ -25,6 +25,7 @@ model Course{
   time Int
   description    String
   imgSrc String
+  published Boolean @default(false)
   modules Module[]
 }
 

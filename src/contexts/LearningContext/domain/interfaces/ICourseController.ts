@@ -5,4 +5,5 @@ export interface ICourseController {
   getAllCourses(req: Request, res: Response): Promise<void>;
   create(req: Request, res: Response): Promise<Response>;
   getCompleteCourse(req: Request, res: Response): Promise<void>;
+  publish(req: Request, res: Response): Promise<void>;
 }

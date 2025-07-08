@@ -85,17 +85,4 @@ export default class FreelancerMapper {
       new UniqueEntityID(prismaFreelancer.id)
     );
   }
-
-  static domainToFreelancerProfileDto(
-    freelancer: Freelancer
-  ): IFreelancerProfileDto {
-    return {
-      about: freelancer.about.value,
-      skills: freelancer.skills.getItems(),
-      languages: freelancer.languages.getItems(),
-      education: freelancer.education.getItems(),
-      experience: freelancer.experience.getItems(),
-      certifications: freelancer.certifications.getItems(),
-    };
-  }
 }

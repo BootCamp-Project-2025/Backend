@@ -24,6 +24,8 @@ describe("EnrollInCourseUseCase", () => {
       insert: jest.fn(),
       isUserEnrolled: jest.fn(),
       enrollInCourse: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
     };
     userRepository = {
       getById: jest.fn(),

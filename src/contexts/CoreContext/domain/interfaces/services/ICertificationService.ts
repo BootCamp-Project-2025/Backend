@@ -6,11 +6,11 @@ export interface ICertificationService {
   create(
     certification: IGetCertificationDTO,
     freelancerId: string
-  ): Promise<void>;
+  ): Promise<Certification>;
   update(
     certificationId: string,
     certification: IGetCertificationDTO,
     freelancerId: string
-  ): Promise<void>;
+  ): Promise<Certification>;
   delete(certificationId: string, freelancerId: string): Promise<void>;
 }

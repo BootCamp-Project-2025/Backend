@@ -17,7 +17,7 @@ export class CertificationRepository implements ICertificationRepository {
   async create(
     certification: Certification,
     freelancerId: string
-  ): Promise<void> {
+  ): Promise<Certification> {
     const certificationData = new CertificationMapper().mapDomainToPersistance(
       certification
     );
@@ -27,6 +27,7 @@ export class CertificationRepository implements ICertificationRepository {
         freelancerId: freelancerId,
       },
     });
+    return certification;
   }
 
   async delete(certificationId: string): Promise<void> {
@@ -38,7 +39,7 @@ export class CertificationRepository implements ICertificationRepository {
     certificationId: string,
     certification: Certification,
     freelancerId: string
-  ): Promise<void> {
+  ): Promise<Certification> {
     const certificationData = new CertificationMapper().mapDomainToPersistance(
       certification
     );
@@ -49,6 +50,8 @@ export class CertificationRepository implements ICertificationRepository {
         freelancerId: freelancerId,
       },
     });
+
+    return certification;
   }
   async findById(certificationId: string): Promise<Certification | null> {
     const certification = await prismaClient.certification.findUnique({

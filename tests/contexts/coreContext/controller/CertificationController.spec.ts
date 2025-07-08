@@ -54,6 +54,13 @@ describe("CertificationController", () => {
       body: { certification: "cert", institution: "inst", year: 2024 },
     } as any;
 
+    const cert = Certification.create(
+      { certification: "cert", institution: "inst", year: 2024 },
+      new UniqueEntityID("cert-id")
+    );
+
+    mockService.create.mockResolvedValue(cert);
+
     await controller.create(req, res);
 
     expect(mockService.create).toHaveBeenCalledWith(req.body, "freelancer-id");
@@ -61,7 +68,7 @@ describe("CertificationController", () => {
       res,
       expect.objectContaining({
         statusCode: StatusCodes.CREATED,
-        message: "Certification created successfully",
+        data: expect.objectContaining({ id: "cert-id" }),
       })
     );
   });
@@ -71,6 +78,13 @@ describe("CertificationController", () => {
       params: { freelancerId: "freelancer-id", certificationId: "cert-id" },
       body: { certification: "updated", institution: "inst", year: 2025 },
     } as any;
+
+    const cert = Certification.create(
+      { certification: "updated", institution: "inst", year: 2025 },
+      new UniqueEntityID("cert-id")
+    );
+
+    mockService.update.mockResolvedValue(cert);
 
     await controller.update(req, res);
 
@@ -82,7 +96,8 @@ describe("CertificationController", () => {
     expect(ResponseService.send).toHaveBeenCalledWith(
       res,
       expect.objectContaining({
-        statusCode: StatusCodes.NO_CONTENT,
+        statusCode: StatusCodes.OK,
+        data: expect.objectContaining({ id: "cert-id" }),
       })
     );
   });

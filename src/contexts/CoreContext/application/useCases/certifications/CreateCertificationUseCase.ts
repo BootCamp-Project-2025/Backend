@@ -14,7 +14,7 @@ export class CreateCertificationUseCase
   implements
     IUseCase<
       { certification: ICreateCertificationDTO; freelancerId: string },
-      void
+      Certification
     >
 {
   constructor(
@@ -27,7 +27,7 @@ export class CreateCertificationUseCase
   async execute(params: {
     certification: IGetCertificationDTO;
     freelancerId: string;
-  }): Promise<void> {
+  }): Promise<Certification> {
     try {
       const { certification, freelancerId } = params;
 
@@ -44,7 +44,7 @@ export class CreateCertificationUseCase
 
       freelancer.certifications.add(certificationDomain);
 
-      await this.certificationRepository.create(
+      return await this.certificationRepository.create(
         certificationDomain,
         freelancerId
       );

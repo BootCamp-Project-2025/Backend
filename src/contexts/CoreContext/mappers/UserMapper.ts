@@ -9,13 +9,16 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 export default class UserMapper {
   static createUserDtoTodomain(dto: ICreateUserDto) {
-    return User.create({
-      userName: UserName.create(dto.userName),
-      userEmail: UserEmail.create(dto.userEmail),
-      roles: ["CLIENT"],
-      createdAt: new Date(),
-      profilePicture: dto.profilePicture,
-    });
+    return User.create(
+      {
+        userName: UserName.create(dto.userName),
+        userEmail: UserEmail.create(dto.userEmail),
+        roles: ["CLIENT"],
+        createdAt: new Date(),
+        profilePicture: dto.profilePicture,
+      },
+      new UniqueEntityID(dto.id)
+    );
   }
 
   static domainToPersistance(user: User): PrismaUser {
@@ -42,8 +45,8 @@ export default class UserMapper {
           freelancerId: userDao.freelancerProfile
             ? new UniqueEntityID(userDao.freelancerProfile.id)
             : undefined,
-          clientId: userDao.freelancerProfile
-            ? new UniqueEntityID(userDao.freelancerProfile.id)
+          clientId: userDao.clientProfile
+            ? new UniqueEntityID(userDao.clientProfile.id)
             : undefined,
         },
         new UniqueEntityID(userDao.id)
@@ -63,7 +66,7 @@ export default class UserMapper {
       id: user.id.toString(),
       freelancerProfile: user.props.freelancerId?.toString(),
       clientProfile: user.props.clientId?.toString(),
-      profilePicture: user.profilePicture,
+      profilePicture: user.profilePicture ?? undefined,
     };
   }
 }

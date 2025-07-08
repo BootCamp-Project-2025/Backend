@@ -78,6 +78,13 @@ import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/serv
 import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
 import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
+import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/SyncUserUseCase";
+import { User } from "./contexts/CoreContext/domain/aggregates/User";
+import { IAuthController } from "./contexts/CoreContext/domain/interfaces/controllers/IAuthController";
+import { AuthController } from "./contexts/CoreContext/presentation/http/controllers/AuthController";
+import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
+import { AuthService } from "./contexts/CoreContext/application/services/AuthService";
+import { UpdateUserUseCase } from "./contexts/CoreContext/application/useCases/UpdateUserUseCase";
 import { IEnrollmentService } from "./contexts/LearningContext/domain/interfaces/IEnrollmentService";
 import { EnrollmentService } from "./contexts/LearningContext/application/services/EnrollmentService";
 import { EnrollInCourseUseCase } from "./contexts/LearningContext/application/useCases/EnrollInCourseUseCase";
@@ -99,9 +106,19 @@ container.registerSingleton<CreateUserFreelancerProfileUseCase>(
   CreateUserFreelancerProfileUseCase
 );
 
+container.registerSingleton<UpdateUserUseCase>(
+  "UpdateUserUseCase",
+  UpdateUserUseCase
+);
+
 container.registerSingleton<IUserService>("IUserService", UserService);
 
 container.registerSingleton<IUserController>("IUserController", UserController);
+
+container.registerSingleton<IUseCase<User, User>>(
+  "SyncUserUseCase",
+  SyncUserUseCase
+);
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -315,6 +332,10 @@ container.registerSingleton<ILanguageController>(
   "ILanguageController",
   LanguageController
 );
+
+
+container.registerSingleton<IAuthService>("IAuthService", AuthService);
+container.registerSingleton<IAuthController>("IAuthController", AuthController);
 
 container.registerSingleton<IEnrollmentService>(
   "IEnrollmentService",

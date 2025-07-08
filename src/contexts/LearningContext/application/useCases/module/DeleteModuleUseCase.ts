@@ -12,6 +12,8 @@ export default class DeleteModuleUseCase implements IUseCase<string, void> {
   ) {}
   async execute(moduleId: string): Promise<void> {
     try {
+      if ((await this.moduleRepository.findById(moduleId)) === null)
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Module doesnt exist");
       await this.moduleRepository.delete(moduleId);
     } catch (error) {
       if (error instanceof ApiError) throw error;

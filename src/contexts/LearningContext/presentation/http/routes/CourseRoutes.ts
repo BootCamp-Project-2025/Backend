@@ -21,14 +21,14 @@ courseRouter.get("/", controller.getAllCourses);
 
 /**
  * @openapi
- * /courses:
+ * /courses/{id}/publish:
  *   put:
  *     summary: mark a course as published
  *     tags:
  *       - Courses
  *     responses:
  *       200:
- *         description: A list of courses
+ *         description: the course was published successfully
  */
 courseRouter.put("/:id/publish", controller.publish);
 

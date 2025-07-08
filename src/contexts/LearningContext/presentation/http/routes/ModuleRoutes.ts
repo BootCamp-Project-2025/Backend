@@ -15,7 +15,14 @@ moduleRouter.use("/lessons", lessonRouter);
  *   get:
  *     summary: Get all the modules of a course
  *     tags:
- *       - Courses
+ *       - Modules
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         description: The ID of the course
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: A list of courses
@@ -28,7 +35,13 @@ moduleRouter.get("/", controller.getAll);
  *   post:
  *     summary: Create a new module
  *     tags:
- *       - Courses
+ *       - Modules
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ModuleDto'
  *     responses:
  *       200:
  *         description: A list of courses
@@ -41,7 +54,20 @@ moduleRouter.post("/", controller.create);
  *   put:
  *     summary: Update a module
  *     tags:
- *       - Courses
+ *       - Modules
+ *     parameters:
+ *       - in: path
+ *         name: moduleId
+ *         required: true
+ *         description: The ID of the module
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ModuleDto'
  *     responses:
  *       200:
  *         description: A list of courses
@@ -54,11 +80,46 @@ moduleRouter.put("/:moduleId", controller.update);
  *   delete:
  *     summary: Delete a module
  *     tags:
- *       - Courses
+ *       - Modules
+ *     parameters:
+ *       - in: path
+ *         name: moduleId
+ *         required: true
+ *         description: The ID of the module
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: A list of courses
+ *         description: module has been deleted
+ *       404:
+ *         description: the module couldn't be found
+ *       500:
+ *         description: error executing the request
  */
 moduleRouter.delete("/:moduleId", controller.delete);
 
 export default moduleRouter;
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     ModuleDto:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID of the module
+ *           example: "uu-id"
+ *         title:
+ *           type: string
+ *           description: title of the module
+ *           example: "Algebra 1"
+ *         position:
+ *           type: number
+ *           description: Position of the module in the module
+ *           example: 3
+ *       required:
+ *         - title
+ *         - position
+ */

@@ -11,12 +11,17 @@ jest.mock('@/contexts/Shared/application/services/ResponseService', () => ({
 }));
 
 describe('CourseController', () => {
+  const mockEnrollInCourse = jest.fn();
   const mockService = {
-    enrollInCourse: jest.fn(),
+    enrollInCourse: mockEnrollInCourse,
   };
 
-  const controller = new CourseController({} as any, mockService as any);
-  const res = {} as any;
+  const controller = new CourseController({} as never, mockService);
+
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -26,11 +31,11 @@ describe('CourseController', () => {
     const req = {
       params: { courseId: 'course-1' },
       body: { userId: 'user-1' },
-    } as any;
+    };
 
-    await controller.enrollInCourse(req, res);
+    await controller.enrollInCourse(req as any, res as any);
 
-    expect(mockService.enrollInCourse).toHaveBeenCalledWith('course-1', 'user-1');
+    expect(mockEnrollInCourse).toHaveBeenCalledWith('course-1', 'user-1');
     expect(ResponseService.send).toHaveBeenCalledWith(
       res,
       expect.objectContaining({
@@ -41,25 +46,25 @@ describe('CourseController', () => {
   });
 
   it('should throw ApiError if enrollInCourse throws a generic error', async () => {
-    mockService.enrollInCourse.mockRejectedValue(new Error('fail'));
+    mockEnrollInCourse.mockRejectedValue(new Error('fail'));
 
     const req = {
       params: { courseId: 'course-1' },
       body: { userId: 'user-1' },
-    } as any;
+    };
 
-    await expect(controller.enrollInCourse(req, res)).rejects.toThrow(ApiError);
+    await expect(controller.enrollInCourse(req as any, res as any)).rejects.toThrow(ApiError);
   });
 
   it('should rethrow ApiError if enrollInCourse throws ApiError', async () => {
     const apiError = new ApiError(StatusCodes.BAD_REQUEST, 'Already enrolled');
-    mockService.enrollInCourse.mockRejectedValue(apiError);
+    mockEnrollInCourse.mockRejectedValue(apiError);
 
     const req = {
       params: { courseId: 'course-1' },
       body: { userId: 'user-1' },
-    } as any;
+    };
 
-    await expect(controller.enrollInCourse(req, res)).rejects.toThrow(apiError);
+    await expect(controller.enrollInCourse(req as any, res as any)).rejects.toThrow(apiError);
   });
 });

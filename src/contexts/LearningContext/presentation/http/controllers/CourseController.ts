@@ -13,7 +13,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 export class CourseController implements ICourseController {
   constructor(
     @inject("ICourseService") private readonly courseService: ICourseService
-  ) { }
+  ) {}
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -38,19 +38,19 @@ export class CourseController implements ICourseController {
       return ResponseService.send(res, response);
     } catch (e) {
       const error = e as PrismaClientKnownRequestError;
-      console.error("Error in CourseController.create:",
-        error);
-      let message = '';
+      console.error("Error in CourseController.create:", error);
+      let message = "";
       if (
-        error.code === 'P2002' && (error.meta?.target as string[])?.includes('name')
+        error.code === "P2002" &&
+        (error.meta?.target as string[])?.includes("name")
       ) {
-        message = " That course name already exists, please chose another."
+        message = " That course name already exists, please chose another.";
       }
       const response = new ErrorResponseEntity(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        message,
+        message
       );
-      console.log(response)
+      console.log(response);
       return ResponseService.send(res, response);
     }
   };

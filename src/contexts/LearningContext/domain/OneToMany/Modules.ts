@@ -20,6 +20,15 @@ export class Modules extends ManyRelationship<Module> {
     super.edit(editedModule, index);
   }
 
+  public add(module: Module): void {
+    if (this.getItems().length >= 10)
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "You can only add up to 10 modules"
+      );
+    super.add(module);
+  }
+
   public removeById(id: string): void {
     const index = this.getItems().findIndex((e) => e.id.toString() === id);
     if (index === -1)

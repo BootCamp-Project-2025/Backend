@@ -19,6 +19,11 @@ export class SyllabusSectionTitle extends ValueObject<SyllabusSectionTitleProps>
     if (!props.title || typeof props.title !== "string") {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid title value");
     }
+    if (props.title.length < 5 || props.title.length > 20)
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Title must be between 5 and 20 characters long"
+      );
     return new SyllabusSectionTitle(props);
   }
 }

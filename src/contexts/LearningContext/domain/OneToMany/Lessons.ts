@@ -20,6 +20,15 @@ export class Lessons extends ManyRelationship<Lesson> {
     super.edit(editedLesson, index);
   }
 
+  public add(lesson: Lesson): void {
+    if (this.getItems().length >= 10)
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "You can only add up to 10 lessons per module"
+      );
+    super.add(lesson);
+  }
+
   public removeById(id: string): void {
     const index = this.getItems().findIndex((e) => e.id.toString() === id);
     if (index === -1)

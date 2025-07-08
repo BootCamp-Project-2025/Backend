@@ -34,7 +34,7 @@ describe("LessonController", () => {
         id: "testId",
         title: "Test Lesson",
         position: 1,
-        description: "",
+        description: "12345123451234512345123451234512345",
         videoUrls: [],
         resources: [],
       },
@@ -45,7 +45,7 @@ describe("LessonController", () => {
       id: "testId",
       title: "Test Lesson",
       position: 1,
-      description: "",
+      description: "12345123451234512345123451234512345",
       videoUrls: [],
       resources: [],
     });
@@ -71,7 +71,7 @@ describe("LessonController", () => {
       id: "lessonIdTest",
       title: "Test Lesson",
       position: 1,
-      description: "",
+      description: "12345123451234512345123451234512345",
       videoUrls: [],
       resources: [],
     };
@@ -79,7 +79,7 @@ describe("LessonController", () => {
       body: {
         title: "Test Lesson",
         position: 1,
-        description: "",
+        description: "12345123451234512345123451234512345",
         videoUrls: [],
         resources: [],
       },

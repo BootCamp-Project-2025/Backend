@@ -24,7 +24,7 @@ describe("LessonService", () => {
       id: "1",
       title: "Test Lesson",
       position: 1,
-      description: "",
+      description: "12345123451234512345123451234512345",
       videoUrls: [],
       resources: [],
     });
@@ -47,7 +47,7 @@ describe("LessonService", () => {
       id: "1",
       title: "Test Lesson",
       position: 1,
-      description: "",
+      description: "12345123451234512345123451234512345",
       videoUrls: [],
       resources: [],
     });

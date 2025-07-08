@@ -57,8 +57,6 @@ courseRouter.post("/", async (req, res, next) => {
   }
 });
 
-courseRouter.post("/:courseId/enrollments", controller.enrollInCourse);
-
 /**
  * @openapi
  * /courses/{id}:
@@ -123,5 +121,26 @@ courseRouter.delete("/:id", async (req, res, next) => {
     next(err);
   }
 });
+
+/**
+ * @openapi
+ * /courses/{courseId}/enrollments:
+ *   post:
+ *     summary: Enroll in a course
+ *     tags:
+ *       - Course
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The course ID to enroll in
+ *     responses:
+ *       200:
+ *         description: Successfully enrolled in the course
+ */
+
+courseRouter.post("/:courseId/enrollments", controller.enrollInCourse);
 
 export default courseRouter;

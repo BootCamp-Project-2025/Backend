@@ -20,7 +20,7 @@ const swaggerOptions: SwaggerOptions = {
     ],
     servers: [
       {
-        url: `http://localhost:${API_PORT}/api`,
+        url: `http://${API_HOST}:${API_PORT}/api`,
       },
     ],
   },

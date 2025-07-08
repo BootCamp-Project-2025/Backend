@@ -3,6 +3,8 @@ import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { ICourseService } from "@/contexts/LearningContext/domain/interfaces/ICourseService";
 import { inject, injectable } from "tsyringe";
+import { ErrorResponseEntity } from "../../../../Shared/domain/entity/ErrorResponseEntity";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { IEnrollmentService } from "@/contexts/LearningContext/domain/interfaces/IEnrollmentService";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { StatusCodes } from "http-status-codes";
@@ -20,21 +22,73 @@ export class CourseController implements ICourseController {
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {
       const courses = await this.courseService.getAllCourses();
-      res.status(200).json(courses);
+      const response = new SuccessResponseEntity(courses, StatusCodes.OK);
+      return ResponseService.send(res, response);
     } catch (error) {
       console.error("Error in CourseController.getAllCourses:", error);
-      res.status(500).json({ message: "Internal server error" });
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Internal server error"
+      );
+      return ResponseService.send(res, response);
     }
   };
 
-  public create = async (req: Request, res: Response): Promise<Response> => {
+  public create = async (req: Request, res: Response): Promise<void> => {
     try {
       const dto = req.body as CourseDTO;
       const result = await this.courseService.create(dto);
-      return res.status(201).json(result);
-    } catch (error) {
+      const response = new SuccessResponseEntity(result, StatusCodes.CREATED);
+      return ResponseService.send(res, response);
+    } catch (e) {
+      const error = e as PrismaClientKnownRequestError;
       console.error("Error in CourseController.create:", error);
-      return res.status(500).json({ message: "Internal server error" });
+      let message = "";
+      if (
+        error.code === "P2002" &&
+        (error.meta?.target as string[])?.includes("name")
+      ) {
+        message = " That course name already exists, please chose another.";
+      }
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        message
+      );
+      console.log(response);
+      return ResponseService.send(res, response);
+    }
+  };
+
+  public updateCourse = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const dto = req.body as CourseDTO;
+      const updated = await this.courseService.updateCourse(id, dto);
+      const response = new SuccessResponseEntity(updated, StatusCodes.OK);
+      return ResponseService.send(res, response);
+    } catch (error) {
+      console.error("Error in CourseController.updateCourse:", error);
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Internal server error"
+      );
+      return ResponseService.send(res, response);
+    }
+  };
+
+  public deleteCourse = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      await this.courseService.deleteCourse(id);
+      const response = new SuccessResponseEntity(StatusCodes.NO_CONTENT);
+      return ResponseService.send(res, response);
+    } catch (error) {
+      console.error("Error in CourseController.deleteCourse:", error);
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Internal server error"
+      );
+      return ResponseService.send(res, response);
     }
   };
 
@@ -49,13 +103,20 @@ export class CourseController implements ICourseController {
       );
       ResponseService.send(res, response);
     } catch (error) {
+      console.error("Error in CourseController.enrollInCourse:", error);
       if (error instanceof ApiError) {
-        throw error;
+        const response = new ErrorResponseEntity(
+          error.statusCode,
+          error.message
+        );
+        return ResponseService.send(res, response);
       }
-      throw new ApiError(
+      const response = new ErrorResponseEntity(
         StatusCodes.INTERNAL_SERVER_ERROR,
-        "Enrollment failed"
+        "Internal server error"
       );
+      return ResponseService.send(res, response);
     }
   };
+  ;
 }

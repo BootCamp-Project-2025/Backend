@@ -1,4 +1,5 @@
 import { IUserController } from "@/contexts/CoreContext/domain/interfaces/controllers/IUserController";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 import { Router } from "express";
 import { container } from "tsyringe";
 
@@ -60,6 +61,43 @@ router.get("/:id", controller.get);
  *
  */
 router.post("/", controller.post);
+
+/**
+ *
+ * @openapi
+ * /users:
+ *  patch:
+ *     summary: Updates the user data
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userName:
+ *                 type: string
+ *                 example: Pepe
+ *               profilePictureSrc:
+ *                 type: string
+ *                 example: "https://cdn.example.com/images/pepe.png"
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An error occurred while updating the user"
+ */
+router.patch("/", verifyToken(), controller.updateUser);
 
 /**
  * @openapi

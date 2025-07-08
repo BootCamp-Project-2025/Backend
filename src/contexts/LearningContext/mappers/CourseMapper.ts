@@ -26,6 +26,7 @@ export class CourseMapper {
       description: descriptionValue,
       time: prismaCourse.time,
       imgSrc: prismaCourse.imgSrc,
+      modules: Modules.create([]),
     };
 
     return Course.create(

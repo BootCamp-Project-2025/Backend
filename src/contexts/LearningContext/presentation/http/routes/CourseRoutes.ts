@@ -10,9 +10,9 @@ const controller = container.resolve(CourseController);
  * @openapi
  * /courses:
  *   get:
- *     summary: Retrieve all courses
+ *     summary: Get all courses
  *     tags:
- *       - Courses
+ *       - Course
  *     responses:
  *       200:
  *         description: A list of courses
@@ -38,7 +38,7 @@ courseRouter.put("/:id/publish", controller.publish);
  *   post:
  *     summary: Create a new course
  *     tags:
- *       - Courses
+ *       - Course
  *     requestBody:
  *       required: true
  *       content:
@@ -73,5 +73,69 @@ courseRouter.post("/", async (req, res, next) => {
 
 courseRouter.use("/:courseId/modules", moduleRouter);
 courseRouter.use("/modules", moduleRouter);
+/**
+ * @openapi
+ * /courses/{id}:
+ *   put:
+ *     summary: Update an existing course
+ *     tags:
+ *       - Courses
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The course ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               imgSrc:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Course updated successfully
+ */
+courseRouter.put("/:id", async (req, res, next) => {
+  try {
+    await controller.updateCourse(req, res);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * @openapi
+ * /courses/{id}:
+ *   delete:
+ *     summary: Delete a course
+ *     tags:
+ *       - Courses
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The course ID
+ *     responses:
+ *       204:
+ *         description: Course deleted successfully (no content)
+ */
+courseRouter.delete("/:id", async (req, res, next) => {
+  try {
+    await controller.deleteCourse(req, res);
+  } catch (err) {
+    next(err);
+  }
+});
 
 export default courseRouter;

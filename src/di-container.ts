@@ -10,6 +10,8 @@ import { CourseRepository } from "./contexts/LearningContext/infrastructure/data
 import { ICourseRepository } from "./contexts/LearningContext/domain/interfaces/ICourseRepository";
 import { GetAllCoursesUseCase } from "./contexts/LearningContext/application/useCases/GetAllCoursesUseCase";
 import { CreateCourseUseCase } from "./contexts/LearningContext/application/useCases/CreateCourseUseCase";
+import { UpdateCourseUseCase } from "@/contexts/LearningContext/application/useCases/UpdateCourseUseCase";
+import { DeleteCourseUseCase } from "@/contexts/LearningContext/application/useCases/DeleteCourseUseCase";
 import { CourseService } from "./contexts/LearningContext/application/services/CourseService";
 import { ICourseService } from "./contexts/LearningContext/domain/interfaces/ICourseService";
 import { CourseController } from "./contexts/LearningContext/presentation/http/controllers/CourseController";
@@ -19,7 +21,6 @@ import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
 import { IUserRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IUserRepository";
 import { UserRepository } from "./contexts/CoreContext/infrastructure/persistence/UserRepository";
-import { GetUserProfileUseCase } from "./contexts/CoreContext/application/useCases/GetUserProfileUseCase";
 import { IUserController } from "./contexts/CoreContext/domain/interfaces/controllers/IUserController";
 import { IUserService } from "./contexts/CoreContext/domain/interfaces/services/IUserService";
 import { UserService } from "./contexts/CoreContext/application/services/UserService";
@@ -101,16 +102,18 @@ import CreateLessonUseCase from "./contexts/LearningContext/application/useCases
 import DeleteLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/DeleteLessonUseCase";
 import UpdateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/UpdateLessonUseCase";
 import { PublishCourseUseCase } from "./contexts/LearningContext/application/useCases/PublishCourseUseCase";
+import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/SyncUserUseCase";
+import { User } from "./contexts/CoreContext/domain/aggregates/User";
+import { IAuthController } from "./contexts/CoreContext/domain/interfaces/controllers/IAuthController";
+import { AuthController } from "./contexts/CoreContext/presentation/http/controllers/AuthController";
+import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
+import { AuthService } from "./contexts/CoreContext/application/services/AuthService";
+import { UpdateUserUseCase } from "./contexts/CoreContext/application/useCases/UpdateUserUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
 
 container.registerSingleton<GetUserUseCase>("GetUserUseCase", GetUserUseCase);
-
-container.registerSingleton<GetUserProfileUseCase>(
-  "GetUserProfileUseCase",
-  GetUserProfileUseCase
-);
 
 container.registerSingleton<CreateUserUseCase>(
   "CreateUserUseCase",
@@ -124,9 +127,19 @@ container.registerSingleton<CreateUserFreelancerProfileUseCase>(
   CreateUserFreelancerProfileUseCase
 );
 
+container.registerSingleton<UpdateUserUseCase>(
+  "UpdateUserUseCase",
+  UpdateUserUseCase
+);
+
 container.registerSingleton<IUserService>("IUserService", UserService);
 
 container.registerSingleton<IUserController>("IUserController", UserController);
+
+container.registerSingleton<IUseCase<User, User>>(
+  "SyncUserUseCase",
+  SyncUserUseCase
+);
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -155,6 +168,8 @@ container.registerSingleton<IUseCase<string, boolean>>(
   "PublishCourseUseCase",
   PublishCourseUseCase
 );
+container.registerSingleton("UpdateCourseUseCase", UpdateCourseUseCase);
+container.registerSingleton("DeleteCourseUseCase", DeleteCourseUseCase);
 
 container.registerSingleton<ICourseService>("ICourseService", CourseService);
 
@@ -414,5 +429,10 @@ container.registerSingleton<ILanguageController>(
   "ILanguageController",
   LanguageController
 );
+
+//
+
+container.registerSingleton<IAuthService>("IAuthService", AuthService);
+container.registerSingleton<IAuthController>("IAuthController", AuthController);
 
 export { container };

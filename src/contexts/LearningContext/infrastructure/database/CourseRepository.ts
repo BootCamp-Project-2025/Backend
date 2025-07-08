@@ -44,4 +44,18 @@ export class CourseRepository implements ICourseRepository {
       );
     }
   }
+  // eslint-disable-next-line class-methods-use-this
+  async update(course: Course): Promise<Course> {
+    const data = CourseMapper.toPersistence(course);
+    const updated = await prismaClient.course.update({
+      where: { id: course.id.toString() },
+      data,
+    });
+    return CourseMapper.toDomain(updated);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async delete(id: string): Promise<void> {
+    await prismaClient.course.delete({ where: { id } });
+  }
 }

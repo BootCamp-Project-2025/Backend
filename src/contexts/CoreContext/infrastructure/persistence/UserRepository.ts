@@ -53,9 +53,35 @@ export class UserRepository implements IUserRepository {
   async create(user: User): Promise<User> {
     try {
       const dbUser = UserMapper.domainToPersistance(user);
-
+      console.log("dbUser", dbUser);
       await prismaClient.user.create({
-        data: { ...dbUser, clientProfile: { create: {} } },
+        data: {
+          ...dbUser,
+          clientProfile: {
+            create: {
+              socialLink: {
+                create: [
+                  {
+                    platform: "LINKEDIN",
+                    url: "",
+                  },
+                  {
+                    platform: "FACEBOOK",
+                    url: "",
+                  },
+                  {
+                    platform: "INSTAGRAM",
+                    url: "",
+                  },
+                  {
+                    platform: "YOUTUBE",
+                    url: "",
+                  },
+                ],
+              },
+            },
+          },
+        },
       });
       return user;
     } catch (error) {
@@ -64,8 +90,19 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  update(): Promise<User> {
-    throw new Error("Method not implemented.");
+  async update(userId: string, userData: User): Promise<User> {
+    const user = await prismaClient.user.update({
+      where: { id: userId },
+      data: {
+        userName: userData.userName.value,
+        profilePicture: userData.profilePicture,
+      },
+      include: {
+        freelancerProfile: true,
+        clientProfile: true,
+      },
+    });
+    return UserMapper.persistanceTodomain(user);
   }
 
   async getUserProfileById(id: string): Promise<User | null> {

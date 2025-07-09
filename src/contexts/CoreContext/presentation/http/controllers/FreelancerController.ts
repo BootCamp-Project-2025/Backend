@@ -34,6 +34,8 @@ export default class FreelancerController implements IFreelancerController {
 
   public editSkill = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log(req.params.skillId);
+      req.body.skillId = req.params.skillId;
       const body: ISkillDto = req.body as ISkillDto;
       if (body.skillId === undefined)
         throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
@@ -54,14 +56,10 @@ export default class FreelancerController implements IFreelancerController {
 
   public deleteSkill = async (req: Request, res: Response): Promise<void> => {
     try {
-      const body: ISkillDto = req.body as ISkillDto;
-      if (body.skillId === undefined)
-        throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
-      const skill: Skill = Skill.create(
-        { ...body, freelancerId: req.params.freelancerId },
-        new UniqueEntityID(body.skillId)
+      await this.skillService.deleteSkill(
+        req.params.skillId,
+        req.params.freelancerId
       );
-      await this.skillService.deleteSkill(skill);
       ResponseService.send(res, {
         success: true,
         statusCode: StatusCodes.OK,

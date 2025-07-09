@@ -10,6 +10,8 @@ import { CourseRepository } from "./contexts/LearningContext/infrastructure/data
 import { ICourseRepository } from "./contexts/LearningContext/domain/interfaces/ICourseRepository";
 import { GetAllCoursesUseCase } from "./contexts/LearningContext/application/useCases/GetAllCoursesUseCase";
 import { CreateCourseUseCase } from "./contexts/LearningContext/application/useCases/CreateCourseUseCase";
+import { UpdateCourseUseCase } from "@/contexts/LearningContext/application/useCases/UpdateCourseUseCase";
+import { DeleteCourseUseCase } from "@/contexts/LearningContext/application/useCases/DeleteCourseUseCase";
 import { CourseService } from "./contexts/LearningContext/application/services/CourseService";
 import { ICourseService } from "./contexts/LearningContext/domain/interfaces/ICourseService";
 import { CourseController } from "./contexts/LearningContext/presentation/http/controllers/CourseController";
@@ -17,6 +19,8 @@ import IUseCase from "./contexts/LearningContext/domain/interfaces/IUseCase";
 import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { ICourseController } from "@/contexts/LearningContext/domain/interfaces/ICourseController";
 import { IFreelancerRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
+import { EditCourseUseCase } from "./contexts/LearningContext/application/useCases/EditCourseUseCase";
+import { GetCourseUseCase } from "./contexts/LearningContext/application/useCases/GetCourseUseCase";
 import { IUserRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IUserRepository";
 import { UserRepository } from "./contexts/CoreContext/infrastructure/persistence/UserRepository";
 import { IUserController } from "./contexts/CoreContext/domain/interfaces/controllers/IUserController";
@@ -80,6 +84,18 @@ import ILanguageController from "./contexts/CoreContext/domain/interfaces/contro
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
 import { Freelancer } from "./contexts/CoreContext/domain/aggregates/Freelancer";
 import { GetAllFreelancersUseCase } from "./contexts/CoreContext/application/useCases/GetAllFreelancersUseCase";
+import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/SyncUserUseCase";
+import { User } from "./contexts/CoreContext/domain/aggregates/User";
+import { IAuthController } from "./contexts/CoreContext/domain/interfaces/controllers/IAuthController";
+import { AuthController } from "./contexts/CoreContext/presentation/http/controllers/AuthController";
+import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
+import { AuthService } from "./contexts/CoreContext/application/services/AuthService";
+import { UpdateUserUseCase } from "./contexts/CoreContext/application/useCases/UpdateUserUseCase";
+import { CourseDTO } from "./contexts/LearningContext/domain/dtos/CourseDTO";
+import { DeleteSkillDto } from "./contexts/CoreContext/domain/interfaces/dtos/DeleteSkillDto";
+import { CreateEducationDto } from "./contexts/CoreContext/domain/interfaces/dtos/CreateEducationDto";
+import { DeleteEducationDto } from "./contexts/CoreContext/domain/interfaces/dtos/DeleteEducationDto";
+import { DeleteLanguageDto } from "./contexts/CoreContext/domain/interfaces/dtos/DeleteLanguageDto";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -98,9 +114,19 @@ container.registerSingleton<CreateUserFreelancerProfileUseCase>(
   CreateUserFreelancerProfileUseCase
 );
 
+container.registerSingleton<UpdateUserUseCase>(
+  "UpdateUserUseCase",
+  UpdateUserUseCase
+);
+
 container.registerSingleton<IUserService>("IUserService", UserService);
 
 container.registerSingleton<IUserController>("IUserController", UserController);
+
+container.registerSingleton<IUseCase<User, User>>(
+  "SyncUserUseCase",
+  SyncUserUseCase
+);
 
 container.registerSingleton<ICourseRepository>(
   "ICourseRepository",
@@ -119,11 +145,26 @@ container.registerSingleton<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",
   GetAllCoursesUseCase
 );
+container.registerSingleton<IUseCase<CourseDTO, Course>>(
+  "EditCourseUseCase",
+  EditCourseUseCase
+);
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteCourseUseCase",
+  DeleteCourseUseCase
+);
+container.registerSingleton<IUseCase<string, Course>>(
+  "GetCourseUseCase",
+  GetCourseUseCase
+);
 
 container.registerSingleton<CreateCourseUseCase>(
   "CreateCourseUseCase",
   CreateCourseUseCase
 );
+
+container.registerSingleton("UpdateCourseUseCase", UpdateCourseUseCase);
+container.registerSingleton("DeleteCourseUseCase", DeleteCourseUseCase);
 
 container.registerSingleton<ICourseService>("ICourseService", CourseService);
 
@@ -149,7 +190,7 @@ container.registerSingleton<IUseCase<Skill, Skill>>(
   AddSkillUseCase
 );
 
-container.registerSingleton<IUseCase<Skill, void>>(
+container.registerSingleton<IUseCase<DeleteSkillDto, void>>(
   "DeleteSkillUseCase",
   DeleteSkillUseCase
 );
@@ -232,12 +273,12 @@ container.registerSingleton<IUseCase<string, Education[]>>(
   GetEducationsUseCase
 );
 
-container.registerSingleton<IUseCase<Education, Education>>(
+container.registerSingleton<IUseCase<CreateEducationDto, Education | void>>(
   "EditEducationUseCase",
   EditEducationUseCase
 );
 
-container.registerSingleton<IUseCase<string, void>>(
+container.registerSingleton<IUseCase<DeleteEducationDto, void>>(
   "DeleteEducationUseCase",
   DeleteEducationUseCase
 );
@@ -302,7 +343,7 @@ container.registerSingleton<IUseCase<CreateLanguageDto, Language>>(
   "CreateLanguageUseCase",
   CreateLanguageUseCase
 );
-container.registerSingleton<IUseCase<CreateLanguageDto, void | string>>(
+container.registerSingleton<IUseCase<DeleteLanguageDto, void>>(
   "DeleteLanguageUseCase",
   DeleteLanguageUseCase
 );
@@ -319,5 +360,10 @@ container.registerSingleton<ILanguageController>(
   "ILanguageController",
   LanguageController
 );
+
+//
+
+container.registerSingleton<IAuthService>("IAuthService", AuthService);
+container.registerSingleton<IAuthController>("IAuthController", AuthController);
 
 export { container };

@@ -1,5 +1,5 @@
 export interface ILanguageDto {
-  id: string;
+  id?: string;
   name: string;
   level: "basic" | "intermediate" | "advanced" | "native";
 }

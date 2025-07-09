@@ -53,10 +53,14 @@ export default class EducationController implements IEducationController {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public update = async (req: Request, res: Response): Promise<void> => {
     try {
-      throw new ApiError(StatusCodes.NOT_IMPLEMENTED, "server error");
+      const { freelancerId } = req.params;
+      req.body.id = req.params.educationId;
+      const education: IEducationDto = req.body as IEducationDto;
+      await this.educationService.updateEducation(education, freelancerId);
+      const response = new SuccessResponseEntity(education, StatusCodes.OK);
+      ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) throw error;
       else
@@ -66,9 +70,14 @@ export default class EducationController implements IEducationController {
 
   public delete = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { educationId } = req.params;
-      await this.educationService.removeById(educationId);
-      const response = new SuccessResponseEntity({}, StatusCodes.NO_CONTENT);
+      await this.educationService.removeById(
+        req.params.educationId,
+        req.params.freelancerId
+      );
+      const response = new SuccessResponseEntity(
+        "Education removed",
+        StatusCodes.NO_CONTENT
+      );
       ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) throw error;

@@ -92,4 +92,12 @@ export class LanguageMapper extends ArrayToArrayMapper<
       name: language.name,
     };
   }
+  
+  static mapDomainToDto(language: Language): ILanguageDto {
+    return {
+      id: language.id.toString(),
+      name: language.props.name,
+      level: language.props.level,
+    };
+  }
 }

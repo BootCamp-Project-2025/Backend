@@ -6,6 +6,7 @@ import ISkillDto from "../../domain/interfaces/dtos/ISkillDto";
 import { skillMapper } from "../../mappers/SkillMapper";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { DeleteSkillDto } from "../../domain/interfaces/dtos/DeleteSkillDto";
 
 @injectable()
 export default class SkillService implements ISkillService {
@@ -15,7 +16,7 @@ export default class SkillService implements ISkillService {
     @inject("EditSkillUseCase")
     private readonly editSkillUseCase: IUseCase<Skill, Skill>,
     @inject("DeleteSkillUseCase")
-    private readonly deleteSkillUseCase: IUseCase<Skill, void>,
+    private readonly deleteSkillUseCase: IUseCase<DeleteSkillDto, void>,
     @inject("GetSkillsUseCase")
     private getSkillsUseCase: IUseCase<string, Skill[]>
   ) {}
@@ -30,9 +31,12 @@ export default class SkillService implements ISkillService {
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");
     }
   }
-  async deleteSkill(skill: Skill): Promise<void> {
+  async deleteSkill(skillId: string, freelancerId: string): Promise<void> {
     try {
-      await this.deleteSkillUseCase.execute(skill);
+      await this.deleteSkillUseCase.execute({
+        skillId: skillId,
+        freelancerId: freelancerId,
+      });
     } catch (error) {
       if (error as ApiError) throw error;
       else

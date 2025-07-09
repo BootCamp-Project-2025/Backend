@@ -1,5 +1,4 @@
 import { ICourseService } from "../../domain/interfaces/ICourseService";
-import { CreateCourseUseCase } from "../../application/useCases/CreateCourseUseCase";
 import { Course } from "../../domain/aggregates/Course";
 import { CourseDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
@@ -11,8 +10,19 @@ export class CourseService implements ICourseService {
   constructor(
     @inject("GetAllCoursesUseCase")
     private readonly getAllCoursesUseCase: IUseCase<void, Course[]>,
+    @inject("GetCourseUseCase")
+    private readonly GetCourseUseCase: IUseCase<string, Course>,
+    @inject("EditCourseUseCase")
+    private readonly EditCourseUseCase: IUseCase<CourseDTO, Course>,
+
     @inject("CreateCourseUseCase")
-    private createCoursesUseCase: CreateCourseUseCase
+    private readonly createCourseUseCase: IUseCase<CourseDTO, Course>,
+
+    @inject("UpdateCourseUseCase")
+    private readonly updateCourseUseCase: IUseCase<CourseDTO, Course>,
+
+    @inject("DeleteCourseUseCase")
+    private readonly deleteCourseUseCase: IUseCase<string, void>
   ) {}
 
   async getAllCourses(): Promise<CourseDTO[]> {
@@ -21,7 +31,27 @@ export class CourseService implements ICourseService {
   }
 
   async create(courseDto: CourseDTO): Promise<CourseDTO> {
-    const created = await this.createCoursesUseCase.execute(courseDto);
+    const created = await this.createCourseUseCase.execute(courseDto);
     return CourseMapper.toAplicationDTO(created);
+  }
+
+  async getCourse(courseId: string): Promise<CourseDTO> {
+    const course = await this.GetCourseUseCase.execute(courseId);
+    return CourseMapper.domainToDto(course);
+  }
+
+  async editCourse(id: string, courseDto: CourseDTO): Promise<CourseDTO> {
+    courseDto.id = id;
+    const courseUpdated = await this.EditCourseUseCase.execute(courseDto);
+    return CourseMapper.domainToDto(courseUpdated);
+  }
+  async updateCourse(id: string, courseDto: CourseDTO): Promise<CourseDTO> {
+    const input: CourseDTO = { id, ...courseDto };
+    const updated = await this.updateCourseUseCase.execute(input);
+    return CourseMapper.toAplicationDTO(updated);
+  }
+
+  async deleteCourse(id: string): Promise<void> {
+    await this.deleteCourseUseCase.execute(id);
   }
 }

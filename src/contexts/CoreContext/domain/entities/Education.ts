@@ -30,6 +30,10 @@ export class Education extends Entity<EducationProps> {
     return this._id;
   }
 
+  get freelancerId(): string {
+    return this.props.freelancerId;
+  }
+
   get educationId(): string {
     return this._id.toString();
   }

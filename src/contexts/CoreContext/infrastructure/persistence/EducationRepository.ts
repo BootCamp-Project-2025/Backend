@@ -52,6 +52,8 @@ export default class EducationRepository implements IEducationRepository {
   async delete(id: string): Promise<string | void> {
     try {
       await PrismaClient.education.delete({ where: { id: id } });
+
+      return "Education deleted";
     } catch (error) {
       if (error as ApiError) throw error;
       else throw new ApiError();
@@ -67,6 +69,18 @@ export default class EducationRepository implements IEducationRepository {
     throw new Error("Method not implemented.");
   }
   async update(id: string, object: Education): Promise<void | Education> {
-    throw new Error("Method not implemented.");
+    try {
+      const dbEducation = educationMapper.mapDomainToPersistance(object);
+
+      await PrismaClient.education.update({
+        where: { id: id },
+        data: dbEducation,
+      });
+
+      return object;
+    } catch (error) {
+      if (error as ApiError) throw error;
+      else throw new ApiError();
+    }
   }
 }

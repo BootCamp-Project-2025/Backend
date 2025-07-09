@@ -4,6 +4,10 @@ import { EducationRoutes } from "./EducationRoutes";
 import { LanguageRoutes } from "./LanguageRoute";
 import { SkillRoutes } from "./SkillRoutes";
 import { CertificationRoutes } from "./CertificationRoutes";
+import { container } from "tsyringe";
+import FreelancerController from "../controllers/FreelancerController";
+
+const controller = container.resolve(FreelancerController);
 
 const router = Router();
 

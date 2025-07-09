@@ -85,7 +85,7 @@ export default class LanguageController implements ILanguageController {
       const data = languages.map((row: Language) => {
         return LanguageMapper.mapDomainToDto(row);
       });
-      if (languages.length === 0) {
+      if (!languages) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Languages not found");
       } else {
         const response = new SuccessResponseEntity(data, StatusCodes.OK);

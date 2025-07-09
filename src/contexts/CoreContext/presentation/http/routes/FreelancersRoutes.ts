@@ -8,7 +8,7 @@ import { container } from "tsyringe";
 import FreelancerController from "../controllers/FreelancerController";
 
 const router = Router();
-const controller = container.resolve(FreelancerController);
+const freelancerController = container.resolve(FreelancerController);
 
 /**
  * @openapi
@@ -25,7 +25,7 @@ const controller = container.resolve(FreelancerController);
  *              description: Everything is wrong
  *
  */
-router.get("/", controller.getAll);
+router.get("/", freelancerController.getAll);
 
 router.use("/:freelancerId/certifications", CertificationRoutes);
 router.use("/:freelancerId/experiences", ExperienceRoutes);

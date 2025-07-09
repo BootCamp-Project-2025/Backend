@@ -55,9 +55,23 @@ export class CourseMapper {
 
   static toAplicationDTO(domainCourse: Course): CourseDTO {
     return {
+      id: domainCourse.id.toString(),
       name: domainCourse.props.name.value,
       description: domainCourse.props.description.value,
       imgSrc: domainCourse.props.imgSrc,
     };
+  }
+
+  static fromDTO(dto: CourseDTO): Course {
+    const nameVO = CourseName.create({ name: dto.name });
+    const descVO = CourseDescription.create({ description: dto.description });
+
+    const props: CourseProps = {
+      name: nameVO,
+      description: descVO,
+      imgSrc: dto.imgSrc,
+    };
+
+    return Course.create(props, new UniqueEntityID(dto.id));
   }
 }

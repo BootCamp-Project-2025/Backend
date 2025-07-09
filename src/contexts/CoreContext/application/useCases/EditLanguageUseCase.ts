@@ -35,7 +35,10 @@ export class EditLanguageUseCase
         }
 
         freelancer.languages.edit(language);
-        return await this.languageRepository.update("", language);
+        return await this.languageRepository.update(
+          language.id.toString(),
+          language
+        );
       }
 
       throw new ApiError(StatusCodes.BAD_REQUEST, "Freelancer not found");

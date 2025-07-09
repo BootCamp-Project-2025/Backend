@@ -33,7 +33,7 @@ describe("CertificationController", () => {
     );
     mockService.getAll.mockResolvedValue([cert]);
 
-    const req = { params: { id: "freelancer-id" } } as any;
+    const req = { params: { freelancerId: "freelancer-id" } } as any;
 
     await controller.getAll(req, res);
 
@@ -50,9 +50,16 @@ describe("CertificationController", () => {
 
   it("should create a certification", async () => {
     const req = {
-      params: { id: "freelancer-id" },
+      params: { freelancerId: "freelancer-id" },
       body: { certification: "cert", institution: "inst", year: 2024 },
     } as any;
+
+    const cert = Certification.create(
+      { certification: "cert", institution: "inst", year: 2024 },
+      new UniqueEntityID("cert-id")
+    );
+
+    mockService.create.mockResolvedValue(cert);
 
     await controller.create(req, res);
 
@@ -61,16 +68,23 @@ describe("CertificationController", () => {
       res,
       expect.objectContaining({
         statusCode: StatusCodes.CREATED,
-        message: "Certification created successfully",
+        data: expect.objectContaining({ id: "cert-id" }),
       })
     );
   });
 
   it("should update a certification", async () => {
     const req = {
-      params: { id: "freelancer-id", certificationId: "cert-id" },
+      params: { freelancerId: "freelancer-id", certificationId: "cert-id" },
       body: { certification: "updated", institution: "inst", year: 2025 },
     } as any;
+
+    const cert = Certification.create(
+      { certification: "updated", institution: "inst", year: 2025 },
+      new UniqueEntityID("cert-id")
+    );
+
+    mockService.update.mockResolvedValue(cert);
 
     await controller.update(req, res);
 
@@ -82,14 +96,15 @@ describe("CertificationController", () => {
     expect(ResponseService.send).toHaveBeenCalledWith(
       res,
       expect.objectContaining({
-        statusCode: StatusCodes.NO_CONTENT,
+        statusCode: StatusCodes.OK,
+        data: expect.objectContaining({ id: "cert-id" }),
       })
     );
   });
 
   it("should delete a certification", async () => {
     const req = {
-      params: { id: "freelancer-id", certificationId: "cert-id" },
+      params: { freelancerId: "freelancer-id", certificationId: "cert-id" },
     } as any;
 
     await controller.delete(req, res);

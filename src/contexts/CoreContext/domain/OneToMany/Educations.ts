@@ -38,7 +38,7 @@ export class Educations extends ManyRelationship<Education> {
       education.id.equals(editedEducation.id)
     );
     if (index === -1)
-      throw new ApiError(StatusCodes.CONTINUE, "experience doesnt exist");
+      throw new ApiError(StatusCodes.CONTINUE, "education doesnt exist");
     super.edit(editedEducation, index);
   }
 

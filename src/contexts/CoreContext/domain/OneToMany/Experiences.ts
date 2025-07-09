@@ -30,7 +30,7 @@ export class Experiences extends ManyRelationship<Experience> {
   }
 
   public remove(experience: Experience): void {
-    this.remove(experience);
+    super.remove(experience);
   }
 
   public removeById(id: string): void {

@@ -7,6 +7,23 @@ import { CertificationRoutes } from "./CertificationRoutes";
 
 const router = Router();
 
+/**
+ * @openapi
+ *
+ * /freelancers:
+ *  get:
+ *      summary: Get all freelancers
+ *      tags:
+ *       - Freelancers
+ *      responses:
+ *          200:
+ *              description: Everything is ok and returns all Freelancers
+ *          500:
+ *              description: Everything is wrong
+ *
+ */
+router.get("/", controller.getAll);
+
 router.use("/:freelancerId/certifications", CertificationRoutes);
 router.use("/:freelancerId/experiences", ExperienceRoutes);
 router.use("/:freelancerId/educations", EducationRoutes);

@@ -82,6 +82,8 @@ import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/serv
 import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
 import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
+import { Freelancer } from "./contexts/CoreContext/domain/aggregates/Freelancer";
+import { GetAllFreelancersUseCase } from "./contexts/CoreContext/application/useCases/GetAllFreelancersUseCase";
 import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/SyncUserUseCase";
 import { User } from "./contexts/CoreContext/domain/aggregates/User";
 import { IAuthController } from "./contexts/CoreContext/domain/interfaces/controllers/IAuthController";
@@ -171,6 +173,11 @@ container.registerSingleton<ISkillService>("ISkillService", SkillService);
 container.registerSingleton<ICourseController>(
   "ICourseController",
   CourseController
+);
+
+container.registerSingleton<IUseCase<null, Freelancer[]>>(
+  "IGetAllFreelancerUseCase",
+  GetAllFreelancersUseCase
 );
 
 container.registerSingleton<IFreelancerRepository>(

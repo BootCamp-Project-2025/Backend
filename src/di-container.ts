@@ -89,6 +89,7 @@ import { AuthController } from "./contexts/CoreContext/presentation/http/control
 import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
 import { AuthService } from "./contexts/CoreContext/application/services/AuthService";
 import { UpdateUserUseCase } from "./contexts/CoreContext/application/useCases/UpdateUserUseCase";
+import { CourseDTO } from "./contexts/LearningContext/domain/dtos/CourseDTO";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -138,7 +139,7 @@ container.registerSingleton<IUseCase<void, Course[]>>(
   "GetAllCoursesUseCase",
   GetAllCoursesUseCase
 );
-container.registerSingleton<IUseCase<Course, Course>>(
+container.registerSingleton<IUseCase<CourseDTO, Course>>(
   "EditCourseUseCase",
   EditCourseUseCase
 );

@@ -17,6 +17,62 @@ const controller = container.resolve(CourseController);
  *         description: A list of courses
  */
 courseRouter.get("/", controller.getAllCourses);
+/**
+ * @openapi
+ * /courses/:id:
+ *   get:
+ *     summary: Retrieve a course by id
+ *     tags:
+ *       - Courses
+ *     responses:
+ *       200:
+ *         description: return the course
+ */
+courseRouter.get("/:id", controller.getCourse);
+/**
+ * @openapi
+ * /courses/:id:
+ *   put:
+ *     summary: update a course
+ *     tags:
+ *       - Courses
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - description
+ *               - imgSrc
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Curso de TypeScript"
+ *               description:
+ *                 type: string
+ *                 example: "Aprende a usar TypeScript en proyectos reales"
+ *               imgSrc:
+ *                 type: string
+ *                 example: "https://example.com/img.png"
+ *     responses:
+ *       200:
+ *         description: return the course
+ */
+courseRouter.put("/:id", controller.editCourse);
+/**
+ * @openapi
+ * /courses/:id:
+ *   delete:
+ *     summary: delete a course by id
+ *     tags:
+ *       - Courses
+ *     responses:
+ *       200:
+ *         description: course deleted
+ */
+courseRouter.delete("/:id", controller.delete);
 
 /**
  * @openapi

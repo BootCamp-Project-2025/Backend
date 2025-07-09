@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import { Course as PrismaCourse } from "@/generated/prisma";
 
 jest.mock(
   "../../../../../src/contexts/Shared/infrastructure/database/PrismaClient",
@@ -107,7 +108,7 @@ describe("CourseRepository (Prisma)", () => {
   describe("insert", () => {
     it("persists a new Course and returns the mapped aggregate", async () => {
       const newDomain = {} as Course;
-      const persistence = {
+      const persistence: PrismaCourse = {
         id: "3",
         name: "n",
         field: "f",
@@ -115,6 +116,9 @@ describe("CourseRepository (Prisma)", () => {
         description: "d",
         time: 3,
         imgSrc: "i",
+        language: "",
+        category: "",
+        subCategory: "",
       };
       jest.spyOn(CourseMapper, "toPersistence").mockReturnValue(persistence);
 
@@ -145,7 +149,7 @@ describe("CourseRepository (Prisma)", () => {
   describe("update", () => {
     it("persists changes and returns the mapped aggregate", async () => {
       const existing = { id: { toString: () => "4" } } as Course;
-      const persistence = {
+      const persistence: PrismaCourse = {
         id: "3",
         name: "n",
         field: "f",
@@ -153,9 +157,12 @@ describe("CourseRepository (Prisma)", () => {
         description: "d",
         time: 3,
         imgSrc: "i",
+        language: "",
+        category: "",
+        subCategory: "",
       };
       jest.spyOn(CourseMapper, "toPersistence").mockReturnValue(persistence);
-
+      jest.spyOn(repo, "nameAvailable").mockResolvedValue(true);
       const raw = {
         id: "4",
         name: "nx",

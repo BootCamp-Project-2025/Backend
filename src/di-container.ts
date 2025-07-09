@@ -90,6 +90,10 @@ import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/
 import { AuthService } from "./contexts/CoreContext/application/services/AuthService";
 import { UpdateUserUseCase } from "./contexts/CoreContext/application/useCases/UpdateUserUseCase";
 import { CourseDTO } from "./contexts/LearningContext/domain/dtos/CourseDTO";
+import { DeleteSkillDto } from "./contexts/CoreContext/domain/interfaces/dtos/DeleteSkillDto";
+import { CreateEducationDto } from "./contexts/CoreContext/domain/interfaces/dtos/CreateEducationDto";
+import { DeleteEducationDto } from "./contexts/CoreContext/domain/interfaces/dtos/DeleteEducationDto";
+import { DeleteLanguageDto } from "./contexts/CoreContext/domain/interfaces/dtos/DeleteLanguageDto";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -179,7 +183,7 @@ container.registerSingleton<IUseCase<Skill, Skill>>(
   AddSkillUseCase
 );
 
-container.registerSingleton<IUseCase<Skill, void>>(
+container.registerSingleton<IUseCase<DeleteSkillDto, void>>(
   "DeleteSkillUseCase",
   DeleteSkillUseCase
 );
@@ -262,12 +266,12 @@ container.registerSingleton<IUseCase<string, Education[]>>(
   GetEducationsUseCase
 );
 
-container.registerSingleton<IUseCase<Education, Education>>(
+container.registerSingleton<IUseCase<CreateEducationDto, Education | void>>(
   "EditEducationUseCase",
   EditEducationUseCase
 );
 
-container.registerSingleton<IUseCase<string, void>>(
+container.registerSingleton<IUseCase<DeleteEducationDto, void>>(
   "DeleteEducationUseCase",
   DeleteEducationUseCase
 );
@@ -332,7 +336,7 @@ container.registerSingleton<IUseCase<CreateLanguageDto, Language>>(
   "CreateLanguageUseCase",
   CreateLanguageUseCase
 );
-container.registerSingleton<IUseCase<CreateLanguageDto, void | string>>(
+container.registerSingleton<IUseCase<DeleteLanguageDto, void>>(
   "DeleteLanguageUseCase",
   DeleteLanguageUseCase
 );

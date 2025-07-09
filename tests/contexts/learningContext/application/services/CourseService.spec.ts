@@ -1,86 +1,115 @@
 import "reflect-metadata";
-import { CourseService } from "@/contexts/LearningContext/application/services/CourseService";
-import { CreateCourseUseCase } from "@/contexts/LearningContext/application/useCases/CreateCourseUseCase";
-import {
-  Course,
-  CourseProps,
-} from "@/contexts/LearningContext/domain/aggregates/Course";
-import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
-import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
-import { CourseDescription } from "@/contexts/LearningContext/domain/valueObjects/CourseDescription";
-import { CourseName } from "@/contexts/LearningContext/domain/valueObjects/CourseName";
-import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { CourseService } from "../../../../../src/contexts/LearningContext/application/services/CourseService";
+import { CourseDTO } from "../../../../../src/contexts/LearningContext/domain/dtos/CourseDTO";
+import { Course } from "../../../../../src/contexts/LearningContext/domain/aggregates/Course";
+import { CourseMapper } from "../../../../../src/contexts/LearningContext/mappers/CourseMapper";
 
-const getAllCoursesUseCase: jest.Mocked<IUseCase<void, Course[]>> = {
-  execute: jest.fn(),
-} as any;
-const getCourseUseCase: jest.Mocked<IUseCase<string, Course>> = {
-  execute: jest.fn(),
-} as any;
-const editCourseUseCase: jest.Mocked<IUseCase<CourseDTO, Course>> = {
-  execute: jest.fn(),
-} as any;
-const deleteCourseUseCase: jest.Mocked<IUseCase<string, void>> = {
-  execute: jest.fn(),
-} as any;
-const createCoursesUseCase: jest.Mocked<CreateCourseUseCase> = {
-  execute: jest.fn(),
-} as any;
+describe("CourseService", () => {
+  let getAllCoursesUseCase: { execute: jest.Mock };
+  let getCourseUseCase: { execute: jest.Mock };
+  let EditCourseUseCase: { execute: jest.Mock };
+  let createCourseUseCase: { execute: jest.Mock };
+  let updateCourseUseCase: { execute: jest.Mock };
+  let deleteCourseUseCase: { execute: jest.Mock };
+  let service: CourseService;
 
-const empyCourseProps: CourseProps = {
-  name: CourseName.create({ name: "name" }),
-  description: CourseDescription.create({ description: "course" }),
-  imgSrc: "dsadsa",
-};
+  beforeEach(() => {
+    getAllCoursesUseCase = { execute: jest.fn() };
+    getCourseUseCase = { execute: jest.fn() };
+    EditCourseUseCase = { execute: jest.fn() };
+    createCourseUseCase = { execute: jest.fn() };
+    updateCourseUseCase = { execute: jest.fn() };
+    deleteCourseUseCase = { execute: jest.fn() };
 
-const dto = {
-  id: "entityId",
-  name: "name",
-  description: "course",
-  imgSrc: "dsadsa",
-  category: "",
-  subCategory: "",
-  language: "",
-  field: "",
-  time: undefined,
-  requirements: "",
-};
-const service = new CourseService(
-  getAllCoursesUseCase,
-  getCourseUseCase,
-  editCourseUseCase,
-  deleteCourseUseCase,
-  createCoursesUseCase
-);
-
-const course = Course.create(empyCourseProps, new UniqueEntityID("entityId"));
-
-beforeEach(() => {
-  jest.clearAllMocks();
-});
-
-describe("Course servicve tests", () => {
-  it("exist", () => {
-    expect(CourseService).toBeDefined;
-  });
-  it("edits correctly", () => {
-    editCourseUseCase.execute.mockResolvedValue(course);
-    expect(
-      service.editCourse("asd", {
-        name: "name",
-        description: "des",
-        imgSrc: "",
-      })
-    ).resolves.toEqual(dto);
+    service = new CourseService(
+      getAllCoursesUseCase,
+      getCourseUseCase,
+      EditCourseUseCase,
+      createCourseUseCase,
+      updateCourseUseCase,
+      deleteCourseUseCase
+    );
   });
 
-  it("deletes correctly", () => {
-    getCourseUseCase.execute.mockResolvedValue(course);
-    expect(service.deleteCourse("asd")).resolves;
+  describe("getAllCourses", () => {
+    it("should call the mapper with (course, index, array)", async () => {
+      const fakeDomainCourses: Course[] = [{} as Course];
+      getAllCoursesUseCase.execute.mockResolvedValue(fakeDomainCourses);
+
+      const fakeDTO: CourseDTO = {
+        id: "1",
+        name: "n",
+        description: "d",
+        imgSrc: "i",
+      };
+      jest.spyOn(CourseMapper, "toAplicationDTO").mockReturnValue(fakeDTO);
+
+      const result = await service.getAllCourses();
+
+      expect(getAllCoursesUseCase.execute).toHaveBeenCalledTimes(1);
+      expect(CourseMapper.toAplicationDTO).toHaveBeenCalledWith(
+        fakeDomainCourses[0],
+        0,
+        fakeDomainCourses
+      );
+      expect(result).toEqual([fakeDTO]);
+    });
   });
 
-  it("get correctly", () => {
-    deleteCourseUseCase.execute.mockResolvedValue();
-    expect(service.getCourse("courseId")).resolves.toEqual(dto);
+  describe("create", () => {
+    it("should call createCourseUseCase and return the created DTO", async () => {
+      const inputDto: CourseDTO = {
+        id: "abc",
+        name: "Nuevo",
+        description: "Descripcion",
+        imgSrc: "http:",
+      };
+      const fakeDomain: Course = {} as unknown as Course;
+      createCourseUseCase.execute.mockResolvedValue(fakeDomain);
+
+      const fakeCreatedDto: CourseDTO = { ...inputDto };
+      jest
+        .spyOn(CourseMapper, "toAplicationDTO")
+        .mockReturnValue(fakeCreatedDto);
+
+      const result = await service.create(inputDto);
+      expect(createCourseUseCase.execute).toHaveBeenCalledWith(inputDto);
+      expect(result).toEqual(fakeCreatedDto);
+    });
+  });
+
+  describe("updateCourse", () => {
+    it("should call updateCourseUseCase with id + dto and return the updated DTO", async () => {
+      const id = "123";
+      const updateDto: CourseDTO = {
+        id: "abc",
+        name: "Upd",
+        description: "DescUpd",
+        imgSrc: "http:",
+      };
+      const fakeDomain: Course = {} as unknown as Course;
+      updateCourseUseCase.execute.mockResolvedValue(fakeDomain);
+
+      const fakeUpdatedDto: CourseDTO = { ...updateDto };
+      jest
+        .spyOn(CourseMapper, "toAplicationDTO")
+        .mockReturnValue(fakeUpdatedDto);
+
+      const result = await service.updateCourse(id, updateDto);
+      expect(updateCourseUseCase.execute).toHaveBeenCalledWith({
+        ...updateDto,
+      });
+      expect(result).toEqual(fakeUpdatedDto);
+    });
+  });
+
+  describe("deleteCourse", () => {
+    it("should call deleteCourseUseCase with the id and not return anything", async () => {
+      const id = "to-delete";
+      deleteCourseUseCase.execute.mockResolvedValue(undefined);
+
+      await expect(service.deleteCourse(id)).resolves.toBeUndefined();
+      expect(deleteCourseUseCase.execute).toHaveBeenCalledWith(id);
+    });
   });
 });

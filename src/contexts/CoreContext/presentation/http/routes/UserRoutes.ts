@@ -1,16 +1,27 @@
+import { IUserController } from "@/contexts/CoreContext/domain/interfaces/controllers/IUserController";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 import { Router } from "express";
-import userController from "../UserMain";
+import { container } from "tsyringe";
+
+const controller = container.resolve<IUserController>("IUserController");
 
 const router = Router();
 
-const controller = userController;
-
 /**
  * @openapi
- * /users/:id:
+ * /users/{id}:
  *  get:
- *      summary: Retrieves the user with the id :id
- *      responses:
+ *     summary: Get the user with by ID
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
  *          200:
  *              description: Everything is ok and returns user
  *          500:
@@ -21,9 +32,11 @@ router.get("/:id", controller.get);
 
 /**
  * @openapi
- * /users/:
+ * /users:
  *  post:
- *      summary: saves the user with the id :id
+ *      tags:
+ *       - User
+ *      summary: Create a new user by ID
  *      requestBody:
  *               required: true
  *               content:
@@ -50,11 +63,57 @@ router.get("/:id", controller.get);
 router.post("/", controller.post);
 
 /**
+ *
  * @openapi
- * /users/:id/freelance:
+ * /users:
+ *  patch:
+ *     summary: Updates the user data
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userName:
+ *                 type: string
+ *                 example: Pepe
+ *               profilePictureSrc:
+ *                 type: string
+ *                 example: "https://cdn.example.com/images/pepe.png"
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An error occurred while updating the user"
+ */
+router.patch("/", verifyToken(), controller.updateUser);
+
+/**
+ * @openapi
+ * /users/{id}/freelance:
  *  put:
- *      summary: Enables the user as freelancer with the id :id
- *      responses:
+ *     summary: Update the user as freelancer
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
  *          200:
  *              description: User enabled and freelancer profile created
  *          500:
@@ -62,5 +121,6 @@ router.post("/", controller.post);
  *
  */
 router.put("/:id/freelance", controller.freelance);
+//aca no seria mejor: router.put("/:id", controller.freelance)
 
 export default router;

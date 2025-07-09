@@ -1,16 +1,23 @@
+import { inject, injectable } from "tsyringe";
 import { User } from "../../domain/aggregates/User";
 import { IUserService } from "../../domain/interfaces/services/IUserService";
 import { CreateUserFreelancerProfileUseCase } from "../useCases/CreateUserFreelancerProfileUseCase";
 import { CreateUserUseCase } from "../useCases/CreateUserUseCase";
 import { GetUserUseCase } from "../useCases/GetUserUseCase";
+import { UpdateUserUseCase } from "../useCases/UpdateUserUseCase";
 
+@injectable()
 export class UserService implements IUserService {
   constructor(
+    @inject("CreateUserUseCase")
     private readonly createUserUseCase: CreateUserUseCase,
+    @inject("GetUserUseCase")
     private readonly getUserUseCase: GetUserUseCase,
-    private readonly createUserFreelancerProfileUseCase: CreateUserFreelancerProfileUseCase
+    @inject("CreateUserFreelancerProfileUseCase")
+    private readonly createUserFreelancerProfileUseCase: CreateUserFreelancerProfileUseCase,
+    @inject("UpdateUserUseCase")
+    private readonly updateUserUseCase: UpdateUserUseCase
   ) {}
-
   async createFreelanceProfile(id: string): Promise<User> {
     const updatedUser =
       await this.createUserFreelancerProfileUseCase.execute(id);
@@ -29,8 +36,8 @@ export class UserService implements IUserService {
   getAll(): Promise<User[]> {
     throw new Error("Method not implemented.");
   }
-  update(): Promise<User> {
-    throw new Error("Method not implemented.");
+  update(id: string, userData: User): Promise<User> {
+    return this.updateUserUseCase.execute({ userId: id, userData });
   }
   async create(user: User): Promise<User> {
     return await this.createUserUseCase.execute(user);

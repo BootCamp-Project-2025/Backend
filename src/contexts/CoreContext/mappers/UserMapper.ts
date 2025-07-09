@@ -9,12 +9,16 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 export default class UserMapper {
   static createUserDtoTodomain(dto: ICreateUserDto) {
-    return User.create({
-      userName: UserName.create(dto.userName),
-      userEmail: UserEmail.create(dto.userEmail),
-      roles: ["CLIENT"],
-      createdAt: new Date(),
-    });
+    return User.create(
+      {
+        userName: UserName.create(dto.userName),
+        userEmail: UserEmail.create(dto.userEmail),
+        roles: ["CLIENT"],
+        createdAt: new Date(),
+        profilePicture: dto.profilePicture,
+      },
+      new UniqueEntityID(dto.id)
+    );
   }
 
   static domainToPersistance(user: User): PrismaUser {
@@ -23,6 +27,7 @@ export default class UserMapper {
       id: user.id.toString(),
       userName: user.userName.value,
       userEmail: user.email.value,
+      profilePicture: user.profilePicture ?? null,
       roles: roles2,
       createdAt: user.createdAt,
     };
@@ -30,18 +35,22 @@ export default class UserMapper {
 
   static persistanceTodomain(userDao: UserDao): User {
     try {
-      return User.create({
-        userName: UserName.create(userDao.userName),
-        userEmail: UserEmail.create(userDao.userEmail),
-        roles: userDao.roles,
-        createdAt: userDao.createdAt,
-        freelancerId: userDao.freelancerProfile
-          ? new UniqueEntityID(userDao.freelancerProfile.id)
-          : undefined,
-        clientId: userDao.freelancerProfile
-          ? new UniqueEntityID(userDao.freelancerProfile.id)
-          : undefined,
-      });
+      return User.create(
+        {
+          userName: UserName.create(userDao.userName),
+          userEmail: UserEmail.create(userDao.userEmail),
+          roles: userDao.roles,
+          createdAt: userDao.createdAt,
+          profilePicture: userDao.profilePicture ?? undefined,
+          freelancerId: userDao.freelancerProfile
+            ? new UniqueEntityID(userDao.freelancerProfile.id)
+            : undefined,
+          clientId: userDao.clientProfile
+            ? new UniqueEntityID(userDao.clientProfile.id)
+            : undefined,
+        },
+        new UniqueEntityID(userDao.id)
+      );
     } catch (e) {
       console.log(e);
       throw new Error("cant mapp persistance to domain");
@@ -57,6 +66,7 @@ export default class UserMapper {
       id: user.id.toString(),
       freelancerProfile: user.props.freelancerId?.toString(),
       clientProfile: user.props.clientId?.toString(),
+      profilePicture: user.profilePicture ?? undefined,
     };
   }
 }

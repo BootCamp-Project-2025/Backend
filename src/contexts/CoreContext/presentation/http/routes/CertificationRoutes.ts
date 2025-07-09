@@ -2,19 +2,19 @@ import { Router } from "express";
 import { container } from "@/di-container";
 import { CertificationController } from "../controllers/CertificationController";
 
-const router = Router();
+export const CertificationRoutes = Router({ mergeParams: true });
 const controller = container.resolve(CertificationController);
 
 /**
  * @openapi
- * /freelancer/{id}/certifications:
+ * /freelancers/{freelancerId}/certifications:
  *   get:
- *     summary: Retrieve certifications by freelancer ID
+ *     summary: Get all certifications of a freelancer
  *     tags:
- *       - Certifications
+ *       - Certification
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: freelancerId
  *         required: true
  *         description: The ID of the freelancer
  *         schema:
@@ -23,18 +23,18 @@ const controller = container.resolve(CertificationController);
  *       200:
  *         description: A list of certifications for the freelancer
  */
-router.get("/:id/certifications", controller.getAll.bind(controller));
+CertificationRoutes.get("", controller.getAll.bind(controller));
 
 /**
  * @openapi
- * /freelancer/{id}/certifications:
+ * /freelancers/{freelancerId}/certifications:
  *   post:
  *     summary: Create a new certification for a freelancer
  *     tags:
- *       - Certifications
+ *       - Certification
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: freelancerId
  *         required: true
  *         description: The ID of the freelancer
  *         schema:
@@ -49,18 +49,18 @@ router.get("/:id/certifications", controller.getAll.bind(controller));
  *       201:
  *         description: Certification created successfully
  */
-router.post("/:id/certifications", controller.create.bind(controller));
+CertificationRoutes.post("", controller.create.bind(controller));
 
 /**
  * @openapi
- * /freelancer/{id}/certifications/{certificationId}:
+ * /freelancers/{freelancerId}/certifications/{certificationId}:
  *   put:
- *     summary: Update a certification for a freelancer
+ *     summary: Update a certification of a freelancer
  *     tags:
- *       - Certifications
+ *       - Certification
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: freelancerId
  *         required: true
  *         description: The ID of the freelancer
  *         schema:
@@ -81,21 +81,21 @@ router.post("/:id/certifications", controller.create.bind(controller));
  *       204:
  *         description: Certification updated successfully
  */
-router.put(
-  "/:id/certifications/:certificationId",
+CertificationRoutes.put(
+  "/:certificationId",
   controller.update.bind(controller)
 );
 
 /**
  * @openapi
- * /freelancer/{id}/certifications/{certificationId}:
+ * /freelancers/{freelancerId}/certifications/{certificationId}:
  *   delete:
- *     summary: Delete a certification for a freelancer
+ *     summary: Delete a certification of a freelancer
  *     tags:
- *       - Certifications
+ *       - Certification
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: freelancerId
  *         required: true
  *         description: The ID of the freelancer
  *         schema:
@@ -110,12 +110,10 @@ router.put(
  *       204:
  *         description: Certification deleted successfully
  */
-router.delete(
-  "/:id/certifications/:certificationId",
+CertificationRoutes.delete(
+  "/:certificationId",
   controller.delete.bind(controller)
 );
-
-export default router;
 
 /**
  * @openapi

@@ -7,4 +7,5 @@ export interface ICourseService {
   getCourse(courseId: string): Promise<CourseDTO>;
   deleteCourse(courseId: string): Promise<void>;
   editCourse(id: string, courseDto: CourseDTO): Promise<CourseDTO>;
+  updateCourse(id: string, courseDto: CourseDTO): Promise<CourseDTO>;
 }

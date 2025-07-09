@@ -9,12 +9,15 @@ import { StatusCodes } from "http-status-codes";
 import { ISkillService } from "@/contexts/CoreContext/domain/interfaces/services/ISkillService";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
+
 @injectable()
 export default class FreelancerController implements IFreelancerController {
   constructor(@inject("ISkillService") private skillService: ISkillService) {}
 
   public editSkill = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log(req.params.skillId);
+      req.body.skillId = req.params.skillId;
       const body: ISkillDto = req.body as ISkillDto;
       if (body.skillId === undefined)
         throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
@@ -35,14 +38,10 @@ export default class FreelancerController implements IFreelancerController {
 
   public deleteSkill = async (req: Request, res: Response): Promise<void> => {
     try {
-      const body: ISkillDto = req.body as ISkillDto;
-      if (body.skillId === undefined)
-        throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
-      const skill: Skill = Skill.create(
-        { ...body, freelancerId: req.params.freelancerId },
-        new UniqueEntityID(body.skillId)
+      await this.skillService.deleteSkill(
+        req.params.skillId,
+        req.params.freelancerId
       );
-      await this.skillService.deleteSkill(skill);
       ResponseService.send(res, {
         success: true,
         statusCode: StatusCodes.OK,

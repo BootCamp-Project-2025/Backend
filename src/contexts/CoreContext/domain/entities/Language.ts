@@ -19,7 +19,7 @@ export class Language extends Entity<LanguageProps> {
   }
 
   get id(): UniqueEntityID {
-    return this.id;
+    return this._id;
   }
 
   get name(): string {

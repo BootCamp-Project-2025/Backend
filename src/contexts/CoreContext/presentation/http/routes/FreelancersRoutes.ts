@@ -7,9 +7,8 @@ import { CertificationRoutes } from "./CertificationRoutes";
 import { container } from "tsyringe";
 import FreelancerController from "../controllers/FreelancerController";
 
-const controller = container.resolve(FreelancerController);
-
 const router = Router();
+const controller = container.resolve(FreelancerController);
 
 /**
  * @openapi

@@ -67,12 +67,10 @@ jobs:
       - name: Log in to ACR
         run: az acr login --name projectdev2025
 
-      - name: Add Database url
-        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
-
-      - name: Add Database url
-        run: echo "API_HOST=${{ secrets.API_HOST }}" > .env |
-          echo "API_PORT=${{ secrets.API_PORT }}" > .env
+      - name: Add Environment variables url
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env |
+          echo "API_HOST=${{ secrets.API_HOST }}" >> .env |
+          echo "API_PORT=${{ secrets.API_PORT }}" >> .env
 
       - name: Build Docker image
         run: docker build --build-arg KEYCLOAK_URL=${{secrets.KEYCLOAK_URL}} --build-arg KEYCLOAK_REALM=${{secrets.KEYCLOAK_REALM}} --build-arg KEYCLOAK_CLIENT_ID=${{secrets.KEYCLOAK_CLIENT_ID}} --build-arg KEYCLOAK_CLIENT_SECRET=${{secrets.KEYCLOAK_CLIENT_SECRET}} -t backend-repo:dev .

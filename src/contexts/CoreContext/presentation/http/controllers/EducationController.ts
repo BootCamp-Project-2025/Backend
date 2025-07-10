@@ -22,7 +22,11 @@ export default class EducationController implements IEducationController {
       const { freelancerId } = req.params;
       const educations =
         await this.educationService.getAllOfFreelancer(freelancerId);
-      const response = new SuccessResponseEntity(educations, StatusCodes.OK);
+      const response = new SuccessResponseEntity(
+        educations,
+        StatusCodes.OK,
+        "Education retrieved successfully"
+      );
       ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) throw error;
@@ -43,7 +47,8 @@ export default class EducationController implements IEducationController {
         });
       const response = new SuccessResponseEntity(
         newEducation,
-        StatusCodes.CREATED
+        StatusCodes.CREATED,
+        "Education saved successfully"
       );
       ResponseService.send(res, response);
     } catch (error) {
@@ -59,7 +64,11 @@ export default class EducationController implements IEducationController {
       req.body.id = req.params.educationId;
       const education: IEducationDto = req.body as IEducationDto;
       await this.educationService.updateEducation(education, freelancerId);
-      const response = new SuccessResponseEntity(education, StatusCodes.OK);
+      const response = new SuccessResponseEntity(
+        education,
+        StatusCodes.OK,
+        "Education updated successfully"
+      );
       ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) throw error;
@@ -75,8 +84,9 @@ export default class EducationController implements IEducationController {
         req.params.freelancerId
       );
       const response = new SuccessResponseEntity(
-        "Education removed",
-        StatusCodes.NO_CONTENT
+        null,
+        StatusCodes.NO_CONTENT,
+        "Education deleted successfully"
       );
       ResponseService.send(res, response);
     } catch (error) {

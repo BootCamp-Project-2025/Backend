@@ -141,7 +141,12 @@ SkillRoutes.delete("/:skillId", controller.deleteSkill);
  *         level:
  *           type: string
  *           description: Level of the skill
- *           example: "begginer"
+ *           example: "beginner"
+ *           default: "beginner"
+ *           enum:
+ *             - begginer
+ *             - intermediate
+ *             - advanced
  *       required:
  *         - name
  *         - level

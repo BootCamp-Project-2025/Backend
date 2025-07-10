@@ -145,6 +145,12 @@ LanguageRoutes.delete("/:languageId", controller.deleteLanguage);
  *           type: string
  *           description: Level of the language
  *           example: "Advanced"
+ *           default: "basic"
+ *           enum:
+ *             - basic
+ *             - intermediate
+ *             - advanced
+ *             - native
  *       required:
  *         - name
  *         - level

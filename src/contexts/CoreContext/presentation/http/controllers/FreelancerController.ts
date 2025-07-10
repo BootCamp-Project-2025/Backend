@@ -60,7 +60,7 @@ export default class FreelancerController implements IFreelancerController {
         req.params.skillId,
         req.params.freelancerId
       );
-      const response = new SuccessResponseEntity("", StatusCodes.NO_CONTENT);
+      const response = new SuccessResponseEntity(null, StatusCodes.NO_CONTENT);
       ResponseService.send(res, response);
     } catch {
       throw new ApiError(
@@ -88,12 +88,18 @@ export default class FreelancerController implements IFreelancerController {
   public addSkill = async (req: Request, res: Response): Promise<void> => {
     try {
       const body: ISkillDto = req.body as ISkillDto;
+      console.log(body);
+
       const skill: Skill = Skill.create(
         { ...body, freelancerId: req.params.freelancerId },
         new UniqueEntityID()
       );
       const data: ISkillDto = await this.skillService.addSkill(skill);
-      const response = new SuccessResponseEntity(data, StatusCodes.CREATED);
+      const response = new SuccessResponseEntity(
+        data,
+        StatusCodes.CREATED,
+        "Skill saved successfully"
+      );
       ResponseService.send(res, response);
     } catch {
       throw new ApiError(

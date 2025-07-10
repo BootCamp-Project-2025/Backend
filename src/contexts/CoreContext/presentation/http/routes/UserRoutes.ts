@@ -109,7 +109,6 @@ router.patch("/", verifyToken(), controller.updateUser);
  *
  */
 router.put("/:id/freelance", controller.freelance);
-//aca no seria mejor: router.put("/:id", controller.freelance)
 
 export default router;
 

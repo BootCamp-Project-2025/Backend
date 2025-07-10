@@ -18,10 +18,11 @@ export class UserController implements IUserController {
   ) {}
 
   freelance = async (req: Request, res: Response) => {
-    const userId = req.user?.id;
-    if (!userId) {
-      throw new ApiError(StatusCodes.UNAUTHORIZED, "User not authenticated");
-    }
+    // const userId = req.user?.id;
+    // if (!userId) {
+    //   throw new ApiError(StatusCodes.UNAUTHORIZED, "User not authenticated");
+    // }
+    const userId = req.params.id;
     const user = await this.userService.createFreelanceProfile(userId);
     res.status(200).json(user);
   };

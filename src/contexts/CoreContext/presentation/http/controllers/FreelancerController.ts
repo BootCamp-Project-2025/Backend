@@ -60,11 +60,8 @@ export default class FreelancerController implements IFreelancerController {
         req.params.skillId,
         req.params.freelancerId
       );
-      ResponseService.send(res, {
-        success: true,
-        statusCode: StatusCodes.OK,
-        message: "",
-      });
+      const response = new SuccessResponseEntity("", StatusCodes.NO_CONTENT);
+      ResponseService.send(res, response);
     } catch {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,

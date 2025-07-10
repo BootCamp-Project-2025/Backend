@@ -45,19 +45,14 @@ LanguageRoutes.get("", controller.getLanguages);
  *         schema:
  *           type: string
  *      requestBody:
- *               required: true
- *               content:
- *                   application/json:
- *                       schema:
- *                           type: object
- *                           properties:
- *                                  name:
- *                                      type: string
- *                                      example: English
- *                                  level:
- *                                      type: string
- *                                      example: intermediate
- *
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Language'
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Language'
  *      responses:
  *          201:
  *              description: Everything is ok and returns language
@@ -89,16 +84,12 @@ LanguageRoutes.post("", controller.addLanguage);
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Language'
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: English
- *               level:
- *                 type: string
- *                 example: advanced
+ *             $ref: '#/components/schemas/Language'
  *     responses:
  *       200:
  *         description: freelancer language updated
@@ -130,7 +121,7 @@ LanguageRoutes.put("/:languageId", controller.editLanguage);
  *           type: string
  *         required: true
  *     responses:
- *       200:
+ *       204:
  *         description: Freelancer language deleted
  *       404:
  *         description: Freelancer or language not found
@@ -138,3 +129,23 @@ LanguageRoutes.put("/:languageId", controller.editLanguage);
  *         description: Server error
  */
 LanguageRoutes.delete("/:languageId", controller.deleteLanguage);
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Language:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Name of the language
+ *           example: "Spanish"
+ *         level:
+ *           type: string
+ *           description: Level of the language
+ *           example: "Advanced"
+ *       required:
+ *         - name
+ *         - level
+ */

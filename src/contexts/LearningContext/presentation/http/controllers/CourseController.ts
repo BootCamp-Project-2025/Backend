@@ -56,39 +56,6 @@ export class CourseController implements ICourseController {
     }
   };
 
-  public updateCourse = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { id } = req.params;
-      const dto = req.body as CourseDTO;
-      const updated = await this.courseService.updateCourse(id, dto);
-      const response = new SuccessResponseEntity(updated, StatusCodes.OK);
-      return ResponseService.send(res, response);
-    } catch (error) {
-      console.error("Error in CourseController.updateCourse:", error);
-      const response = new ErrorResponseEntity(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Internal server error"
-      );
-      return ResponseService.send(res, response);
-    }
-  };
-
-  public deleteCourse = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { id } = req.params;
-      await this.courseService.deleteCourse(id);
-      const response = new SuccessResponseEntity(StatusCodes.NO_CONTENT);
-      return ResponseService.send(res, response);
-    } catch (error) {
-      console.error("Error in CourseController.deleteCourse:", error);
-      const response = new ErrorResponseEntity(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Internal server error"
-      );
-      return ResponseService.send(res, response);
-    }
-  };
-
   public getCourse = async (req: Request, res: Response): Promise<void> => {
     try {
       const course = await this.courseService.getCourse(req.params.id);
@@ -124,7 +91,7 @@ export class CourseController implements ICourseController {
   public delete = async (req: Request, res: Response): Promise<void> => {
     try {
       await this.courseService.deleteCourse(req.params.id);
-      const response = new SuccessResponseEntity({}, StatusCodes.OK);
+      const response = new SuccessResponseEntity({}, StatusCodes.NO_CONTENT);
       ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof ApiError) throw error;

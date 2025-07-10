@@ -44,19 +44,14 @@ SkillRoutes.get("", controller.getSkills);
  *         schema:
  *           type: string
  *      requestBody:
- *               required: true
- *               content:
- *                   application/json:
- *                       schema:
- *                           type: object
- *                           properties:
- *                                  name:
- *                                      type: string
- *                                      example: react
- *                                  level:
- *                                      type: string
- *                                      example: beginner
- *
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Skill'
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Skill'
  *      responses:
  *          201:
  *              description: Everything is ok and returns skill
@@ -86,19 +81,14 @@ SkillRoutes.post("", controller.addSkill);
  *           type: string
  *         required: true
  *      requestBody:
- *               required: true
- *               content:
- *                   application/json:
- *                       schema:
- *                           type: object
- *                           properties:
- *                                  name:
- *                                      type: string
- *                                      example: react
- *                                  level:
- *                                      type: string
- *                                      example: beginner
- *
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Skill'
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Skill'
  *      responses:
  *          201:
  *              description: Everything is ok and returns skill
@@ -129,10 +119,30 @@ SkillRoutes.put("/:skillId", controller.editSkill);
  *         required: true
  *
  *      responses:
- *          201:
- *              description: Everything is ok
+ *          204:
+ *              description: Skill deleted successfully
  *          500:
  *              description: Everything is wrong
  *
  */
 SkillRoutes.delete("/:skillId", controller.deleteSkill);
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Skill:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Name of the skill
+ *           example: "React"
+ *         level:
+ *           type: string
+ *           description: Level of the skill
+ *           example: "begginer"
+ *       required:
+ *         - name
+ *         - level
+ */

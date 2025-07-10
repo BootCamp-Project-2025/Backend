@@ -73,8 +73,23 @@ export default class FreelancerRepository implements IFreelancerRepository {
     });
     return skillDb?.id;
   }
-  getAll(): Promise<Freelancer[]> {
-    throw new Error("Method not implemented.");
+  async getAll(): Promise<Freelancer[]> {
+    try {
+      const freelancersDb: FreelancerDao[] =
+        await PrismaClient.freelancer.findMany({
+          include: {
+            certifications: true,
+            experience: true,
+            skills: true,
+            education: true,
+            languages: true,
+          },
+        });
+      return FreelancerMapper.manyPersistanceToDomain(freelancersDb);
+    } catch (error) {
+      console.log(error);
+      throw new ApiError();
+    }
   }
   async getById(id: string): Promise<Freelancer> {
     try {

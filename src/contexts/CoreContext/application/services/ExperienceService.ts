@@ -124,7 +124,10 @@ export class ExperienceService implements IExperiences {
         );
       }
 
-      await this.deleteExperienceUseCase.execute(experienceId);
+      await this.deleteExperienceUseCase.execute({
+        experienceId: experienceId,
+        freelancerId: freelancerId,
+      });
     } catch (error) {
       if (error instanceof ApiError) throw error;
       throw new ApiError(

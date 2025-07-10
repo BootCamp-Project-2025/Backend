@@ -84,4 +84,20 @@ export class LanguageMapper extends ArrayToArrayMapper<
       new UniqueEntityID(dto.id)
     );
   }
+
+  static domaintToDto(language: Language): ILanguageDto {
+    return {
+      id: language.id.toString(),
+      level: language.level,
+      name: language.name,
+    };
+  }
+
+  static mapDomainToDto(language: Language): ILanguageDto {
+    return {
+      id: language.id.toString(),
+      name: language.props.name,
+      level: language.props.level,
+    };
+  }
 }

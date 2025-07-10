@@ -47,9 +47,16 @@ export class EducationMapper extends ArrayToArrayMapper<
     startDate: Date;
     endDate: Date;
   } {
-    console.log(origin);
-    throw new Error("Method not implemented.");
+    return {
+      id: origin.id?.toString() ?? "",
+      freelancerId: origin.freelancerId ?? "",
+      career: origin.career,
+      university: origin.university,
+      startDate: new Date(origin.startDate),
+      endDate: new Date(origin.finishDate),
+    };
   }
+
   mapPersistanceToDomain(origin: {
     id: string;
     career: string;
@@ -59,7 +66,11 @@ export class EducationMapper extends ArrayToArrayMapper<
     freelancerId: string;
   }): Education {
     return Education.create(
-      { ...origin, finishDate: origin.endDate },
+      {
+        ...origin,
+        startDate: new Date(origin.startDate),
+        finishDate: new Date(origin.endDate),
+      },
       new UniqueEntityID(origin.id)
     );
   }

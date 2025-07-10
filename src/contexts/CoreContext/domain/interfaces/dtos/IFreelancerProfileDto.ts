@@ -1,14 +1,15 @@
-import { Education } from "../../entities/Education";
-import { Experience } from "../../entities/Experience";
-import { Certification } from "../../entities/Certification";
-import { Language } from "../../entities/Language";
-import { Skill } from "../../entities/Skill";
+import ISkillDto from "./ISkillDto";
+import { ILanguageDto } from "./ILanguageDto";
+import { IEducationDto } from "./IEducationDto";
+import { IExperienceDTO } from "./IExperienceDto";
+import { IGetCertificationDTO } from "./certifications/IGetCertificationDto";
 
 export interface IFreelancerProfileDto {
+  id?: string;
   about: string;
-  skills?: Skill[];
-  languages?: Language[];
-  education?: Education[];
-  experience?: Experience[];
-  certifications?: Certification[];
+  skills?: ISkillDto[];
+  languages?: ILanguageDto[];
+  education?: IEducationDto[];
+  experience?: IExperienceDTO[];
+  certifications?: IGetCertificationDTO[];
 }

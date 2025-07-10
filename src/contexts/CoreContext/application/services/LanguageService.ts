@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { Language } from "../../domain/entities/Language";
 import { CreateLanguageDto } from "../../domain/interfaces/dtos/CreateLanguageDto";
 import { ILanguagesService } from "../../domain/interfaces/services/ILanguages";
+import { DeleteLanguageDto } from "../../domain/interfaces/dtos/DeleteLanguageDto";
 
 @injectable()
 export default class LanguageService implements ILanguagesService {
@@ -14,7 +15,7 @@ export default class LanguageService implements ILanguagesService {
     @inject("GetLanguagesUseCase")
     private readonly getLanguagesUseCase: IUseCase<string, Language[]>,
     @inject("DeleteLanguageUseCase")
-    private deleteLanguageUseCase: IUseCase<CreateLanguageDto, Language>
+    private deleteLanguageUseCase: IUseCase<DeleteLanguageDto, void>
   ) {}
   updateLanguage = async (
     language: Language,
@@ -35,11 +36,11 @@ export default class LanguageService implements ILanguagesService {
     });
   };
   removeLanguage = async (
-    language: Language,
+    languageId: string,
     freelancerId: string
-  ): Promise<Language> => {
+  ): Promise<void> => {
     return this.deleteLanguageUseCase.execute({
-      language: language,
+      languageId: languageId,
       freelancerId: freelancerId,
     });
   };

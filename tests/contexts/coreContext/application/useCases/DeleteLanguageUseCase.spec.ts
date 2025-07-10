@@ -5,6 +5,7 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 describe("DeleteLanguageUseCase", () => {
   const mockLanguageRepo = {
+    findById: jest.fn(),
     delete: jest.fn(),
   };
 
@@ -14,7 +15,7 @@ describe("DeleteLanguageUseCase", () => {
 
   const language = Language.create(
     { name: "German", level: "native" },
-    new UniqueEntityID()
+    new UniqueEntityID("languageId")
   );
 
   it("should delete a language", async () => {
@@ -25,16 +26,22 @@ describe("DeleteLanguageUseCase", () => {
 
     const freelancerMock = {
       languages: {
-        exists: () => true,
+        getItems: () => [language],
         remove: jest.fn(),
       },
     };
 
     mockFreelancerRepo.getById.mockResolvedValue(freelancerMock);
-    mockLanguageRepo.delete.mockResolvedValue(language);
+    mockLanguageRepo.findById.mockResolvedValue(language);
+    mockLanguageRepo.delete.mockResolvedValue(undefined);
 
-    const result = await useCase.execute({ language, freelancerId: "id" });
-    expect(result).toEqual(language);
+    const result = await useCase.execute({
+      languageId: "languageId",
+      freelancerId: "id",
+    });
+    expect(result).toBeUndefined();
+    expect(mockLanguageRepo.delete).toHaveBeenCalledWith("languageId");
+    expect(freelancerMock.languages.remove).toHaveBeenCalledWith(language);
   });
 
   it("should throw if freelancer not found", async () => {
@@ -46,7 +53,7 @@ describe("DeleteLanguageUseCase", () => {
     mockFreelancerRepo.getById.mockResolvedValue(null);
 
     await expect(
-      useCase.execute({ language, freelancerId: "id" })
+      useCase.execute({ languageId: "languageId", freelancerId: "id" })
     ).rejects.toThrow("Freelancer not found");
   });
 });

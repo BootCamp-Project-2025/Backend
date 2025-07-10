@@ -23,15 +23,15 @@ export class CourseMapper {
       }),
       time: prismaCourse.time ?? Date.now(),
       imgSrc: prismaCourse.imgSrc,
-      category: CourseCategory.create({
-        category: prismaCourse.category ?? "",
-      }),
-      subCategory: CourseSubCategory.create({
-        subCategory: prismaCourse.subCategory ?? "",
-      }),
-      language: CourseLanguage.create({
-        language: prismaCourse.language ?? "",
-      }),
+      // category: CourseCategory.create({
+      //   category: prismaCourse.category ?? "",
+      // }),
+      // subCategory: CourseSubCategory.create({
+      //   subCategory: prismaCourse.subCategory ?? "",
+      // }),
+      // language: CourseLanguage.create({
+      //   language: prismaCourse.language ?? "",
+      // }),
     };
 
     return Course.create(
@@ -49,9 +49,9 @@ export class CourseMapper {
       description: domainCourse.getDescription().value,
       time: domainCourse.getTime(),
       imgSrc: domainCourse.getImgSrc(),
-      language: domainCourse.getLanguage().value,
-      category: domainCourse.getCategory().value,
-      subCategory: domainCourse.getSubCategory().value,
+      // language: domainCourse.getLanguage().value,
+      // category: domainCourse.getCategory().value,
+      // subCategory: domainCourse.getSubCategory().value,
     };
   }
 

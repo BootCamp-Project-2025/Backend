@@ -70,8 +70,12 @@ jobs:
       - name: Add Database url
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
 
+      - name: Add Database url
+        run: echo "API_HOST=${{ secrets.API_HOST }}" > .env |
+          echo "API_PORT=${{ secrets.API_PORT }}" > .env
+
       - name: Build Docker image
-        run: docker build --build-arg API_HOST=${{secrets.API_HOST}} --build-arg API_PORT=${{secrets.API_PORT}} --build-arg KEYCLOAK_URL=${{secrets.KEYCLOAK_URL}} --build-arg KEYCLOAK_REALM=${{secrets.KEYCLOAK_REALM}} --build-arg KEYCLOAK_CLIENT_ID=${{secrets.KEYCLOAK_CLIENT_ID}} --build-arg KEYCLOAK_CLIENT_SECRET=${{secrets.KEYCLOAK_CLIENT_SECRET}} -t backend-repo:dev .
+        run: docker build --build-arg KEYCLOAK_URL=${{secrets.KEYCLOAK_URL}} --build-arg KEYCLOAK_REALM=${{secrets.KEYCLOAK_REALM}} --build-arg KEYCLOAK_CLIENT_ID=${{secrets.KEYCLOAK_CLIENT_ID}} --build-arg KEYCLOAK_CLIENT_SECRET=${{secrets.KEYCLOAK_CLIENT_SECRET}} -t backend-repo:dev .
 
       - name: Tag Docker image
         run: docker tag backend-repo:dev projectdev2025.azurecr.io/backend-repo:dev

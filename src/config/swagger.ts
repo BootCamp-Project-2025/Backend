@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const API_HOST = process.env.API_HOST || "localhost";
-const API_PORT = process.env.API_PORT || 3100;
+const API_PORT = process.env.API_PORT || 3000;
 
 const swaggerOptions: SwaggerOptions = {
   swaggerDefinition: {

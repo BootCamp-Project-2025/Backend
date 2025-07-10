@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
-import app from "./app";
-
 dotenv.config();
+import app from "./app";
 
 const API_HOST = process.env.API_HOST || "localhost";
 const API_PORT = process.env.API_PORT || 3000;

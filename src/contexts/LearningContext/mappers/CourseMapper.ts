@@ -54,6 +54,7 @@ export class CourseMapper {
       language: domainCourse.getLanguage().value,
       category: domainCourse.getCategory().value,
       subCategory: domainCourse.getSubCategory().value,
+      published: false,
     };
   }
 
@@ -91,6 +92,7 @@ export class CourseMapper {
         subCategory: courseDto.subCategory ?? "",
       }),
       language: CourseLanguage.create({ language: courseDto.language ?? "" }),
+      modules: Modules.create([]),
     };
     if (courseDto.id !== null)
       return Course.create(courseProps, new UniqueEntityID(courseDto.id));

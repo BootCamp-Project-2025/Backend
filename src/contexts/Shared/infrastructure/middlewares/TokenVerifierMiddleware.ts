@@ -24,6 +24,8 @@ import jwt from "jsonwebtoken";
 import "express";
 import { ErrorResponseEntity } from "../../domain/entity/ErrorResponseEntity";
 import { ResponseService } from "../../application/services/ResponseService";
+import dotenv from "dotenv";
+dotenv.config();
 
 declare module "express" {
   interface Request {
@@ -47,7 +49,7 @@ export function verifyToken(requiredRoles: string[] = []): RequestHandler {
       ResponseService.send(res, error);
       return;
     }
-
+    console.log(`${process.env.KEYCLOAK_URL}, ${process.env.KEYCLOAK_REALM}`);
     jwt.verify(
       token,
       getKey,
@@ -101,9 +103,10 @@ export function verifyToken(requiredRoles: string[] = []): RequestHandler {
     );
   };
 }
-
+const certURI = `${process.env.KEYCLOAK_URL}realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/certs`;
+console.log(certURI);
 const client = jwksClient({
-  jwksUri: `${process.env.KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/certs`,
+  jwksUri: certURI,
 });
 
 function getKey(header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) {
@@ -113,7 +116,7 @@ function getKey(header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) {
     if (!key) return callback(new Error("Signing key not found"));
 
     const signingKey = key.getPublicKey();
-
+    console.log(signingKey);
     callback(null, signingKey);
   });
   return;

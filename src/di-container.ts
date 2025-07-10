@@ -84,11 +84,9 @@ import ILanguageController from "./contexts/CoreContext/domain/interfaces/contro
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
 import { Freelancer } from "./contexts/CoreContext/domain/aggregates/Freelancer";
 import { GetAllFreelancersUseCase } from "./contexts/CoreContext/application/useCases/GetAllFreelancersUseCase";
-import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/SyncUserUseCase";
 import { User } from "./contexts/CoreContext/domain/aggregates/User";
 import { IAuthController } from "./contexts/CoreContext/domain/interfaces/controllers/IAuthController";
 import { AuthController } from "./contexts/CoreContext/presentation/http/controllers/AuthController";
-import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
 import { AuthService } from "./contexts/CoreContext/application/services/AuthService";
 import { UpdateUserUseCase } from "./contexts/CoreContext/application/useCases/UpdateUserUseCase";
 import { CourseDTO } from "./contexts/LearningContext/domain/dtos/CourseDTO";
@@ -96,6 +94,11 @@ import { DeleteSkillDto } from "./contexts/CoreContext/domain/interfaces/dtos/De
 import { CreateEducationDto } from "./contexts/CoreContext/domain/interfaces/dtos/CreateEducationDto";
 import { DeleteEducationDto } from "./contexts/CoreContext/domain/interfaces/dtos/DeleteEducationDto";
 import { DeleteLanguageDto } from "./contexts/CoreContext/domain/interfaces/dtos/DeleteLanguageDto";
+import { UpdateRoleUseCase } from "./contexts/CoreContext/application/useCases/auth/UpdateRoleUseCase";
+import { IExternarlAuthService } from "./contexts/CoreContext/domain/interfaces/services/IExternalAuthService";
+import { KeycloakService } from "./contexts/CoreContext/infrastructure/keycloak/keycloakService";
+import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/auth/SyncUserUseCase";
+import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -365,5 +368,14 @@ container.registerSingleton<ILanguageController>(
 
 container.registerSingleton<IAuthService>("IAuthService", AuthService);
 container.registerSingleton<IAuthController>("IAuthController", AuthController);
+container.registerSingleton<IUseCase<{ user: User; role: string }, void>>(
+  "UpdateRoleUseCase",
+  UpdateRoleUseCase
+);
+
+container.registerSingleton<IExternarlAuthService>(
+  "IAuthManagerService",
+  KeycloakService
+);
 
 export { container };

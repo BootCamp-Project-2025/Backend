@@ -5,6 +5,9 @@ import { CourseField } from "../valueObjects/CourseField";
 import { CourseRequirements } from "../valueObjects/CourseRequirements";
 import { CourseDescription } from "../valueObjects/CourseDescription";
 import { Modules } from "../OneToMany/Modules";
+import { CourseCategory } from "../valueObjects/CourseCategory";
+import { CourseSubCategory } from "../valueObjects/CourseSubCategory";
+import { CourseLanguage } from "../valueObjects/CourseLanguage";
 
 export interface CourseProps {
   name: CourseName;
@@ -14,6 +17,9 @@ export interface CourseProps {
   imgSrc: string;
   modules: Modules;
   time?: number;
+  category?: CourseCategory;
+  subCategory?: CourseSubCategory;
+  language?: CourseLanguage;
 }
 
 type CoursePrimitiveProps = {
@@ -25,6 +31,9 @@ type CoursePrimitiveProps = {
   description: string;
   imgSrc: string;
   modules?: [];
+  category: string;
+  subCategory: string;
+  language: string;
 };
 
 export class Course extends AggregateRoot<CourseProps> {
@@ -93,5 +102,55 @@ export class Course extends AggregateRoot<CourseProps> {
 
   getTime(): number {
     return this.props.time ?? 0;
+  }
+
+  getCategory(): CourseCategory {
+    return this.props.category ?? CourseCategory.create({ category: "" });
+  }
+
+  getSubCategory(): CourseSubCategory {
+    return (
+      this.props.subCategory ?? CourseSubCategory.create({ subCategory: "" })
+    );
+  }
+
+  getLanguage(): CourseLanguage {
+    return this.props.language ?? CourseLanguage.create({ language: "" });
+  }
+
+  setName(newName: CourseName): void {
+    this.props.name = newName;
+  }
+
+  setField(newCourseField: CourseField): void {
+    this.props.field = newCourseField;
+  }
+
+  setRequirements(newCourseRequirements: CourseRequirements): void {
+    this.props.requirements = newCourseRequirements;
+  }
+
+  setDescription(newCourseDescription: CourseDescription): void {
+    this.props.description = newCourseDescription;
+  }
+
+  setImgSrc(imgSrc: string): void {
+    this.props.imgSrc = imgSrc;
+  }
+
+  setTime(newTime: number): void {
+    this.props.time = newTime;
+  }
+
+  setCategory(newCourseCategory: CourseCategory): void {
+    this.props.category = newCourseCategory;
+  }
+
+  setSubCategory(newCourseSubCategory: CourseSubCategory): void {
+    this.props.subCategory = newCourseSubCategory;
+  }
+
+  setLanguage(newCourseLanguage: CourseLanguage): void {
+    this.props.language = newCourseLanguage;
   }
 }

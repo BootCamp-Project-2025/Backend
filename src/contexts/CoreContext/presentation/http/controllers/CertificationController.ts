@@ -15,7 +15,7 @@ export class CertificationController implements ICertificationController {
   ) {}
 
   async getAll(req: Request, res: Response): Promise<void> {
-    const freelancerId = req.params.id;
+    const freelancerId = req.params.freelancerId;
     const certifications = (
       await this.certificationService.getAll(freelancerId)
     ).map((cert) => new CertificationMapper().mapDomainToDto(cert));
@@ -28,32 +28,33 @@ export class CertificationController implements ICertificationController {
   }
 
   async create(req: Request, res: Response): Promise<void> {
-    const freelancerId = req.params.id;
+    const freelancerId = req.params.freelancerId;
     const certification = req.body;
-    await this.certificationService.create(certification, freelancerId);
-    const response = new SuccessResponseEntity(
-      null,
-      StatusCodes.CREATED,
-      "Certification created successfully"
+    const data = await this.certificationService.create(
+      certification,
+      freelancerId
     );
+    const datadto = new CertificationMapper().mapDomainToDto(data);
+    const response = new SuccessResponseEntity(datadto, StatusCodes.CREATED);
     ResponseService.send(res, response);
   }
 
   async update(req: Request, res: Response): Promise<void> {
-    const freelancerId = req.params.id;
+    const freelancerId = req.params.freelancerId;
     const certificationId = req.params.certificationId;
     const certification = req.body;
-    await this.certificationService.update(
+    const data = await this.certificationService.update(
       certificationId,
       certification,
       freelancerId
     );
-    const response = new SuccessResponseEntity(null, StatusCodes.NO_CONTENT);
+    const datadto = new CertificationMapper().mapDomainToDto(data);
+    const response = new SuccessResponseEntity(datadto, StatusCodes.OK);
     ResponseService.send(res, response);
   }
 
   async delete(req: Request, res: Response): Promise<void> {
-    const freelancerId = req.params.id;
+    const freelancerId = req.params.freelancerId;
     const certificationId = req.params.certificationId;
     await this.certificationService.delete(certificationId, freelancerId);
     const response = new SuccessResponseEntity(null, StatusCodes.NO_CONTENT);

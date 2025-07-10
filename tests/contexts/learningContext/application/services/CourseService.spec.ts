@@ -6,6 +6,8 @@ import { CourseMapper } from "../../../../../src/contexts/LearningContext/mapper
 
 describe("CourseService", () => {
   let getAllCoursesUseCase: { execute: jest.Mock };
+  let getCourseUseCase: { execute: jest.Mock };
+  let EditCourseUseCase: { execute: jest.Mock };
   let createCourseUseCase: { execute: jest.Mock };
   let updateCourseUseCase: { execute: jest.Mock };
   let deleteCourseUseCase: { execute: jest.Mock };
@@ -14,6 +16,8 @@ describe("CourseService", () => {
 
   beforeEach(() => {
     getAllCoursesUseCase = { execute: jest.fn() };
+    getCourseUseCase = { execute: jest.fn() };
+    EditCourseUseCase = { execute: jest.fn() };
     createCourseUseCase = { execute: jest.fn() };
     updateCourseUseCase = { execute: jest.fn() };
     deleteCourseUseCase = { execute: jest.fn() };
@@ -21,6 +25,8 @@ describe("CourseService", () => {
 
     service = new CourseService(
       getAllCoursesUseCase,
+      getCourseUseCase,
+      EditCourseUseCase,
       createCourseUseCase,
       updateCourseUseCase,
       deleteCourseUseCase,

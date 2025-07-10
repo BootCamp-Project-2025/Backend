@@ -27,7 +27,11 @@ export class Education extends Entity<EducationProps> {
   }
 
   get id(): UniqueEntityID {
-    return this.id;
+    return this._id;
+  }
+
+  get freelancerId(): string {
+    return this.props.freelancerId;
   }
 
   get educationId(): string {

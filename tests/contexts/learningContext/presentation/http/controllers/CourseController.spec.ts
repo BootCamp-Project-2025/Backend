@@ -18,6 +18,8 @@ describe("CourseController", () => {
   beforeEach(() => {
     serviceMock = {
       getAllCourses: jest.fn(),
+      getCourse: jest.fn(),
+      editCourse: jest.fn(),
       create: jest.fn(),
       updateCourse: jest.fn(),
       deleteCourse: jest.fn(),

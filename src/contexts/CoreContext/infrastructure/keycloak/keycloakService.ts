@@ -10,7 +10,7 @@ console.log(`${process.env.KEYCLOAK_CLIENT_ID}`);
 console.log(`${process.env.KEYCLOAK_CLIENT_SECRET}`);
 @injectable()
 export class KeycloakService implements IExternarlAuthService {
-  constructor() { }
+  constructor() {}
 
   keycloakUrl = process.env.KEYCLOAK_URL || "http://localhost:8080/auth";
   keycloakRealm = process.env.KEYCLOAK_REALM || "LTCrowd";
@@ -21,7 +21,6 @@ export class KeycloakService implements IExternarlAuthService {
     process.env.KEYCLOAK_BACKEND_CLIENT_ID || "backend-client";
 
   public async getAdminToken(): Promise<string> {
-
     const params = new URLSearchParams();
     params.append("grant_type", "client_credentials");
     params.append("client_id", this.keycloakClientId);

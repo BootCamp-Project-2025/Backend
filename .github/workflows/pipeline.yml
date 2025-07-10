@@ -70,10 +70,14 @@ jobs:
       - name: Add Environment variables url
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env |
           echo "API_HOST=${{ secrets.API_HOST }}" >> .env |
-          echo "API_PORT=${{ secrets.API_PORT }}" >> .env
+          echo "API_PORT=${{ secrets.API_PORT }}" >> .env |
+          echo "KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}" >> .env |
+          echo "KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}" >> .env |
+          echo "KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}" >> .env |
+          echo "KEYCLOAK_CLIENT_SECRET=${{ secrets.KEYCLOAK_CLIENT_SECRET }}" >> .env |
 
       - name: Build Docker image
-        run: docker build --build-arg KEYCLOAK_URL=${{secrets.KEYCLOAK_URL}} --build-arg KEYCLOAK_REALM=${{secrets.KEYCLOAK_REALM}} --build-arg KEYCLOAK_CLIENT_ID=${{secrets.KEYCLOAK_CLIENT_ID}} --build-arg KEYCLOAK_CLIENT_SECRET=${{secrets.KEYCLOAK_CLIENT_SECRET}} -t backend-repo:dev .
+        run: docker build -t backend-repo:dev .
 
       - name: Tag Docker image
         run: docker tag backend-repo:dev projectdev2025.azurecr.io/backend-repo:dev

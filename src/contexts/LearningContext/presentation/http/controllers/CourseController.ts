@@ -4,9 +4,9 @@ import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { ICourseService } from "@/contexts/LearningContext/domain/interfaces/ICourseService";
 import { inject, injectable } from "tsyringe";
 import { ErrorResponseEntity } from "../../../../Shared/domain/entity/ErrorResponseEntity";
+import { SuccessResponseEntity } from "../../../../Shared/domain/entity/SuccessResponseEntity";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { IEnrollmentService } from "@/contexts/LearningContext/domain/interfaces/IEnrollmentService";
-import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { StatusCodes } from "http-status-codes";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
@@ -17,7 +17,7 @@ export class CourseController implements ICourseController {
     @inject("ICourseService") private readonly courseService: ICourseService,
     @inject("IEnrollmentService")
     private readonly enrollmentService: IEnrollmentService
-  ) {}
+  ) { }
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -89,6 +89,53 @@ export class CourseController implements ICourseController {
         "Internal server error"
       );
       return ResponseService.send(res, response);
+    }
+  };
+
+  public getCourse = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const course = await this.courseService.getCourse(req.params.id);
+      const response = new SuccessResponseEntity(course, StatusCodes.OK);
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      console.log(error);
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "error in controller getCourse"
+      );
+    }
+  };
+
+  public editCourse = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id = req.params.id;
+      const dto = req.body as CourseDTO;
+      const course = await this.courseService.editCourse(id, dto);
+      const response = new SuccessResponseEntity(course, StatusCodes.OK);
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      console.log(error);
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "error in controller editCourse"
+      );
+    }
+  };
+
+  public delete = async (req: Request, res: Response): Promise<void> => {
+    try {
+      await this.courseService.deleteCourse(req.params.id);
+      const response = new SuccessResponseEntity({}, StatusCodes.OK);
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      console.log(error);
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "error in controller delete"
+      );
     }
   };
 

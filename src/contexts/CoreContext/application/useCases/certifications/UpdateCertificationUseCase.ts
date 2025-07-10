@@ -1,3 +1,4 @@
+import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
 import { ICreateCertificationDTO } from "@/contexts/CoreContext/domain/interfaces/dtos/certifications/ICreateCertificationDto";
 import { ICertificationRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/ICertificationRepository";
 import { IFreelancerRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IFreelancerRepository";
@@ -15,7 +16,7 @@ export class UpdateCertificationUseCase
         certification: ICreateCertificationDTO;
         freelancerId: string;
       },
-      void
+      Certification
     >
 {
   constructor(
@@ -29,7 +30,7 @@ export class UpdateCertificationUseCase
     certificationId: string;
     certification: ICreateCertificationDTO;
     freelancerId: string;
-  }): Promise<void> {
+  }): Promise<Certification> {
     const { certificationId, certification, freelancerId } = params;
 
     const freelancer = await this.freelancerRepository.getById(freelancerId);
@@ -48,7 +49,7 @@ export class UpdateCertificationUseCase
     existingCertification.edit(certification);
 
     try {
-      await this.certificationRepository.update(
+      return await this.certificationRepository.update(
         certificationId,
         existingCertification,
         freelancerId

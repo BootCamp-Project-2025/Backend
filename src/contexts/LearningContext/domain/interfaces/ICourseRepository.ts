@@ -9,5 +9,5 @@ export interface ICourseRepository {
   enrollInCourse(course: Course, user: User): Promise<void>;
   isUserEnrolled(courseId: string, userId: string): Promise<boolean>;
   update(course: Course): Promise<Course>;
-  delete(id: string): Promise<void>;
+  delete(courseId: string): Promise<void>;
 }

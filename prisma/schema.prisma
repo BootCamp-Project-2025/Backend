@@ -24,6 +24,9 @@ model Course{
   requirements String
   time Int
   description    String
+  language String   @default("")
+  category String   @default("")
+  subCategory String   @default("")
   imgSrc String
   modules Module[]
   enrollments Enrollment[]

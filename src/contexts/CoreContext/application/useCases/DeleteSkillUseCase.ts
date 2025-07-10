@@ -5,27 +5,34 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { Freelancer } from "../../domain/aggregates/Freelancer";
 import { ISkillRepository } from "../../domain/interfaces/repositories/ISkillRepository";
-import { Skill } from "../../domain/entities/Skill";
+import { DeleteSkillDto } from "../../domain/interfaces/dtos/DeleteSkillDto";
 
 @injectable()
-export default class DeleteSkillUseCase implements IUseCase<Skill, void> {
+export default class DeleteSkillUseCase
+  implements IUseCase<DeleteSkillDto, void>
+{
   constructor(
     @inject("IFreelancerRepository")
     private freelancerRepository: IFreelancerRepository,
     @inject("ISkillRepository")
     private skillRepository: ISkillRepository
   ) {}
-  async execute(skill: Skill): Promise<void> {
+  async execute({ skillId, freelancerId }: DeleteSkillDto): Promise<void> {
     try {
       const freelancer: Freelancer | null =
-        await this.freelancerRepository.getById(skill.freelancerId);
+        await this.freelancerRepository.getById(freelancerId);
       if (freelancer === null)
         throw new ApiError(
           StatusCodes.CONFLICT,
           "the freelancer profile doesnt exist"
         );
-      if (!freelancer.skills.exists(skill))
-        throw new ApiError(StatusCodes.BAD_REQUEST, "the skill doesnt exist");
+
+      const skills = freelancer.skills.getItems();
+      const skill = skills.find((row) => row.id.toString() === skillId);
+
+      if (!skill) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "the skill doesnt exist");
+      }
       freelancer.skills.remove(skill);
       await this.skillRepository.delete(skill.id.toString());
     } catch (error) {

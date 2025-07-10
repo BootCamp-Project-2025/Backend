@@ -25,7 +25,7 @@ export class CertificationService implements ICertificationService {
   create(
     certification: IGetCertificationDTO,
     freelancerId: string
-  ): Promise<void> {
+  ): Promise<Certification> {
     return this.createCertificationUseCase.execute({
       certification,
       freelancerId,
@@ -35,7 +35,7 @@ export class CertificationService implements ICertificationService {
     certificationId: string,
     certification: IGetCertificationDTO,
     freelancerId: string
-  ): Promise<void> {
+  ): Promise<Certification> {
     return this.updateCertificationUseCase.execute({
       certificationId,
       certification,

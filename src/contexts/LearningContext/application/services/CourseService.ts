@@ -10,6 +10,10 @@ export class CourseService implements ICourseService {
   constructor(
     @inject("GetAllCoursesUseCase")
     private readonly getAllCoursesUseCase: IUseCase<void, Course[]>,
+    @inject("GetCourseUseCase")
+    private readonly GetCourseUseCase: IUseCase<string, Course>,
+    @inject("EditCourseUseCase")
+    private readonly EditCourseUseCase: IUseCase<CourseDTO, Course>,
 
     @inject("CreateCourseUseCase")
     private readonly createCourseUseCase: IUseCase<CourseDTO, Course>,
@@ -31,6 +35,16 @@ export class CourseService implements ICourseService {
     return CourseMapper.toAplicationDTO(created);
   }
 
+  async getCourse(courseId: string): Promise<CourseDTO> {
+    const course = await this.GetCourseUseCase.execute(courseId);
+    return CourseMapper.domainToDto(course);
+  }
+
+  async editCourse(id: string, courseDto: CourseDTO): Promise<CourseDTO> {
+    courseDto.id = id;
+    const courseUpdated = await this.EditCourseUseCase.execute(courseDto);
+    return CourseMapper.domainToDto(courseUpdated);
+  }
   async updateCourse(id: string, courseDto: CourseDTO): Promise<CourseDTO> {
     const input: CourseDTO = { id, ...courseDto };
     const updated = await this.updateCourseUseCase.execute(input);

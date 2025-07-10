@@ -53,14 +53,14 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
 /**
  * @swagger
  *
- * /freelancers/{idFreelancer}/experiences:
+ * /freelancers/{freelancerId}/experiences:
  *   get:
  *     summary: Get all experiences by freelancer ID
  *     tags:
  *       - Experience
  *     parameters:
  *       - in: path
- *         name: idFreelancer
+ *         name: freelancerId
  *         schema:
  *           type: string
  *         required: true
@@ -72,14 +72,14 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
 /**
  * @swagger
  *
- * /freelancers/{idFreelancer}/experiences:
+ * /freelancers/{freelancerId}/experiences:
  *   post:
  *     summary: Create a new experience
  *     tags:
  *       - Experience
  *     parameters:
  *       - in: path
- *         name: idFreelancer
+ *         name: freelancerId
  *         required: true
  *         schema:
  *           type: string
@@ -97,14 +97,14 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
 /**
  * @swagger
  *
- * /freelancers/{idFreelancer}/experiences/{experienceId}:
+ * /freelancers/{freelancerId}/experiences/{experienceId}:
  *   put:
  *     summary: Update an experience
  *     tags:
  *       - Experience
  *     parameters:
  *       - in: path
- *         name: idFreelancer
+ *         name: freelancerId
  *         schema:
  *           type: string
  *         required: true
@@ -127,14 +127,14 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
 /**
  * @swagger
  *
- * /freelancers/{idFreelancer}/experiences/{experienceId}:
+ * /freelancers/{freelancerId}/experiences/{experienceId}:
  *   delete:
  *     summary: Delete an experience
  *     tags:
  *       - Experience
  *     parameters:
  *       - in: path
- *         name: idFreelancer
+ *         name: freelancerId
  *         schema:
  *           type: string
  *         required: true

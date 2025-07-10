@@ -74,7 +74,7 @@ jobs:
           echo "KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}" >> .env |
           echo "KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}" >> .env |
           echo "KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}" >> .env |
-          echo "KEYCLOAK_CLIENT_SECRET=${{ secrets.KEYCLOAK_CLIENT_SECRET }}" >> .env |
+          echo "KEYCLOAK_CLIENT_SECRET=${{ secrets.KEYCLOAK_CLIENT_SECRET }}" >> .env
 
       - name: Build Docker image
         run: docker build -t backend-repo:dev .

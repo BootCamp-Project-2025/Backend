@@ -6,6 +6,5 @@ export interface ICourseController {
   editCourse(req: Request, res: Response): Promise<void>;
   delete(req: Request, res: Response): Promise<void>;
   create(req: Request, res: Response): Promise<void>;
-  updateCourse(req: Request, res: Response): Promise<void>;
   enrollInCourse(req: Request, res: Response): Promise<void>;
 }

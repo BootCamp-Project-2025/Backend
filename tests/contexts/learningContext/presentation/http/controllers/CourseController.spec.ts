@@ -133,11 +133,11 @@ describe("CourseController", () => {
       const dto: CourseDTO = { name: "U", description: "D", imgSrc: "I" };
       req.params = { id: "42" };
       req.body = dto;
-      serviceMock.editCourse.mockResolvedValue(dto);
+      courseServiceMock.editCourse.mockResolvedValue(dto);
 
       await controller.editCourse(req as Request, res as Response);
 
-      expect(serviceMock.editCourse).toHaveBeenCalledWith("42", dto);
+      expect(courseServiceMock.editCourse).toHaveBeenCalledWith("42", dto);
       const [, entity] = (ResponseService.send as jest.Mock).mock.calls[0];
       expect(entity).toBeInstanceOf(SuccessResponseEntity);
       expect((entity as SuccessResponseEntity<CourseDTO>).statusCode).toBe(

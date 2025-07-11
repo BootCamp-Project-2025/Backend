@@ -17,7 +17,7 @@ export class CourseController implements ICourseController {
     @inject("ICourseService") private readonly courseService: ICourseService,
     @inject("IEnrollmentService")
     private readonly enrollmentService: IEnrollmentService
-  ) { }
+  ) {}
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {

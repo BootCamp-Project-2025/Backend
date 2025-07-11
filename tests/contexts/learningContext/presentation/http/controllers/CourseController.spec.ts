@@ -190,8 +190,6 @@ describe("CourseController", () => {
     // });
   });
 
-
-
   describe("enrollInCourse", () => {
     it("should enroll user in course and send success response", async () => {
       await controller.enrollInCourse(req as Request, res as Response);

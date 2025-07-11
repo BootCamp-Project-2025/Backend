@@ -6,13 +6,13 @@ import {
   ProposalStatusEnum,
 } from "../valueObjects/ProposalStatus";
 import { Entity } from "@/contexts/Shared/domain/Entity";
+import { UserId } from "../valueObjects/UserId";
 
 export interface ProposalProps {
   content: Description;
   status: ProposalStatus;
   creationDate: CreationDate;
-  freelancerId: UniqueEntityID;
-  requestId: UniqueEntityID;
+  userId: UserId;
 }
 
 export class Proposal extends Entity<ProposalProps> {
@@ -36,12 +36,8 @@ export class Proposal extends Entity<ProposalProps> {
     this.props.status = ProposalStatus.create(ProposalStatusEnum.ACCEPTED);
   }
 
-  get freelancerId(): UniqueEntityID {
-    return this._id;
-  }
-
-  get requestId(): UniqueEntityID {
-    return this.props.requestId;
+  get userId(): UserId {
+    return this.props.userId;
   }
 
   get status(): ProposalStatus {

@@ -26,6 +26,7 @@ describe("DeleteModuleUseCase", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
 
     mockRepository.findById.mockResolvedValue(module);

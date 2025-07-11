@@ -5,6 +5,7 @@ import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { StatusCodes } from "http-status-codes";
 import { ModuleDTO } from "@/contexts/LearningContext/domain/dtos/ModuleDTO";
+import { ModuleDb } from "@/contexts/LearningContext/domain/dtos/Dbtypes";
 
 const ModuleService = {
   create: jest.fn(),
@@ -32,7 +33,13 @@ describe("ModuleController", () => {
 
   it("should call moduleService create with correct parameters", async () => {
     const req = {
-      body: { id: "asd", title: "Test Module", lessons: [], position: 1 },
+      body: {
+        id: "asd",
+        title: "Test Module",
+        lessons: [],
+        position: 1,
+        quizzes: [],
+      },
       params: { courseId: "courseIdTest" },
     } as any;
     const mockObject = ModuleMapper.DtoToDomain({
@@ -40,6 +47,7 @@ describe("ModuleController", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
     ModuleService.create.mockResolvedValue(mockObject);
     const res = mockResponse();
@@ -64,12 +72,14 @@ describe("ModuleController", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     };
     const req = {
       body: {
         title: module.title,
         lessons: module.lessons,
         position: module.position,
+        quizzes: [],
       },
       params: {
         moduleId: module.id,
@@ -106,8 +116,20 @@ describe("ModuleController", () => {
 
   it("should call moduleService getAll with correct parameters", async () => {
     const modules: ModuleDTO[] = [
-      { id: "12345", title: "Test Module", lessons: [], position: 1 },
-      { id: "123456", title: "Test Module2", lessons: [], position: 1 },
+      {
+        id: "12345",
+        title: "Test Module",
+        lessons: [],
+        position: 1,
+        quizzes: [],
+      },
+      {
+        id: "123456",
+        title: "Test Module2",
+        lessons: [],
+        position: 1,
+        quizzes: [],
+      },
     ];
     const req = {
       params: { courseId: "courseIdTest" },

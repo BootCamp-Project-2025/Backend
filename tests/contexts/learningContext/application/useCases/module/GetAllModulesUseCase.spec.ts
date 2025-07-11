@@ -26,6 +26,7 @@ describe("GetAllModulesUseCase", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
 
     const module1 = ModuleMapper.DtoToDomain({
@@ -33,6 +34,7 @@ describe("GetAllModulesUseCase", () => {
       title: "Test Module",
       lessons: [],
       position: 2,
+      quizzes: [],
     });
 
     const modules = [module, module1];

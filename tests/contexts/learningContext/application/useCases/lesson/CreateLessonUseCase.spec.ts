@@ -40,6 +40,7 @@ describe("CreateLessonUseCase", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
     mockModuleRepository.findById.mockResolvedValue(module);
     mockRepository.create.mockResolvedValue(lesson);

@@ -26,6 +26,7 @@ describe("UpdateModuleUseCase", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
 
     const moduleNew = ModuleMapper.DtoToDomain({
@@ -33,6 +34,7 @@ describe("UpdateModuleUseCase", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
 
     mockRepository.findById.mockResolvedValue(module);
@@ -46,6 +48,7 @@ describe("UpdateModuleUseCase", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
     mockRepository.findById.mockResolvedValue(null);
     mockRepository.update.mockResolvedValue(moduleNew);

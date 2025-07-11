@@ -31,6 +31,7 @@ describe("CreateModuleUseCase", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
     const course = CourseMapper.toDomain({
       name: "CourseTest",
@@ -40,6 +41,10 @@ describe("CreateModuleUseCase", () => {
       time: 0,
       description: "CourseTestDescription",
       imgSrc: "CourseTestImage",
+      language: "",
+      category: "",
+      subCategory: "",
+      published: false,
     });
     mockCourseRepository.findById.mockResolvedValue(course);
     mockRepository.create.mockResolvedValue(module);
@@ -55,6 +60,7 @@ describe("CreateModuleUseCase", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
     mockCourseRepository.findById.mockResolvedValue(null);
     mockRepository.create.mockResolvedValue(module);

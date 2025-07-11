@@ -29,6 +29,7 @@ describe("ModuleService", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
     createModuleUseCase.execute.mockResolvedValue(module);
     const result = await moduleService.create(module, "courseId");
@@ -50,6 +51,7 @@ describe("ModuleService", () => {
       title: "Test Module",
       lessons: [],
       position: 1,
+      quizzes: [],
     });
     updateModuleUseCase.execute.mockResolvedValue(module);
     const result = await moduleService.update(module);
@@ -64,12 +66,14 @@ describe("ModuleService", () => {
         title: "Test Module",
         lessons: [],
         position: 1,
+        quizzes: [],
       },
       {
         id: "2",
         title: "Test Modul2",
         lessons: [],
         position: 1,
+        quizzes: [],
       },
     ]);
     getAllModulesUseCase.execute.mockResolvedValue(module);

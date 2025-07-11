@@ -52,7 +52,7 @@ export default class LessonMapper {
       resources: lesson.props.resources.map((resource) => ({
         name: resource.name,
         url: resource.url,
-        LessonId: lesson.id.toString(),
+        lessonId: lesson.id.toString(),
       })),
       position: new Decimal(lesson.props.position),
     };

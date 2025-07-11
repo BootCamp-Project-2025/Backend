@@ -66,7 +66,6 @@ export default class ModuleMapper {
       quizzes: module.props.quizzes.map((quiz) => ({
         name: quiz.name,
         url: quiz.url,
-        moduleId: module.id.toString(),
       })),
     };
   }

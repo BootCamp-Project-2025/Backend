@@ -23,7 +23,6 @@ export type QuizDb = {
   id?: string;
   name: string;
   url: string;
-  moduleId: string;
 };
 
 export type ResourceDb = {

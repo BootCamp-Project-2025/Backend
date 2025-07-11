@@ -2,6 +2,7 @@ import { Decimal } from "@prisma/client/runtime/library";
 
 export type ModuleDb = {
   lessons: LessonDb[];
+  quizzes: QuizDb[];
   title: string;
   id: string;
   position: Decimal;
@@ -18,9 +19,16 @@ export type LessonDb = {
   resources: ResourceDb[];
 };
 
+export type QuizDb = {
+  id?: string;
+  name: string;
+  url: string;
+  moduleId: string;
+};
+
 export type ResourceDb = {
   id?: string;
   name: string;
   url: string;
-  LessonId: string;
+  lessonId: string;
 };

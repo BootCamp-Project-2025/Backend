@@ -13,7 +13,7 @@ export class ModuleRepository implements IModuleRepository {
     try {
       const moduleDb = await PrismaClient.module.findMany({
         where: { courseId: courseId },
-        include: { lessons: { include: { resources: true } } },
+        include: { lessons: { include: { resources: true } }, quizzes: true },
         orderBy: { position: "asc" },
       });
       return ModuleMapper.bulkPersistanceToDomain(moduleDb);
@@ -31,7 +31,7 @@ export class ModuleRepository implements IModuleRepository {
     try {
       const moduleDb = await PrismaClient.module.findUnique({
         where: { id: moduleId },
-        include: { lessons: { include: { resources: true } } },
+        include: { lessons: { include: { resources: true } }, quizzes: true },
       });
       if (moduleDb === null) return null;
       return ModuleMapper.PersistanceToDomain(moduleDb);
@@ -57,6 +57,7 @@ export class ModuleRepository implements IModuleRepository {
           title: moduleDto.title,
           position: moduleDto.position,
           courseId: courseId,
+          quizzes: { create: moduleDto.quizzes },
           lessons: {
             create: moduleDto.lessons.map((lesson) => ({
               id: lesson.id,
@@ -73,7 +74,7 @@ export class ModuleRepository implements IModuleRepository {
             })),
           },
         },
-        include: { lessons: { include: { resources: true } } },
+        include: { lessons: { include: { resources: true } }, quizzes: true },
       });
       return ModuleMapper.PersistanceToDomain(moduleDb);
     } catch (error) {
@@ -107,8 +108,9 @@ export class ModuleRepository implements IModuleRepository {
         data: {
           title: moduleDto.title,
           position: moduleDto.position,
+          quizzes: { deleteMany: {}, create: moduleDto.quizzes },
         },
-        include: { lessons: { include: { resources: true } } },
+        include: { lessons: { include: { resources: true } }, quizzes: true },
       });
       return ModuleMapper.PersistanceToDomain(moduleDb);
     } catch (error) {

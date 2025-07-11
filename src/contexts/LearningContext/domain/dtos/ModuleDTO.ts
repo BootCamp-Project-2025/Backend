@@ -1,3 +1,4 @@
+import { ModuleQuizProps } from "../valueObjects/ModuleQuiz";
 import { LessonDTO } from "./LessonDTO";
 
 export interface ModuleDTO {
@@ -5,4 +6,5 @@ export interface ModuleDTO {
   id?: string;
   title: string;
   lessons?: LessonDTO[];
+  quizzes: ModuleQuizProps[];
 }

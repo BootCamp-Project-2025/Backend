@@ -6,6 +6,7 @@ import { SyllabusSectionTitle } from "../domain/valueObjects/SyllabusSectionTitl
 import { Lessons } from "../domain/OneToMany/Lessons";
 import { Decimal } from "@prisma/client/runtime/library";
 import { ModuleDb } from "../domain/dtos/Dbtypes";
+import { ModuleQuiz } from "../domain/valueObjects/ModuleQuiz";
 
 export default class ModuleMapper {
   static bulkDtoToDomain(moduleDtos: ModuleDTO[]): Module[] {
@@ -30,6 +31,7 @@ export default class ModuleMapper {
           moduleDto.lessons?.map((lesson) => LessonMapper.DtoToDomain(lesson))
         ),
         position: moduleDto.position as number,
+        quizzes: moduleDto.quizzes.map((quiz) => ModuleQuiz.create(quiz)) ?? [],
       },
       new UniqueEntityID(moduleDto.id)
     );
@@ -43,6 +45,10 @@ export default class ModuleMapper {
         .getItems()
         .map((lesson) => LessonMapper.DomainToDto(lesson)),
       position: module.props.position,
+      quizzes: module.props.quizzes.map((quiz) => ({
+        name: quiz.name,
+        url: quiz.url,
+      })),
     };
   }
 
@@ -57,6 +63,11 @@ export default class ModuleMapper {
           LessonMapper.DomainToPersistance(lesson, module.id.toString())
         ),
       position: new Decimal(module.props.position),
+      quizzes: module.props.quizzes.map((quiz) => ({
+        name: quiz.name,
+        url: quiz.url,
+        moduleId: module.id.toString(),
+      })),
     };
   }
 
@@ -70,6 +81,7 @@ export default class ModuleMapper {
           )
         ),
         position: moduleDto.position.toNumber(),
+        quizzes: moduleDto.quizzes.map((quiz) => ModuleQuiz.create(quiz)) ?? [],
       },
       new UniqueEntityID(moduleDto.id)
     );

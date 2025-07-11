@@ -2,9 +2,11 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { Entity } from "../../../Shared/domain/Entity";
 import { SyllabusSectionTitle } from "../valueObjects/SyllabusSectionTitle";
 import { Lessons } from "../OneToMany/Lessons";
+import { ModuleQuiz } from "../valueObjects/ModuleQuiz";
 
 interface ModuleProps {
   title: SyllabusSectionTitle;
+  quizzes: ModuleQuiz[];
   position: number;
   lessons: Lessons;
 }

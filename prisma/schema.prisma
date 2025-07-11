@@ -39,6 +39,7 @@ model Module{
   courseId String
   title   String
   lessons Lesson[]
+  quizzes Quiz[]
 }
 
 model Lesson{
@@ -55,10 +56,18 @@ model Lesson{
 
 model Resource{
   id      String      @id @default(uuid())
-  author   Lesson @relation(fields: [LessonId], references: [id], onDelete: Cascade)
+  author   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   name   String 
   url   String   
-  LessonId String
+  lessonId String
+}
+
+model Quiz{
+  id      String      @id @default(uuid())
+  author   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  name   String 
+  url   String   
+  moduleId String
 }
 
 model SampleData {

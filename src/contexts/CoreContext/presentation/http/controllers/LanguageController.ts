@@ -26,7 +26,11 @@ export default class LanguageController implements ILanguageController {
         req.params.freelancerId
       );
       const datadto: ILanguageDto = LanguageMapper.mapDomainToDto(data);
-      const response = new SuccessResponseEntity(datadto, StatusCodes.OK);
+      const response = new SuccessResponseEntity(
+        datadto,
+        StatusCodes.OK,
+        "Language updated successfully"
+      );
       ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) {
@@ -46,7 +50,11 @@ export default class LanguageController implements ILanguageController {
         req.params.freelancerId
       );
       const datadto: ILanguageDto = LanguageMapper.mapDomainToDto(data);
-      const response = new SuccessResponseEntity(datadto, StatusCodes.OK);
+      const response = new SuccessResponseEntity(
+        datadto,
+        StatusCodes.CREATED,
+        "Language saved successfully"
+      );
       ResponseService.send(res, response);
     } catch (error) {
       if (error as ApiError) {
@@ -64,8 +72,9 @@ export default class LanguageController implements ILanguageController {
         req.params.freelancerId
       );
       const response = new SuccessResponseEntity(
-        "Language removed",
-        StatusCodes.OK
+        null,
+        StatusCodes.OK,
+        "Language deleted successfully"
       );
       ResponseService.send(res, response);
     } catch (error) {
@@ -88,7 +97,11 @@ export default class LanguageController implements ILanguageController {
       if (!languages) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "Languages not found");
       } else {
-        const response = new SuccessResponseEntity(data, StatusCodes.OK);
+        const response = new SuccessResponseEntity(
+          data,
+          StatusCodes.OK,
+          "Language retrieved successfully"
+        );
         ResponseService.send(res, response);
       }
     } catch (error) {

@@ -1,9 +1,10 @@
 import { inject, injectable } from "tsyringe";
-import { User } from "../../domain/aggregates/User";
-import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
+
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { IUserRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IUserRepository";
+import { User } from "@/contexts/CoreContext/domain/aggregates/User";
 
 @injectable()
 export class SyncUserUseCase implements IUseCase<User, User | null> {

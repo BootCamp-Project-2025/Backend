@@ -18,10 +18,11 @@ export class UserController implements IUserController {
   ) {}
 
   freelance = async (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = req.user?.id ?? req.params.id;
     if (!userId) {
       throw new ApiError(StatusCodes.UNAUTHORIZED, "User not authenticated");
     }
+    // const userId = req.params.id;
     const user = await this.userService.createFreelanceProfile(userId);
     res.status(200).json(user);
   };
@@ -44,7 +45,12 @@ export class UserController implements IUserController {
       const dto: ICreateUserDto = req.body as ICreateUserDto;
       const user: User = UserMapper.createUserDtoTodomain(dto);
       const data = await this.userService.create(user);
-      res.status(201).json(data);
+      const response = new SuccessResponseEntity(
+        data,
+        StatusCodes.CREATED,
+        "User created successfully"
+      );
+      ResponseService.send(res, response);
     } catch (error) {
       res.status(500).json(error);
       console.log(error);

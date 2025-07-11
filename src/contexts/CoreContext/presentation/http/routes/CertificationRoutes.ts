@@ -42,9 +42,12 @@ CertificationRoutes.get("", controller.getAll.bind(controller));
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Certification'
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CertificationDTO'
+ *             $ref: '#/components/schemas/Certification'
  *     responses:
  *       201:
  *         description: Certification created successfully
@@ -74,9 +77,12 @@ CertificationRoutes.post("", controller.create.bind(controller));
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Certification'
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CertificationDTO'
+ *             $ref: '#/components/schemas/Certification'
  *     responses:
  *       204:
  *         description: Certification updated successfully
@@ -119,17 +125,13 @@ CertificationRoutes.delete(
  * @openapi
  * components:
  *   schemas:
- *     CertificationDTO:
+ *     Certification:
  *       type: object
  *       properties:
  *         certification:
  *           type: string
  *           description: Name of the certification
  *           example: "AWS Certified Developer"
- *         id:
- *           type: string
- *           description: ID of the certification
- *           example: "cert-abc123"
  *         institution:
  *           type: string
  *           description: Institution that issued the certification
@@ -141,7 +143,6 @@ CertificationRoutes.delete(
  *           example: 2024
  *       required:
  *         - certification
- *         - id
  *         - institution
  *         - year
  */

@@ -4,6 +4,8 @@ import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepos
 import UserMapper from "../../mappers/UserMapper";
 import { UserDao } from "../../domain/interfaces/dao/UserDao";
 import { injectable } from "tsyringe";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -86,7 +88,10 @@ export class UserRepository implements IUserRepository {
       return user;
     } catch (error) {
       console.log(error);
-      throw new Error("no se pudo crear");
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Failed to create user"
+      );
     }
   }
 

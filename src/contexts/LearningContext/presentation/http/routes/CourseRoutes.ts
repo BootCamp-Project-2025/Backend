@@ -20,11 +20,18 @@ const controller = container.resolve(CourseController);
 courseRouter.get("/", controller.getAllCourses);
 /**
  * @openapi
- * /courses/:id:
+ * /courses/{id}:
  *   get:
  *     summary: Retrieve a course by id
  *     tags:
- *       - Courses
+ *       - Course
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The course ID
  *     responses:
  *       200:
  *         description: return the course
@@ -32,46 +39,49 @@ courseRouter.get("/", controller.getAllCourses);
 courseRouter.get("/:id", controller.getCourse);
 /**
  * @openapi
- * /courses/:id:
+ * /courses/{id}:
  *   put:
- *     summary: update a course
+ *     summary: Update an existing course
  *     tags:
- *       - Courses
+ *       - Course
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The course ID
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Language'
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - name
- *               - description
- *               - imgSrc
- *             properties:
- *               name:
- *                 type: string
- *                 example: "Curso de TypeScript"
- *               description:
- *                 type: string
- *                 example: "Aprende a usar TypeScript en proyectos reales"
- *               imgSrc:
- *                 type: string
- *                 example: "https://example.com/img.png"
+ *             $ref: '#/components/schemas/Language'
  *     responses:
  *       200:
- *         description: return the course
+ *         description: Course updated successfully
  */
 courseRouter.put("/:id", controller.editCourse);
 /**
  * @openapi
- * /courses/:id:
+ * /courses/{id}:
  *   delete:
- *     summary: delete a course by id
+ *     summary: Delete a course
  *     tags:
- *       - Courses
+ *       - Course
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The course ID
  *     responses:
- *       200:
- *         description: course deleted
+ *       204:
+ *         description: Course deleted successfully (no content)
  */
 courseRouter.delete("/:id", controller.delete);
 
@@ -98,23 +108,12 @@ courseRouter.put("/:id/publish", controller.publish);
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Language'
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - name
- *               - description
- *               - imgSrc
- *             properties:
- *               name:
- *                 type: string
- *                 example: "Curso de TypeScript"
- *               description:
- *                 type: string
- *                 example: "Aprende a usar TypeScript en proyectos reales"
- *               imgSrc:
- *                 type: string
- *                 example: "https://example.com/img.png"
+ *             $ref: '#/components/schemas/Language'
  *     responses:
  *       201:
  *         description: Course created successfully
@@ -195,3 +194,48 @@ courseRouter.delete("/:id", async (req, res, next) => {
 });
 
 export default courseRouter;
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Course:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Name of the course
+ *           example: "Basic Programming with C++"
+ *         description:
+ *           type: string
+ *           description: Description of the course
+ *           example: "This is my first course"
+ *         imgSrc:
+ *           type: string
+ *           description: Url of the image in the CDN
+ *           example: "https://cdn.com/mycourse.png"
+ *         category:
+ *           type: string
+ *           description: Category of the course
+ *           example: "Programming"
+ *         subCategory:
+ *           type: string
+ *           description: Sub Category of the course
+ *           example: "basic"
+ *         language:
+ *           type: string
+ *           description: Language of the course
+ *           example: "English"
+ *         time:
+ *           type: string
+ *           description: Time of the course in minutes
+ *           example: 120
+ *         requirements:
+ *           type: string
+ *           description: Requirements of the course
+ *           example: "Having a computer"
+ *       required:
+ *         - name
+ *         - description
+ *         - imgSrc
+ */

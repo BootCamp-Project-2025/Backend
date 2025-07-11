@@ -7,8 +7,14 @@ import { User } from "../../domain/aggregates/User";
 export class AuthService implements IAuthService {
   constructor(
     @inject("SyncUserUseCase")
-    private syncUserUseCase: IUseCase<User, User>
+    private syncUserUseCase: IUseCase<User, User>,
+    @inject("UpdateRoleUseCase")
+    private updateRolesUseCase: IUseCase<{ user: User; role: string }, void>
   ) {}
+
+  async updateUserRoles(user: User, role: string): Promise<void> {
+    await this.updateRolesUseCase.execute({ user, role });
+  }
 
   async syncUser(user: User): Promise<User> {
     return this.syncUserUseCase.execute(user);

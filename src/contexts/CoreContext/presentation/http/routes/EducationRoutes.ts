@@ -42,9 +42,12 @@ EducationRoutes.get("", controller.getAllOfFreelancer);
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Education'
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/EducationDTO'
+ *             $ref: '#/components/schemas/Education'
  *     responses:
  *       201:
  *         description: Education created successfully
@@ -74,9 +77,12 @@ EducationRoutes.post("", controller.create);
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Education'
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/EducationDTO'
+ *             $ref: '#/components/schemas/Education'
  *     responses:
  *       200:
  *         description: freelancer language updated
@@ -118,13 +124,9 @@ EducationRoutes.delete("/:educationId", controller.delete);
  * @openapi
  * components:
  *   schemas:
- *     EducationDTO:
+ *     Education:
  *       type: object
  *       properties:
- *         id:
- *           type: string
- *           description: ID of the certification
- *           example: "abc123"
  *         career:
  *           type: string
  *           description: Name of the studied career

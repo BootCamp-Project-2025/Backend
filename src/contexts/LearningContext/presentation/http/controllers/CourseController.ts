@@ -141,7 +141,7 @@ export class CourseController implements ICourseController {
   public delete = async (req: Request, res: Response): Promise<void> => {
     try {
       await this.courseService.deleteCourse(req.params.id);
-      const response = new SuccessResponseEntity({}, StatusCodes.OK);
+      const response = new SuccessResponseEntity({}, StatusCodes.NO_CONTENT);
       ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof ApiError) throw error;

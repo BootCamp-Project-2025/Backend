@@ -86,6 +86,9 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Experience'
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Experience'
@@ -116,6 +119,9 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
  *     requestBody:
  *       required: true
  *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Experience'
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Experience'

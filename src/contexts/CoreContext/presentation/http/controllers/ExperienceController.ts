@@ -75,7 +75,7 @@ export class ExperienceController implements IExperienceController {
       const response = new SuccessResponseEntity(
         newExperience,
         StatusCodes.CREATED,
-        "Experience created successfully"
+        "Experience saved successfully"
       );
       ResponseService.send(res, response);
     } catch (error) {
@@ -119,7 +119,11 @@ export class ExperienceController implements IExperienceController {
       const experienceId = req.params.experienceId;
       const freelancerId = req.params.freelancerId;
       await this.experienceService.delete(experienceId, freelancerId);
-      const response = new SuccessResponseEntity(null, StatusCodes.NO_CONTENT);
+      const response = new SuccessResponseEntity(
+        null,
+        StatusCodes.NO_CONTENT,
+        "Experience deleted successfully"
+      );
       ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof ApiError) throw error;

@@ -89,7 +89,7 @@ courseRouter.delete("/:id", controller.delete);
  * @openapi
  * /courses/{id}/publish:
  *   put:
- *     summary: mark a course as published
+ *     summary: Updated the state of a course as published
  *     tags:
  *       - Courses
  *     responses:

@@ -42,7 +42,7 @@ lessonRouter.post("/", controller.create);
  * @openapi
  * /courses/modules/lessons/{lessonId}:
  *   put:
- *     summary: Delete a lesson
+ *     summary: Update a lesson
  *     tags:
  *       - Lessons
  *     parameters:

@@ -1,8 +1,8 @@
 import "reflect-metadata";
 
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { SyncUserUseCase } from "@/contexts/CoreContext/application/useCases/SyncUserUseCase";
 import type { User } from "@/contexts/CoreContext/domain/aggregates/User";
+import { SyncUserUseCase } from "@/contexts/CoreContext/application/useCases/auth/SyncUserUseCase";
 
 describe("SyncUserUseCase", () => {
   let mockUserId: { toValue: jest.Mock<string, []> };

@@ -7,6 +7,8 @@ const router = Router();
  * @openapi
  * /health:
  *  get:
+ *      tags:
+ *        - System health
  *      summary: Retrieves the API health status
  *      responses:
  *          200:
@@ -21,6 +23,8 @@ router.get("", healthController.getHealthStatus);
  * @swagger
  * /health:
  *  post:
+ *      tags:
+ *        - System health
  *      summary: Creates sample data into Data base
  *      requestBody:
  *          required: true

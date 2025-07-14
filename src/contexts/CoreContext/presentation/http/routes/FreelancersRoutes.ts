@@ -17,7 +17,7 @@ const freelancerController = container.resolve(FreelancerController);
  *  get:
  *      summary: Get all freelancers
  *      tags:
- *       - Freelancers
+ *       - Freelancer
  *      responses:
  *          200:
  *              description: Everything is ok and returns all Freelancers

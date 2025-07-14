@@ -35,7 +35,11 @@ export class CertificationController implements ICertificationController {
       freelancerId
     );
     const datadto = new CertificationMapper().mapDomainToDto(data);
-    const response = new SuccessResponseEntity(datadto, StatusCodes.CREATED);
+    const response = new SuccessResponseEntity(
+      datadto,
+      StatusCodes.CREATED,
+      "Certification saved successfully"
+    );
     ResponseService.send(res, response);
   }
 
@@ -49,7 +53,11 @@ export class CertificationController implements ICertificationController {
       freelancerId
     );
     const datadto = new CertificationMapper().mapDomainToDto(data);
-    const response = new SuccessResponseEntity(datadto, StatusCodes.OK);
+    const response = new SuccessResponseEntity(
+      datadto,
+      StatusCodes.OK,
+      "Certification updated successfully"
+    );
     ResponseService.send(res, response);
   }
 
@@ -57,7 +65,11 @@ export class CertificationController implements ICertificationController {
     const freelancerId = req.params.freelancerId;
     const certificationId = req.params.certificationId;
     await this.certificationService.delete(certificationId, freelancerId);
-    const response = new SuccessResponseEntity(null, StatusCodes.NO_CONTENT);
+    const response = new SuccessResponseEntity(
+      null,
+      StatusCodes.NO_CONTENT,
+      "Certification deleted successfully"
+    );
     ResponseService.send(res, response);
   }
 }

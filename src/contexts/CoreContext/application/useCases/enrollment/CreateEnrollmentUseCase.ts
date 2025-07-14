@@ -9,7 +9,8 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class CreateEnrollmentUseCase
-  implements IUseCase<Enrollment, Enrollment> {
+  implements IUseCase<Enrollment, Enrollment>
+{
   constructor(
     @inject("IEnrollmentRepository")
     private enrollmentRepository: IEnrollmentRepository,
@@ -17,7 +18,7 @@ export class CreateEnrollmentUseCase
     private courseRepository: ICourseRepository,
     @inject("IUserRepository")
     private userRepository: IUserRepository
-  ) { }
+  ) {}
 
   async execute(enrollment: Enrollment): Promise<Enrollment> {
     const user = await this.userRepository.getById(
@@ -30,6 +31,16 @@ export class CreateEnrollmentUseCase
       enrollment.courseId.toString()
     );
 
+    const isEnrolled = await this.enrollmentRepository.isUserEnrolled(
+      enrollment.userId.toString(),
+      enrollment.courseId.toString()
+    );
+    if (isEnrolled) {
+      throw new ApiError(
+        StatusCodes.CONFLICT,
+        "User is already enrolled in this course"
+      );
+    }
     console.log("Course found:", enrollment.courseId, course);
     if (!course) {
       throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");

@@ -10,7 +10,7 @@ export class EnrollmentService implements IEnrollmentService {
     private createEnrollmentUseCase: IUseCase<Enrollment, Enrollment>,
     @inject("CancelEnrollmentUseCase")
     private cancelEnrollmentUseCAse: IUseCase<{ enrollmentId: string }, void>
-  ) { }
+  ) {}
 
   async create(enrollment: Enrollment): Promise<Enrollment> {
     return await this.createEnrollmentUseCase.execute(enrollment);

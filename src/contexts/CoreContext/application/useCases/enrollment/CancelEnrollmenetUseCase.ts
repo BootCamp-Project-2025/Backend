@@ -6,11 +6,12 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class CancelEnrollmentUseCase
-  implements IUseCase<{ enrollmentId: string }, void> {
+  implements IUseCase<{ enrollmentId: string }, void>
+{
   constructor(
     @inject("IEnrollmentRepository")
     private enrollmentRepository: IEnrollmentRepository
-  ) { }
+  ) {}
 
   async execute(params: { enrollmentId: string }): Promise<void> {
     const enrollment = await this.enrollmentRepository.findById(

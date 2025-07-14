@@ -14,7 +14,7 @@ export class EnrollmentController implements IEnrollmentController {
   constructor(
     @inject("IEnrollmentService")
     private enrollmentService: IEnrollmentService
-  ) { }
+  ) {}
 
   createEnrollment = async (req: Request, res: Response): Promise<void> => {
     const enrollmentDto: ICreateEnrollmentDto = req.body;

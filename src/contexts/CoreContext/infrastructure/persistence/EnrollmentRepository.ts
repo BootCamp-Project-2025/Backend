@@ -3,6 +3,8 @@ import { Enrollment } from "../../domain/aggregates/Enrollment";
 import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 import { EnrollmentMapper } from "../../mappers/EnrollmentMapper";
 import { EnrollmentStatus } from "@/generated/prisma";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 export class EnrollmentRepository implements IEnrollmentRepository {
   async create(object: Enrollment): Promise<Enrollment> {
@@ -19,14 +21,19 @@ export class EnrollmentRepository implements IEnrollmentRepository {
   }
 
   async cancelEnrollment(enrollment: Enrollment): Promise<void> {
-    try {
-      await PrismaClient.enrollment.update({
-        where: { id: enrollment.id.toString() },
-        data: { status: enrollment.status as EnrollmentStatus },
-      });
-    } catch (error) {
-      console.error("Error canceling enrollment:", error);
-      throw new Error("Could not cancel enrollment");
-    }
+    await PrismaClient.enrollment.update({
+      where: { id: enrollment.id.toString() },
+      data: { status: enrollment.status as EnrollmentStatus },
+    });
+  }
+  async findById(enrollmentId: string): Promise<Enrollment> {
+    const enrollment = await PrismaClient.enrollment.findUnique({
+      where: {
+        id: enrollmentId,
+      },
+    });
+    if (!enrollment)
+      throw new ApiError(StatusCodes.NOT_FOUND, "Enrollment not found");
+    return EnrollmentMapper.persistanceToDomain(enrollment);
   }
 }

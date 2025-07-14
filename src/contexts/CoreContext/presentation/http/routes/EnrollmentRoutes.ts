@@ -28,6 +28,11 @@ const router = Router();
  *          description: Enrollment created successfully
  *        '400':
  *          description: Bad request
+ *
+ *        '404':
+ *          description: Course or student not found
+ *        '409':
+ *          description: Enrollment already exists
  */
 
 router.post("/", controller.createEnrollment);
@@ -51,6 +56,8 @@ router.post("/", controller.createEnrollment);
  *          description: Enrollment canceled successfully
  *        '400':
  *          description: Bad request
+ *        '404':
+ *          description: Enrollment not found
  */
 router.delete("/:id", controller.cancelEnrollment);
 

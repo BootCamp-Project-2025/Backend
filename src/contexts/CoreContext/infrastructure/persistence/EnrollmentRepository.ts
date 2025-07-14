@@ -5,7 +5,9 @@ import { EnrollmentMapper } from "../../mappers/EnrollmentMapper";
 import { EnrollmentStatus } from "@/generated/prisma";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { injectable } from "tsyringe";
 
+injectable();
 export class EnrollmentRepository implements IEnrollmentRepository {
   async create(object: Enrollment): Promise<Enrollment> {
     const enrollment = await PrismaClient.enrollment.create({

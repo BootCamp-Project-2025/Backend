@@ -1,8 +1,9 @@
 import { IEnrollmentService } from "../../domain/interfaces/services/IEnrollmentService";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { Enrollment } from "../../domain/aggregates/Enrollment";
 
+@injectable()
 export class EnrollmentService implements IEnrollmentService {
   constructor(
     @inject("CreateEnrollmentUseCase")

@@ -23,10 +23,11 @@ export class EnrollmentController implements IEnrollmentController {
         StatusCodes.BAD_REQUEST,
         "Required fields aren't fulfilled"
       );
+    console.log("Received enrollment DTO:", enrollmentDto);
     const enrollment = EnrollmentMapper.createDtoToDomain(enrollmentDto);
     const savedEnrollment = await this.enrollmentService.create(enrollment);
     const response = new SuccessResponseEntity(
-      savedEnrollment,
+      EnrollmentMapper.domainToDto(savedEnrollment),
       StatusCodes.CREATED
     );
     ResponseService.send(res, response);

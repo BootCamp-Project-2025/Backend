@@ -2,12 +2,13 @@ import { IEnrollmentRepository } from "@/contexts/CoreContext/domain/interfaces/
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class CancelEnrollmentUseCase
   implements IUseCase<{ enrollmentId: string }, void> {
   constructor(
-    @inject("IEnrollmentService")
+    @inject("IEnrollmentRepository")
     private enrollmentRepository: IEnrollmentRepository
   ) { }
 

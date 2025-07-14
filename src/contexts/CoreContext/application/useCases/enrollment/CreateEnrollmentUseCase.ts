@@ -5,8 +5,9 @@ import { ICourseRepository } from "@/contexts/LearningContext/domain/interfaces/
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class CreateEnrollmentUseCase
   implements IUseCase<Enrollment, Enrollment> {
   constructor(
@@ -26,8 +27,10 @@ export class CreateEnrollmentUseCase
       throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
     }
     const course = await this.courseRepository.findById(
-      enrollment.userId.toString()
+      enrollment.courseId.toString()
     );
+
+    console.log("Course found:", enrollment.courseId, course);
     if (!course) {
       throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");
     }

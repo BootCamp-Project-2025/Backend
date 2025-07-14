@@ -3,13 +3,15 @@ import { EnrollmentController } from "../controllers/EnrollmentController";
 import { Router } from "express";
 
 const controller = container.resolve(EnrollmentController);
-export const router = Router();
+const router = Router();
 
 /**
  *  @openapi
  *  /enrollments:
  *    post:
  *      summary: Create a new enrollment
+ *      tags:
+ *        - Enrollment
  *      requestBody:
  *        required: true
  *        content:
@@ -35,6 +37,8 @@ router.post("/", controller.createEnrollment);
  *  /enrollments/{id}:
  *    delete:
  *      summary: Cancel an enrollment
+ *      tags:
+ *        - Enrollment
  *      parameters:
  *        - in: path
  *          name: id

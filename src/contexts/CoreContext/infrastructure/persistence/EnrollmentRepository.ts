@@ -44,7 +44,6 @@ export class EnrollmentRepository implements IEnrollmentRepository {
       where: {
         userId: userId,
         courseId: courseId,
-        status: EnrollmentStatus.ENROLLED,
       },
     });
 

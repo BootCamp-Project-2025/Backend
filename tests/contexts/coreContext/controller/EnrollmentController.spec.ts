@@ -1,4 +1,4 @@
-import "reflect-metadata"
+import "reflect-metadata";
 import { EnrollmentController } from "@/contexts/CoreContext/presentation/http/controllers/EnrollmentController";
 import { IEnrollmentService } from "@/contexts/CoreContext/domain/interfaces/services/IEnrollmentService";
 import { Request, Response } from "express";
@@ -22,7 +22,7 @@ describe("EnrollmentController", () => {
     enrollmentService = {
       create: jest.fn(),
       cancel: jest.fn(),
-    } as any;
+    } as jest.Mocked<IEnrollmentService>;
 
     controller = new EnrollmentController(enrollmentService);
 
@@ -40,8 +40,9 @@ describe("EnrollmentController", () => {
   describe("createEnrollment", () => {
     it("should throw ApiError if enrollmentDto is missing", async () => {
       req.body = undefined as unknown;
-      await expect(controller.createEnrollment(req as Request, res as Response))
-        .rejects.toThrowError(ApiError);
+      await expect(
+        controller.createEnrollment(req as Request, res as Response)
+      ).rejects.toThrowError(ApiError);
     });
 
     it("should call EnrollmentService.create and send response", async () => {
@@ -52,15 +53,21 @@ describe("EnrollmentController", () => {
 
       req.body = enrollmentDto;
 
-      (EnrollmentMapper.createDtoToDomain as jest.Mock).mockReturnValue(domainEnrollment);
+      (EnrollmentMapper.createDtoToDomain as jest.Mock).mockReturnValue(
+        domainEnrollment
+      );
       enrollmentService.create.mockResolvedValue(savedEnrollment);
       (EnrollmentMapper.domainToDto as jest.Mock).mockReturnValue(mappedDto);
 
       await controller.createEnrollment(req as Request, res as Response);
 
-      expect(EnrollmentMapper.createDtoToDomain).toHaveBeenCalledWith(enrollmentDto);
+      expect(EnrollmentMapper.createDtoToDomain).toHaveBeenCalledWith(
+        enrollmentDto
+      );
       expect(enrollmentService.create).toHaveBeenCalledWith(domainEnrollment);
-      expect(EnrollmentMapper.domainToDto).toHaveBeenCalledWith(savedEnrollment);
+      expect(EnrollmentMapper.domainToDto).toHaveBeenCalledWith(
+        savedEnrollment
+      );
 
       expect(ResponseService.send).toHaveBeenCalledWith(
         res,
@@ -75,8 +82,9 @@ describe("EnrollmentController", () => {
   describe("cancelEnrollment", () => {
     it("should throw ApiError if enrollmentId is missing", async () => {
       req.params = {};
-      await expect(controller.cancelEnrollment(req as Request, res as Response))
-        .rejects.toThrowError(ApiError);
+      await expect(
+        controller.cancelEnrollment(req as Request, res as Response)
+      ).rejects.toThrowError(ApiError);
     });
 
     it("should call EnrollmentService.cancel and send response", async () => {
@@ -90,7 +98,9 @@ describe("EnrollmentController", () => {
         expect.any(SuccessResponseEntity)
       );
       const responseArg = (ResponseService.send as jest.Mock).mock.calls[0][1];
-      expect(responseArg.data).toEqual({ message: "Enrollment canceled successfully" });
+      expect(responseArg.data).toEqual({
+        message: "Enrollment canceled successfully",
+      });
       expect(responseArg.statusCode).toBe(StatusCodes.OK);
     });
   });

@@ -233,9 +233,9 @@ model Proposal {
 }
 
 enum EnrollmentStatus {
-  enrolled
-  completed
-  dropped
+  ENROLLED
+  COMPLETED
+  CANCELED
 }
 
 model Enrollment {
@@ -245,5 +245,5 @@ model Enrollment {
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
-  status       EnrollmentStatus @default(enrolled)
+  status       EnrollmentStatus @default(ENROLLED)
 }

@@ -4,9 +4,9 @@ import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 export enum EnrollmentStatus {
-  ENROLLED = "enrolled",
-  CANCELED = "canceled",
-  COMPLETED = "completed",
+  ENROLLED = "ENROLLED",
+  CANCELED = "CANCELED",
+  COMPLETED = "COMPLETED",
 }
 
 interface EnrollmentProps {

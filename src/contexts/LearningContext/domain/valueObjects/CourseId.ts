@@ -14,6 +14,10 @@ export class CourseId extends ValueObject<CourseIdProps> {
     return this.props.value;
   }
 
+  public toString(): string {
+    return this.props.value.toString();
+  }
+
   public static create(id: UniqueEntityID): CourseId {
     if (!id) {
       throw new Error("Course ID is required.");

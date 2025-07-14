@@ -129,6 +129,15 @@ import { GetClientUseCase } from "./contexts/CoreContext/application/useCases/cl
 import { UpdateClientUseCase } from "./contexts/CoreContext/application/useCases/client/UpdateClientUseCase";
 import { ClientRepository } from "./contexts/CoreContext/infrastructure/persistence/ClientRepository";
 import { IClientRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IClientRepository";
+import { IEnrollmentService } from "./contexts/CoreContext/domain/interfaces/services/IEnrollmentService";
+import { EnrollmentService } from "./contexts/CoreContext/application/services/EnrollmentService";
+import { EnrollmentController } from "./contexts/CoreContext/presentation/http/controllers/EnrollmentController";
+import { CreateEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CreateEnrollmentUseCase";
+import { Enrollment } from "./contexts/CoreContext/domain/aggregates/Enrollment";
+import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/controllers/IEnrollmentController";
+import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
+import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
+import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -479,6 +488,56 @@ container.registerSingleton<IUseCase<{ user: User; role: string }, void>>(
 container.registerSingleton<IExternarlAuthService>(
   "IAuthManagerService",
   KeycloakService
+);
+
+container.registerSingleton<IEnrollmentService>(
+  "IEnrollmentService",
+  EnrollmentService
+);
+
+container.registerSingleton<IEnrollmentController>(
+  "IEnrollmentController",
+  EnrollmentController
+);
+
+container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
+  "CreateEnrollmentUseCase",
+  CreateEnrollmentUseCase
+);
+
+container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
+  "CancelEnrollmentUseCase",
+  CancelEnrollmentUseCase
+);
+
+container.registerSingleton<IEnrollmentRepository>(
+  "IEnrollmentRepository",
+  EnrollmentRepository
+);
+
+container.registerSingleton<IEnrollmentService>(
+  "IEnrollmentService",
+  EnrollmentService
+);
+
+container.registerSingleton<IEnrollmentController>(
+  "IEnrollmentController",
+  EnrollmentController
+);
+
+container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
+  "CreateEnrollmentUseCase",
+  CreateEnrollmentUseCase
+);
+
+container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
+  "CancelEnrollmentUseCase",
+  CancelEnrollmentUseCase
+);
+
+container.registerSingleton<IEnrollmentRepository>(
+  "IEnrollmentRepository",
+  EnrollmentRepository
 );
 
 container.registerSingleton<IClientService>("IClientService", ClientService);

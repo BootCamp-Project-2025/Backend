@@ -31,6 +31,10 @@ export class CreateEnrollmentUseCase
       enrollment.courseId.toString()
     );
 
+    if (!course) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");
+    }
+
     const isEnrolled = await this.enrollmentRepository.isUserEnrolled(
       enrollment.userId.toString(),
       enrollment.courseId.toString()
@@ -40,10 +44,6 @@ export class CreateEnrollmentUseCase
         StatusCodes.CONFLICT,
         "User is already enrolled in this course"
       );
-    }
-    console.log("Course found:", enrollment.courseId, course);
-    if (!course) {
-      throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");
     }
 
     return await this.enrollmentRepository.create(enrollment);

@@ -38,4 +38,16 @@ export class EnrollmentRepository implements IEnrollmentRepository {
       throw new ApiError(StatusCodes.NOT_FOUND, "Enrollment not found");
     return EnrollmentMapper.persistanceToDomain(enrollment);
   }
+
+  async isUserEnrolled(userId: string, courseId: string): Promise<boolean> {
+    const enrollment = await PrismaClient.enrollment.findFirst({
+      where: {
+        userId: userId,
+        courseId: courseId,
+        status: EnrollmentStatus.ENROLLED,
+      },
+    });
+
+    return enrollment !== null;
+  }
 }

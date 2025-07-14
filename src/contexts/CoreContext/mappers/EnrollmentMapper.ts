@@ -5,8 +5,8 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserId } from "../domain/valueObjects/UserId";
 import { Enrollment as PersistedEnrollment } from "@/generated/prisma";
 
-export class EnrollmentMapper {
-  static domainToDto(enrollment: Enrollment) {
+export const EnrollmentMapper = {
+  domainToDto(enrollment: Enrollment) {
     return {
       id: enrollment.id.toString(),
       courseId: enrollment.courseId.toString(),
@@ -14,9 +14,9 @@ export class EnrollmentMapper {
       createdAt: enrollment.createdAt,
       status: enrollment.status,
     };
-  }
+  },
 
-  static createDtoToDomain(dto: ICreateEnrollmentDto): Enrollment {
+  createDtoToDomain(dto: ICreateEnrollmentDto): Enrollment {
     const enrollment = Enrollment.create({
       courseId: CourseId.create(new UniqueEntityID(dto.courseId)),
       userId: UserId.create(new UniqueEntityID(dto.userId)),
@@ -24,9 +24,9 @@ export class EnrollmentMapper {
       status: EnrollmentStatus.ENROLLED,
     });
     return enrollment;
-  }
+  },
 
-  static persistanceToDomain(dto: PersistedEnrollment): Enrollment {
+  persistanceToDomain(dto: PersistedEnrollment): Enrollment {
     return Enrollment.create(
       {
         courseId: CourseId.create(new UniqueEntityID(dto.courseId)),
@@ -36,5 +36,5 @@ export class EnrollmentMapper {
       },
       dto.id
     );
-  }
-}
+  },
+};

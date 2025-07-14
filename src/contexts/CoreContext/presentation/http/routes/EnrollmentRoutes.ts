@@ -19,7 +19,7 @@ const router = Router();
  *            schema:
  *              type: object
  *              properties:
- *                studentId:
+ *                userId:
  *                  type: string
  *                courseId:
  *                  type: string
@@ -28,9 +28,8 @@ const router = Router();
  *          description: Enrollment created successfully
  *        '400':
  *          description: Bad request
- *
  *        '404':
- *          description: Course or student not found
+ *          description: Course or user not found
  *        '409':
  *          description: Enrollment already exists
  */
@@ -40,7 +39,7 @@ router.post("/", controller.createEnrollment);
 /**
  * @openapi
  *  /enrollments/{id}:
- *    delete:
+ *    put:
  *      summary: Cancel an enrollment
  *      tags:
  *        - Enrollment
@@ -59,6 +58,6 @@ router.post("/", controller.createEnrollment);
  *        '404':
  *          description: Enrollment not found
  */
-router.delete("/:id", controller.cancelEnrollment);
+router.put("/:id", controller.cancelEnrollment);
 
 export default router;

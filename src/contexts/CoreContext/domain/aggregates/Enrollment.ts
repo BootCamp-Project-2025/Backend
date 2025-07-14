@@ -3,9 +3,9 @@ import { UserId } from "../valueObjects/UserId";
 import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
 
 export enum EnrollmentStatus {
-  PENDING = "PENDING",
-  APPROVED = "APPROVED",
-  REJECTED = "REJECTED",
+  ENROLLED = "enrolled",
+  CANCELED = "canceled",
+  COMPLETED = "completed",
 }
 
 interface EnrollmentProps {
@@ -25,6 +25,14 @@ export class Enrollment extends AggregateRoot<EnrollmentProps> {
       throw new Error("Course ID and User ID are required.");
     }
     return new Enrollment(props);
+  }
+
+  public cancel(): void {
+    this.props.status = EnrollmentStatus.CANCELED;
+  }
+
+  public complete(): void {
+    this.props.status = EnrollmentStatus.COMPLETED;
   }
 
   get courseId(): CourseId {

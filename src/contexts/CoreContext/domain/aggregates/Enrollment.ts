@@ -1,0 +1,45 @@
+import { CourseId } from "@/contexts/LearningContext/domain/valueObjects/CourseId";
+import { UserId } from "../valueObjects/UserId";
+import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
+
+export enum EnrollmentStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+}
+
+interface EnrollmentProps {
+  courseId: CourseId;
+  userId: UserId;
+  createdAt: Date;
+  status: EnrollmentStatus;
+}
+
+export class Enrollment extends AggregateRoot<EnrollmentProps> {
+  private constructor(props: EnrollmentProps) {
+    super(props);
+  }
+
+  public static create(props: EnrollmentProps): Enrollment {
+    if (!props.courseId || !props.userId) {
+      throw new Error("Course ID and User ID are required.");
+    }
+    return new Enrollment(props);
+  }
+
+  get courseId(): CourseId {
+    return this.props.courseId;
+  }
+
+  get userId(): UserId {
+    return this.props.userId;
+  }
+
+  get createdAt(): Date {
+    return this.props.createdAt;
+  }
+
+  get status(): EnrollmentStatus {
+    return this.props.status;
+  }
+}

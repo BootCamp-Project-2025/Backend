@@ -1,7 +1,9 @@
 import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 interface RequestTitleProps {
-  [title: string]: string;
+  value: string;
 }
 
 export class RequestTitle extends ValueObject<RequestTitleProps> {
@@ -10,26 +12,25 @@ export class RequestTitle extends ValueObject<RequestTitleProps> {
   }
 
   public get value(): string {
-    return this.props.title;
+    return this.props.value;
   }
 
-  public static create(props: RequestTitleProps): RequestTitle {
-    if (!props.title || typeof props.title !== "string") {
-      throw new Error("Invlaid request title");
+  public static create(value: string): RequestTitle {
+    if (!value || value.trim().length === 0) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Title cannot be empty");
     }
 
-    if (props.title.trim().length === 0) {
-      throw new Error("Request title cannot be empty");
+    if (value.length > 100) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Request title cannot exceed 100 characters"
+      );
     }
 
-    if (props.title.length > 100) {
-      throw new Error("Request title cannot exceed 100 characters");
-    }
-
-    return new RequestTitle(props);
+    return new RequestTitle({ value });
   }
 
   public static default(): RequestTitle {
-    return new RequestTitle({ title: "General Request" });
+    return new RequestTitle({ value: "General Request" });
   }
 }

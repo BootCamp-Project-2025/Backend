@@ -36,6 +36,10 @@ export class Proposal extends Entity<ProposalProps> {
     this.props.status = ProposalStatus.create(ProposalStatusEnum.ACCEPTED);
   }
 
+  get id(): UniqueEntityID {
+    return this._id;
+  }
+
   get userId(): UserId {
     return this.props.userId;
   }

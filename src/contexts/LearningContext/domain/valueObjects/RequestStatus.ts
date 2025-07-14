@@ -1,4 +1,6 @@
 import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 export enum RequestStatusEnum {
   PENDING = "PENDING",
@@ -8,7 +10,7 @@ export enum RequestStatusEnum {
 }
 
 interface RequestStatusProps {
-  [status: string]: string;
+  value: RequestStatusEnum;
 }
 
 export class RequestStatus extends ValueObject<RequestStatusProps> {
@@ -17,29 +19,24 @@ export class RequestStatus extends ValueObject<RequestStatusProps> {
   }
 
   public get value(): RequestStatusEnum {
-    return this.props.status as RequestStatusEnum;
+    return this.props.value;
   }
 
-  public static create(props: RequestStatusProps): RequestStatus {
-    if (!props.status || typeof props.status !== "string") {
-      throw new Error("Invalid request status");
-    }
-
+  public static create(value: string): RequestStatus {
     if (
-      !Object.values(RequestStatusEnum).includes(
-        props.status as RequestStatusEnum
-      )
+      !Object.values(RequestStatusEnum).includes(value as RequestStatusEnum)
     ) {
-      throw new Error(
-        `Invalid status. Must be one of: ${Object.values(RequestStatusEnum).join(", ")}`
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        `Invalid request status: ${value}`
       );
     }
 
-    return new RequestStatus(props);
+    return new RequestStatus({ value: value as RequestStatusEnum });
   }
 
   public static default(): RequestStatus {
-    return new RequestStatus({ status: RequestStatusEnum.PENDING });
+    return new RequestStatus({ value: RequestStatusEnum.PENDING });
   }
 
   public isAvalilable(): boolean {

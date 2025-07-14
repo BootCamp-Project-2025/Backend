@@ -1,7 +1,9 @@
 import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 interface RequestDescriptionProps {
-  [description: string]: string;
+  value: string;
 }
 
 export class RequestDescription extends ValueObject<RequestDescriptionProps> {
@@ -10,26 +12,28 @@ export class RequestDescription extends ValueObject<RequestDescriptionProps> {
   }
 
   public get value(): string {
-    return this.props.description;
+    return this.props.value;
   }
 
-  public static create(props: RequestDescriptionProps): RequestDescription {
-    if (!props.description || typeof props.description !== "string") {
-      throw new Error("Invlaid request description");
+  public static create(value: string): RequestDescription {
+    if (!value || value.trim().length === 0) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Description cannot be empty"
+      );
     }
 
-    if (props.description.trim() === "") {
-      throw new Error("Request description cannot be empty");
+    if (value.length > 300) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Request description cannot exceed 300 characters"
+      );
     }
 
-    if (props.title.length > 100) {
-      throw new Error("Request description cannot exceed 100 characters");
-    }
-
-    return new RequestDescription(props);
+    return new RequestDescription({ value });
   }
 
   public static default(): RequestDescription {
-    return new RequestDescription({ description: "General description" });
+    return new RequestDescription({ value: "General description" });
   }
 }

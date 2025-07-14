@@ -26,4 +26,16 @@ export class ProposalStatus extends ValueObject<StatusProps> {
 
     return new ProposalStatus({ value: status });
   }
+
+  public isRejected(): boolean {
+    return this.value === ProposalStatusEnum.REJECTED;
+  }
+
+  public isAccepted(): boolean {
+    return this.value === ProposalStatusEnum.ACCEPTED;
+  }
+
+  public isPending(): boolean {
+    return this.value === ProposalStatusEnum.PENDING;
+  }
 }

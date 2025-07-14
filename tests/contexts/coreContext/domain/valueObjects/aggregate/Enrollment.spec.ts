@@ -1,4 +1,7 @@
-import { Enrollment, EnrollmentStatus } from "@/contexts/CoreContext/domain/aggregates/Enrollment";
+import {
+  Enrollment,
+  EnrollmentStatus,
+} from "@/contexts/CoreContext/domain/aggregates/Enrollment";
 import { CourseId } from "@/contexts/LearningContext/domain/valueObjects/CourseId";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";

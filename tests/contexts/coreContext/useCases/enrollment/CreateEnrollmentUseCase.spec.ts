@@ -54,8 +54,12 @@ describe("CreateEnrollmentUseCase", () => {
   });
 
   it("should throw ApiError if user is already enrolled", async () => {
-    userRepository.getById.mockResolvedValue({ id: "user123" } as unknown as User);
-    courseRepository.findById.mockResolvedValue({ id: "course123" } as unknown as Course);
+    userRepository.getById.mockResolvedValue({
+      id: "user123",
+    } as unknown as User);
+    courseRepository.findById.mockResolvedValue({
+      id: "course123",
+    } as unknown as Course);
     enrollmentRepository.isUserEnrolled.mockResolvedValue(true);
 
     await expect(useCase.execute(fakeEnrollment)).rejects.toThrow(ApiError);
@@ -64,11 +68,16 @@ describe("CreateEnrollmentUseCase", () => {
       message: "User is already enrolled in this course",
     });
 
-    expect(enrollmentRepository.isUserEnrolled).toHaveBeenCalledWith("user123", "course123");
+    expect(enrollmentRepository.isUserEnrolled).toHaveBeenCalledWith(
+      "user123",
+      "course123"
+    );
   });
 
   it("should throw ApiError if course is not found", async () => {
-    userRepository.getById.mockResolvedValue({ id: "user123" } as unknown as User);
+    userRepository.getById.mockResolvedValue({
+      id: "user123",
+    } as unknown as User);
     courseRepository.findById.mockResolvedValue(null);
     enrollmentRepository.isUserEnrolled.mockResolvedValue(false);
 
@@ -82,10 +91,16 @@ describe("CreateEnrollmentUseCase", () => {
   });
 
   it("should create and return enrollment if user and course exist and not already enrolled", async () => {
-    userRepository.getById.mockResolvedValue({ id: "user123" } as unknown as User);
-    courseRepository.findById.mockResolvedValue({ id: "course123" } as unknown as Course);
+    userRepository.getById.mockResolvedValue({
+      id: "user123",
+    } as unknown as User);
+    courseRepository.findById.mockResolvedValue({
+      id: "course123",
+    } as unknown as Course);
     enrollmentRepository.isUserEnrolled.mockResolvedValue(false);
-    enrollmentRepository.create.mockResolvedValue({ id: "enroll1" } as unknown as Enrollment);
+    enrollmentRepository.create.mockResolvedValue({
+      id: "enroll1",
+    } as unknown as Enrollment);
 
     const result = await useCase.execute(fakeEnrollment);
 

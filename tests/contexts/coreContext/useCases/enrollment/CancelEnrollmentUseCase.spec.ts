@@ -23,7 +23,9 @@ describe("CancelEnrollmentUseCase", () => {
   });
 
   it("should throw ApiError if enrollment is not found", async () => {
-    enrollmentRepository.findById.mockResolvedValue(null as unknown as Enrollment);
+    enrollmentRepository.findById.mockResolvedValue(
+      null as unknown as Enrollment
+    );
 
     await expect(
       useCase.execute({ enrollmentId: "enroll123" })
@@ -49,6 +51,8 @@ describe("CancelEnrollmentUseCase", () => {
     await useCase.execute({ enrollmentId: "enroll123" });
 
     expect(mockEnrollment.cancel).toHaveBeenCalled();
-    expect(enrollmentRepository.cancelEnrollment).toHaveBeenCalledWith(mockEnrollment);
+    expect(enrollmentRepository.cancelEnrollment).toHaveBeenCalledWith(
+      mockEnrollment
+    );
   });
 });

@@ -8,9 +8,9 @@ import { Enrollment as PersistedEnrollment } from "@/generated/prisma";
 export class EnrollmentMapper {
   static domainToDto(enrollment: Enrollment) {
     return {
-      id: enrollment.id,
-      courseId: enrollment.courseId,
-      userId: enrollment.userId,
+      id: enrollment.id.toString(),
+      courseId: enrollment.courseId.toString(),
+      userId: enrollment.userId.toString(),
       createdAt: enrollment.createdAt,
       status: enrollment.status,
     };

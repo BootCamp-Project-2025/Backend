@@ -1,6 +1,6 @@
-import { IRepository } from "@/contexts/Shared/domain/repository/IRepository";
-import { Enrollment } from "@/generated/prisma";
+import { Enrollment } from "../../aggregates/Enrollment";
 
-export interface IEnrollmentRepository extends IRepository<Enrollment> {
-  cancelEnrollment(enrollmentId: string): Promise<void>;
+export interface IEnrollmentRepository {
+  cancelEnrollment(enrollment: Enrollment): Promise<void>;
+  create(enrollment: Enrollment): Promise<Enrollment>;
 }

@@ -6,6 +6,7 @@ import {
 import { CourseId } from "@/contexts/LearningContext/domain/valueObjects/CourseId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
+import { Enrollment as PersistedEnrollment } from "@/generated/prisma";
 
 describe("EnrollmentMapper", () => {
   describe("domainToDto", () => {
@@ -58,7 +59,9 @@ describe("EnrollmentMapper", () => {
         status: "ENROLLED",
       };
 
-      const enrollment = EnrollmentMapper.persistanceToDomain(persisted as any);
+      const enrollment = EnrollmentMapper.persistanceToDomain(
+        persisted as unknown as PersistedEnrollment
+      );
 
       expect(enrollment.id.toString()).toBe("enroll-xyz");
       expect(enrollment.courseId.toString()).toBe("course-xyz");

@@ -62,7 +62,7 @@ export class Course extends AggregateRoot<CourseProps> {
     const descriptionValue = CourseDescription.create({
       name: props.description,
     });
-    const userId = UserId.create(new UniqueEntityID(props.userId))
+    const userId = UserId.create(new UniqueEntityID(props.userId));
 
     const course: CourseProps = {
       name: nameValue,

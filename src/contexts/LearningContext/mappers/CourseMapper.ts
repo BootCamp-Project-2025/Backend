@@ -33,7 +33,7 @@ export class CourseMapper {
       language: CourseLanguage.create({
         language: prismaCourse.language ?? "",
       }),
-      userId: UserId.create(new UniqueEntityID(prismaCourse.userId))
+      userId: UserId.create(new UniqueEntityID(prismaCourse.userId)),
     };
 
     return Course.create(
@@ -94,7 +94,7 @@ export class CourseMapper {
         subCategory: courseDto.subCategory ?? "",
       }),
       language: CourseLanguage.create({ language: courseDto.language ?? "" }),
-      userId: UserId.create(new UniqueEntityID(courseDto.userId))
+      userId: UserId.create(new UniqueEntityID(courseDto.userId)),
     };
     if (courseDto.id !== null)
       return Course.create(courseProps, new UniqueEntityID(courseDto.id));
@@ -123,7 +123,7 @@ export class CourseMapper {
       name: nameVO,
       description: descVO,
       imgSrc: dto.imgSrc,
-      userId: UserId.create(new UniqueEntityID(dto.userId))
+      userId: UserId.create(new UniqueEntityID(dto.userId)),
     };
 
     return Course.create(props, new UniqueEntityID(dto.id));

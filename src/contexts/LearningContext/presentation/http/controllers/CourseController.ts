@@ -15,7 +15,7 @@ import { log } from "console";
 export class CourseController implements ICourseController {
   constructor(
     @inject("ICourseService") private readonly courseService: ICourseService
-  ) { }
+  ) {}
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -36,7 +36,7 @@ export class CourseController implements ICourseController {
     try {
       const dto = {
         ...req.body,
-        userId: req.user?.id
+        userId: req.user?.id,
       } as CourseDTO;
 
       const result = await this.courseService.create(dto);

@@ -11,8 +11,6 @@ const controller = container.resolve(CertificationController);
  * /freelancers/{freelancerId}/certifications:
  *   get:
  *     summary: Get all certifications of a freelancer
- *     security:
- *      - BearerAuth: []
  *     tags:
  *       - Certification
  *     parameters:
@@ -30,11 +28,7 @@ const controller = container.resolve(CertificationController);
  *       403:
  *         description: Forbidden access
  */
-CertificationRoutes.get(
-  "",
-  verifyToken(["FREELANCER"]),
-  controller.getAll.bind(controller)
-);
+CertificationRoutes.get("", controller.getAll.bind(controller));
 
 /**
  * @openapi

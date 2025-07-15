@@ -11,8 +11,6 @@ const controller = container.resolve(EducationController);
  * /freelancers/{freelancerId}/educations:
  *   get:
  *     summary: Get all educations of a freelancer
- *     security:
- *      - BearerAuth: []
  *     tags:
  *       - Education
  *     parameters:
@@ -30,11 +28,7 @@ const controller = container.resolve(EducationController);
  *       403:
  *         description: Forbidden access
  */
-EducationRoutes.get(
-  "",
-  verifyToken(["FREELANCER"]),
-  controller.getAllOfFreelancer
-);
+EducationRoutes.get("", controller.getAllOfFreelancer);
 
 /**
  * @openapi

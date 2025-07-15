@@ -13,8 +13,6 @@ const controller = container.resolve(LanguageController);
   
  *  get:
  *      summary: Get all languages of a freelancer
- *      security:
- *      - BearerAuth: []
  *      tags:
  *       - Language
  *      parameters:
@@ -35,7 +33,7 @@ const controller = container.resolve(LanguageController);
  *              description: Everything is wrong
  *
  */
-LanguageRoutes.get("", verifyToken(["FREELANCER"]), controller.getLanguages);
+LanguageRoutes.get("", controller.getLanguages);
 
 /**
  * @openapi

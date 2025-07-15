@@ -6,11 +6,7 @@ import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenV
 export const ExperienceRoutes = Router({ mergeParams: true });
 const controller = container.resolve(ExperienceController);
 
-ExperienceRoutes.get(
-  "",
-  verifyToken(["FREELANCER"]),
-  controller.getAll.bind(controller)
-);
+ExperienceRoutes.get("", controller.getAll.bind(controller));
 
 ExperienceRoutes.post(
   "/",
@@ -73,8 +69,6 @@ ExperienceRoutes.delete(
  * /freelancers/{freelancerId}/experiences:
  *   get:
  *     summary: Get all experiences by freelancer ID
- *     security:
- *      - BearerAuth: []
  *     tags:
  *       - Experience
  *     parameters:

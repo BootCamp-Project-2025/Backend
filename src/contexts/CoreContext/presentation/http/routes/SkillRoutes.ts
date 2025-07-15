@@ -12,8 +12,6 @@ const controller = container.resolve(FreelancerController);
  * /freelancers/{freelancerId}/skills:
  *  get:
  *      summary: Get all skills of a freelancer
- *      security:
- *        - BearerAuth: []
  *      tags:
  *       - Skill
  *      parameters:
@@ -34,7 +32,7 @@ const controller = container.resolve(FreelancerController);
  *              description: Everything is wrong
  *
  */
-SkillRoutes.get("", verifyToken(["FREELANCER"]), controller.getSkills);
+SkillRoutes.get("", controller.getSkills);
 
 /**
  * @openapi

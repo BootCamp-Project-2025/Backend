@@ -29,7 +29,7 @@ describe("UpdateCourseUseCase", () => {
       name: "Updated Name",
       description: "Updated Description",
       imgSrc: "http://example.com/new.png",
-      userId: "userId"
+      userId: "userId",
     };
 
     const fakeDomainCourse = {} as Course;

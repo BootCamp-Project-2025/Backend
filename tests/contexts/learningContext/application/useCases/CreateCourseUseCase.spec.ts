@@ -22,14 +22,14 @@ describe("CreateCourseUseCase", () => {
       name: "Curso Test",
       description: "Descripción de prueba",
       imgSrc: "https://example.com/img.png",
-      userId: "userId"
+      userId: "userId",
     };
 
     const fakeCourse = Course.create({
       name: CourseName.create({ name: dto.name }),
       description: CourseDescription.create({ description: dto.description }),
       imgSrc: dto.imgSrc,
-      userId: UserId.create(new UniqueEntityID(dto.userId))
+      userId: UserId.create(new UniqueEntityID(dto.userId)),
     });
     repoMock.insert.mockResolvedValue(fakeCourse);
 

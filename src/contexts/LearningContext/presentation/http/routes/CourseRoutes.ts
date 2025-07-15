@@ -17,6 +17,7 @@ const controller = container.resolve(CourseController);
  *         description: A list of courses
  */
 courseRouter.get("/", controller.getAllCourses);
+
 /**
  * @openapi
  * /courses/{id}:
@@ -36,6 +37,7 @@ courseRouter.get("/", controller.getAllCourses);
  *         description: return the course
  */
 courseRouter.get("/:id", controller.getCourse);
+
 /**
  * @openapi
  * /courses/{id}:
@@ -64,6 +66,7 @@ courseRouter.get("/:id", controller.getCourse);
  *         description: Course updated successfully
  */
 courseRouter.put("/:id", controller.editCourse);
+
 /**
  * @openapi
  * /courses/{id}:

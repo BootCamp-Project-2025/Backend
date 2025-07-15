@@ -18,7 +18,7 @@ datasource db {
 }
 
 model Course{
-   id      String      @id @default(uuid())
+  id      String      @id @default(uuid())
   name   String   @unique
   field String
   requirements String
@@ -29,6 +29,8 @@ model Course{
   subCategory String   @default("")
   imgSrc String
   modules Module[]
+  userId String
+  user    User   @relation("UserCourse", fields: [userId], references: [id])
 }
 
 model Module{
@@ -57,6 +59,7 @@ model User {
   profilePicture     String?
   freelancerProfile  Freelancer? @relation("UserFreelancer") 
   clientProfile      Client?     @relation("UserClient")
+  Course             Course[]    @relation("UserCourse")
 }
 
 model Freelancer {

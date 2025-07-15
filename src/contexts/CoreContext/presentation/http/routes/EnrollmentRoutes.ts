@@ -1,6 +1,7 @@
 import { container } from "tsyringe";
 import { EnrollmentController } from "../controllers/EnrollmentController";
 import { Router } from "express";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 
 const controller = container.resolve(EnrollmentController);
 const router = Router();
@@ -28,13 +29,17 @@ const router = Router();
  *          description: Enrollment created successfully
  *        '400':
  *          description: Bad request
+ *        '401':
+ *          description: Missing or invalid authentication token
+ *        '403':
+ *          description: Forbidden
  *        '404':
  *          description: Course or user not found
  *        '409':
  *          description: Enrollment already exists
  */
 
-router.post("/", controller.createEnrollment);
+router.post("/", verifyToken(), controller.createEnrollment);
 
 /**
  * @openapi
@@ -55,9 +60,13 @@ router.post("/", controller.createEnrollment);
  *          description: Enrollment canceled successfully
  *        '400':
  *          description: Bad request
+ *        '401':
+ *          description: Missing or invalid authentication token
+ *        '403':
+ *          description: Forbidden
  *        '404':
  *          description: Enrollment not found
  */
-router.put("/:id", controller.cancelEnrollment);
+router.put("/:id", verifyToken(), controller.cancelEnrollment);
 
 export default router;

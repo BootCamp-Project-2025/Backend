@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { container } from "@/di-container";
 import { CertificationController } from "../controllers/CertificationController";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 
 export const CertificationRoutes = Router({ mergeParams: true });
 const controller = container.resolve(CertificationController);
@@ -10,6 +11,8 @@ const controller = container.resolve(CertificationController);
  * /freelancers/{freelancerId}/certifications:
  *   get:
  *     summary: Get all certifications of a freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Certification
  *     parameters:
@@ -22,14 +25,24 @@ const controller = container.resolve(CertificationController);
  *     responses:
  *       200:
  *         description: A list of certifications for the freelancer
+ *       401:
+ *         description: Unauthorized access
+ *       403:
+ *         description: Forbidden access
  */
-CertificationRoutes.get("", controller.getAll.bind(controller));
+CertificationRoutes.get(
+  "",
+  verifyToken(["FREELANCER"]),
+  controller.getAll.bind(controller)
+);
 
 /**
  * @openapi
  * /freelancers/{freelancerId}/certifications:
  *   post:
  *     summary: Create a new certification for a freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Certification
  *     parameters:
@@ -51,14 +64,24 @@ CertificationRoutes.get("", controller.getAll.bind(controller));
  *     responses:
  *       201:
  *         description: Certification created successfully
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  */
-CertificationRoutes.post("", controller.create.bind(controller));
+CertificationRoutes.post(
+  "",
+  verifyToken(["FREELANCER"]),
+  controller.create.bind(controller)
+);
 
 /**
  * @openapi
  * /freelancers/{freelancerId}/certifications/{certificationId}:
  *   put:
  *     summary: Update a certification of a freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Certification
  *     parameters:
@@ -86,9 +109,15 @@ CertificationRoutes.post("", controller.create.bind(controller));
  *     responses:
  *       204:
  *         description: Certification updated successfully
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
+ *
  */
 CertificationRoutes.put(
   "/:certificationId",
+  verifyToken(["FREELANCER"]),
   controller.update.bind(controller)
 );
 
@@ -97,6 +126,8 @@ CertificationRoutes.put(
  * /freelancers/{freelancerId}/certifications/{certificationId}:
  *   delete:
  *     summary: Delete a certification of a freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Certification
  *     parameters:
@@ -115,9 +146,17 @@ CertificationRoutes.put(
  *     responses:
  *       204:
  *         description: Certification deleted successfully
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
+ *       404:
+ *         description: Certification not found
+ *
  */
 CertificationRoutes.delete(
   "/:certificationId",
+  verifyToken(["FREELANCER"]),
   controller.delete.bind(controller)
 );
 

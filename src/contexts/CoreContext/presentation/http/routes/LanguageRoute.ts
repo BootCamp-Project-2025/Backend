@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { container } from "@/di-container";
 import LanguageController from "../controllers/LanguageController";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 
 export const LanguageRoutes = Router({ mergeParams: true });
 const controller = container.resolve(LanguageController);
@@ -12,6 +13,8 @@ const controller = container.resolve(LanguageController);
   
  *  get:
  *      summary: Get all languages of a freelancer
+ *      security:
+ *      - BearerAuth: []
  *      tags:
  *       - Language
  *      parameters:
@@ -24,17 +27,23 @@ const controller = container.resolve(LanguageController);
  *      responses:
  *          200:
  *              description: Everything is ok and returns freelancer languages
+ *          401:
+ *              description: Invalid or missing token
+ *          403:
+ *              description: Forbidden access
  *          500:
  *              description: Everything is wrong
  *
  */
-LanguageRoutes.get("", controller.getLanguages);
+LanguageRoutes.get("", verifyToken(["FREELANCER"]), controller.getLanguages);
 
 /**
  * @openapi
  * /freelancers/{freelancerId}/languages:
  *  post:
  *      summary: Create a new language for a freelancer
+ *      security:
+ *      - BearerAuth: []
  *      tags:
  *       - Language
  *      parameters:
@@ -56,17 +65,23 @@ LanguageRoutes.get("", controller.getLanguages);
  *      responses:
  *          201:
  *              description: Everything is ok and returns language
+ *          401:
+ *              description: Invalid or missing token
+ *          403:
+ *              description: Forbidden access
  *          500:
  *              description: Everything is wrong
  *
  */
-LanguageRoutes.post("", controller.addLanguage);
+LanguageRoutes.post("", verifyToken(["FREELANCER"]), controller.addLanguage);
 
 /**
  * @openapi
  * /freelancers/{freelancerId}/languages/{languageId}:
  *   put:
  *     summary: Update a language of a freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Language
  *     parameters:
@@ -93,19 +108,29 @@ LanguageRoutes.post("", controller.addLanguage);
  *     responses:
  *       200:
  *         description: freelancer language updated
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  *       404:
  *         description: freelancer or language not found
  *       500:
  *         description: Server error
  *
  */
-LanguageRoutes.put("/:languageId", controller.editLanguage);
+LanguageRoutes.put(
+  "/:languageId",
+  verifyToken(["FREELANCER"]),
+  controller.editLanguage
+);
 
 /**
  * @openapi
  * /freelancers/{freelancerId}/languages/{languageId}:
  *   delete:
  *     summary: Delete a language of a freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Language
  *     parameters:
@@ -123,12 +148,20 @@ LanguageRoutes.put("/:languageId", controller.editLanguage);
  *     responses:
  *       204:
  *         description: Freelancer language deleted
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  *       404:
  *         description: Freelancer or language not found
  *       500:
  *         description: Server error
  */
-LanguageRoutes.delete("/:languageId", controller.deleteLanguage);
+LanguageRoutes.delete(
+  "/:languageId",
+  verifyToken(["FREELANCER"]),
+  controller.deleteLanguage
+);
 
 /**
  * @openapi

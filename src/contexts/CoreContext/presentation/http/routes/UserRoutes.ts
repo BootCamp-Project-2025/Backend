@@ -60,6 +60,8 @@ router.post("/", controller.post);
  * /users:
  *  patch:
  *     summary: Updates the user data
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - User
  *     requestBody:

@@ -54,7 +54,7 @@ export class CourseMapper {
       language: domainCourse.getLanguage().value,
       category: domainCourse.getCategory().value,
       subCategory: domainCourse.getSubCategory().value,
-      userId: domainCourse.getUserID(),
+      userId: domainCourse.getUserID().toString(),
     };
   }
 

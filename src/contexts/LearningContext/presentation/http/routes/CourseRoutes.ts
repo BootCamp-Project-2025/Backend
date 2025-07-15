@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { container } from "tsyringe";
 import { CourseController } from "../controllers/CourseController";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 
 const courseRouter = Router();
 const controller = container.resolve(CourseController);
@@ -44,7 +45,7 @@ courseRouter.get("/:id", controller.getCourse);
  *   put:
  *     summary: Update an existing course
  *     tags:
- *       - Course
+ *       - Courses
  *     parameters:
  *       - in: path
  *         name: id
@@ -55,12 +56,16 @@ courseRouter.get("/:id", controller.getCourse);
  *     requestBody:
  *       required: true
  *       content:
- *         application/x-www-form-urlencoded:
- *           schema:
- *             $ref: '#/components/schemas/Language'
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Language'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               imgSrc:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Course updated successfully
@@ -97,17 +102,28 @@ courseRouter.delete("/:id", controller.delete);
  *     requestBody:
  *       required: true
  *       content:
- *         application/x-www-form-urlencoded:
- *           schema:
- *             $ref: '#/components/schemas/Language'
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Language'
+ *             type: object
+ *             required:
+ *               - name
+ *               - description
+ *               - imgSrc
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Curso de TypeScript"
+ *               description:
+ *                 type: string
+ *                 example: "Aprende a usar TypeScript en proyectos reales"
+ *               imgSrc:
+ *                 type: string
+ *                 example: "https://example.com/img.png"
  *     responses:
  *       201:
  *         description: Course created successfully
  */
-courseRouter.post("/", async (req, res, next) => {
+courseRouter.post("/", verifyToken(), async (req, res, next) => {
   try {
     await controller.create(req, res);
   } catch (err) {

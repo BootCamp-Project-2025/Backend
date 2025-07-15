@@ -121,8 +121,8 @@ export class Course extends AggregateRoot<CourseProps> {
     return this.props.language ?? CourseLanguage.create({ language: "" });
   }
 
-  getUserID(): string {
-    return this.props.userId.toString();
+  getUserID(): UserId {
+    return this.props.userId;
   }
 
   setName(newName: CourseName): void {

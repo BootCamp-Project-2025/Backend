@@ -5,6 +5,8 @@ import { CourseDTO } from "../../../../../src/contexts/LearningContext/domain/dt
 import { Course } from "../../../../../src/contexts/LearningContext/domain/aggregates/Course";
 import { CourseName } from "../../../../../src/contexts/LearningContext/domain/valueObjects/CourseName";
 import { CourseDescription } from "../../../../../src/contexts/LearningContext/domain/valueObjects/CourseDescription";
+import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 describe("CreateCourseUseCase", () => {
   let repoMock: { insert: jest.Mock };
@@ -20,12 +22,14 @@ describe("CreateCourseUseCase", () => {
       name: "Curso Test",
       description: "Descripción de prueba",
       imgSrc: "https://example.com/img.png",
+      userId: "userId"
     };
 
     const fakeCourse = Course.create({
       name: CourseName.create({ name: dto.name }),
       description: CourseDescription.create({ description: dto.description }),
       imgSrc: dto.imgSrc,
+      userId: UserId.create(new UniqueEntityID(dto.userId))
     });
     repoMock.insert.mockResolvedValue(fakeCourse);
 

@@ -71,7 +71,7 @@ export class Course extends AggregateRoot<CourseProps> {
       description: descriptionValue,
       time: props.time,
       imgSrc: props.imgSrc,
-      userId: userId,
+      userId,
     };
     return Course.create(course, id);
   }

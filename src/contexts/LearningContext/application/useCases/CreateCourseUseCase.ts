@@ -12,7 +12,7 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 export class CreateCourseUseCase implements IUseCase<CourseDTO, Course> {
   constructor(
     @inject("ICourseRepository") private courseRepo: ICourseRepository
-  ) {}
+  ) { }
 
   async execute(courseDto: CourseDTO): Promise<Course> {
     const courseName = CourseName.create({ name: courseDto.name });
@@ -25,7 +25,7 @@ export class CreateCourseUseCase implements IUseCase<CourseDTO, Course> {
       name: courseName,
       description: description,
       imgSrc: courseDto.imgSrc,
-      userId: userId,
+      userId,
     });
     return await this.courseRepo.insert(course);
   }

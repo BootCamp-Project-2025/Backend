@@ -9,7 +9,6 @@ import { ResponseService } from "../../../../../../src/contexts/Shared/applicati
 import { SuccessResponseEntity } from "../../../../../../src/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { ErrorResponseEntity } from "../../../../../../src/contexts/Shared/domain/entity/ErrorResponseEntity";
 import { CourseDTO } from "../../../../../../src/contexts/LearningContext/domain/dtos/CourseDTO";
-import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 
 describe("CourseController", () => {
   let controller: CourseController;

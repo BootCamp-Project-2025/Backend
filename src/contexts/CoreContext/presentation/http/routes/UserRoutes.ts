@@ -110,7 +110,7 @@ router.patch("/", verifyToken(), controller.updateUser);
  *              description: Everything is wrong
  *
  */
-router.put("/:id/freelance", controller.freelance);
+router.put("/:id/freelance", verifyToken(), controller.freelance);
 
 export default router;
 

@@ -94,6 +94,8 @@ router.patch("/", verifyToken(), controller.updateUser);
  * /users/{id}/freelance:
  *  put:
  *     summary: Update the user as freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - User
  *     parameters:

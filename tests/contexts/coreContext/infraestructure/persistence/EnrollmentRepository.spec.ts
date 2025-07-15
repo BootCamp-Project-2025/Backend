@@ -17,7 +17,8 @@ jest.mock("@/contexts/Shared/infrastructure/database/PrismaClient", () => ({
   },
 }));
 
-const PrismaClient = require("@/contexts/Shared/infrastructure/database/PrismaClient").default;
+const PrismaClient =
+  require("@/contexts/Shared/infrastructure/database/PrismaClient").default;
 const prismaMock = PrismaClient as {
   enrollment: {
     create: jest.Mock;
@@ -36,7 +37,8 @@ const mockEnrollmentDTO = {
 };
 
 // Se genera el objeto de dominio real a partir del mapper
-const domainEnrollment = EnrollmentMapper.persistanceToDomain(mockEnrollmentDTO);
+const domainEnrollment =
+  EnrollmentMapper.persistanceToDomain(mockEnrollmentDTO);
 
 describe("EnrollmentRepository (with real EnrollmentMapper)", () => {
   let repository: EnrollmentRepository;
@@ -92,8 +94,12 @@ describe("EnrollmentRepository (with real EnrollmentMapper)", () => {
     it("should throw ApiError if enrollment not found", async () => {
       prismaMock.enrollment.findUnique.mockResolvedValue(null);
 
-      await expect(repository.findById(mockEnrollmentDTO.id)).rejects.toThrow(ApiError);
-      await expect(repository.findById(mockEnrollmentDTO.id)).rejects.toMatchObject({
+      await expect(repository.findById(mockEnrollmentDTO.id)).rejects.toThrow(
+        ApiError
+      );
+      await expect(
+        repository.findById(mockEnrollmentDTO.id)
+      ).rejects.toMatchObject({
         statusCode: StatusCodes.NOT_FOUND,
         message: "Enrollment not found",
       });
@@ -104,7 +110,10 @@ describe("EnrollmentRepository (with real EnrollmentMapper)", () => {
     it("should return true if enrollment exists", async () => {
       prismaMock.enrollment.findFirst.mockResolvedValue(mockEnrollmentDTO);
 
-      const result = await repository.isUserEnrolled(mockEnrollmentDTO.userId, mockEnrollmentDTO.courseId);
+      const result = await repository.isUserEnrolled(
+        mockEnrollmentDTO.userId,
+        mockEnrollmentDTO.courseId
+      );
 
       expect(prismaMock.enrollment.findFirst).toHaveBeenCalledWith({
         where: {
@@ -118,7 +127,10 @@ describe("EnrollmentRepository (with real EnrollmentMapper)", () => {
     it("should return false if enrollment does not exist", async () => {
       prismaMock.enrollment.findFirst.mockResolvedValue(null);
 
-      const result = await repository.isUserEnrolled(mockEnrollmentDTO.userId, mockEnrollmentDTO.courseId);
+      const result = await repository.isUserEnrolled(
+        mockEnrollmentDTO.userId,
+        mockEnrollmentDTO.courseId
+      );
 
       expect(result).toBe(false);
     });

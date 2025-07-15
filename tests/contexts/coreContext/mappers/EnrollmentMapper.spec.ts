@@ -1,5 +1,8 @@
 import { EnrollmentMapper } from "@/contexts/CoreContext/mappers/EnrollmentMapper";
-import { Enrollment, EnrollmentStatus } from "@/contexts/CoreContext/domain/aggregates/Enrollment";
+import {
+  Enrollment,
+  EnrollmentStatus,
+} from "@/contexts/CoreContext/domain/aggregates/Enrollment";
 import { CourseId } from "@/contexts/LearningContext/domain/valueObjects/CourseId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
@@ -7,12 +10,15 @@ import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 describe("EnrollmentMapper", () => {
   describe("domainToDto", () => {
     it("should map Enrollment domain object to DTO", () => {
-      const enrollment = Enrollment.create({
-        courseId: CourseId.create(new UniqueEntityID("course-123")),
-        userId: UserId.create(new UniqueEntityID("user-456")),
-        createdAt: new Date("2024-01-01T00:00:00Z"),
-        status: EnrollmentStatus.ENROLLED,
-      }, "enroll-789");
+      const enrollment = Enrollment.create(
+        {
+          courseId: CourseId.create(new UniqueEntityID("course-123")),
+          userId: UserId.create(new UniqueEntityID("user-456")),
+          createdAt: new Date("2024-01-01T00:00:00Z"),
+          status: EnrollmentStatus.ENROLLED,
+        },
+        "enroll-789"
+      );
 
       const dto = EnrollmentMapper.domainToDto(enrollment);
 

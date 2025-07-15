@@ -9,13 +9,12 @@ import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessRe
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { ErrorResponseEntity } from "../../../../Shared/domain/entity/ErrorResponseEntity";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { log } from "console";
 
 @injectable()
 export class CourseController implements ICourseController {
   constructor(
     @inject("ICourseService") private readonly courseService: ICourseService
-  ) {}
+  ) { }
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {

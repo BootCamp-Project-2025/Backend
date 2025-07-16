@@ -12,7 +12,7 @@ describe("RequestEdited", () => {
   });
 
   it("should allow setting edited to true", () => {
-    const edited = RequestEdited.initial().edited();
+    const edited = RequestEdited.edited();
     expect(edited.value).toBe(true);
   });
 });

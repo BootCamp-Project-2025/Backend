@@ -83,7 +83,7 @@ export class CourseRepository implements ICourseRepository {
     try {
       await PrismaClient.course.update({
         data: { published: true },
-        where: { id: id },
+        where: { id },
       });
       return true;
     } catch {

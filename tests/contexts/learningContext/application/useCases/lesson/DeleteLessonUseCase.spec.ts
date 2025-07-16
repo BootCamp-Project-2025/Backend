@@ -33,7 +33,7 @@ describe("DeleteLessonUseCase", () => {
     });
     mockRepository.findById.mockResolvedValue(lesson);
     mockRepository.delete.mockResolvedValue();
-    expect(async () => await useCase.execute("testLessonId")).resolves;
+    expect(useCase.execute("testLessonId")).resolves.toBe(undefined);
   });
 
   it("Lesson not found", () => {

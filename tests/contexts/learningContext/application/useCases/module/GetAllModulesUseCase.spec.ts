@@ -42,7 +42,7 @@ describe("GetAllModulesUseCase", () => {
     const modules = [module, module1];
 
     mockRepository.findByCourseId.mockResolvedValue(modules);
-    expect(await useCase.execute("modules")).resolves;
+    expect(useCase.execute("modules")).resolves.toBe(modules);
     expect(mockRepository.findByCourseId).toHaveBeenCalledWith("modules");
   });
 });

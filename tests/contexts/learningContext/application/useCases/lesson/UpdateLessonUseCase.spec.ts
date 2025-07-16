@@ -41,7 +41,7 @@ describe("UpdateLessonUseCase", () => {
     });
     mockRepository.findById.mockResolvedValue(lessonOld);
     mockRepository.update.mockResolvedValue(lesson);
-    expect(async () => await useCase.execute(lesson)).resolves;
+    expect(useCase.execute(lesson)).resolves.toBe(lesson);
   });
 
   it("Lesson not found", () => {

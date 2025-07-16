@@ -34,7 +34,7 @@ describe("DeleteModuleUseCase", () => {
 
     mockRepository.findById.mockResolvedValue(module);
     mockRepository.delete.mockResolvedValue();
-    expect(async () => await useCase.execute("ModuleTestId")).resolves;
+    expect(useCase.execute("ModuleTestId")).resolves.toBe(undefined);
   });
 
   it("Module not found", () => {

@@ -42,7 +42,7 @@ describe("UpdateModuleUseCase", () => {
 
     mockRepository.findById.mockResolvedValue(module);
     mockRepository.update.mockResolvedValue(moduleNew);
-    expect(async () => await useCase.execute(moduleNew)).resolves;
+    expect(useCase.execute(moduleNew)).resolves.toBe(moduleNew);
   });
 
   it("Module not found", () => {

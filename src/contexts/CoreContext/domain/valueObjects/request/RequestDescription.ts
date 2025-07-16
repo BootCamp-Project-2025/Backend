@@ -16,7 +16,7 @@ export class RequestDescription extends ValueObject<RequestDescriptionProps> {
   }
 
   public static create(value: string): RequestDescription {
-    if (!value || value.trim().length === 0) {
+    if (value.trim().length === 0) {
       throw new ApiError(
         StatusCodes.BAD_REQUEST,
         "Description cannot be empty"

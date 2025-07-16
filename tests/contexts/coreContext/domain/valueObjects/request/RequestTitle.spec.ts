@@ -1,4 +1,4 @@
-import { RequestTitle } from "@/contexts/LearningContext/domain/valueObjects/RequestTitle";
+import { RequestTitle } from "@/contexts/CoreContext/domain/valueObjects/request/RequestTitle";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 describe("RequestTitle Value Object", () => {

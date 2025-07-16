@@ -1,4 +1,6 @@
 import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 export enum ProposalStatusEnum {
   REJECTED = "REJECTED",
@@ -21,7 +23,7 @@ export class ProposalStatus extends ValueObject<StatusProps> {
 
   public static create(status: ProposalStatusEnum | null | undefined) {
     if (!status) {
-      throw new Error("Status required");
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Status required");
     }
 
     return new ProposalStatus({ value: status });

@@ -6,7 +6,7 @@ export enum RequestStatusEnum {
   PENDING = "PENDING",
   AVAILABLE = "AVAILABLE",
   ACCEPTED = "ACCEPTED",
-  REJECTED = "REJECTED",
+  CANCELED = "CANCELED",
 }
 
 interface RequestStatusProps {
@@ -39,17 +39,19 @@ export class RequestStatus extends ValueObject<RequestStatusProps> {
     return new RequestStatus({ value: RequestStatusEnum.PENDING });
   }
 
-  public isAvalilable(): boolean {
+  public isAvailable(): boolean {
     return this.value === RequestStatusEnum.AVAILABLE;
   }
 
   public isAccepted(): boolean {
     return this.value === RequestStatusEnum.ACCEPTED;
   }
+
   public isPending(): boolean {
     return this.value === RequestStatusEnum.PENDING;
   }
-  public isRejected(): boolean {
-    return this.value === RequestStatusEnum.REJECTED;
+
+  public isCanceled(): boolean {
+    return this.value === RequestStatusEnum.CANCELED;
   }
 }

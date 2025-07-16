@@ -1,4 +1,4 @@
-import { RequestCategory } from "@/contexts/LearningContext/domain/valueObjects/RequestCategory";
+import { RequestCategory } from "@/contexts/CoreContext/domain/valueObjects/request/RequestCategory";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 describe("RequestCategory", () => {

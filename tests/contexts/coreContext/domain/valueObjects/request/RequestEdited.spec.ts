@@ -1,4 +1,4 @@
-import { RequestEdited } from "@/contexts/LearningContext/domain/valueObjects/RequestEdited";
+import { RequestEdited } from "@/contexts/CoreContext/domain/valueObjects/request/RequestEdited";
 
 describe("RequestEdited", () => {
   it("should create a value with false initially", () => {
@@ -12,7 +12,7 @@ describe("RequestEdited", () => {
   });
 
   it("should allow setting edited to true", () => {
-    const edited = RequestEdited.initial().setEdited();
+    const edited = RequestEdited.initial().edited();
     expect(edited.value).toBe(true);
   });
 });

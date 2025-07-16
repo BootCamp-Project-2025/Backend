@@ -1,21 +1,21 @@
 import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
-import { RequestDescription } from "../valueObjects/RequestDescription";
+import { RequestDescription } from "../valueObjects/request/RequestDescription";
 import {
   RequestStatus,
   RequestStatusEnum,
-} from "../valueObjects/RequestStatus";
-import { RequestTitle } from "../valueObjects/RequestTitle";
+} from "../valueObjects/request/RequestStatus";
+import { RequestTitle } from "../valueObjects/request/RequestTitle";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { Proposal } from "@/contexts/CoreContext/domain/entities/Proposal";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
-import { RequestCategory } from "../valueObjects/RequestCategory";
-import { RequestSubcategory } from "../valueObjects/RequestSubCategory";
+import { RequestCategory } from "../valueObjects/request/RequestCategory";
+import { RequestSubcategory } from "../valueObjects/request/RequestSubCategory";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
-import { RequestEstimation } from "../valueObjects/RequestEstimation";
-import { RequestEdited } from "../valueObjects/RequestEdited";
-import { RequestLanguage } from "../valueObjects/RequestLanguage";
+import { RequestEstimation } from "../valueObjects/request/RequestEstimation";
+import { RequestEdited } from "../valueObjects/request/RequestEdited";
+import { RequestLanguage } from "../valueObjects/request/RequestLanguage";
 
 export interface RequestProps {
   title: RequestTitle;
@@ -113,21 +113,30 @@ export class Request extends AggregateRoot<RequestProps> {
     const prop = this.props.proposals.find((p) => p.id.equals(proposalId));
     if (!prop)
       throw new ApiError(StatusCodes.BAD_REQUEST, "Proposal doesn't find");
-    prop.accept();
 
-    this.props.proposals
-      .filter((p) => !p.id.equals(proposalId))
-      .forEach((p) => p.reject());
+    prop.accept();
+    this.rejectRemainingProposals(proposalId);
 
     this.setStatus(RequestStatus.create(RequestStatusEnum.ACCEPTED));
   }
 
-  public rejectRemaningProposals(): void {
+  public rejectRemainingProposals(acceptedId?: UniqueEntityID): void {
     this.props.proposals.forEach((p) => {
-      if (!p.status.isRejected()) {
+      if (p.id.equals(acceptedId)) return;
+      if (p.status.isPending()) {
         p.reject();
       }
     });
+  }
+
+  public accept(): void {
+    if (!this.props.status.isPending()) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Only pending requests can be accepted"
+      );
+    }
+    this.setStatus(RequestStatus.create(RequestStatusEnum.ACCEPTED));
   }
 
   public cancel(): void {
@@ -137,8 +146,19 @@ export class Request extends AggregateRoot<RequestProps> {
         "Only a pending requests can be cancelled"
       );
     }
-    this.setStatus(RequestStatus.create(RequestStatusEnum.REJECTED));
-    this.rejectRemaningProposals();
+
+    const hasAcceptedProposal = this.props.proposals.some((p) =>
+      p.status.isAccepted()
+    );
+    if (hasAcceptedProposal) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "Cannot cancel a request with an accepted proposal"
+      );
+    }
+
+    this.setStatus(RequestStatus.create(RequestStatusEnum.CANCELED));
+    this.rejectRemainingProposals();
   }
 
   getTitle(): RequestTitle {
@@ -204,28 +224,13 @@ export class Request extends AggregateRoot<RequestProps> {
     this.updateTimestamp();
   }
 
-  public accept(): void {
-    if (!this.props.status.isPending()) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Only pending requests can be accepted"
-      );
-    }
-    this.setStatus(RequestStatus.create("ACCEPTED"));
-  }
-
-  public reject(): void {
-    if (!this.props.status.isPending()) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        "Only pending requests can be rejected"
-      );
-    }
-    this.setStatus(RequestStatus.create("REJECTED"));
-  }
-
   private updateTimestamp(): void {
     this.props.updatedAt = new Date();
+  }
+
+  public requestEdited(): void {
+    this.props.edited = RequestEdited.create(true);
+    this.updateTimestamp();
   }
 
   public isValid(): boolean {

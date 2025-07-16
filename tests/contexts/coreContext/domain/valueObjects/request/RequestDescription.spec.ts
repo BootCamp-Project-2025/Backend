@@ -1,4 +1,4 @@
-import { RequestDescription } from "@/contexts/LearningContext/domain/valueObjects/RequestDescription";
+import { RequestDescription } from "@/contexts/CoreContext/domain/valueObjects/request/RequestDescription";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 describe("RequestDescription", () => {

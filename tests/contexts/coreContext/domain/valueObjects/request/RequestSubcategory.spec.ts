@@ -1,4 +1,4 @@
-import { RequestSubcategory } from "@/contexts/LearningContext/domain/valueObjects/RequestSubCategory";
+import { RequestSubcategory } from "@/contexts/CoreContext/domain/valueObjects/request/RequestSubCategory";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 describe("RequestSubcategory", () => {

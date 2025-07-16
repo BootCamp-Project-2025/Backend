@@ -1,4 +1,4 @@
-import { RequestEstimation } from "@/contexts/LearningContext/domain/valueObjects/RequestEstimation";
+import { RequestEstimation } from "@/contexts/CoreContext/domain/valueObjects/request/RequestEstimation";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 describe("RequestEstimation", () => {

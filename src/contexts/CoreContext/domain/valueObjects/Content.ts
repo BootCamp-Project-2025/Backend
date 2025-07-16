@@ -1,33 +1,36 @@
 import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
-interface DescriptionProps {
+interface ContentProps {
   value: string;
 }
 
-export class Description extends ValueObject<DescriptionProps> {
+export class Content extends ValueObject<ContentProps> {
   get value(): string {
     return this.props.value;
   }
 
-  private constructor(props: DescriptionProps) {
+  private constructor(props: ContentProps) {
     super(props);
   }
 
-  private static isValidDescription(description: string): boolean {
-    return description.trim().length > 50 && description.trim().length < 200;
+  private static isValidContent(content: string): boolean {
+    return content.trim().length > 50 && content.trim().length < 200;
   }
 
-  public static create(description: string | null | undefined) {
-    if (!description) {
-      throw new Error("Description required");
+  public static create(content: string | null | undefined) {
+    if (!content) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Description required");
     }
 
-    if (!this.isValidDescription(description)) {
-      throw new Error(
+    if (!this.isValidContent(content)) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
         "Invalid description: must be between 50 and 200 characters long"
       );
     }
 
-    return new Description({ value: description });
+    return new Content({ value: content });
   }
 }

@@ -1,8 +1,7 @@
-import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
 
 interface FreelancerIdProps {
-  value: UniqueEntityID;
+  value: string;
 }
 
 export class FreelancerId extends ValueObject<FreelancerIdProps> {
@@ -14,11 +13,11 @@ export class FreelancerId extends ValueObject<FreelancerIdProps> {
     return this.props.value.toString();
   }
 
-  public getValue(): UniqueEntityID {
+  public getValue(): string {
     return this.props.value;
   }
 
-  public static creat(id: UniqueEntityID): FreelancerId {
+  public static creat(id: string): FreelancerId {
     return new FreelancerId({ value: id });
   }
 }

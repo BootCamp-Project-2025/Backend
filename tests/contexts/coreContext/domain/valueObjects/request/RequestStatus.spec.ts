@@ -1,7 +1,7 @@
 import {
   RequestStatus,
   RequestStatusEnum,
-} from "@/contexts/LearningContext/domain/valueObjects/RequestStatus";
+} from "@/contexts/CoreContext/domain/valueObjects/request/RequestStatus";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 describe("RequestStatus Value Object", () => {
@@ -17,7 +17,7 @@ describe("RequestStatus Value Object", () => {
 
   it("should correctly detect status types", () => {
     const available = RequestStatus.create("AVAILABLE");
-    expect(available.isAvalilable()).toBe(true);
+    expect(available.isAvailable()).toBe(true);
     expect(available.isPending()).toBe(false);
   });
 

@@ -1,5 +1,5 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { Description } from "../valueObjects/Content";
+import { Content } from "../valueObjects/Content";
 import { CreationDate } from "../valueObjects/CreationDate";
 import {
   ProposalStatus,
@@ -9,7 +9,7 @@ import { Entity } from "@/contexts/Shared/domain/Entity";
 import { UserId } from "../valueObjects/UserId";
 
 export interface ProposalProps {
-  content: Description;
+  content: Content;
   status: ProposalStatus;
   creationDate: CreationDate;
   userId: UserId;
@@ -48,7 +48,7 @@ export class Proposal extends Entity<ProposalProps> {
     return this.props.status;
   }
 
-  get content(): Description {
+  get content(): Content {
     return this.props.content;
   }
 

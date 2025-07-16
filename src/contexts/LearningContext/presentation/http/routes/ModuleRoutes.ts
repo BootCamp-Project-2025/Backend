@@ -1,58 +1,50 @@
 import { Router } from "express";
 import { container } from "tsyringe";
 import ModuleController from "../controllers/ModuleController";
-import lessonRouter from "./LessonRoute";
+import LessonController from "../controllers/LessonController";
 
-const controller = container.resolve(ModuleController);
+const moduleController = container.resolve(ModuleController);
+const lessonController = container.resolve(LessonController);
 
-const moduleRouter = Router({ mergeParams: true });
+const moduleRoutes = Router({ mergeParams: true });
 
-moduleRouter.use("/:moduleId/lessons", lessonRouter);
-moduleRouter.use("/lessons", lessonRouter);
 /**
  * @openapi
- * /courses/{courseId}/modules:
- *   get:
- *     summary: Get all the modules of a course
+ * /modules/{moduleId}/lessons:
+ *   post:
+ *     summary: Add a new lesson to the module
  *     tags:
  *       - Modules
  *     parameters:
  *       - in: path
- *         name: courseId
+ *         name: moduleId
  *         required: true
- *         description: The ID of the course
+ *         description: The ID of the module where we want to create the lesson
  *         schema:
  *           type: string
- *     responses:
- *       200:
- *         description: A list of courses
- */
-moduleRouter.get("/", controller.getAll);
-
-/**
- * @openapi
- * /courses/{courseId}/modules:
- *   post:
- *     summary: Create a new module
- *     tags:
- *       - Modules
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ModuleDto'
+ *             $ref: '#/components/schemas/LessonDto'
  *     responses:
- *       200:
- *         description: A list of courses
+ *       201:
+ *         description: lesson has been created
+ *       400:
+ *         description: the body has bad data
+ *       404:
+ *         description: the course couldn't be found
+ *       500:
+ *         description: error executing the request
  */
-moduleRouter.post("/", controller.create);
+moduleRoutes.post("/:moduleId/lessons", lessonController.create);
 
 /**
  * @openapi
- * /courses/modules/{moduleId}:
+ * /modules/{moduleId}:
  *   put:
- *     summary: Update a module
+ *     summary: Update the module with the id moduleId
  *     tags:
  *       - Modules
  *     parameters:
@@ -72,13 +64,13 @@ moduleRouter.post("/", controller.create);
  *       200:
  *         description: A list of courses
  */
-moduleRouter.put("/:moduleId", controller.update);
+moduleRoutes.put("/:moduleId", moduleController.update);
 
 /**
  * @openapi
- * /courses/modules/{moduleId}:
+ * /modules/{moduleId}:
  *   delete:
- *     summary: Delete a module
+ *     summary: Delete the module with the id moduleId
  *     tags:
  *       - Modules
  *     parameters:
@@ -96,9 +88,9 @@ moduleRouter.put("/:moduleId", controller.update);
  *       500:
  *         description: error executing the request
  */
-moduleRouter.delete("/:moduleId", controller.delete);
+moduleRoutes.delete("/:moduleId", moduleController.delete);
 
-export default moduleRouter;
+export default moduleRoutes;
 
 /**
  * @openapi

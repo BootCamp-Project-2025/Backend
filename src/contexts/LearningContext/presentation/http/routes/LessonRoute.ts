@@ -4,45 +4,13 @@ import LessonController from "../controllers/LessonController";
 
 const controller = container.resolve(LessonController);
 
-const lessonRouter = Router({ mergeParams: true });
+const lessonRoutes = Router({ mergeParams: true });
 
 /**
  * @openapi
- * /courses/modules/{moduleId}/lessons:
- *   post:
- *     summary: Create a new lesson
- *     tags:
- *       - Lessons
- *     parameters:
- *       - in: path
- *         name: moduleId
- *         required: true
- *         description: The ID of the module where we want to create the lesson
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/LessonDto'
- *     responses:
- *       201:
- *         description: lesson has been created
- *       400:
- *         description: the body has bad data
- *       404:
- *         description: the course couldn't be found
- *       500:
- *         description: error executing the request
- */
-lessonRouter.post("/", controller.create);
-
-/**
- * @openapi
- * /courses/modules/lessons/{lessonId}:
+ * /lessons/{lessonId}:
  *   put:
- *     summary: Update a lesson
+ *     summary: Update a lesson with the id lessonId
  *     tags:
  *       - Lessons
  *     parameters:
@@ -68,13 +36,13 @@ lessonRouter.post("/", controller.create);
  *       500:
  *         description: error executing the request
  */
-lessonRouter.put("/:lessonId", controller.update);
+lessonRoutes.put("/:lessonId", controller.update);
 
 /**
  * @openapi
- * /courses/modules/lessons/{lessonId}:
+ * /lessons/{lessonId}:
  *   delete:
- *     summary: Delete a lesson
+ *     summary: Delete the lesson with the id lessonId
  *     tags:
  *       - Lessons
  *     parameters:
@@ -92,9 +60,9 @@ lessonRouter.put("/:lessonId", controller.update);
  *       500:
  *         description: error executing the request
  */
-lessonRouter.delete("/:lessonId", controller.delete);
+lessonRoutes.delete("/:lessonId", controller.delete);
 
-export default lessonRouter;
+export default lessonRoutes;
 
 /**
  * @openapi

@@ -22,7 +22,7 @@ export default class ModuleController implements IModuleController {
       const module: Module = ModuleMapper.DtoToDomain(moduleDto);
       const moduleDomain: Module = await this.moduleService.create(
         module,
-        req.params.courseId
+        req.params.id
       );
       const resposeData = ModuleMapper.DomainToDto(moduleDomain);
       const response = new SuccessResponseEntity(

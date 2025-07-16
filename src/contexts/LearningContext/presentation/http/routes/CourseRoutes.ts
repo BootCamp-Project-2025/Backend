@@ -1,10 +1,51 @@
 import { Router } from "express";
 import { container } from "tsyringe";
 import { CourseController } from "../controllers/CourseController";
-import moduleRouter from "./ModuleRoutes";
+
+import ModuleController from "../controllers/ModuleController";
 
 const courseRouter = Router();
+const moduleController = container.resolve(ModuleController);
 const controller = container.resolve(CourseController);
+
+/**
+ * @openapi
+ * /courses/{courseId}/modules:
+ *   get:
+ *     summary: Get all the modules of a course
+ *     tags:
+ *       - Courses
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         description: The ID of the course
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of courses
+ */
+courseRouter.get("/:id/modules", moduleController.getAll);
+
+/**
+ * @openapi
+ * /courses/{courseId}/modules:
+ *   post:
+ *     summary: Add a new module to the course
+ *     tags:
+ *       - Courses
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ModuleDto'
+ *     responses:
+ *       200:
+ *         description: A list of courses
+ */
+courseRouter.post("/:id/modules", moduleController.create);
 
 /**
  * @openapi
@@ -126,8 +167,6 @@ courseRouter.post("/", async (req, res, next) => {
   }
 });
 
-courseRouter.use("/:courseId/modules", moduleRouter);
-courseRouter.use("/modules", moduleRouter);
 /**
  * @openapi
  * /courses/{id}:

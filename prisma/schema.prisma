@@ -55,8 +55,13 @@ model User {
   roles              UserRole[]  @default([CLIENT])
   createdAt          DateTime    @default(now())
   profilePicture     String?
-  freelancerProfile  Freelancer? @relation("UserFreelancer") 
+  freelancerProfile  Freelancer? @relation("UserFreelancer")
   clientProfile      Client?     @relation("UserClient")
+
+  lastSeen         DateTime  @default(now())
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  chats            Chat[]    @relation("UserChats")
 }
 
 model Freelancer {
@@ -148,4 +153,37 @@ model Experience {
   endDate      DateTime   @default(now())
   freelancerId String
   freelancer   Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+}
+
+enum MessageType {
+  TEXT
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+model Message {
+  id         String        @id @default(uuid())
+  content    String
+  type       MessageType
+  timestamp  DateTime
+  status     MessageStatus
+  senderId   String
+  receiverId String
+  chatId     String
+  sender     User          @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   User          @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  chat       Chat          @relation(fields: [chatId], references: [id])
+}
+
+model Chat {
+  id           String    @id @default(uuid())
+  name         String    @default("")
+  createdAt    DateTime  @default(now())
+  messages     Message[]
+  participants User[]    @relation("UserChats")
 }

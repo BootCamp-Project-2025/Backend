@@ -4,10 +4,11 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { Module } from "../entities/Module";
 
 export class Modules extends ManyRelationship<Module> {
-  // deepsource-disable-next-line JS-0105
+  // deepsource-disable JS-0105
   compareItems(a: Module, b: Module): boolean {
     return a.equals(b);
   }
+  // deepsource-enable JS-0105
 
   public static create(modules: Module[] = []): Modules {
     return new Modules(modules);

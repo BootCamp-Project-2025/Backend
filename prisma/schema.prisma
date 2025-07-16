@@ -173,10 +173,9 @@ model Message {
   timestamp  DateTime
   status     MessageStatus
   senderId   String
-  receiverId String
   chatId     String
   sender     User          @relation("SentMessages", fields: [senderId], references: [id])
-  receiver   User          @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receivers  User[]        @relation("ReceivedMessages")
   chat       Chat          @relation(fields: [chatId], references: [id])
 }
 

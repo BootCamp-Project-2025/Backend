@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Response } from "express";
+import { Request, Response } from "express";
 import LessonController from "@/contexts/LearningContext/presentation/http/controllers/LessonController";
 import LessonMapper from "@/contexts/LearningContext/mappers/LessonMapper";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
@@ -29,7 +29,7 @@ describe("LessonController", () => {
   });
 
   it("should call lessonService create with correct parameters", async () => {
-    const req: any = {
+    const req = {
       body: {
         id: "testId",
         title: "Test Lesson",
@@ -39,7 +39,7 @@ describe("LessonController", () => {
         resources: [],
       },
       params: { moduleId: "moduleIdTest" },
-    };
+    } as unknown as Request;
 
     const mockObject = LessonMapper.DtoToDomain({
       id: "testId",
@@ -75,7 +75,7 @@ describe("LessonController", () => {
       videoUrls: [],
       resources: [],
     };
-    const req: any = {
+    const req = {
       body: {
         title: "Test Lesson",
         position: 1,
@@ -84,7 +84,7 @@ describe("LessonController", () => {
         resources: [],
       },
       params: { lessonId: "lessonIdTest" },
-    };
+    } as unknown as Request;
     const mockObject = LessonMapper.DtoToDomain(lesson);
     console.error(mockObject);
     LessonService.update.mockResolvedValue(mockObject);
@@ -102,7 +102,7 @@ describe("LessonController", () => {
   });
   it("should call lessonService delete with correct parameters", async () => {
     const res = mockResponse();
-    const req = { params: { lessonId: "lessonIdTest" } } as any;
+    const req = { params: { lessonId: "lessonIdTest" } } as unknown as Request;
 
     await controller.delete(req, res);
 

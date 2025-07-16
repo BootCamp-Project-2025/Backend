@@ -8,7 +8,9 @@ import UpdateLessonUseCase from "@/contexts/LearningContext/application/useCases
 const mockRepository: jest.Mocked<ILessonRepository> = {
   update: jest.fn(),
   findById: jest.fn(),
-} as any;
+  create: jest.fn(),
+  delete: jest.fn(),
+};
 
 const useCase = new UpdateLessonUseCase(mockRepository);
 

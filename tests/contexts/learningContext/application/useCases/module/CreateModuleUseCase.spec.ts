@@ -9,11 +9,20 @@ import { CourseMapper } from "@/contexts/LearningContext/mappers/CourseMapper";
 
 const mockRepository: jest.Mocked<IModuleRepository> = {
   create: jest.fn(),
-} as any;
+  findByCourseId: jest.fn(),
+  findById: jest.fn(),
+  delete: jest.fn(),
+  update: jest.fn(),
+};
 
 const mockCourseRepository: jest.Mocked<ICourseRepository> = {
   findById: jest.fn(),
-} as any;
+  findAll: jest.fn(),
+  insert: jest.fn(),
+  publish: jest.fn(),
+  update: jest.fn(),
+  delete: jest.fn(),
+};
 
 const useCase = new CreateModuleUseCase(mockRepository, mockCourseRepository);
 

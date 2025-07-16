@@ -6,9 +6,12 @@ import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
 import DeleteModuleUseCase from "@/contexts/LearningContext/application/useCases/module/DeleteModuleUseCase";
 
 const mockRepository: jest.Mocked<IModuleRepository> = {
-  delete: jest.fn(),
+  findByCourseId: jest.fn(),
   findById: jest.fn(),
-} as any;
+  create: jest.fn(),
+  delete: jest.fn(),
+  update: jest.fn(),
+};
 
 const useCase = new DeleteModuleUseCase(mockRepository);
 

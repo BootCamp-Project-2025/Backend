@@ -6,7 +6,11 @@ import GetAllModulesUseCase from "@/contexts/LearningContext/application/useCase
 
 const mockRepository: jest.Mocked<IModuleRepository> = {
   findByCourseId: jest.fn(),
-} as any;
+  findById: jest.fn(),
+  create: jest.fn(),
+  delete: jest.fn(),
+  update: jest.fn(),
+};
 
 const useCase = new GetAllModulesUseCase(mockRepository);
 

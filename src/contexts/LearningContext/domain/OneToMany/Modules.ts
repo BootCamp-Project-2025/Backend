@@ -4,7 +4,7 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { Module } from "../entities/Module";
 
 export class Modules extends ManyRelationship<Module> {
-  // deepsource-disable class-methods-use-this
+  // deepsource disable Class methods should utilize this JS-0105
   compareItems(a: Module, b: Module): boolean {
     return a.equals(b);
   }

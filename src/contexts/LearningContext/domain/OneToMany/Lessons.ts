@@ -4,6 +4,7 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { Lesson } from "../entities/Lesson";
 
 export class Lessons extends ManyRelationship<Lesson> {
+  // deepsource-disable-next-line JS-0105
   compareItems(a: Lesson, b: Lesson): boolean {
     return a.equals(b);
   }

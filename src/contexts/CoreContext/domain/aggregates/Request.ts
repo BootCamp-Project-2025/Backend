@@ -27,8 +27,8 @@ export interface RequestProps {
   userId: UserId;
   estimation: RequestEstimation;
   edited: RequestEdited;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   proposals: Proposal[];
 }
 
@@ -43,8 +43,8 @@ type RequestPrimitiveProps = {
   userId: string;
   estimation: number;
   edited: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   proposals: string[];
 };
 
@@ -178,7 +178,7 @@ export class Request extends AggregateRoot<RequestProps> {
   }
 
   getCreatedAt(): Date {
-    return this.props.createdAt!;
+    return this.props.createdAt;
   }
 
   getLanguage(): RequestLanguage {
@@ -206,7 +206,7 @@ export class Request extends AggregateRoot<RequestProps> {
   }
 
   getUpdatedAt(): Date {
-    return this.props.updatedAt!;
+    return this.props.updatedAt;
   }
 
   setTitle(newTitle: RequestTitle): void {

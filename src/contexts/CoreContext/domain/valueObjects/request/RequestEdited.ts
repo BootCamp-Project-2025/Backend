@@ -21,7 +21,7 @@ export class RequestEdited extends ValueObject<EditedProps> {
     return new RequestEdited({ value: false });
   }
 
-  public edited(): RequestEdited {
+  public static edited(): RequestEdited {
     return new RequestEdited({ value: true });
   }
 }

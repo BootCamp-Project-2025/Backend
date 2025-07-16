@@ -33,8 +33,6 @@ export function makeMockProposal(overrides = {}) {
   );
 }
 
-// imports iguales a los que ya tienes...
-
 describe("Request Aggregate", () => {
   const title = RequestTitle.create("React Mentorship");
   const description = RequestDescription.create("Help with React.");
@@ -45,10 +43,14 @@ describe("Request Aggregate", () => {
   const userId = UserId.create(new UniqueEntityID());
   const estimation = RequestEstimation.create(5);
   const edited = RequestEdited.create(false);
-
+  let createdAt: Date;
+  let updatedAt: Date;
   let request: Request;
 
   beforeEach(() => {
+    createdAt = new Date();
+    updatedAt = new Date();
+
     request = Request.create({
       title,
       description,
@@ -59,6 +61,8 @@ describe("Request Aggregate", () => {
       userId,
       estimation,
       edited,
+      createdAt,
+      updatedAt,
       proposals: [],
     });
   });
@@ -121,6 +125,8 @@ describe("Request Aggregate", () => {
         userId: UserId.create(new UniqueEntityID("")),
         estimation,
         edited,
+        createdAt,
+        updatedAt,
         proposals: [],
       });
     }).toThrow("Title cannot be empty");
@@ -205,6 +211,8 @@ describe("Request Aggregate", () => {
       userId,
       estimation,
       edited,
+      createdAt,
+      updatedAt,
       proposals: [makeMockProposal()],
     });
     cancelReq.cancel();

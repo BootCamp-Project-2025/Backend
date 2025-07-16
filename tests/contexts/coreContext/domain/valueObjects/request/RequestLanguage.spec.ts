@@ -1,5 +1,4 @@
 import { RequestLanguage } from "@/contexts/CoreContext/domain/valueObjects/request/RequestLanguage";
-import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 
 describe("RequestLanguage", () => {
   it("should accept input or uppercase", () => {

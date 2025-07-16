@@ -1,9 +1,7 @@
 import "reflect-metadata";
 
-import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import IModuleRepository from "@/contexts/LearningContext/domain/interfaces/IModuleRepository";
 import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
-import UpdateModuleUseCase from "@/contexts/LearningContext/application/useCases/module/UpdateModuleUseCase";
 import GetAllModulesUseCase from "@/contexts/LearningContext/application/useCases/module/GetAllModulesUseCase";
 
 const mockRepository: jest.Mocked<IModuleRepository> = {

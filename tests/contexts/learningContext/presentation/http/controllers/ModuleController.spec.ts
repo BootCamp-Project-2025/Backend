@@ -5,7 +5,6 @@ import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { StatusCodes } from "http-status-codes";
 import { ModuleDTO } from "@/contexts/LearningContext/domain/dtos/ModuleDTO";
-import { ModuleDb } from "@/contexts/LearningContext/domain/dtos/Dbtypes";
 
 const ModuleService = {
   create: jest.fn(),

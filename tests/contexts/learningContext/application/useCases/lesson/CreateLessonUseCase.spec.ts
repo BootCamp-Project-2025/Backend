@@ -1,6 +1,5 @@
 import "reflect-metadata";
 
-import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import ILessonRepository from "@/contexts/LearningContext/domain/interfaces/ILessonRepository";
 import CreateLessonUseCase from "@/contexts/LearningContext/application/useCases/lesson/CreateLessonUseCase";

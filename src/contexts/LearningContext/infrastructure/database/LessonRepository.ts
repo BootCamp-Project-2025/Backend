@@ -7,9 +7,10 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
 export default class LessonRepository implements ILessonRepository {
+  db = PrismaClient;
   async findById(lessonId: string): Promise<Lesson | null> {
     try {
-      const lessonDb = await PrismaClient.lesson.findUnique({
+      const lessonDb = await this.db.lesson.findUnique({
         where: { id: lessonId },
         include: { resources: true },
       });
@@ -27,7 +28,7 @@ export default class LessonRepository implements ILessonRepository {
   async create(lesson: Lesson, moduleId: string): Promise<Lesson> {
     try {
       const lessonDto: LessonDTO = LessonMapper.DomainToDto(lesson);
-      const lessonDb = await PrismaClient.lesson.create({
+      const lessonDb = await this.db.lesson.create({
         data: {
           ...lessonDto,
           moduleId,
@@ -47,7 +48,7 @@ export default class LessonRepository implements ILessonRepository {
   }
   async delete(lessonId: string): Promise<void> {
     try {
-      await PrismaClient.lesson.delete({
+      await this.db.lesson.delete({
         where: { id: lessonId },
       });
     } catch (error) {
@@ -62,7 +63,7 @@ export default class LessonRepository implements ILessonRepository {
   async update(lesson: Lesson): Promise<Lesson> {
     try {
       const lessonDto: LessonDTO = LessonMapper.DomainToDto(lesson);
-      const lessonDb = await PrismaClient.lesson.update({
+      const lessonDb = await this.db.lesson.update({
         data: {
           ...lessonDto,
           resources: {

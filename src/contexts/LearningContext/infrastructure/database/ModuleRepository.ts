@@ -9,9 +9,10 @@ import { ModuleDb } from "../../domain/dtos/Dbtypes";
 
 @injectable()
 export class ModuleRepository implements IModuleRepository {
+  db = PrismaClient;
   async findByCourseId(courseId: string): Promise<Module[]> {
     try {
-      const moduleDb = await PrismaClient.module.findMany({
+      const moduleDb = await this.db.module.findMany({
         where: { courseId },
         include: { lessons: { include: { resources: true } }, quizzes: true },
         orderBy: { position: "asc" },
@@ -29,7 +30,7 @@ export class ModuleRepository implements IModuleRepository {
 
   async findById(moduleId: string): Promise<Module | null> {
     try {
-      const moduleDb = await PrismaClient.module.findUnique({
+      const moduleDb = await this.db.module.findUnique({
         where: { id: moduleId },
         include: { lessons: { include: { resources: true } }, quizzes: true },
       });
@@ -51,7 +52,7 @@ export class ModuleRepository implements IModuleRepository {
         module,
         courseId
       );
-      const moduleDb = await PrismaClient.module.create({
+      const moduleDb = await this.db.module.create({
         data: {
           id: moduleDto.id,
           title: moduleDto.title,
@@ -89,7 +90,7 @@ export class ModuleRepository implements IModuleRepository {
 
   async delete(moduleId: string): Promise<void> {
     try {
-      await PrismaClient.module.delete({ where: { id: moduleId } });
+      await this.db.module.delete({ where: { id: moduleId } });
     } catch (error) {
       console.log(error);
       if (error instanceof ApiError) throw error;
@@ -103,7 +104,7 @@ export class ModuleRepository implements IModuleRepository {
   async update(module: Module): Promise<Module> {
     try {
       const moduleDto = ModuleMapper.DomainToDto(module);
-      const moduleDb = await PrismaClient.module.update({
+      const moduleDb = await this.db.module.update({
         where: { id: moduleDto.id },
         data: {
           title: moduleDto.title,

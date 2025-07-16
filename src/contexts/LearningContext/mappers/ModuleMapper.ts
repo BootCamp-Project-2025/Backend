@@ -9,6 +9,7 @@ import { ModuleDb } from "../domain/dtos/Dbtypes";
 import { ModuleQuiz } from "../domain/valueObjects/ModuleQuiz";
 
 export default class ModuleMapper {
+  constructor() {}
   static bulkDtoToDomain(moduleDtos: ModuleDTO[]): Module[] {
     return moduleDtos.map((moduleDto) => ModuleMapper.DtoToDomain(moduleDto));
   }

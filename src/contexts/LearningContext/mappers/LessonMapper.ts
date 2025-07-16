@@ -9,6 +9,7 @@ import { LessonDb } from "../domain/dtos/Dbtypes";
 import { Decimal } from "@prisma/client/runtime/library";
 
 export default class LessonMapper {
+  constructor() {}
   static DtoToDomain(lessonDto: LessonDTO): Lesson {
     return Lesson.create(
       {

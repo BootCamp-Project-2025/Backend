@@ -30,7 +30,7 @@ beforeEach(() => {
 
 describe("CreateLessonUseCase", () => {
   it("exist", () => {
-    expect(useCase).toBeDefined;
+    expect(useCase).toBeDefined();
   });
   it("Create lesson correctly", () => {
     const lesson = LessonMapper.DtoToDomain({
@@ -50,9 +50,9 @@ describe("CreateLessonUseCase", () => {
     });
     mockModuleRepository.findById.mockResolvedValue(module);
     mockRepository.create.mockResolvedValue(lesson);
-    expect(
-      async () => await useCase.execute({ lesson, moduleId: "testModuleId" })
-    ).resolves;
+    expect(useCase.execute({ lesson, moduleId: "testModuleId" })).resolves.toBe(
+      lesson
+    );
   });
 
   it("Module not found", () => {

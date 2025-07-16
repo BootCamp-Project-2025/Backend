@@ -20,7 +20,7 @@ beforeEach(() => {
 
 describe("UpdateLessonUseCase", () => {
   it("exist", () => {
-    expect(useCase).toBeDefined;
+    expect(useCase).toBeDefined();
   });
   it("edits correctly", () => {
     const lesson = LessonMapper.DtoToDomain({

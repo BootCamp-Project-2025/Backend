@@ -32,7 +32,7 @@ beforeEach(() => {
 
 describe("CreateModuleUseCase", () => {
   it("exist", () => {
-    expect(useCase).toBeDefined;
+    expect(useCase).toBeDefined();
   });
   it("Create module correctly", () => {
     const module = ModuleMapper.DtoToDomain({

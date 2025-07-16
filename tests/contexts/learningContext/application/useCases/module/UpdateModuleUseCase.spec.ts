@@ -21,7 +21,7 @@ beforeEach(() => {
 
 describe("UpdateModuleUseCase", () => {
   it("exist", () => {
-    expect(useCase).toBeDefined;
+    expect(useCase).toBeDefined();
   });
   it("Updates module correctly", () => {
     const module = ModuleMapper.DtoToDomain({

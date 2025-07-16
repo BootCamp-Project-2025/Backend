@@ -20,7 +20,7 @@ beforeEach(() => {
 
 describe("GetAllModulesUseCase", () => {
   it("exist", () => {
-    expect(useCase).toBeDefined;
+    expect(useCase).toBeDefined();
   });
   it("Get all modules of a course correctly", async () => {
     const module = ModuleMapper.DtoToDomain({

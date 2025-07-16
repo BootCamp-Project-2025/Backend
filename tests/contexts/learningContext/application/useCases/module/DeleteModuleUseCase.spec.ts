@@ -21,7 +21,7 @@ beforeEach(() => {
 
 describe("DeleteModuleUseCase", () => {
   it("exist", () => {
-    expect(useCase).toBeDefined;
+    expect(useCase).toBeDefined();
   });
   it("Deletes module correctly", () => {
     const module = ModuleMapper.DtoToDomain({

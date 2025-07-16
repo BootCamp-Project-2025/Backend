@@ -57,9 +57,9 @@ describe("CreateModuleUseCase", () => {
     });
     mockCourseRepository.findById.mockResolvedValue(course);
     mockRepository.create.mockResolvedValue(module);
-    expect(
-      async () => await useCase.execute({ module, courseId: "CourseTestId" })
-    ).resolves;
+    expect(useCase.execute({ module, courseId: "CourseTestId" })).resolves.toBe(
+      module
+    );
   });
 
   it("Course not found", () => {

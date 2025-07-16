@@ -8,9 +8,8 @@ import { LessonResource } from "../domain/valueObjects/LessonResource";
 import { LessonDb } from "../domain/dtos/Dbtypes";
 import { Decimal } from "@prisma/client/runtime/library";
 
-export default class LessonMapper {
-  constructor() {}
-  static DtoToDomain(lessonDto: LessonDTO): Lesson {
+const LessonMapper = {
+  DtoToDomain(lessonDto: LessonDTO): Lesson {
     return Lesson.create(
       {
         title: SyllabusSectionTitle.create({ title: lessonDto.title }),
@@ -27,9 +26,9 @@ export default class LessonMapper {
       },
       new UniqueEntityID(lessonDto.id)
     );
-  }
+  },
 
-  static DomainToDto(lesson: Lesson): LessonDTO {
+  DomainToDto(lesson: Lesson): LessonDTO {
     return {
       id: lesson.id.toString(),
       title: lesson.props.title.value,
@@ -41,9 +40,9 @@ export default class LessonMapper {
       })),
       position: lesson.props.position,
     };
-  }
+  },
 
-  static DomainToPersistance(lesson: Lesson, moduleId: string): LessonDb {
+  DomainToPersistance(lesson: Lesson, moduleId: string): LessonDb {
     return {
       id: lesson.id.toString(),
       moduleId: moduleId,
@@ -57,9 +56,9 @@ export default class LessonMapper {
       })),
       position: new Decimal(lesson.props.position),
     };
-  }
+  },
 
-  static PersistanceToDomain(lessonDto: LessonDb): Lesson {
+  PersistanceToDomain(lessonDto: LessonDb): Lesson {
     return Lesson.create(
       {
         title: SyllabusSectionTitle.create({ title: lessonDto.title }),
@@ -76,5 +75,6 @@ export default class LessonMapper {
       },
       new UniqueEntityID(lessonDto.id)
     );
-  }
-}
+  },
+};
+export default LessonMapper;

@@ -8,23 +8,22 @@ import { Decimal } from "@prisma/client/runtime/library";
 import { ModuleDb } from "../domain/dtos/Dbtypes";
 import { ModuleQuiz } from "../domain/valueObjects/ModuleQuiz";
 
-export default class ModuleMapper {
-  constructor() {}
-  static bulkDtoToDomain(moduleDtos: ModuleDTO[]): Module[] {
+const ModuleMapper = {
+  bulkDtoToDomain(moduleDtos: ModuleDTO[]): Module[] {
     return moduleDtos.map((moduleDto) => ModuleMapper.DtoToDomain(moduleDto));
-  }
+  },
 
-  static bulkPersistanceToDomain(moduleDtos: ModuleDb[]): Module[] {
+  bulkPersistanceToDomain(moduleDtos: ModuleDb[]): Module[] {
     return moduleDtos.map((moduleDto) =>
       ModuleMapper.PersistanceToDomain(moduleDto)
     );
-  }
+  },
 
-  static bulkDomainToDto(modules: Module[]): ModuleDTO[] {
+  bulkDomainToDto(modules: Module[]): ModuleDTO[] {
     return modules.map((module) => ModuleMapper.DomainToDto(module));
-  }
+  },
 
-  static DtoToDomain(moduleDto: ModuleDTO): Module {
+  DtoToDomain(moduleDto: ModuleDTO): Module {
     return Module.create(
       {
         title: SyllabusSectionTitle.create({ title: moduleDto.title }),
@@ -36,9 +35,9 @@ export default class ModuleMapper {
       },
       new UniqueEntityID(moduleDto.id)
     );
-  }
+  },
 
-  static DomainToDto(module: Module): ModuleDTO {
+  DomainToDto(module: Module): ModuleDTO {
     return {
       id: module.id.toString(),
       title: module.props.title.props.title,
@@ -51,9 +50,9 @@ export default class ModuleMapper {
         url: quiz.url,
       })),
     };
-  }
+  },
 
-  static DomainToPersistance(module: Module, courseId: string): ModuleDb {
+  DomainToPersistance(module: Module, courseId: string): ModuleDb {
     return {
       courseId: courseId,
       id: module.id.toString(),
@@ -69,9 +68,9 @@ export default class ModuleMapper {
         url: quiz.url,
       })),
     };
-  }
+  },
 
-  static PersistanceToDomain(moduleDto: ModuleDb): Module {
+  PersistanceToDomain(moduleDto: ModuleDb): Module {
     return Module.create(
       {
         title: SyllabusSectionTitle.create({ title: moduleDto.title }),
@@ -85,5 +84,6 @@ export default class ModuleMapper {
       },
       new UniqueEntityID(moduleDto.id)
     );
-  }
-}
+  },
+};
+export default ModuleMapper;

@@ -30,7 +30,7 @@ export default class LessonRepository implements ILessonRepository {
       const lessonDb = await PrismaClient.lesson.create({
         data: {
           ...lessonDto,
-          moduleId: moduleId,
+          moduleId,
           resources: { create: lessonDto.resources },
         },
         include: { resources: true },

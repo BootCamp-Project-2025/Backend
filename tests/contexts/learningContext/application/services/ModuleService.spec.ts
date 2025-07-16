@@ -35,7 +35,7 @@ describe("ModuleService", () => {
     const result = await moduleService.create(module, "courseId");
     expect(createModuleUseCase.execute).toHaveBeenCalledWith({
       courseId: "courseId",
-      module: module,
+      module,
     });
     expect(result).toEqual(module);
   });

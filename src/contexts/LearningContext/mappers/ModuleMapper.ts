@@ -54,7 +54,7 @@ const ModuleMapper = {
 
   DomainToPersistance(module: Module, courseId: string): ModuleDb {
     return {
-      courseId: courseId,
+      courseId,
       id: module.id.toString(),
       title: module.props.title.props.title,
       lessons: module.props.lessons

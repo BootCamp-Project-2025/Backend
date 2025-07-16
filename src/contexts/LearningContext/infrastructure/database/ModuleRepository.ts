@@ -12,7 +12,7 @@ export class ModuleRepository implements IModuleRepository {
   async findByCourseId(courseId: string): Promise<Module[]> {
     try {
       const moduleDb = await PrismaClient.module.findMany({
-        where: { courseId: courseId },
+        where: { courseId },
         include: { lessons: { include: { resources: true } }, quizzes: true },
         orderBy: { position: "asc" },
       });
@@ -56,7 +56,7 @@ export class ModuleRepository implements IModuleRepository {
           id: moduleDto.id,
           title: moduleDto.title,
           position: moduleDto.position,
-          courseId: courseId,
+          courseId,
           quizzes: { create: moduleDto.quizzes },
           lessons: {
             create: moduleDto.lessons.map((lesson) => ({

@@ -53,7 +53,7 @@ export class CourseRepository implements ICourseRepository {
   async findById(id: string): Promise<Course | null> {
     try {
       const course = await prismaClient.course.findUnique({
-        where: { id: id },
+        where: { id },
       });
 
       if (!course) return null;

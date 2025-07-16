@@ -32,7 +32,7 @@ describe("LessonService", () => {
     const result = await lessonService.create(lesson, "moduleId");
     expect(createLessonUseCase.execute).toHaveBeenCalledWith({
       moduleId: "moduleId",
-      lesson: lesson,
+      lesson,
     });
     expect(result).toEqual(lesson);
   });

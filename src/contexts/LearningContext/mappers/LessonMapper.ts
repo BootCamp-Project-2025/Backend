@@ -17,7 +17,7 @@ const LessonMapper = {
           description: lessonDto.description,
         }),
         videoUrls: lessonDto.videoUrls.map((url) =>
-          LessonVideoUrl.create({ url: url })
+          LessonVideoUrl.create({ url })
         ),
         resources: lessonDto.resources.map((resource) =>
           LessonResource.create({ name: resource.name, url: resource.url })
@@ -45,7 +45,7 @@ const LessonMapper = {
   DomainToPersistance(lesson: Lesson, moduleId: string): LessonDb {
     return {
       id: lesson.id.toString(),
-      moduleId: moduleId,
+      moduleId,
       title: lesson.props.title.value,
       description: lesson.props.description.value,
       videoUrls: lesson.props.videoUrls.map((videoUrl) => videoUrl.value),
@@ -66,7 +66,7 @@ const LessonMapper = {
           description: lessonDto.description,
         }),
         videoUrls: lessonDto.videoUrls.map((url) =>
-          LessonVideoUrl.create({ url: url })
+          LessonVideoUrl.create({ url })
         ),
         resources: lessonDto.resources.map((resource) =>
           LessonResource.create({ name: resource.name, url: resource.url })

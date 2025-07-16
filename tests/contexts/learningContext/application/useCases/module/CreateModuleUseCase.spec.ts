@@ -58,8 +58,7 @@ describe("CreateModuleUseCase", () => {
     mockCourseRepository.findById.mockResolvedValue(course);
     mockRepository.create.mockResolvedValue(module);
     expect(
-      async () =>
-        await useCase.execute({ module: module, courseId: "CourseTestId" })
+      async () => await useCase.execute({ module, courseId: "CourseTestId" })
     ).resolves;
   });
 
@@ -74,8 +73,7 @@ describe("CreateModuleUseCase", () => {
     mockCourseRepository.findById.mockResolvedValue(null);
     mockRepository.create.mockResolvedValue(module);
     expect(
-      async () =>
-        await useCase.execute({ module: module, courseId: "CourseTestId" })
+      async () => await useCase.execute({ module, courseId: "CourseTestId" })
     ).rejects.toThrow(ApiError);
   });
 });

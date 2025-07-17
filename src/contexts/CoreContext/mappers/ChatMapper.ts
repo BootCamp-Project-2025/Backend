@@ -11,7 +11,7 @@ export class ChatMapper {
     return Chat.create(
       {
         messages: MessageMapper.ManyDtoToDomain(chatDto.messages),
-        participantsIds: chatDto.participansIds.map(
+        participantsIds: chatDto.participantsIds.map(
           (id) => new UniqueEntityID(id)
         ),
         createdAt: chatDto.createdAt,
@@ -26,7 +26,7 @@ export class ChatMapper {
       id: chatDomain.id.toString(),
       name: chatDomain.chatName?.value,
       messages: MessageMapper.ManyDomainToDto(chatDomain.messages),
-      participansIds: chatDomain.participantsIds.map((id) => id.toString()),
+      participantsIds: chatDomain.participantsIds.map((id) => id.toString()),
       status: chatDomain.status ?? "ACTIVE",
       createdAt: chatDomain.createdAt,
     };

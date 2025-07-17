@@ -42,8 +42,8 @@ export class EnrollmentRepository implements IEnrollmentRepository {
   async isUserEnrolled(userId: string, courseId: string): Promise<boolean> {
     const enrollment = await PrismaClient.enrollment.findFirst({
       where: {
-        userId: userId,
-        courseId: courseId,
+        userId,
+        courseId,
       },
     });
 

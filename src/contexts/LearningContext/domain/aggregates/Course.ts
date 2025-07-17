@@ -1,10 +1,10 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { AggregateRoot } from "../../../Shared/domain/AgregateRoot";
-import Module from "module";
 import { CourseName } from "../valueObjects/CourseName";
 import { CourseField } from "../valueObjects/CourseField";
 import { CourseRequirements } from "../valueObjects/CourseRequirements";
 import { CourseDescription } from "../valueObjects/CourseDescription";
+import { Modules } from "../OneToMany/Modules";
 import { CourseCategory } from "../valueObjects/CourseCategory";
 import { CourseSubCategory } from "../valueObjects/CourseSubCategory";
 import { CourseLanguage } from "../valueObjects/CourseLanguage";
@@ -16,7 +16,7 @@ export interface CourseProps {
   requirements?: CourseRequirements;
   description: CourseDescription;
   imgSrc: string;
-  modules?: Module[];
+  modules: Modules;
   time?: number;
   category?: CourseCategory;
   subCategory?: CourseSubCategory;
@@ -32,6 +32,7 @@ type CoursePrimitiveProps = {
   time: number;
   description: string;
   imgSrc: string;
+  modules?: [];
   category: string;
   subCategory: string;
   language: string;
@@ -45,7 +46,7 @@ export class Course extends AggregateRoot<CourseProps> {
 
   public static create(props: CourseProps, id?: UniqueEntityID): Course {
     return new Course(
-      { ...props, modules: props.modules ? props.modules : [] },
+      { ...props, modules: props.modules ? props.modules : Modules.create([]) },
       id
     );
   }
@@ -72,6 +73,7 @@ export class Course extends AggregateRoot<CourseProps> {
       time: props.time,
       imgSrc: props.imgSrc,
       userId,
+      modules: Modules.create(props.modules ?? []),
     };
     return Course.create(course, id);
   }
@@ -99,8 +101,8 @@ export class Course extends AggregateRoot<CourseProps> {
     return this.props.imgSrc;
   }
 
-  getModules(): Module[] {
-    return this.props.modules ?? [];
+  getModules(): Modules {
+    return this.props.modules ?? Modules.create([]);
   }
 
   getTime(): number {

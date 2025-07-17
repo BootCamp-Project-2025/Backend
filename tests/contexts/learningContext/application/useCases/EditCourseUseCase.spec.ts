@@ -10,6 +10,7 @@ import { CourseName } from "@/contexts/LearningContext/domain/valueObjects/Cours
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { Modules } from "@/contexts/LearningContext/domain/OneToMany/Modules";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 
 const mockRepository: jest.Mocked<ICourseRepository> = {
@@ -21,6 +22,7 @@ const empyCourseProps: CourseProps = {
   name: CourseName.create({ name: "name" }),
   description: CourseDescription.create({ description: "course" }),
   imgSrc: "dsadsa",
+  modules: new Modules(),
   userId: UserId.create(new UniqueEntityID("asdasd")),
 };
 

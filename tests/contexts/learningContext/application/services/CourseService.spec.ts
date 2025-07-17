@@ -11,6 +11,7 @@ describe("CourseService", () => {
   let createCourseUseCase: { execute: jest.Mock };
   let updateCourseUseCase: { execute: jest.Mock };
   let deleteCourseUseCase: { execute: jest.Mock };
+  let publish: { execute: jest.Mock };
   let service: CourseService;
 
   beforeEach(() => {
@@ -20,6 +21,7 @@ describe("CourseService", () => {
     createCourseUseCase = { execute: jest.fn() };
     updateCourseUseCase = { execute: jest.fn() };
     deleteCourseUseCase = { execute: jest.fn() };
+    publish = { execute: jest.fn() };
 
     service = new CourseService(
       getAllCoursesUseCase,
@@ -27,7 +29,8 @@ describe("CourseService", () => {
       EditCourseUseCase,
       createCourseUseCase,
       updateCourseUseCase,
-      deleteCourseUseCase
+      deleteCourseUseCase,
+      publish
     );
   });
 

@@ -28,6 +28,7 @@ model Course{
   category String   @default("")
   subCategory String   @default("")
   imgSrc String
+  published Boolean @default(false)
   modules Module[]
   userId String
   user    User   @relation("UserCourse", fields: [userId], references: [id])
@@ -35,9 +36,40 @@ model Course{
 
 model Module{
   id      String      @id @default(uuid())
-  author   Course @relation(fields: [CourseId], references: [id])
-  CourseId String
-  name   String   @unique
+  position Decimal
+  author   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String
+  title   String
+  lessons Lesson[]
+  quizzes Quiz[]
+}
+
+model Lesson{
+  id      String      @id @default(uuid())
+  position Decimal
+  author   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  description String
+  resources Resource[]
+  videoUrls String[]
+  moduleId String
+  title   String
+  
+}
+
+model Resource{
+  id      String      @id @default(uuid())
+  author   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  name   String 
+  url   String   
+  lessonId String
+}
+
+model Quiz{
+  id      String      @id @default(uuid())
+  author   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  name   String 
+  url   String   
+  moduleId String
 }
 
 model SampleData {
@@ -59,6 +91,9 @@ model User {
   profilePicture     String?
   freelancerProfile  Freelancer? @relation("UserFreelancer") 
   clientProfile      Client?     @relation("UserClient")
+
+  proposals          Proposal[]
+  requests           Request[]   
   Course             Course[]    @relation("UserCourse")
 }
 
@@ -151,4 +186,46 @@ model Experience {
   endDate      DateTime   @default(now())
   freelancerId String
   freelancer   Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+}
+
+enum RequestStatus {
+  PENDING
+  AVAILABLE
+  ACCEPTED
+  REJECTED
+}
+
+enum RequestLanguage {
+  EN
+  ES
+}
+
+model Request {
+  id             String           @id @default(uuid())
+  userId         String
+  title          String
+  description    String
+  language       String
+  category       String
+  subcategory    String
+  status         RequestStatus    @default(PENDING)
+  createdAt      DateTime         @default(now())
+  estimation     Int
+  edited         Boolean          @default(false)
+  updatedAt      DateTime         @updatedAt
+
+  proposals      Proposal[]
+  user           User             @relation(fields: [userId], references: [id])
+}
+
+model Proposal {
+  id             String      @id @default(uuid())
+  requestId      String
+  userId         String
+  price          Int
+  estimatedTime  Int
+  message        String
+  createdAt      DateTime    @default(now())
+  request        Request     @relation(fields: [requestId], references: [id])
+  user           User        @relation(fields: [userId], references: [id])
 }

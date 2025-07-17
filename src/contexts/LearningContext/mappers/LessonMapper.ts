@@ -1,0 +1,80 @@
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { LessonDTO } from "../domain/dtos/LessonDTO";
+import { Lesson } from "../domain/entities/Lesson";
+import { SyllabusSectionTitle } from "../domain/valueObjects/SyllabusSectionTitle";
+import { LessonDescription } from "../domain/valueObjects/LessonDescription";
+import { LessonVideoUrl } from "../domain/valueObjects/LessonVideoUrl";
+import { LessonResource } from "../domain/valueObjects/LessonResource";
+import { LessonDb } from "../domain/dtos/Dbtypes";
+import { Decimal } from "@prisma/client/runtime/library";
+
+const LessonMapper = {
+  DtoToDomain(lessonDto: LessonDTO): Lesson {
+    return Lesson.create(
+      {
+        title: SyllabusSectionTitle.create({ title: lessonDto.title }),
+        description: LessonDescription.create({
+          description: lessonDto.description,
+        }),
+        videoUrls: lessonDto.videoUrls.map((url) =>
+          LessonVideoUrl.create({ url })
+        ),
+        resources: lessonDto.resources.map((resource) =>
+          LessonResource.create({ name: resource.name, url: resource.url })
+        ),
+        position: lessonDto.position,
+      },
+      new UniqueEntityID(lessonDto.id)
+    );
+  },
+
+  DomainToDto(lesson: Lesson): LessonDTO {
+    return {
+      id: lesson.id.toString(),
+      title: lesson.props.title.value,
+      description: lesson.props.description.value,
+      videoUrls: lesson.props.videoUrls.map((videoUrl) => videoUrl.value),
+      resources: lesson.props.resources.map((resource) => ({
+        name: resource.name,
+        url: resource.url,
+      })),
+      position: lesson.props.position,
+    };
+  },
+
+  DomainToPersistance(lesson: Lesson, moduleId: string): LessonDb {
+    return {
+      id: lesson.id.toString(),
+      moduleId,
+      title: lesson.props.title.value,
+      description: lesson.props.description.value,
+      videoUrls: lesson.props.videoUrls.map((videoUrl) => videoUrl.value),
+      resources: lesson.props.resources.map((resource) => ({
+        name: resource.name,
+        url: resource.url,
+        lessonId: lesson.id.toString(),
+      })),
+      position: new Decimal(lesson.props.position),
+    };
+  },
+
+  PersistanceToDomain(lessonDto: LessonDb): Lesson {
+    return Lesson.create(
+      {
+        title: SyllabusSectionTitle.create({ title: lessonDto.title }),
+        description: LessonDescription.create({
+          description: lessonDto.description,
+        }),
+        videoUrls: lessonDto.videoUrls.map((url) =>
+          LessonVideoUrl.create({ url })
+        ),
+        resources: lessonDto.resources.map((resource) =>
+          LessonResource.create({ name: resource.name, url: resource.url })
+        ),
+        position: lessonDto.position.toNumber(),
+      },
+      new UniqueEntityID(lessonDto.id)
+    );
+  },
+};
+export default LessonMapper;

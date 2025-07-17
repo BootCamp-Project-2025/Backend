@@ -15,6 +15,10 @@ export class CourseController implements ICourseController {
   constructor(
     @inject("ICourseService") private readonly courseService: ICourseService
   ) {}
+  /* eslint-disable */
+  getCompleteCourse(req: Request, res: Response): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 
   public getAllCourses = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -60,6 +64,53 @@ export class CourseController implements ICourseController {
     }
   };
 
+  public updateCourse = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const dto = req.body as CourseDTO;
+      const updated = await this.courseService.updateCourse(id, dto);
+      const response = new SuccessResponseEntity(updated, StatusCodes.OK);
+      return ResponseService.send(res, response);
+    } catch (error) {
+      console.error("Error in CourseController.updateCourse:", error);
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Internal server error"
+      );
+      return ResponseService.send(res, response);
+    }
+  };
+
+  public deleteCourse = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      await this.courseService.deleteCourse(id);
+      const response = new SuccessResponseEntity(StatusCodes.NO_CONTENT);
+      return ResponseService.send(res, response);
+    } catch (error) {
+      console.error("Error in CourseController.deleteCourse:", error);
+      const response = new ErrorResponseEntity(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Internal server error"
+      );
+      return ResponseService.send(res, response);
+    }
+  };
+
+  public publish = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id = req.params.id;
+      const result = await this.courseService.publish(id);
+      res.status(201).json({ published: result });
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      console.error(error);
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error accessing the publish service"
+      );
+    }
+  };
   public getCourse = async (req: Request, res: Response): Promise<void> => {
     try {
       const course = await this.courseService.getCourse(req.params.id);

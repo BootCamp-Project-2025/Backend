@@ -5,6 +5,7 @@ import { CourseName } from "../../domain/valueObjects/CourseName";
 import { CourseDescription } from "../../domain/valueObjects/CourseDescription";
 import IUseCase from "../../domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
+import { Modules } from "../../domain/OneToMany/Modules";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
@@ -12,7 +13,7 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 export class CreateCourseUseCase implements IUseCase<CourseDTO, Course> {
   constructor(
     @inject("ICourseRepository") private courseRepo: ICourseRepository
-  ) {}
+  ) { }
 
   async execute(courseDto: CourseDTO): Promise<Course> {
     const courseName = CourseName.create({ name: courseDto.name });
@@ -25,6 +26,7 @@ export class CreateCourseUseCase implements IUseCase<CourseDTO, Course> {
       name: courseName,
       description: description,
       imgSrc: courseDto.imgSrc,
+      modules: Modules.create([]),
       userId,
     });
     return await this.courseRepo.insert(course);

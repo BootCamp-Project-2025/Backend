@@ -82,6 +82,28 @@ import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/serv
 import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
 import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
+import IModuleController from "./contexts/LearningContext/domain/interfaces/IModuleController";
+import ModuleController from "./contexts/LearningContext/presentation/http/controllers/ModuleController";
+import IModuleService from "./contexts/LearningContext/domain/interfaces/IModuleService";
+import ModuleService from "./contexts/LearningContext/application/services/ModuleService";
+import GetAllModulesUseCase from "./contexts/LearningContext/application/useCases/module/GetAllModulesUseCase";
+import DeleteModuleUseCase from "./contexts/LearningContext/application/useCases/module/DeleteModuleUseCase";
+import CreateModuleUseCase from "./contexts/LearningContext/application/useCases/module/CreateModuleUseCase";
+import UpdateModuleUseCase from "./contexts/LearningContext/application/useCases/module/UpdateModuleUseCase";
+import { Module } from "./contexts/LearningContext/domain/entities/Module";
+import { ModuleRepository } from "./contexts/LearningContext/infrastructure/database/ModuleRepository";
+import IModuleRepository from "./contexts/LearningContext/domain/interfaces/IModuleRepository";
+import ILessonController from "./contexts/LearningContext/domain/interfaces/ILessonController";
+import LessonController from "./contexts/LearningContext/presentation/http/controllers/LessonController";
+import ILessonService from "./contexts/LearningContext/domain/interfaces/ILessonService";
+import LessonService from "./contexts/LearningContext/application/services/LessonService";
+import ILessonRepository from "./contexts/LearningContext/domain/interfaces/ILessonRepository";
+import LessonRepository from "./contexts/LearningContext/infrastructure/database/LessonRepository";
+import { Lesson } from "./contexts/LearningContext/domain/entities/Lesson";
+import CreateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/CreateLessonUseCase";
+import DeleteLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/DeleteLessonUseCase";
+import UpdateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/UpdateLessonUseCase";
+import { PublishCourseUseCase } from "./contexts/LearningContext/application/useCases/PublishCourseUseCase";
 import { Freelancer } from "./contexts/CoreContext/domain/aggregates/Freelancer";
 import { GetAllFreelancersUseCase } from "./contexts/CoreContext/application/useCases/GetAllFreelancersUseCase";
 import { User } from "./contexts/CoreContext/domain/aggregates/User";
@@ -166,6 +188,10 @@ container.registerSingleton<CreateCourseUseCase>(
   CreateCourseUseCase
 );
 
+container.registerSingleton<IUseCase<string, boolean>>(
+  "PublishCourseUseCase",
+  PublishCourseUseCase
+);
 container.registerSingleton("UpdateCourseUseCase", UpdateCourseUseCase);
 container.registerSingleton("DeleteCourseUseCase", DeleteCourseUseCase);
 
@@ -211,6 +237,75 @@ container.registerSingleton<IUseCase<string, Skill[]>>(
 container.registerSingleton<IFreelancerService>(
   "IFreelancerService",
   FreelancerService
+);
+
+container.registerSingleton<ILessonController>(
+  "ILessonController",
+  LessonController
+);
+
+container.registerSingleton<ILessonService>("ILessonService", LessonService);
+
+container.registerSingleton<ILessonRepository>(
+  "ILessonRepository",
+  LessonRepository
+);
+
+container.registerSingleton<
+  IUseCase<
+    {
+      lesson: Lesson;
+      moduleId: string;
+    },
+    Lesson
+  >
+>("CreateLessonUseCase", CreateLessonUseCase);
+
+container.registerSingleton<IUseCase<Lesson, Lesson>>(
+  "UpdateLessonUseCase",
+  UpdateLessonUseCase
+);
+
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteLessonUseCase",
+  DeleteLessonUseCase
+);
+
+container.registerSingleton<IModuleController>(
+  "IModuleController",
+  ModuleController
+);
+
+container.registerSingleton<IModuleService>("IModuleService", ModuleService);
+
+container.registerSingleton<IModuleRepository>(
+  "IModuleRepository",
+  ModuleRepository
+);
+
+container.registerSingleton<IUseCase<string, Module[]>>(
+  "GetAllModulesUseCase",
+  GetAllModulesUseCase
+);
+
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteModuleUseCase",
+  DeleteModuleUseCase
+);
+
+container.registerSingleton<
+  IUseCase<
+    {
+      module: Module;
+      courseId: string;
+    },
+    Module
+  >
+>("CreateModuleUseCase", CreateModuleUseCase);
+
+container.registerSingleton<IUseCase<Module, Module>>(
+  "UpdateModuleUseCase",
+  UpdateModuleUseCase
 );
 
 container.registerSingleton<IFreelancerController>(

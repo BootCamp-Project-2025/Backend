@@ -120,6 +120,7 @@ describe("CourseRepository (Prisma)", () => {
         category: "",
         subCategory: "",
         userId: "userId",
+        published: false,
       };
       jest.spyOn(CourseMapper, "toPersistence").mockReturnValue(persistence);
 
@@ -162,6 +163,7 @@ describe("CourseRepository (Prisma)", () => {
         category: "",
         subCategory: "",
         userId: "userId",
+        published: false,
       };
       jest.spyOn(CourseMapper, "toPersistence").mockReturnValue(persistence);
       jest.spyOn(repo, "nameAvailable").mockResolvedValue(true);

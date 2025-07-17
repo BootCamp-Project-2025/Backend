@@ -7,6 +7,7 @@ import { CourseName } from "../../../../../src/contexts/LearningContext/domain/v
 import { CourseDescription } from "../../../../../src/contexts/LearningContext/domain/valueObjects/CourseDescription";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { Modules } from "@/contexts/LearningContext/domain/OneToMany/Modules";
 
 describe("CreateCourseUseCase", () => {
   let repoMock: { insert: jest.Mock };
@@ -30,6 +31,7 @@ describe("CreateCourseUseCase", () => {
       description: CourseDescription.create({ description: dto.description }),
       imgSrc: dto.imgSrc,
       userId: UserId.create(new UniqueEntityID(dto.userId)),
+      modules: Modules.create([]),
     });
     repoMock.insert.mockResolvedValue(fakeCourse);
 

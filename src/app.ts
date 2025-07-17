@@ -8,6 +8,7 @@ import courseRoutes from "./contexts/LearningContext/presentation/http/routes/Co
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 import userRoutes from "./contexts/CoreContext/presentation/http/routes/UserRoutes";
 import authRoutes from "./contexts/CoreContext/presentation/http/routes/AuthRoutes";
+import clientRoutes from "./contexts/CoreContext/presentation/http/routes/ClientRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
 
@@ -29,6 +30,7 @@ app.use("/api/health", healthRoutes);
 
 app.use("/api/users", userRoutes);
 app.use("/api/freelancers", freelancersRoutes);
+app.use("/api/clients", clientRoutes);
 
 app.use("/api/courses", courseRoutes);
 

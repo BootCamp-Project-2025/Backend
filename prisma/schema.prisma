@@ -171,7 +171,7 @@ model Message {
   content    String
   type       MessageType
   timestamp  DateTime
-  status     MessageStatus
+  status     MessageStatus @default(DELIVERED)
   senderId   String
   chatId     String
   sender     User          @relation("SentMessages", fields: [senderId], references: [id])

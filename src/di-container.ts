@@ -99,6 +99,23 @@ import { IExternarlAuthService } from "./contexts/CoreContext/domain/interfaces/
 import { KeycloakService } from "./contexts/CoreContext/infrastructure/keycloak/keycloakService";
 import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/auth/SyncUserUseCase";
 import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
+import { IChatController } from "./contexts/CoreContext/domain/interfaces/controllers/IChatController";
+import { ChatController } from "./contexts/CoreContext/presentation/http/controllers/ChatController";
+import { IChatService } from "./contexts/CoreContext/domain/interfaces/services/IChatService";
+import { ChatService } from "./contexts/CoreContext/application/services/ChatService";
+import { IMessageService } from "./contexts/CoreContext/domain/interfaces/services/IMessageService";
+import { MessageService } from "./contexts/CoreContext/application/services/MessageService";
+import { CreateChatUsecase } from "./contexts/CoreContext/application/useCases/chats/CreateChatUseCase";
+import { CreateMessageUseCase } from "./contexts/CoreContext/application/useCases/chats/CreateMessageUseCase";
+import { GetChatsByUserIdUseCase } from "./contexts/CoreContext/application/useCases/chats/GetChatsByUserIdUseCase";
+import { GetMessagesByChatIdUseCase } from "./contexts/CoreContext/application/useCases/chats/GetMessagesByChatIdUseCase";
+import { UpdateMessageStatusUseCase } from "./contexts/CoreContext/application/useCases/chats/UpdateMessageStatusUseCase";
+import { Chat } from "./contexts/CoreContext/domain/aggregates/Chat";
+import { Message } from "./contexts/CoreContext/domain/entities/Message";
+import { IChatRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IChatRepository";
+import { ChatRepository } from "./contexts/CoreContext/infrastructure/persistence/ChatRepository";
+import { IMessageRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IMessageRepository";
+import { MessageRepository } from "./contexts/CoreContext/infrastructure/persistence/MessageRepository";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -376,6 +393,39 @@ container.registerSingleton<IUseCase<{ user: User; role: string }, void>>(
 container.registerSingleton<IExternarlAuthService>(
   "IAuthManagerService",
   KeycloakService
+);
+
+// Chats
+container.registerSingleton<IChatController>("ChatController", ChatController);
+
+container.registerSingleton<IChatService>("IChatService", ChatService);
+container.registerSingleton<IMessageService>("IMessageService", MessageService);
+
+container.registerSingleton<IUseCase<Chat, Chat>>(
+  "CreateChatUseCase",
+  CreateChatUsecase
+);
+container.registerSingleton<IUseCase<Message, Message>>(
+  "CreateMessageUseCase",
+  CreateMessageUseCase
+);
+container.registerSingleton<IUseCase<string, Chat[]>>(
+  "GetChatsByUserIdUseCase",
+  GetChatsByUserIdUseCase
+);
+container.registerSingleton<IUseCase<string, Message[]>>(
+  "GetMessagesByChatIdUseCase",
+  GetMessagesByChatIdUseCase
+);
+container.registerSingleton<IUseCase<{ chatId: string; userId: string }, void>>(
+  "UpdateMessageStatusUseCase",
+  UpdateMessageStatusUseCase
+);
+
+container.registerSingleton<IChatRepository>("IChatRepository", ChatRepository);
+container.registerSingleton<IMessageRepository>(
+  "IMessageRepository",
+  MessageRepository
 );
 
 export { container };

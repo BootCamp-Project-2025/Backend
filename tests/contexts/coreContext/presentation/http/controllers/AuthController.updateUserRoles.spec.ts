@@ -62,7 +62,7 @@ describe("AuthController - updateUserRoles", () => {
   it("should throw UNAUTHORIZED if req.user is missing", async () => {
     req = {
       user: undefined,
-      body: { role: "admin" },
+      body: { role: "admin", lastSeen: new Date() },
     } as Partial<Request> as Request;
 
     await controller.updateUserRoles(req, res);

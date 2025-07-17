@@ -30,6 +30,7 @@ export default class UserMapper {
       profilePicture: user.profilePicture ?? null,
       roles: roles2,
       createdAt: user.createdAt,
+      lastSeen: user.lastSeen ?? new Date(),
     };
   }
 

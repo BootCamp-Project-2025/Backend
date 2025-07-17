@@ -9,8 +9,9 @@ import { injectable } from "tsyringe";
 
 injectable();
 export class EnrollmentRepository implements IEnrollmentRepository {
+  db = PrismaClient;
   async create(object: Enrollment): Promise<Enrollment> {
-    const enrollment = await PrismaClient.enrollment.create({
+    const enrollment = await this.db.enrollment.create({
       data: {
         userId: object.userId.toString(),
         courseId: object.courseId.toString(),
@@ -23,13 +24,13 @@ export class EnrollmentRepository implements IEnrollmentRepository {
   }
 
   async cancelEnrollment(enrollment: Enrollment): Promise<void> {
-    await PrismaClient.enrollment.update({
+    await this.db.enrollment.update({
       where: { id: enrollment.id.toString() },
       data: { status: enrollment.status as EnrollmentStatus },
     });
   }
   async findById(enrollmentId: string): Promise<Enrollment> {
-    const enrollment = await PrismaClient.enrollment.findUnique({
+    const enrollment = await this.db.enrollment.findUnique({
       where: {
         id: enrollmentId,
       },
@@ -40,7 +41,7 @@ export class EnrollmentRepository implements IEnrollmentRepository {
   }
 
   async isUserEnrolled(userId: string, courseId: string): Promise<boolean> {
-    const enrollment = await PrismaClient.enrollment.findFirst({
+    const enrollment = await this.db.enrollment.findFirst({
       where: {
         userId,
         courseId,

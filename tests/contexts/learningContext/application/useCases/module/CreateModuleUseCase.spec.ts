@@ -54,7 +54,7 @@ describe("CreateModuleUseCase", () => {
       category: "",
       subCategory: "",
       published: false,
-      userId: "userId"
+      userId: "userId",
     });
     mockCourseRepository.findById.mockResolvedValue(course);
     mockRepository.create.mockResolvedValue(module);

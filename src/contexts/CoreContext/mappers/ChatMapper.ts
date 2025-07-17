@@ -32,12 +32,14 @@ export class ChatMapper {
     };
   }
 
-  public static DomainToPersistence(chatDomain: Chat): ChatPrisma {
+  public static DomainToPersistence(chatDomain: Chat): ChatDao {
     return {
       id: chatDomain.id.toString(),
       createdAt: chatDomain.createdAt ?? new Date(),
       name: chatDomain.chatName?.value ?? "",
       status: chatDomain.status ?? "ACTIVE",
+      participantsIds: chatDomain.participantsIds.map((id) => id.toString()),
+      messages: MessageMapper.ManyDomainToPersistence(chatDomain.messages),
     };
   }
 

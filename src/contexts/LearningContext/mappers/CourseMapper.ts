@@ -6,6 +6,7 @@ import { CourseField } from "../domain/valueObjects/CourseField";
 import { CourseRequirements } from "../domain/valueObjects/CourseRequirements";
 import { CourseDescription } from "../domain/valueObjects/CourseDescription";
 import { CourseDTO } from "../domain/dtos/CourseDTO";
+import { Modules } from "../domain/OneToMany/Modules";
 import { CourseCategory } from "../domain/valueObjects/CourseCategory";
 import { CourseSubCategory } from "../domain/valueObjects/CourseSubCategory";
 import { CourseLanguage } from "../domain/valueObjects/CourseLanguage";
@@ -23,6 +24,7 @@ export class CourseMapper {
       }),
       time: prismaCourse.time ?? Date.now(),
       imgSrc: prismaCourse.imgSrc,
+      modules: Modules.create([]),
       category: CourseCategory.create({
         category: prismaCourse.category ?? "",
       }),
@@ -52,6 +54,7 @@ export class CourseMapper {
       language: domainCourse.getLanguage().value,
       category: domainCourse.getCategory().value,
       subCategory: domainCourse.getSubCategory().value,
+      published: false,
     };
   }
 
@@ -89,6 +92,7 @@ export class CourseMapper {
         subCategory: courseDto.subCategory ?? "",
       }),
       language: CourseLanguage.create({ language: courseDto.language ?? "" }),
+      modules: Modules.create([]),
     };
     if (courseDto.id !== null)
       return Course.create(courseProps, new UniqueEntityID(courseDto.id));
@@ -116,6 +120,7 @@ export class CourseMapper {
       name: nameVO,
       description: descVO,
       imgSrc: dto.imgSrc,
+      modules: Modules.create([]),
     };
 
     return Course.create(props, new UniqueEntityID(dto.id));

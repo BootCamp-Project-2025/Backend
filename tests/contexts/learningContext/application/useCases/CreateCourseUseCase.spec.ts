@@ -5,6 +5,7 @@ import { CourseDTO } from "../../../../../src/contexts/LearningContext/domain/dt
 import { Course } from "../../../../../src/contexts/LearningContext/domain/aggregates/Course";
 import { CourseName } from "../../../../../src/contexts/LearningContext/domain/valueObjects/CourseName";
 import { CourseDescription } from "../../../../../src/contexts/LearningContext/domain/valueObjects/CourseDescription";
+import { Modules } from "@/contexts/LearningContext/domain/OneToMany/Modules";
 
 describe("CreateCourseUseCase", () => {
   let repoMock: { insert: jest.Mock };
@@ -26,6 +27,7 @@ describe("CreateCourseUseCase", () => {
       name: CourseName.create({ name: dto.name }),
       description: CourseDescription.create({ description: dto.description }),
       imgSrc: dto.imgSrc,
+      modules: Modules.create([]),
     });
     repoMock.insert.mockResolvedValue(fakeCourse);
 

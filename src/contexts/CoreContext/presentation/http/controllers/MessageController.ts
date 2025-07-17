@@ -21,7 +21,7 @@ export class MessageController implements IMessageController {
       const messageDto: MessageDto = {
         ...message,
         status: "SENT",
-        timestamp: message.timestamp ?? new Date(),
+        timestamp: new Date(message.timestamp),
       };
       const messageDomain = MessageMapper.DtoToDomain(messageDto);
       const newMessageDomain = await this.messageService.create(messageDomain);

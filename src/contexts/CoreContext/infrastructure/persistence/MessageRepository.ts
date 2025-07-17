@@ -66,7 +66,7 @@ export class MessageRepository implements IMessageRepository {
       const newMessagePrisma = await PrismaClient.message.create({
         data: {
           content: messagePrisma.content,
-          timestamp: messagePrisma.timestamp,
+          timestamp: messagePrisma.timestamp.toISOString(),
           type: messagePrisma.type,
           chat: {
             connect: { id: messagePrisma.chatId },

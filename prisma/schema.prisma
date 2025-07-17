@@ -28,14 +28,46 @@ model Course{
   category String   @default("")
   subCategory String   @default("")
   imgSrc String
+  published Boolean @default(false)
   modules Module[]
 }
 
 model Module{
   id      String      @id @default(uuid())
-  author   Course @relation(fields: [CourseId], references: [id])
-  CourseId String
-  name   String   @unique
+  position Decimal
+  author   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String
+  title   String
+  lessons Lesson[]
+  quizzes Quiz[]
+}
+
+model Lesson{
+  id      String      @id @default(uuid())
+  position Decimal
+  author   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  description String
+  resources Resource[]
+  videoUrls String[]
+  moduleId String
+  title   String
+  
+}
+
+model Resource{
+  id      String      @id @default(uuid())
+  author   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  name   String 
+  url   String   
+  lessonId String
+}
+
+model Quiz{
+  id      String      @id @default(uuid())
+  author   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  name   String 
+  url   String   
+  moduleId String
 }
 
 model SampleData {

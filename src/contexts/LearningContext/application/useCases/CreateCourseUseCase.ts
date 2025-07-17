@@ -5,6 +5,7 @@ import { CourseName } from "../../domain/valueObjects/CourseName";
 import { CourseDescription } from "../../domain/valueObjects/CourseDescription";
 import IUseCase from "../../domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
+import { Modules } from "../../domain/OneToMany/Modules";
 
 @injectable()
 export class CreateCourseUseCase implements IUseCase<CourseDTO, Course> {
@@ -22,6 +23,7 @@ export class CreateCourseUseCase implements IUseCase<CourseDTO, Course> {
       name: courseName,
       description: description,
       imgSrc: courseDto.imgSrc,
+      modules: Modules.create([]),
     });
     return await this.courseRepo.insert(course);
   }

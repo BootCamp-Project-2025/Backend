@@ -17,7 +17,12 @@ export class MessageController implements IMessageController {
   ) {}
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const messageDto = req.body as MessageDto;
+      const message = req.body;
+      const messageDto: MessageDto = {
+        ...message,
+        status: "SENT",
+        timestamp: message.timestamp ?? new Date(),
+      };
       const messageDomain = MessageMapper.DtoToDomain(messageDto);
       const newMessageDomain = await this.messageService.create(messageDomain);
       const newMessageDto = MessageMapper.DomainToDto(newMessageDomain);

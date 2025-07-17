@@ -17,7 +17,8 @@ export class ChatController implements IChatController {
   ) {}
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const chatDto = req.body as ChatDto;
+      const chat = req.body as ChatDto;
+      const chatDto: ChatDto = { ...chat, messages: [], status: "ACTIVE" };
       const chatDomain = ChatMapper.DtoToDomain(chatDto);
       const newChatDomain = await this.chatService.create(chatDomain);
       const newChatDto = ChatMapper.DomainToDto(newChatDomain);

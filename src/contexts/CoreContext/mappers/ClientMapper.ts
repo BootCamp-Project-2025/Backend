@@ -9,6 +9,11 @@ import { DateOfBirth } from "../domain/valueObjects/DateOfBirth";
 import { SocialLinks } from "../domain/OneToMany/SocialLinks";
 import { SocialLinkMapper } from "./SocialLinksMapper";
 import { IClientProfileDto } from "../domain/interfaces/dtos/IClientProfileDto";
+import { Prisma } from "@/generated/prisma";
+
+type ClientWithSocialLinks = Prisma.ClientGetPayload<{
+  include: { socialLink: true };
+}>;
 
 export default class ClientMapper {
   static persistanceTodomain(clientDto: IClientProfileDto): Client {
@@ -68,6 +73,25 @@ export default class ClientMapper {
             client.socialLinks.currentItems
           )
         : [],
+    };
+  }
+
+  static persistanceToDto(
+    prismaClient: ClientWithSocialLinks
+  ): IClientProfileDto {
+    return {
+      id: prismaClient.id,
+      userId: prismaClient.userId,
+      phoneNumber: prismaClient.phoneNumber || undefined,
+      country: prismaClient.country || undefined,
+      city: prismaClient.city || undefined,
+      gender: prismaClient.gender || undefined,
+      dateOfBirth: prismaClient.dateOfBirth || undefined,
+      socialLinks: prismaClient.socialLink.map((link) => ({
+        id: link.id,
+        platform: link.platform,
+        url: link.url,
+      })),
     };
   }
 }

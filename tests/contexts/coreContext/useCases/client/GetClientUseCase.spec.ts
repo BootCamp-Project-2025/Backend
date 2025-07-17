@@ -29,14 +29,15 @@ describe("GetClientUseCase", () => {
       mockClient.clientId.toString()
     );
   });
-
   it("should throw an ApiError with NOT_FOUND if the client does not exist", async () => {
-    mockClientRepository.getClientProfileById.mockResolvedValue(null);
-
-    await expect(useCase.execute("non-existent-id")).rejects.toThrow(ApiError);
-    await expect(useCase.execute("non-existent-id")).rejects.toThrow(
-      "Client not found."
+    mockClientRepository.getClientProfileById.mockRejectedValue(
+      new ApiError(404, "Client not found.")
     );
+
+    const result = useCase.execute("non-existent-id");
+
+    await expect(result).rejects.toThrow(ApiError);
+    await expect(result).rejects.toThrow("Client not found.");
   });
 
   it("should throw an ApiError with INTERNAL_SERVER_ERROR if an unexpected error occurs", async () => {

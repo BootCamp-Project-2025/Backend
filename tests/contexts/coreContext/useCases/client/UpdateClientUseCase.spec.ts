@@ -3,6 +3,7 @@ import { UpdateClientUseCase } from "@/contexts/CoreContext/application/useCases
 import { IClientRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IClientRepository";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { ClientMother } from "./ClientMotherMock";
+import { Client } from "@/contexts/CoreContext/domain/aggregates/Client";
 
 describe("UpdateClientUseCase", () => {
   const mockClientRepository: jest.Mocked<IClientRepository> = {
@@ -40,7 +41,9 @@ describe("UpdateClientUseCase", () => {
   });
 
   it("should throw if the client does not exist", async () => {
-    mockClientRepository.getClientProfileById.mockResolvedValue(null);
+    mockClientRepository.getClientProfileById.mockRejectedValue(
+      new ApiError(404, "Client not found")
+    );
 
     await expect(
       useCase.execute({
@@ -49,12 +52,13 @@ describe("UpdateClientUseCase", () => {
       })
     ).rejects.toThrow("Client not found");
   });
-
   it("should throw ApiError if update fails", async () => {
     const existingClient = ClientMother.createValidClient();
 
     mockClientRepository.getClientProfileById.mockResolvedValue(existingClient);
-    mockClientRepository.updateClientProfile.mockResolvedValue(null as any);
+    mockClientRepository.updateClientProfile.mockResolvedValue(
+      null as unknown as Client
+    );
     await expect(
       useCase.execute({
         clientId: existingClient.clientId.toString(),

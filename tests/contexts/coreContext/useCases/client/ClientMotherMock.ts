@@ -9,8 +9,8 @@ import { DateOfBirth } from "@/contexts/CoreContext/domain/valueObjects/DateOfBi
 import { SocialLinks } from "@/contexts/CoreContext/domain/OneToMany/SocialLinks";
 import { SocialLink } from "@/contexts/CoreContext/domain/valueObjects/SocialLink";
 
-export class ClientMother {
-  static createValidClient(): Client {
+export const ClientMother = {
+  createValidClient(): Client {
     const userId = UserId.create(
       new UniqueEntityID("e3e58457-f4f2-41a1-9cf8-bdd67103e912")
     );
@@ -42,5 +42,5 @@ export class ClientMother {
       },
       new UniqueEntityID("46263e55-d602-4243-aea7-23db886bf860")
     );
-  }
-}
+  },
+};

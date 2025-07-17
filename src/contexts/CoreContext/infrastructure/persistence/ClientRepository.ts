@@ -5,11 +5,10 @@ import { injectable } from "tsyringe";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import ClientMapper from "../../mappers/ClientMapper";
-import { IClientProfileDto } from "../../domain/interfaces/dtos/IClientProfileDto";
 
 @injectable()
 export class ClientRepository implements IClientRepository {
-  async getClientProfileById(id: string): Promise<Client | null> {
+  async getClientProfileById(id: string): Promise<Client> {
     const clientProfile = await prismaClient.client.findUnique({
       where: { id },
       include: { socialLink: true },
@@ -19,22 +18,7 @@ export class ClientRepository implements IClientRepository {
       throw new ApiError(StatusCodes.NOT_FOUND, "The client doesn't exist");
     }
 
-    // Adapt prisma object to dto
-    const clientProfileDto: IClientProfileDto = {
-      id: clientProfile.id, //check this id here an in ClientMapper
-      userId: clientProfile.userId,
-      phoneNumber: clientProfile.phoneNumber || undefined,
-      country: clientProfile.country || undefined,
-      city: clientProfile.city || undefined,
-      gender: clientProfile.gender || undefined,
-      dateOfBirth: clientProfile.dateOfBirth || undefined,
-      socialLinks: clientProfile.socialLink.map((link) => ({
-        id: link.id,
-        platform: link.platform,
-        url: link.url,
-      })),
-    };
-
+    const clientProfileDto = ClientMapper.persistanceToDto(clientProfile);
     return ClientMapper.persistanceTodomain(clientProfileDto);
   }
 
@@ -51,7 +35,7 @@ export class ClientRepository implements IClientRepository {
           gender: clientDto.gender ?? "",
           dateOfBirth: clientDto.dateOfBirth ?? null,
           socialLink: {
-            deleteMany: {}, // this replace previous links each time
+            deleteMany: {},
             create:
               clientDto.socialLinks?.map((link) => ({
                 platform: link.platform,
@@ -64,22 +48,7 @@ export class ClientRepository implements IClientRepository {
         },
       });
 
-      // Map prisma to clientprofiledto
-      const updatedClientDto: IClientProfileDto = {
-        id: updatedClient.id,
-        userId: updatedClient.userId,
-        phoneNumber: updatedClient.phoneNumber || undefined,
-        city: updatedClient.city || undefined,
-        country: updatedClient.country || undefined,
-        gender: updatedClient.gender || undefined,
-        dateOfBirth: updatedClient.dateOfBirth || undefined,
-        socialLinks: updatedClient.socialLink.map((link) => ({
-          id: link.id,
-          platform: link.platform,
-          url: link.url,
-        })),
-      };
-
+      const updatedClientDto = ClientMapper.persistanceToDto(updatedClient);
       return ClientMapper.persistanceTodomain(updatedClientDto);
     } catch (error) {
       console.error(error);

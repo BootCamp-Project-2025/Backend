@@ -10,9 +10,9 @@ export class GetClientUseCase {
     @inject("IClientRepository")
     private readonly clientRepository: IClientRepository
   ) {}
-  async execute(clientId: string): Promise<Client | null> {
+  async execute(clientId: string): Promise<Client> {
     try {
-      const client: Client | null =
+      const client: Client =
         await this.clientRepository.getClientProfileById(clientId);
       if (client === null) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Client not found.");

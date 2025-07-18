@@ -1,0 +1,97 @@
+import { Request as ExpressRequest, Response } from "express";
+import IRequestController from "@/contexts/CoreContext/domain/interfaces/controllers/IRequestController";
+import IRequestService from "@/contexts/CoreContext/domain/interfaces/services/IRequestService";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { inject } from "tsyringe";
+import { Request } from "@/contexts/CoreContext/domain/aggregates/Request";
+import { StatusCodes } from "http-status-codes";
+import RequestMapper from "@/contexts/CoreContext/mappers/RequestMapper";
+import RequestDtoBuilder, {
+  RequestDto,
+} from "@/contexts/CoreContext/domain/interfaces/dtos/RequestDto";
+import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
+import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
+
+export class RequestController implements IRequestController {
+  constructor(
+    @inject("IRequestService") private readonly service: IRequestService
+  ) {}
+
+  async delete(req: ExpressRequest, res: Response): Promise<void> {
+    try {
+      const requestId = req.params.requestId;
+      if (!requestId) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "No request id sent");
+      }
+      await this.service.delete(requestId);
+      const response = new SuccessResponseEntity({}, StatusCodes.NO_CONTENT);
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else throw new ApiError();
+    }
+  }
+
+  async getUserActiveRequest(
+    req: ExpressRequest,
+    res: Response
+  ): Promise<void> {
+    try {
+      const userId = req.params.userId;
+      if (!userId) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "No user id sent");
+      }
+
+      const requestList: Request[] =
+        await this.service.getUserActiveRequest(userId);
+
+      const requestListDto = requestList.map((domainRequest) =>
+        RequestDtoBuilder.builder()
+          .id(domainRequest.id.toString())
+          .title(domainRequest.getTitle().value)
+          .estimation(domainRequest.getEstimation().value)
+          .description(domainRequest.getDescription().value)
+      );
+      const response = new SuccessResponseEntity(
+        requestListDto,
+        StatusCodes.OK
+      );
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else throw new ApiError();
+    }
+  }
+
+  async create(req: ExpressRequest, res: Response): Promise<void> {
+    try {
+      const requestDto = this.changeToDto(req.body);
+      const requestDomain = RequestMapper.dtoToDomain(requestDto);
+      const newRequestDomain = await this.service.create(requestDomain);
+      const responseData = RequestMapper.domainToDto(newRequestDomain);
+      const response = new SuccessResponseEntity(
+        responseData,
+        StatusCodes.CREATED,
+        "A new request was created sucessfully"
+      );
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else throw new ApiError();
+    }
+  }
+
+  changeToDto(body: unknown): RequestDto {
+    try {
+      return body as RequestDto;
+    } catch {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "The data is not a valid Client request"
+      );
+    }
+  }
+}

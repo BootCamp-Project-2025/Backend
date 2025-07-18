@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { container } from "tsyringe";
 import EducationController from "../controllers/EducationController";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 
 export const EducationRoutes = Router({ mergeParams: true });
 const controller = container.resolve(EducationController);
@@ -22,6 +23,10 @@ const controller = container.resolve(EducationController);
  *     responses:
  *       200:
  *         description: A list of education of the freelancer
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  */
 EducationRoutes.get("", controller.getAllOfFreelancer);
 
@@ -30,6 +35,8 @@ EducationRoutes.get("", controller.getAllOfFreelancer);
  * /freelancers/{freelancerId}/educations:
  *   post:
  *     summary: Create a new education for a freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Education
  *     parameters:
@@ -51,14 +58,20 @@ EducationRoutes.get("", controller.getAllOfFreelancer);
  *     responses:
  *       201:
  *         description: Education created successfully
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  */
-EducationRoutes.post("", controller.create);
+EducationRoutes.post("", verifyToken(["FREELANCER"]), controller.create);
 
 /**
  * @openapi
  * /freelancers/{freelancerId}/educations/{educationId}:
  *   put:
  *     summary: Update a education of a freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Education
  *     parameters:
@@ -86,19 +99,29 @@ EducationRoutes.post("", controller.create);
  *     responses:
  *       200:
  *         description: freelancer language updated
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  *       404:
  *         description: freelancer or language not found
  *       500:
  *         description: Server error
  *
  */
-EducationRoutes.put("/:educationId", controller.update);
+EducationRoutes.put(
+  "/:educationId",
+  verifyToken(["FREELANCER"]),
+  controller.update
+);
 
 /**
  * @openapi
  * /freelancers/{freelancerId}/educations/{educationId}:
  *   delete:
  *     summary: Delete an education of a freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Education
  *     parameters:
@@ -117,8 +140,16 @@ EducationRoutes.put("/:educationId", controller.update);
  *     responses:
  *       204:
  *         description: Education deleted successfully
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  */
-EducationRoutes.delete("/:educationId", controller.delete);
+EducationRoutes.delete(
+  "/:educationId",
+  verifyToken(["FREELANCER"]),
+  controller.delete
+);
 
 /**
  * @openapi

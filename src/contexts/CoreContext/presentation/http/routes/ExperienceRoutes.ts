@@ -1,17 +1,30 @@
 import { Router } from "express";
 import { container } from "@/di-container";
 import { ExperienceController } from "../controllers/ExperienceController";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 
 export const ExperienceRoutes = Router({ mergeParams: true });
 const controller = container.resolve(ExperienceController);
 
 ExperienceRoutes.get("", controller.getAll.bind(controller));
 
-ExperienceRoutes.post("/", controller.create.bind(controller));
+ExperienceRoutes.post(
+  "/",
+  verifyToken(["FREELANCER"]),
+  controller.create.bind(controller)
+);
 
-ExperienceRoutes.put("/:experienceId", controller.update.bind(controller));
+ExperienceRoutes.put(
+  "/:experienceId",
+  verifyToken(["FREELANCER"]),
+  controller.update.bind(controller)
+);
 
-ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
+ExperienceRoutes.delete(
+  "/:experienceId",
+  verifyToken(["FREELANCER"]),
+  controller.delete.bind(controller)
+);
 
 /**
  * @swagger
@@ -67,6 +80,10 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
  *     responses:
  *       200:
  *         description: List of experiences
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  */
 
 /**
@@ -75,6 +92,8 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
  * /freelancers/{freelancerId}/experiences:
  *   post:
  *     summary: Create a new experience
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Experience
  *     parameters:
@@ -95,6 +114,10 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
  *     responses:
  *       201:
  *         description: Experience created
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  */
 
 /**
@@ -103,6 +126,8 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
  * /freelancers/{freelancerId}/experiences/{experienceId}:
  *   put:
  *     summary: Update an experience
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Experience
  *     parameters:
@@ -128,6 +153,10 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
  *     responses:
  *       204:
  *         description: Experience updated
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  */
 
 /**
@@ -136,6 +165,8 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
  * /freelancers/{freelancerId}/experiences/{experienceId}:
  *   delete:
  *     summary: Delete an experience
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - Experience
  *     parameters:
@@ -152,4 +183,8 @@ ExperienceRoutes.delete("/:experienceId", controller.delete.bind(controller));
  *     responses:
  *       204:
  *         description: Experience deleted
+ *       401:
+ *         description: Invalid or missing token
+ *       403:
+ *         description: Forbidden access
  */

@@ -60,6 +60,8 @@ router.post("/", controller.post);
  * /users:
  *  patch:
  *     summary: Updates the user data
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - User
  *     requestBody:
@@ -92,6 +94,8 @@ router.patch("/", verifyToken(), controller.updateUser);
  * /users/{id}/freelance:
  *  put:
  *     summary: Update the user as freelancer
+ *     security:
+ *      - BearerAuth: []
  *     tags:
  *       - User
  *     parameters:
@@ -108,7 +112,7 @@ router.patch("/", verifyToken(), controller.updateUser);
  *              description: Everything is wrong
  *
  */
-router.put("/:id/freelance", controller.freelance);
+router.put("/:id/freelance", verifyToken(), controller.freelance);
 
 export default router;
 

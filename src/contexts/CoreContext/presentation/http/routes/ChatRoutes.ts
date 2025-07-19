@@ -20,6 +20,10 @@ const messageController = container.resolve(MessageController);
  *         application/x-www-form-urlencoded:
  *           schema:
  *             $ref: '#/components/schemas/Chat'
+ *           encoding:
+ *             participantsIds:
+ *               style: form
+ *               explode: true
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Chat'
@@ -31,6 +35,31 @@ const messageController = container.resolve(MessageController);
  *
  */
 chatRoutes.post("", chatController.create);
+
+/**
+ * @openapi
+ * /chats/{chatId}:
+ *   get:
+ *     summary: Get chat information
+ *     tags:
+ *       - Chat
+ *     parameters:
+ *       - in: path
+ *         name: chatId
+ *         required: true
+ *         description: The ID of the chat
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Chat retrieved successfully
+ *       404:
+ *         description: Chat not found
+ *       500:
+ *         description: Server error
+ *
+ */
+chatRoutes.get("/:chatId", chatController.get);
 
 /**
  * @openapi
@@ -48,9 +77,9 @@ chatRoutes.post("", chatController.create);
  *           type: string
  *     responses:
  *       200:
- *         description: Chats found
+ *         description: Messages retrieved successfully
  *       404:
- *         description: Chats not found
+ *         description: Chat not found
  *       500:
  *         description: Server error
  *
@@ -84,7 +113,7 @@ chatRoutes.get("/:chatId/messages", messageController.getMessagesByChatId);
  *       201:
  *         description: Message created successfully
  *       404:
- *         description: chat not found
+ *         description: Resource not found
  *       500:
  *         description: Server error
  *
@@ -138,6 +167,7 @@ chatRoutes.put(
  *           type: array
  *           items:
  *             type: string
+ *             format: uuid
  *           description: The Ids of the users participants of the chat
  *       required:
  *         - participantsIds
@@ -145,6 +175,10 @@ chatRoutes.put(
  *     Message:
  *       type: object
  *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *           description: Id of the message
  *         content:
  *           type: string
  *           description: Content of the message
@@ -162,9 +196,11 @@ chatRoutes.put(
  *           description: Time when the message has been sent
  *         senderId:
  *           type: string
+ *           format: uuid
  *           description: Id of the user who sent the message
  *         chatId:
  *           type: string
+ *           format: uuid
  *           description: Id of the chat
  *       required:
  *         - content

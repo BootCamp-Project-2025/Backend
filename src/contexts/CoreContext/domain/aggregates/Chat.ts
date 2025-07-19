@@ -41,10 +41,13 @@ export class Chat extends AggregateRoot<ChatProps> {
   }
 
   public static create(props: ChatProps, id?: UniqueEntityID): Chat {
-    if (props.participantsIds.length == 0) {
+    const participantsIds = [
+      ...new Set(props.participantsIds.map((id) => id.toString())),
+    ];
+    if (participantsIds.length < 2) {
       throw new ApiError(
         StatusCodes.BAD_REQUEST,
-        "Chat must have participants"
+        "Chat must have at least 2 participants"
       );
     }
     return new Chat(

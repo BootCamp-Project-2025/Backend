@@ -10,13 +10,15 @@ export class ChatService implements IChatService {
     @inject("CreateChatUseCase")
     private createChatUseCase: IUseCase<Chat, Chat>,
     @inject("GetChatsByUserIdUseCase")
-    private getChatsByUserIdUseCase: IUseCase<string, Chat[]>
+    private getChatsByUserIdUseCase: IUseCase<string, Chat[]>,
+    @inject("GetChatByIdUseCase")
+    private getChatByIdUseCase: IUseCase<string, Chat>
   ) {}
   async getManyByUserId(userId: string): Promise<Chat[]> {
     return await this.getChatsByUserIdUseCase.execute(userId);
   }
-  get(id: string): Promise<Chat | null> {
-    throw new Error("Method not implemented.");
+  async get(id: string): Promise<Chat> {
+    return await this.getChatByIdUseCase.execute(id);
   }
   getAll(): Promise<Chat[]> {
     throw new Error("Method not implemented.");

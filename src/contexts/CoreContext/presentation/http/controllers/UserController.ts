@@ -21,20 +21,20 @@ export class UserController implements IUserController {
     private chatService: IChatService
   ) {}
   getChats = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { id } = req.params;
-      const chats = await this.chatService.getManyByUserId(id);
-      const chatsDto = ChatMapper.ManyDomainToDto(chats);
-      const response = new SuccessResponseEntity(
-        chatsDto,
-        StatusCodes.OK,
-        "Chats retrieved successfully"
-      );
-      ResponseService.send(res, response);
-    } catch (error) {
-      console.log(error);
-      throw new ApiError();
-    }
+    // try {
+    const { userId } = req.params;
+    const chats = await this.chatService.getManyByUserId(userId);
+    const chatsDto = ChatMapper.ManyDomainToDto(chats);
+    const response = new SuccessResponseEntity(
+      chatsDto,
+      StatusCodes.OK,
+      "Chats retrieved successfully"
+    );
+    ResponseService.send(res, response);
+    // } catch (error) {
+    //   console.log(error);
+    //   throw new ApiError();
+    // }
   };
 
   freelance = async (req: Request, res: Response) => {

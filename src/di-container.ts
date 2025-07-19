@@ -116,6 +116,7 @@ import { IChatRepository } from "./contexts/CoreContext/domain/interfaces/reposi
 import { ChatRepository } from "./contexts/CoreContext/infrastructure/persistence/ChatRepository";
 import { IMessageRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IMessageRepository";
 import { MessageRepository } from "./contexts/CoreContext/infrastructure/persistence/MessageRepository";
+import { GetChatByIdUseCase } from "./contexts/CoreContext/application/useCases/chats/GetChatByIdUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -404,6 +405,10 @@ container.registerSingleton<IMessageService>("IMessageService", MessageService);
 container.registerSingleton<IUseCase<Chat, Chat>>(
   "CreateChatUseCase",
   CreateChatUsecase
+);
+container.registerSingleton<IUseCase<string, Chat>>(
+  "GetChatByIdUseCase",
+  GetChatByIdUseCase
 );
 container.registerSingleton<IUseCase<Message, Message>>(
   "CreateMessageUseCase",

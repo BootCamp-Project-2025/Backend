@@ -2,6 +2,7 @@ import { Message } from "../domain/entities/Message";
 import { Message as MessagePrisma } from "@/generated/prisma";
 import { MessageDto } from "../domain/interfaces/dtos/IMessageDto";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { MessageDao } from "../domain/interfaces/dao/MessageDao";
 
 export class MessageMapper {
   public static DtoToDomain(messageDto: MessageDto): Message {
@@ -13,6 +14,8 @@ export class MessageMapper {
         timestamp: messageDto.timestamp,
         type: messageDto.type,
         status: messageDto.status,
+        receiversIds:
+          messageDto.receiversIds?.map((id) => new UniqueEntityID(id)) ?? [],
       },
       new UniqueEntityID(messageDto.id)
     );
@@ -27,10 +30,11 @@ export class MessageMapper {
       status: messageDomain.status,
       timestamp: messageDomain.timestamp,
       type: messageDomain.type,
+      receiversIds: messageDomain.receiversIds.map((id) => id.toString()),
     };
   }
 
-  public static DomainToPersistence(messageDomain: Message): MessagePrisma {
+  public static DomainToPersistence(messageDomain: Message): MessageDao {
     return {
       id: messageDomain.id.toString(),
       chatId: messageDomain.chatId.toString(),
@@ -39,10 +43,11 @@ export class MessageMapper {
       status: messageDomain.status,
       timestamp: messageDomain.timestamp,
       type: messageDomain.type,
+      receiversIds: messageDomain.receiversIds.map((id) => id.toString()),
     };
   }
 
-  public static PersistenceToDomain(messagePrisma: MessagePrisma): Message {
+  public static PersistenceToDomain(messagePrisma: MessageDao): Message {
     return Message.create(
       {
         chatId: new UniqueEntityID(messagePrisma.chatId),
@@ -51,6 +56,8 @@ export class MessageMapper {
         timestamp: messagePrisma.timestamp,
         type: messagePrisma.type,
         status: messagePrisma.status,
+        receiversIds:
+          messagePrisma.receiversIds?.map((id) => new UniqueEntityID(id)) ?? [],
       },
       new UniqueEntityID(messagePrisma.id)
     );
@@ -77,7 +84,7 @@ export class MessageMapper {
   }
 
   public static ManyPersistenceToDomain(
-    messagesPrisma: MessagePrisma[]
+    messagesPrisma: MessageDao[]
   ): Message[] {
     return messagesPrisma.map((message) => {
       return this.PersistenceToDomain(message);

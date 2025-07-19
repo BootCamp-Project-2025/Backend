@@ -16,21 +16,31 @@ export class ChatController implements IChatController {
     private chatService: IChatService
   ) {}
   create = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const chat = req.body as ChatDto;
-      const chatDto: ChatDto = { ...chat, messages: [], status: "ACTIVE" };
-      const chatDomain = ChatMapper.DtoToDomain(chatDto);
-      const newChatDomain = await this.chatService.create(chatDomain);
-      const newChatDto = ChatMapper.DomainToDto(newChatDomain);
-      const response = new SuccessResponseEntity(
-        newChatDto,
-        StatusCodes.CREATED,
-        "Chat saved successfully"
-      );
-      ResponseService.send(res, response);
-    } catch (error) {
-      console.log(error);
-      throw new ApiError();
-    }
+    const chat = req.body as ChatDto;
+    console.log(chat);
+
+    const chatDto: ChatDto = { ...chat, messages: [], status: "ACTIVE" };
+    const chatDomain = ChatMapper.DtoToDomain(chatDto);
+    const newChatDomain = await this.chatService.create(chatDomain);
+    const newChatDto = ChatMapper.DomainToDto(newChatDomain);
+    const response = new SuccessResponseEntity(
+      newChatDto,
+      StatusCodes.CREATED,
+      "Chat saved successfully"
+    );
+    ResponseService.send(res, response);
+  };
+  get = async (req: Request, res: Response): Promise<void> => {
+    const { chatId } = req.params;
+    const chatDomain = await this.chatService.get(chatId);
+    if (!chatDomain)
+      throw new ApiError(StatusCodes.NOT_FOUND, "Chat not found");
+    const chatDto = ChatMapper.DomainToDto(chatDomain);
+    const response = new SuccessResponseEntity(
+      chatDto,
+      StatusCodes.OK,
+      "Chat retrieved successfully"
+    );
+    ResponseService.send(res, response);
   };
 }

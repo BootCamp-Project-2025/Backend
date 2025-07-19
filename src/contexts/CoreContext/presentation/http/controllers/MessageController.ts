@@ -16,44 +16,33 @@ export class MessageController implements IMessageController {
     private messageService: IMessageService
   ) {}
   create = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const message = req.body;
-      const messageDto: MessageDto = {
-        ...message,
-        status: "SENT",
-        timestamp: new Date(message.timestamp),
-      };
-      const messageDomain = MessageMapper.DtoToDomain(messageDto);
-      const newMessageDomain = await this.messageService.create(messageDomain);
-      const newMessageDto = MessageMapper.DomainToDto(newMessageDomain);
-      const response = new SuccessResponseEntity(
-        newMessageDto,
-        StatusCodes.CREATED,
-        "Message saved successfully"
-      );
-      ResponseService.send(res, response);
-    } catch (error) {
-      console.log(error);
-      throw new ApiError();
-    }
+    const message = req.body;
+    const messageDto: MessageDto = {
+      ...message,
+      timestamp: new Date(message.timestamp),
+    };
+    const messageDomain = MessageMapper.DtoToDomain(messageDto);
+    const newMessageDomain = await this.messageService.create(messageDomain);
+    const newMessageDto = MessageMapper.DomainToDto(newMessageDomain);
+    const response = new SuccessResponseEntity(
+      newMessageDto,
+      StatusCodes.CREATED,
+      "Message saved successfully"
+    );
+    ResponseService.send(res, response);
   };
   getMessagesByChatId = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { chatId } = req.params;
-      if (!chatId)
-        throw new ApiError(StatusCodes.BAD_REQUEST, "Chat id is missing");
-      const messagesDomain = await this.messageService.getManyByChatId(chatId);
-      const messagesDto = MessageMapper.ManyDomainToDto(messagesDomain);
-      const response = new SuccessResponseEntity(
-        messagesDto,
-        StatusCodes.OK,
-        "Messages retrieved successfully"
-      );
-      ResponseService.send(res, response);
-    } catch (error) {
-      console.log(error);
-      throw new ApiError();
-    }
+    const { chatId } = req.params;
+    if (!chatId)
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Chat id is missing");
+    const messagesDomain = await this.messageService.getManyByChatId(chatId);
+    const messagesDto = MessageMapper.ManyDomainToDto(messagesDomain);
+    const response = new SuccessResponseEntity(
+      messagesDto,
+      StatusCodes.OK,
+      "Messages retrieved successfully"
+    );
+    ResponseService.send(res, response);
   };
   updateMessageStatus = async (req: Request, res: Response): Promise<void> => {
     try {

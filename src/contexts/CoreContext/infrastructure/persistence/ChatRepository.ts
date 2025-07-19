@@ -6,12 +6,14 @@ import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { ChatMapper } from "../../mappers/ChatMapper";
 import { ChatDao } from "../../domain/interfaces/dao/ChatDao";
+import { StatusCodes } from "http-status-codes";
+import { PrismaClientKnownRequestError } from "@/generated/prisma/runtime/library";
 
 @injectable()
 export class ChatRepository implements IChatRepository {
   async findManyByUserId(userId: string): Promise<Chat[]> {
     try {
-      const userPrisma = await PrismaClient.user.findFirst({
+      const userPrisma = await PrismaClient.user.findFirstOrThrow({
         where: { id: userId },
         include: {
           chats: {
@@ -36,19 +38,58 @@ export class ChatRepository implements IChatRepository {
       const chatsDomain = ChatMapper.ManyPersistenceToDomain(chatsDao);
       return chatsDomain;
     } catch (error) {
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
+      } else {
+        throw new ApiError();
+      }
+    }
+  }
+
+  getAll(): Promise<Chat[]> {
+    throw new Error("Method not implemented.");
+  }
+
+  async getById(id: string): Promise<Chat | null> {
+    try {
+      const chatPrisma = await PrismaClient.chat.findFirst({
+        where: { id },
+
+        include: {
+          messages: {
+            orderBy: { timestamp: "asc" },
+            include: { receivers: { select: { id: true } } },
+          },
+          participants: { select: { id: true } },
+        },
+      });
+      if (chatPrisma) {
+        const chatPrismaMapped: ChatDao = {
+          ...chatPrisma,
+          participantsIds: chatPrisma?.participants.map((p) => p.id),
+          messages: chatPrisma.messages.map((message) => {
+            return {
+              ...message,
+              receiversIds: message.receivers.map((r) => r.id),
+            };
+          }),
+        };
+        const chatDomain = ChatMapper.PersistenceToDomain(chatPrismaMapped);
+        return chatDomain;
+      } else return null;
+    } catch (error) {
       console.log(error);
       throw new ApiError();
     }
   }
-  getAll(): Promise<Chat[]> {
-    throw new Error("Method not implemented.");
-  }
-  getById(id: string): Promise<Chat | null> {
-    throw new Error("Method not implemented.");
-  }
+
   delete(id: string): Promise<string | void> {
     throw new Error("Method not implemented.");
   }
+
   async create(object: Chat): Promise<Chat> {
     try {
       const chatPrisma = ChatMapper.DomainToPersistence(object);
@@ -69,10 +110,17 @@ export class ChatRepository implements IChatRepository {
       const newChatDomain = ChatMapper.PersistenceToDomain(newChatDao);
       return newChatDomain;
     } catch (error) {
-      console.log(error);
-      throw new ApiError();
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
+      } else {
+        throw new ApiError();
+      }
     }
   }
+
   update(id: string, object: Chat): Promise<void | Chat> {
     throw new Error("Method not implemented.");
   }

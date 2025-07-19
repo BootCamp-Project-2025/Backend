@@ -124,9 +124,12 @@ router.put("/:id/freelance", controller.freelance);
  *         description: The ID of the user
  *         schema:
  *           type: string
+ *           format: uuid
  *     responses:
  *          200:
  *              description: Everything is ok and returns the user chats
+ *          404:
+ *              description: User not found
  *          500:
  *              description: Everything is wrong
  *

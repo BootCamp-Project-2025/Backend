@@ -170,7 +170,7 @@ model Message {
   id         String        @id @default(uuid())
   content    String
   type       MessageType
-  timestamp  DateTime
+  timestamp  DateTime      @db.Timestamptz()
   status     MessageStatus @default(DELIVERED)
   senderId   String
   chatId     String

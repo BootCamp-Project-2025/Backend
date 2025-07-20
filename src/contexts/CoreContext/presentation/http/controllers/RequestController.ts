@@ -17,7 +17,7 @@ export class RequestController implements IRequestController {
     @inject("IRequestService") private readonly service: IRequestService
   ) {}
 
-  async delete(req: ExpressRequest, res: Response): Promise<void> {
+  delete = async (req: ExpressRequest, res: Response): Promise<void> => {
     try {
       const requestId = req.params.requestId;
       if (!requestId) {
@@ -31,12 +31,12 @@ export class RequestController implements IRequestController {
         throw error;
       } else throw new ApiError();
     }
-  }
+  };
 
-  async getUserActiveRequest(
+  getUserActiveRequest = async (
     req: ExpressRequest,
     res: Response
-  ): Promise<void> {
+  ): Promise<void> => {
     try {
       const userId = req.params.userId;
       if (!userId) {
@@ -63,11 +63,11 @@ export class RequestController implements IRequestController {
         throw error;
       } else throw new ApiError();
     }
-  }
+  };
 
-  async create(req: ExpressRequest, res: Response): Promise<void> {
+  create = async (req: ExpressRequest, res: Response): Promise<void> => {
     try {
-      const requestDto = this.changeToDto(req.body);
+      const requestDto = this.changeTypeToDto(req.body);
       const requestDomain = RequestMapper.dtoToDomain(requestDto);
       const newRequestDomain = await this.service.create(requestDomain);
       const responseData = RequestMapper.domainToDto(newRequestDomain);
@@ -82,9 +82,9 @@ export class RequestController implements IRequestController {
         throw error;
       } else throw new ApiError();
     }
-  }
+  };
 
-  changeToDto(body: unknown): RequestDto {
+  changeTypeToDto(body: unknown): RequestDto {
     try {
       return body as RequestDto;
     } catch {

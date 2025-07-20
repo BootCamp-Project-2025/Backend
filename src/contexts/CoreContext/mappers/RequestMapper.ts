@@ -1,4 +1,5 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { $Enums, Request as PrismaRequest } from "@/generated/prisma";
 import { Request } from "../domain/aggregates/Request";
 import RequestDtoBuilder, {
   RequestDto,
@@ -55,6 +56,23 @@ const RequestMapper = {
       .updatedAt(request.getUpdatedAt())
       .proposals(ProposalMapper.bulkDomainToDto(request.getProposals()))
       .build();
+  },
+
+  domainToPersistance(requestDomain: Request): PrismaRequest {
+    return {
+      id: requestDomain.id.toString(),
+      userId: requestDomain.getUserId().getValue().toString(),
+      title: requestDomain.getTitle().value,
+      description: requestDomain.getDescription().value,
+      language: requestDomain.getLanguage().value,
+      category: requestDomain.getCategory().value,
+      subcategory: requestDomain.getSubcategory().value,
+      status: requestDomain.getStatus().value as $Enums.RequestStatus,
+      createdAt: requestDomain.getCreatedAt(),
+      estimation: requestDomain.getEstimation().value,
+      edited: requestDomain.getEdited().value,
+      updatedAt: requestDomain.getUpdatedAt(),
+    };
   },
 };
 

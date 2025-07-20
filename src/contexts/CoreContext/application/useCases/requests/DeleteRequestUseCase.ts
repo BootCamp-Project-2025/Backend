@@ -1,0 +1,23 @@
+import IRequestRepository from "@/contexts/CoreContext/domain/interfaces/repositories/IRequestRepository";
+import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
+import { inject, injectable } from "tsyringe";
+
+@injectable()
+export default class DeleteRequestUseCase implements IUseCase<string, void> {
+  constructor(
+    @inject("IRequestRepository")
+    private readonly repository: IRequestRepository
+  ) {}
+  async execute(requestId: string): Promise<void> {
+    await this.checkIfRequestExist(requestId);
+    await this.repository.delete(requestId);
+  }
+
+  async checkIfRequestExist(requestId: string) {
+    if (!(await this.repository.findById(requestId))) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Request does not exist");
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { Request as ExpressRequest, Response } from "express";
 import IRequestController from "@/contexts/CoreContext/domain/interfaces/controllers/IRequestController";
 import IRequestService from "@/contexts/CoreContext/domain/interfaces/services/IRequestService";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { Request } from "@/contexts/CoreContext/domain/aggregates/Request";
 import { StatusCodes } from "http-status-codes";
 import RequestMapper from "@/contexts/CoreContext/mappers/RequestMapper";
@@ -12,6 +12,7 @@ import RequestDtoBuilder, {
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 
+@injectable()
 export class RequestController implements IRequestController {
   constructor(
     @inject("IRequestService") private readonly service: IRequestService
@@ -38,13 +39,14 @@ export class RequestController implements IRequestController {
     res: Response
   ): Promise<void> => {
     try {
-      const userId = req.params.userId;
-      if (!userId) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, "No user id sent");
+      const user = req.user;
+      if (!user || !user.id) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "User info is not valid");
       }
 
-      const requestList: Request[] =
-        await this.service.getUserActiveRequest(userId);
+      const requestList: Request[] = await this.service.getUserActiveRequest(
+        user.id
+      );
 
       const requestListDto = requestList.map((domainRequest) =>
         RequestDtoBuilder.builder()
@@ -67,7 +69,12 @@ export class RequestController implements IRequestController {
 
   create = async (req: ExpressRequest, res: Response): Promise<void> => {
     try {
+      const user = req.user;
+      if (!user) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "User info is not valid");
+      }
       const requestDto = this.changeTypeToDto(req.body);
+      requestDto.userId = user.id;
       const requestDomain = RequestMapper.dtoToDomain(requestDto);
       const newRequestDomain = await this.service.create(requestDomain);
       const responseData = RequestMapper.domainToDto(newRequestDomain);

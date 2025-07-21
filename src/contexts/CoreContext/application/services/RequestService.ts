@@ -3,8 +3,8 @@ import IRequestService from "../../domain/interfaces/services/IRequestService";
 import { Request } from "../../domain/aggregates/Request";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 
-injectable();
-export default class RequestServicec implements IRequestService {
+@injectable()
+export default class RequestService implements IRequestService {
   constructor(
     @inject("DeleteRequestUseCase")
     private readonly deleteRequestUseCase: IUseCase<string, void>,

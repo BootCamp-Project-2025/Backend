@@ -125,7 +125,7 @@ import IRequestController from "./contexts/CoreContext/domain/interfaces/control
 import { RequestController } from "./contexts/CoreContext/presentation/http/controllers/RequestController";
 import IRequestService from "./contexts/CoreContext/domain/interfaces/services/IRequestService";
 import IRequestRepository from "./contexts/CoreContext/domain/interfaces/repositories/IRequestRepository";
-import RequestServicec from "./contexts/CoreContext/application/services/RequestService";
+import RequestService from "./contexts/CoreContext/application/services/RequestService";
 import RequestRepository from "./contexts/CoreContext/infrastructure/persistence/RequestRepository";
 import GetUserActiveRequestUseCase from "./contexts/CoreContext/application/useCases/requests/getUserActiveRequestUseCase";
 import { Request } from "./contexts/CoreContext/domain/aggregates/Request";
@@ -483,14 +483,13 @@ container.registerSingleton<IExternarlAuthService>(
   KeycloakService
 );
 
+container.registerSingleton<IRequestService>("IRequestService", RequestService);
+
 container.registerSingleton<IRequestController>(
   "IRequestController",
   RequestController
 );
-container.registerSingleton<IRequestService>(
-  "IRequestService",
-  RequestServicec
-);
+
 container.registerSingleton<IRequestRepository>(
   "IRequestRepository",
   RequestRepository
@@ -504,7 +503,7 @@ container.registerSingleton<IUseCase<string, void>>(
   DeleteRequestUseCase
 );
 container.registerSingleton<IUseCase<Request, Request>>(
-  "GetUserActCreateRequestUseCaseiveRequestUseCase",
+  "CreateRequestUseCase",
   CreateRequestUseCase
 );
 

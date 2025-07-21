@@ -18,7 +18,7 @@ datasource db {
 }
 
 model Course{
-   id      String      @id @default(uuid())
+  id      String      @id @default(uuid())
   name   String   @unique
   field String
   requirements String
@@ -30,6 +30,8 @@ model Course{
   imgSrc String
   published Boolean @default(false)
   modules Module[]
+  userId String
+  user    User   @relation("UserCourse", fields: [userId], references: [id])
 }
 
 model Module{
@@ -92,6 +94,7 @@ model User {
 
   proposals          Proposal[]
   requests           Request[]   
+  Course             Course[]    @relation("UserCourse")
 }
 
 model Freelancer {

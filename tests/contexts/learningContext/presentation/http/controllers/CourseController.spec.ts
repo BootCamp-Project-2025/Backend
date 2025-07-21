@@ -39,7 +39,9 @@ describe("CourseController", () => {
 
   describe("getAllCourses", () => {
     it("should send 200 with SuccessResponseEntity on success", async () => {
-      const fake = [{ id: "1", name: "A", description: "D", imgSrc: "I" }];
+      const fake = [
+        { id: "1", name: "A", description: "D", imgSrc: "I", userId: "U" },
+      ];
       serviceMock.getAllCourses.mockResolvedValue(fake);
 
       await controller.getAllCourses(req as Request, res as Response);
@@ -71,8 +73,18 @@ describe("CourseController", () => {
 
   describe("create", () => {
     it("should send 201 with SuccessResponseEntity on success", async () => {
-      const dto: CourseDTO = { name: "N", description: "D", imgSrc: "I" };
-      req.body = dto;
+      const dto: CourseDTO = {
+        name: "N",
+        description: "D",
+        imgSrc: "I",
+        userId: "U",
+      };
+      req.user = {
+        id: "U",
+        email: "email",
+        name: "name",
+      };
+      req.body = { name: "N", description: "D", imgSrc: "I" };
       serviceMock.create.mockResolvedValue(dto);
 
       await controller.create(req as Request, res as Response);
@@ -102,7 +114,12 @@ describe("CourseController", () => {
 
   describe("updateCourse", () => {
     it("should send 200 with SuccessResponseEntity on success", async () => {
-      const dto: CourseDTO = { name: "U", description: "D", imgSrc: "I" };
+      const dto: CourseDTO = {
+        name: "U",
+        description: "D",
+        imgSrc: "I",
+        userId: "U",
+      };
       req.params = { id: "42" };
       req.body = dto;
       serviceMock.editCourse.mockResolvedValue(dto);

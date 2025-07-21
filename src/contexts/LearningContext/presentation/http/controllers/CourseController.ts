@@ -37,7 +37,11 @@ export class CourseController implements ICourseController {
 
   public create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const dto = req.body as CourseDTO;
+      const dto = {
+        ...req.body,
+        userId: req.user?.id,
+      } as CourseDTO;
+
       const result = await this.courseService.create(dto);
       const response = new SuccessResponseEntity(result, StatusCodes.CREATED);
       return ResponseService.send(res, response);

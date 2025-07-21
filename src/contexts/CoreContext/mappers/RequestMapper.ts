@@ -21,20 +21,25 @@ const RequestMapper = {
   },
 
   dtoToDomain(requestDto: RequestDto): Request {
-    return Request.create({
-      title: RequestTitle.create(requestDto.title ?? ""),
-      description: RequestDescription.create(requestDto.description ?? ""),
-      language: RequestLanguage.create(requestDto.language ?? "english"),
-      category: RequestCategory.create(requestDto.category ?? "none"),
-      subcategory: RequestSubcategory.create(requestDto.subCategory ?? "none"),
-      status: RequestStatus.create(requestDto.status ?? ""),
-      userId: UserId.create(new UniqueEntityID(requestDto.userId)),
-      estimation: RequestEstimation.create(requestDto.estimation ?? 1),
-      edited: RequestEdited.create(requestDto.edited ?? false),
-      createdAt: requestDto.createdAt ?? new Date(),
-      updatedAt: requestDto.updatedAt ?? new Date(),
-      proposals: [],
-    });
+    return Request.create(
+      {
+        title: RequestTitle.create(requestDto.title ?? ""),
+        description: RequestDescription.create(requestDto.description ?? ""),
+        language: RequestLanguage.create(requestDto.language ?? "english"),
+        category: RequestCategory.create(requestDto.category ?? "none"),
+        subcategory: RequestSubcategory.create(
+          requestDto.subCategory ?? "none"
+        ),
+        status: RequestStatus.create(requestDto.status ?? ""),
+        userId: UserId.create(new UniqueEntityID(requestDto.userId)),
+        estimation: RequestEstimation.create(requestDto.estimation ?? 1),
+        edited: RequestEdited.create(requestDto.edited ?? false),
+        createdAt: requestDto.createdAt ?? new Date(),
+        updatedAt: requestDto.updatedAt ?? new Date(),
+        proposals: [],
+      },
+      new UniqueEntityID(requestDto.id)
+    );
   },
 
   bulkDomainToDto(requestList: Request[]): RequestDto[] {

@@ -127,7 +127,7 @@ import IRequestService from "./contexts/CoreContext/domain/interfaces/services/I
 import IRequestRepository from "./contexts/CoreContext/domain/interfaces/repositories/IRequestRepository";
 import RequestService from "./contexts/CoreContext/application/services/RequestService";
 import RequestRepository from "./contexts/CoreContext/infrastructure/persistence/RequestRepository";
-import GetUserActiveRequestUseCase from "./contexts/CoreContext/application/useCases/requests/getUserActiveRequestUseCase";
+import GetUserActiveRequestUseCase from "./contexts/CoreContext/application/useCases/requests/GetUserActiveRequestUseCase";
 import { Request } from "./contexts/CoreContext/domain/aggregates/Request";
 import DeleteRequestUseCase from "./contexts/CoreContext/application/useCases/requests/DeleteRequestUseCase";
 import CreateRequestUseCase from "./contexts/CoreContext/application/useCases/requests/CreateRequestUseCase";

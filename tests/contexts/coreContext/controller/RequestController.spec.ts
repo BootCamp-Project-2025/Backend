@@ -35,7 +35,7 @@ describe("", () => {
 
   it("calls the delete service correctly", () => {
     const req = {
-      params: { requestId: "testId" },
+      user: { id: "testId" },
     } as unknown as ExpressRequest;
     const res = mockResponse();
     expect(controller.delete(req, res)).resolves.toBeUndefined();
@@ -63,7 +63,10 @@ describe("", () => {
       updatedAt: new Date(),
       proposals: [],
     };
-    const req = { body: request } as unknown as ExpressRequest;
+    const req = {
+      body: request,
+      user: { id: "testId" },
+    } as unknown as ExpressRequest;
     const res = mockResponse();
     create.mockResolvedValue(RequestMapper.dtoToDomain(request));
     expect(controller.create(req, res)).resolves.toBeUndefined();
@@ -94,7 +97,7 @@ describe("", () => {
 
     const requestList = [request, request];
 
-    const req = { params: { userId: "testId" } } as unknown as ExpressRequest;
+    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
     const res = mockResponse();
     getUserActiveRequest.mockResolvedValue(
       RequestMapper.bulkDtoToDomain(requestList)
@@ -102,35 +105,35 @@ describe("", () => {
     expect(controller.getUserActiveRequest(req, res)).resolves.toBeUndefined();
   });
 
-  it("throw error when getting the list of valid courses if the id is not passed", () => {
+  it("throw error when getting the list of valid courses if the id is not in the token", () => {
     const req = {} as unknown as ExpressRequest;
     const res = mockResponse();
     expect(controller.getUserActiveRequest(req, res)).rejects.toThrow(ApiError);
   });
 
   it("throw error when it catch some error in the create service", () => {
-    const req = {} as unknown as ExpressRequest;
+    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
     const res = mockResponse();
     create.mockRejectedValue("error");
     expect(controller.create(req, res)).rejects.toThrow(ApiError);
   });
 
   it("throw error when it catch some error in the delete service", () => {
-    const req = {} as unknown as ExpressRequest;
+    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
     const res = mockResponse();
     deleteFunc.mockRejectedValue("error");
     expect(controller.delete(req, res)).rejects.toThrow(ApiError);
   });
 
   it("throw error when it catch some error in the getUserActiveRequest service", () => {
-    const req = {} as unknown as ExpressRequest;
+    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
     const res = mockResponse();
     getUserActiveRequest.mockRejectedValue("error");
     expect(controller.getUserActiveRequest(req, res)).rejects.toThrow(ApiError);
   });
 
   it("throw the catch ApiError when it catch some error in the create service", () => {
-    const req = {} as unknown as ExpressRequest;
+    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
     const res = mockResponse();
     const error = new ApiError();
     create.mockRejectedValue(error);
@@ -138,7 +141,7 @@ describe("", () => {
   });
 
   it("throw the catch ApiError when it catch some error in the delete service", () => {
-    const req = {} as unknown as ExpressRequest;
+    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
     const res = mockResponse();
     const error = new ApiError();
     deleteFunc.mockRejectedValue(error);
@@ -146,7 +149,7 @@ describe("", () => {
   });
 
   it("throw the catch ApiError when it catch some error in the getUserActiveRequest service", () => {
-    const req = {} as unknown as ExpressRequest;
+    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
     const res = mockResponse();
     const error = new ApiError();
     getUserActiveRequest.mockRejectedValue(error);

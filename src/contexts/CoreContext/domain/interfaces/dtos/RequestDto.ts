@@ -6,7 +6,7 @@ export type RequestDto = {
   description?: string;
   language?: string;
   category?: string;
-  subcategory?: string;
+  subCategory?: string;
   status?: string;
   userId?: string;
   estimation?: number;
@@ -52,8 +52,8 @@ export default class RequestDtoBuilder {
     this.dto.category = category;
     return this;
   }
-  subcategory(subcategory: string): RequestDtoBuilder {
-    this.dto.subcategory = subcategory;
+  subcategory(subCategory: string): RequestDtoBuilder {
+    this.dto.subCategory = subCategory;
     return this;
   }
   status(status: string): RequestDtoBuilder {

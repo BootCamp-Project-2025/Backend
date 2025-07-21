@@ -6,6 +6,7 @@ import { inject, injectable } from "tsyringe";
 import { Request } from "@/contexts/CoreContext/domain/aggregates/Request";
 import { StatusCodes } from "http-status-codes";
 import RequestMapper from "@/contexts/CoreContext/mappers/RequestMapper";
+
 import RequestDtoBuilder, {
   RequestDto,
 } from "@/contexts/CoreContext/domain/interfaces/dtos/RequestDto";
@@ -54,6 +55,7 @@ export class RequestController implements IRequestController {
           .title(domainRequest.getTitle().value)
           .estimation(domainRequest.getEstimation().value)
           .description(domainRequest.getDescription().value)
+          .build()
       );
       const response = new SuccessResponseEntity(
         requestListDto,

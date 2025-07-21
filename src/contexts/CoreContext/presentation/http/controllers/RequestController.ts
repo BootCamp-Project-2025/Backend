@@ -21,11 +21,8 @@ export class RequestController implements IRequestController {
 
   delete = async (req: ExpressRequest, res: Response): Promise<void> => {
     try {
-      const requestId = req.params.requestId;
-      if (!requestId) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, "No request id sent");
-      }
-      await this.service.delete(requestId);
+      const user = this.getUser(req);
+      await this.service.delete(user.id);
       const response = new SuccessResponseEntity({}, StatusCodes.NO_CONTENT);
       ResponseService.send(res, response);
     } catch (error) {
@@ -40,18 +37,13 @@ export class RequestController implements IRequestController {
     res: Response
   ): Promise<void> => {
     try {
-      const user = req.user;
-      if (!user || !user.id) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, "User info is not valid");
-      }
-
+      const user = this.getUser(req);
       const requestList: Request[] = await this.service.getUserActiveRequest(
         user.id
       );
-
       const requestListDto = requestList.map((domainRequest) =>
         RequestDtoBuilder.builder()
-          .id(domainRequest.id.toString())
+          .id(domainRequest.id.toValue())
           .title(domainRequest.getTitle().value)
           .estimation(domainRequest.getEstimation().value)
           .description(domainRequest.getDescription().value)
@@ -71,10 +63,7 @@ export class RequestController implements IRequestController {
 
   create = async (req: ExpressRequest, res: Response): Promise<void> => {
     try {
-      const user = req.user;
-      if (!user) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, "User info is not valid");
-      }
+      const user = this.getUser(req);
       const requestDto = this.changeTypeToDto(req.body);
       requestDto.userId = user.id;
       const requestDomain = RequestMapper.dtoToDomain(requestDto);
@@ -102,5 +91,17 @@ export class RequestController implements IRequestController {
         "The data is not a valid Client request"
       );
     }
+  }
+
+  getUser(req: ExpressRequest) {
+    const user = req.user;
+    if (!user || !user.id) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "User info is not valid");
+    }
+    return user as {
+      id: string;
+      email: string;
+      name: string;
+    };
   }
 }

@@ -6,18 +6,18 @@ describe("SocialLink", () => {
   describe("create", () => {
     it("should create a valid social link", () => {
       const link = SocialLink.create({
-        platform: "linkedin",
+        platform: "LINKEDIN",
         url: "https://linkedin.com/in/test",
       });
-      expect(link.platform).toBe("linkedin");
+      expect(link.platform).toBe("LINKEDIN");
       expect(link.url).toBe("https://linkedin.com/in/test");
     });
 
     it("should throw if url is missing", () => {
-      expect(() => SocialLink.create({ platform: "youtube", url: "" })).toThrow(
+      expect(() => SocialLink.create({ platform: "YOUTUBE", url: "" })).toThrow(
         ApiError
       );
-      expect(() => SocialLink.create({ platform: "youtube", url: "" })).toThrow(
+      expect(() => SocialLink.create({ platform: "YOUTUBE", url: "" })).toThrow(
         "SocialLink is required"
       );
     });
@@ -44,7 +44,7 @@ describe("SocialLink", () => {
   describe("structure", () => {
     it("should extend ValueObject", () => {
       const link = SocialLink.create({
-        platform: "instagram",
+        platform: "INSTAGRAM",
         url: "https://instagram.com/user",
       });
       expect(link).toBeInstanceOf(ValueObject);
@@ -52,10 +52,10 @@ describe("SocialLink", () => {
 
     it("should expose platform and url getters", () => {
       const link = SocialLink.create({
-        platform: "youtube",
+        platform: "YOUTUBE",
         url: "https://youtube.com/user",
       });
-      expect(link.platform).toBe("youtube");
+      expect(link.platform).toBe("YOUTUBE");
       expect(link.url).toBe("https://youtube.com/user");
     });
   });

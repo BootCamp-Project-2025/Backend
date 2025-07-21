@@ -11,6 +11,7 @@ import authRoutes from "./contexts/CoreContext/presentation/http/routes/AuthRout
 import moduleRoutes from "./contexts/LearningContext/presentation/http/routes/ModuleRoutes";
 import lessonRoutes from "./contexts/LearningContext/presentation/http/routes/LessonRoute";
 
+import clientRoutes from "./contexts/CoreContext/presentation/http/routes/ClientRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
 
@@ -34,6 +35,7 @@ app.use("/api/lessons", lessonRoutes);
 
 app.use("/api/users", userRoutes);
 app.use("/api/freelancers", freelancersRoutes);
+app.use("/api/clients", clientRoutes);
 
 app.use("/api/courses", courseRoutes);
 

@@ -16,7 +16,8 @@ export class PhoneNumber extends ValueObject<PhoneNumberProps> {
   }
 
   private static isValidPhoneNumber(phone: string): boolean {
-    const regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+    const regex =
+      /^(\+?\d{1,4}[\s.-]?)?(\(?\d{2,4}\)?[\s.-]?)?(\d{3,4}[\s.-]?\d{4})$/;
     return regex.test(phone);
   }
 

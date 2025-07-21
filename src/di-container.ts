@@ -121,6 +121,14 @@ import { IExternarlAuthService } from "./contexts/CoreContext/domain/interfaces/
 import { KeycloakService } from "./contexts/CoreContext/infrastructure/keycloak/keycloakService";
 import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/auth/SyncUserUseCase";
 import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
+import { IClientService } from "./contexts/CoreContext/domain/interfaces/services/IClientService";
+import ClientService from "./contexts/CoreContext/application/services/ClientService";
+import { IClientController } from "./contexts/CoreContext/domain/interfaces/controllers/IClientController";
+import { ClientController } from "./contexts/CoreContext/presentation/http/controllers/ClientController";
+import { GetClientUseCase } from "./contexts/CoreContext/application/useCases/client/GetClientUseCase";
+import { UpdateClientUseCase } from "./contexts/CoreContext/application/useCases/client/UpdateClientUseCase";
+import { ClientRepository } from "./contexts/CoreContext/infrastructure/persistence/ClientRepository";
+import { IClientRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IClientRepository";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -473,4 +481,21 @@ container.registerSingleton<IExternarlAuthService>(
   KeycloakService
 );
 
+container.registerSingleton<IClientService>("IClientService", ClientService);
+container.registerSingleton<IClientController>(
+  "IClientController",
+  ClientController
+);
+container.registerSingleton<GetClientUseCase>(
+  "GetClientUseCase",
+  GetClientUseCase
+);
+container.registerSingleton<UpdateClientUseCase>(
+  "UpdateClientUseCase",
+  UpdateClientUseCase
+);
+container.registerSingleton<IClientRepository>(
+  "IClientRepository",
+  ClientRepository
+);
 export { container };

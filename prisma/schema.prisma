@@ -32,6 +32,7 @@ model Course{
   modules Module[]
   userId String
   user    User   @relation("UserCourse", fields: [userId], references: [id])
+  Enrollment Enrollment[]
 }
 
 model Module{
@@ -91,6 +92,7 @@ model User {
   profilePicture     String?
   freelancerProfile  Freelancer? @relation("UserFreelancer") 
   clientProfile      Client?     @relation("UserClient")
+  Enrollment         Enrollment[]
 
   proposals          Proposal[]
   requests           Request[]   
@@ -228,4 +230,20 @@ model Proposal {
   createdAt      DateTime    @default(now())
   request        Request     @relation(fields: [requestId], references: [id])
   user           User        @relation(fields: [userId], references: [id])
+}
+
+enum EnrollmentStatus {
+  ENROLLED
+  COMPLETED
+  CANCELED
+}
+
+model Enrollment {
+  id          String     @id @default(uuid())
+  userId       String
+  courseId     String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  status       EnrollmentStatus @default(ENROLLED)
 }

@@ -8,6 +8,7 @@ import courseRoutes from "./contexts/LearningContext/presentation/http/routes/Co
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 import userRoutes from "./contexts/CoreContext/presentation/http/routes/UserRoutes";
 import authRoutes from "./contexts/CoreContext/presentation/http/routes/AuthRoutes";
+import enrollmentRoutes from "./contexts/CoreContext/presentation/http/routes/EnrollmentRoutes";
 import moduleRoutes from "./contexts/LearningContext/presentation/http/routes/ModuleRoutes";
 import lessonRoutes from "./contexts/LearningContext/presentation/http/routes/LessonRoute";
 
@@ -42,6 +43,8 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+app.use("/api/enrollments", enrollmentRoutes);
 
 app.use(ErrorHandlerMiddleware.handle);
 

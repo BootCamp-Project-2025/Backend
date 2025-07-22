@@ -3,7 +3,6 @@ import { UserRole } from "@/generated/prisma";
 export type UserDao = {
   freelancerProfile: {
     id: string;
-    about: string;
     userId: string;
   } | null;
   clientProfile: {
@@ -16,4 +15,5 @@ export type UserDao = {
   profilePicture: string | null;
   roles: UserRole[];
   createdAt: Date;
+  about: string;
 };

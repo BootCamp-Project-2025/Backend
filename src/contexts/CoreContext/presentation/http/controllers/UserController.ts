@@ -56,16 +56,25 @@ export class UserController implements IUserController {
       console.log(error);
     }
   };
+
   updateUser = async (req: Request, res: Response): Promise<void> => {
-    const userId = req.user?.id;
-    const userData: ICreateUserDto = req.body;
+    const userId = req.user?.id ?? req.params.id;
     if (!userId) {
       throw new ApiError(StatusCodes.UNAUTHORIZED, "User not authenticated");
     }
+
     try {
-      userData.userEmail = "a@example.com";
-      const user = UserMapper.createUserDtoTodomain(userData);
-      const updatedUser = await this.userService.update(userId, user);
+      const partialDto = req.body as Partial<ICreateUserDto>;
+
+      const userProps = UserMapper.partialDtoToUpdateProps(partialDto);
+
+      const updatedUser = await this.userService.updateUserProfile(
+        userId,
+        userProps
+      );
+      if (!updatedUser) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
+      }
       const response = new SuccessResponseEntity(
         UserMapper.domainToGetUserDto(updatedUser),
         StatusCodes.OK,

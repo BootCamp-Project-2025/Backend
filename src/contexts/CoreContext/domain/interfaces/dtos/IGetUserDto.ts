@@ -9,4 +9,5 @@ export interface IGetUserDto {
   freelancerProfile: string | undefined;
   clientProfile: string | undefined;
   profilePicture: string | undefined;
+  about: string;
 }

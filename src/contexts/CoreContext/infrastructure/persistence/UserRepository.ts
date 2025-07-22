@@ -1,11 +1,12 @@
 import prismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
-import { User } from "../../domain/aggregates/User";
+import { User, UserProps } from "../../domain/aggregates/User";
 import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
 import UserMapper from "../../mappers/UserMapper";
 import { UserDao } from "../../domain/interfaces/dao/UserDao";
 import { injectable } from "tsyringe";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import IUserUpdateDto from "../../domain/interfaces/dtos/IUserUpdateDto";
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -49,6 +50,9 @@ export class UserRepository implements IUserRepository {
   }
 
   delete(): Promise<string | void> {
+    throw new Error("Method not implemented.");
+  }
+  update(): Promise<User | void> {
     throw new Error("Method not implemented.");
   }
 
@@ -95,18 +99,27 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  async update(userId: string, userData: User): Promise<User> {
+  async updateUserProfile(
+    userId: string,
+    userData: Partial<UserProps>
+  ): Promise<User> {
+    const dataToUpdate: IUserUpdateDto = Object.fromEntries(
+      Object.entries({
+        userName: userData.userName ? userData.userName.value : undefined,
+        profilePicture: userData.profilePicture,
+        about: userData.about,
+      }).filter(([, value]) => value !== undefined && value !== "")
+    );
+
     const user = await prismaClient.user.update({
       where: { id: userId },
-      data: {
-        userName: userData.userName.value,
-        profilePicture: userData.profilePicture,
-      },
+      data: dataToUpdate,
       include: {
         freelancerProfile: true,
         clientProfile: true,
       },
     });
+
     return UserMapper.persistanceTodomain(user);
   }
 

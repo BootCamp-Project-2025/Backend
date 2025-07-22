@@ -3,7 +3,6 @@ import { SkillLevel } from "../../entities/Skill";
 export type FreelancerDao = {
   userId: string;
   id: string;
-  about: string;
   skills: {
     name: string;
     id: string;

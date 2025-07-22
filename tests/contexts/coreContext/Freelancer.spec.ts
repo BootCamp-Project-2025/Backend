@@ -1,7 +1,6 @@
 import { Education } from "@/contexts/CoreContext/domain/entities/Education";
 import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
 import { Freelancer } from "@/contexts/CoreContext/domain/aggregates/Freelancer";
-import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
 import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
 import { Language } from "@/contexts/CoreContext/domain/entities/Language";
 import { Skill } from "@/contexts/CoreContext/domain/entities/Skill";
@@ -16,10 +15,6 @@ import { Certifications } from "@/contexts/CoreContext/domain/OneToMany/Certific
 describe("Freelancer Entity", () => {
   it("should create a valid Freelancer with all properties", () => {
     const userId = UserId.create(new UniqueEntityID());
-
-    const about = About.create(
-      "Passionate full-stack developer with 5+ years of experience."
-    );
 
     const skills = Skills.create([
       new Skill(
@@ -71,7 +66,6 @@ describe("Freelancer Entity", () => {
 
     const freelancer = Freelancer.create({
       userId,
-      about,
       skills: skills,
       languages: languages,
       education: educations,
@@ -81,9 +75,6 @@ describe("Freelancer Entity", () => {
 
     expect(freelancer).toBeDefined();
     expect(freelancer.userId.equals(userId)).toBe(true);
-    expect(freelancer.about.value).toBe(
-      "Passionate full-stack developer with 5+ years of experience."
-    );
     expect(freelancer.skills.getItems().length).toBe(2);
     expect(freelancer.languages.getItems().length).toBe(2);
     expect(freelancer.education.getItems().length).toBe(1);

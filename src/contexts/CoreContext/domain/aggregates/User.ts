@@ -16,6 +16,7 @@ export interface UserProps {
   freelancerId?: UniqueEntityID;
   createdAt: Date;
   profilePicture?: string;
+  about: string;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -41,6 +42,10 @@ export class User extends AggregateRoot<UserProps> {
 
   get profilePicture() {
     return this.props.profilePicture;
+  }
+
+  get about() {
+    return this.props.about;
   }
 
   // Getters per profile
@@ -114,6 +119,9 @@ export class User extends AggregateRoot<UserProps> {
         freelancerId: profiles.freelancerProfile,
         createdAt: props.createdAt ?? new Date(),
         profilePicture: props.profilePicture ?? "",
+        about:
+          props.about ??
+          "Tell others a bit about your background, skills, and interests...",
       },
       id
     );

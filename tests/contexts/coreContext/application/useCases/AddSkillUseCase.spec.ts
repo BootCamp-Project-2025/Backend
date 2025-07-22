@@ -4,7 +4,6 @@ import { Skill } from "@/contexts/CoreContext/domain/entities/Skill";
 import { Freelancer } from "@/contexts/CoreContext/domain/aggregates/Freelancer";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
-import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
 import { Skills } from "@/contexts/CoreContext/domain/OneToMany/Skills";
 import { Languages } from "@/contexts/CoreContext/domain/OneToMany/Languages";
 import { Educations } from "@/contexts/CoreContext/domain/OneToMany/Educations";
@@ -40,7 +39,6 @@ describe("testing AddSkillUseCase component to add skills to freelancer", () => 
     const skills: Skill[] = [];
     const emptyFreelancer: Freelancer = Freelancer.create({
       userId: UserId.create(new UniqueEntityID()),
-      about: About.create(""),
       skills: Skills.create(skills),
       languages: Languages.create([]),
       education: Educations.create([]),
@@ -67,7 +65,6 @@ describe("testing AddSkillUseCase component to add skills to freelancer", () => 
     );
     const emptyFreelancer: Freelancer = Freelancer.create({
       userId: UserId.create(new UniqueEntityID()),
-      about: About.create(""),
       skills: Skills.create(skills),
       languages: Languages.create([]),
       education: Educations.create([]),
@@ -93,7 +90,6 @@ describe("testing AddSkillUseCase component to add skills to freelancer", () => 
     ];
     const emptyFreelancer: Freelancer = Freelancer.create({
       userId: UserId.create(new UniqueEntityID()),
-      about: About.create(""),
       skills: Skills.create(skills),
       languages: Languages.create([]),
       education: Educations.create([]),

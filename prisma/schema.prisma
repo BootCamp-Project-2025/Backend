@@ -89,6 +89,7 @@ model User {
   profilePicture     String?
   freelancerProfile  Freelancer? @relation("UserFreelancer") 
   clientProfile      Client?     @relation("UserClient")
+  about              String      @default("")
 
   proposals          Proposal[]
   requests           Request[]   
@@ -98,7 +99,6 @@ model Freelancer {
   id      String @id @default(uuid())
   userId  String @unique 
   user    User   @relation("UserFreelancer", fields: [userId], references: [id] , onDelete: Cascade)
-  about          String          @default("")
   skills         Skill[]
   languages      Language[]
   education      Education[]

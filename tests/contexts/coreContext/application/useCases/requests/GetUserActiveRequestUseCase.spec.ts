@@ -27,9 +27,15 @@ describe("GetUserActiveRequestUseCase", () => {
     const request2 = RequestMapper.dtoToDomain(basicRequest);
     const requestList = [request1, request2];
     mockFindAllActiveByUserId.mockResolvedValue(requestList);
-    expect(getUserActiveRequestUseCase.execute("testId")).resolves.toBe(
-      requestList
+    expect(
+      getUserActiveRequestUseCase.execute({
+        userId: "testId",
+        title: "testTitle",
+      })
+    ).resolves.toBe(requestList);
+    expect(mockFindAllActiveByUserId).toHaveBeenCalledWith(
+      "testId",
+      "testTitle"
     );
-    expect(mockFindAllActiveByUserId).toHaveBeenCalledWith("testId");
   });
 });

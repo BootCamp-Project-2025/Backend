@@ -24,9 +24,15 @@ export default class RequestRepository implements IRequestRepository {
     return RequestMapper.dtoToDomain(requestDb);
   }
 
-  async findAllActiveByUserId(userId: string): Promise<Request[]> {
+  async findAllActiveByUserId(
+    userId: string,
+    title: string
+  ): Promise<Request[]> {
     const requestDb = await PrismaClient.request.findMany({
-      where: { userId: userId },
+      where: {
+        userId: userId,
+        title: { contains: title, mode: "insensitive" },
+      },
       include: { proposals: true },
     });
     return RequestMapper.bulkDtoToDomain(requestDb);

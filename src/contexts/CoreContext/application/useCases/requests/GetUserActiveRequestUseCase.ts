@@ -5,13 +5,19 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export default class GetUserActiveRequestUseCase
-  implements IUseCase<string, Request[]>
+  implements IUseCase<{ userId: string; title: string }, Request[]>
 {
   constructor(
     @inject("IRequestRepository")
     private readonly repository: IRequestRepository
   ) {}
-  async execute(userId: string): Promise<Request[]> {
-    return await this.repository.findAllActiveByUserId(userId);
+  async execute({
+    userId,
+    title,
+  }: {
+    userId: string;
+    title: string;
+  }): Promise<Request[]> {
+    return await this.repository.findAllActiveByUserId(userId, title);
   }
 }

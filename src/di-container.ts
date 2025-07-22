@@ -494,10 +494,9 @@ container.registerSingleton<IRequestRepository>(
   "IRequestRepository",
   RequestRepository
 );
-container.registerSingleton<IUseCase<string, Request[]>>(
-  "GetUserActiveRequestUseCase",
-  GetUserActiveRequestUseCase
-);
+container.registerSingleton<
+  IUseCase<{ userId: string; title: string }, Request[]>
+>("GetUserActiveRequestUseCase", GetUserActiveRequestUseCase);
 container.registerSingleton<IUseCase<string, void>>(
   "DeleteRequestUseCase",
   DeleteRequestUseCase

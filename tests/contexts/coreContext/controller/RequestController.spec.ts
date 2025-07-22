@@ -97,7 +97,10 @@ describe("", () => {
 
     const requestList = [request, request];
 
-    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
+    const req = {
+      user: { id: "testId" },
+      query: { title: "testTitle" },
+    } as unknown as ExpressRequest;
     const res = mockResponse();
     getUserActiveRequest.mockResolvedValue(
       RequestMapper.bulkDtoToDomain(requestList)
@@ -126,7 +129,10 @@ describe("", () => {
   });
 
   it("throw error when it catch some error in the getUserActiveRequest service", () => {
-    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
+    const req = {
+      user: { id: "testId" },
+      query: { title: "testTitle" },
+    } as unknown as ExpressRequest;
     const res = mockResponse();
     getUserActiveRequest.mockRejectedValue("error");
     expect(controller.getUserActiveRequest(req, res)).rejects.toThrow(ApiError);
@@ -149,7 +155,10 @@ describe("", () => {
   });
 
   it("throw the catch ApiError when it catch some error in the getUserActiveRequest service", () => {
-    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
+    const req = {
+      user: { id: "testId" },
+      query: { title: "testTitle" },
+    } as unknown as ExpressRequest;
     const res = mockResponse();
     const error = new ApiError();
     getUserActiveRequest.mockRejectedValue(error);

@@ -51,7 +51,9 @@ describe("RequestService", () => {
     const testRequest = RequestMapper.dtoToDomain(basicRequest);
     const returnArray = [testRequest, testRequest];
     mockFn.mockResolvedValue(returnArray);
-    expect(service.getUserActiveRequest("testId")).resolves.toBe(returnArray);
+    expect(service.getUserActiveRequest("testId", "testTitle")).resolves.toBe(
+      returnArray
+    );
     expect(mockFn).toHaveBeenCalled();
   });
 });

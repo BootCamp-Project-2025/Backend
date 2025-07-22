@@ -11,7 +11,10 @@ export default class RequestService implements IRequestService {
     @inject("CreateRequestUseCase")
     private readonly createRequestUseCase: IUseCase<Request, Request>,
     @inject("GetUserActiveRequestUseCase")
-    private readonly getUserActiveRequestUseCase: IUseCase<string, Request[]>
+    private readonly getUserActiveRequestUseCase: IUseCase<
+      { userId: string; title: string },
+      Request[]
+    >
   ) {}
 
   async delete(requestId: string): Promise<void> {
@@ -20,7 +23,10 @@ export default class RequestService implements IRequestService {
   async create(request: Request): Promise<Request> {
     return await this.createRequestUseCase.execute(request);
   }
-  async getUserActiveRequest(clientId: string): Promise<Request[]> {
-    return await this.getUserActiveRequestUseCase.execute(clientId);
+  async getUserActiveRequest(
+    userId: string,
+    title: string
+  ): Promise<Request[]> {
+    return await this.getUserActiveRequestUseCase.execute({ userId, title });
   }
 }

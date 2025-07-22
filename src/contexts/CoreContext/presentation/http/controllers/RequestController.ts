@@ -38,8 +38,10 @@ export class RequestController implements IRequestController {
   ): Promise<void> => {
     try {
       const user = this.getUser(req);
+      const title = (req.query.title as string) ?? "";
       const requestList: Request[] = await this.service.getUserActiveRequest(
-        user.id
+        user.id,
+        title
       );
       const requestListDto = requestList.map((domainRequest) =>
         RequestDtoBuilder.builder()

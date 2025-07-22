@@ -44,6 +44,7 @@ describe("CourseService", () => {
         name: "n",
         description: "d",
         imgSrc: "i",
+        userId: "userId",
       };
       jest.spyOn(CourseMapper, "toAplicationDTO").mockReturnValue(fakeDTO);
 
@@ -66,6 +67,7 @@ describe("CourseService", () => {
         name: "Nuevo",
         description: "Descripcion",
         imgSrc: "http:",
+        userId: "userId",
       };
       const fakeDomain: Course = {} as unknown as Course;
       createCourseUseCase.execute.mockResolvedValue(fakeDomain);
@@ -89,6 +91,7 @@ describe("CourseService", () => {
         name: "Upd",
         description: "DescUpd",
         imgSrc: "http:",
+        userId: "userId",
       };
       const fakeDomain: Course = {} as unknown as Course;
       updateCourseUseCase.execute.mockResolvedValue(fakeDomain);

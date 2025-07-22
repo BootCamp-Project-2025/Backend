@@ -10,6 +10,7 @@ import { CourseDescription } from "@/contexts/LearningContext/domain/valueObject
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { Modules } from "@/contexts/LearningContext/domain/OneToMany/Modules";
+import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 
 const mockRepository: jest.Mocked<ICourseRepository> = {
   findById: jest.fn(),
@@ -20,6 +21,7 @@ const empyCourseProps: CourseProps = {
   description: CourseDescription.create({ description: "course" }),
   imgSrc: "dsadsa",
   modules: new Modules(),
+  userId: UserId.create(new UniqueEntityID("userID")),
 };
 
 const useCase = new GetCourseUseCase(mockRepository);

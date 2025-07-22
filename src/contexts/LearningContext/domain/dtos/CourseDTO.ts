@@ -9,4 +9,5 @@ export interface CourseDTO {
   field?: string;
   time?: number;
   requirements?: string;
+  userId: string;
 }

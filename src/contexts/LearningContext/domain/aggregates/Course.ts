@@ -8,6 +8,7 @@ import { Modules } from "../OneToMany/Modules";
 import { CourseCategory } from "../valueObjects/CourseCategory";
 import { CourseSubCategory } from "../valueObjects/CourseSubCategory";
 import { CourseLanguage } from "../valueObjects/CourseLanguage";
+import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 
 export interface CourseProps {
   name: CourseName;
@@ -20,6 +21,7 @@ export interface CourseProps {
   category?: CourseCategory;
   subCategory?: CourseSubCategory;
   language?: CourseLanguage;
+  userId: UserId;
 }
 
 type CoursePrimitiveProps = {
@@ -34,6 +36,7 @@ type CoursePrimitiveProps = {
   category: string;
   subCategory: string;
   language: string;
+  userId: string;
 };
 
 export class Course extends AggregateRoot<CourseProps> {
@@ -60,6 +63,7 @@ export class Course extends AggregateRoot<CourseProps> {
     const descriptionValue = CourseDescription.create({
       name: props.description,
     });
+    const userId = UserId.create(new UniqueEntityID(props.userId));
 
     const course: CourseProps = {
       name: nameValue,
@@ -68,6 +72,7 @@ export class Course extends AggregateRoot<CourseProps> {
       description: descriptionValue,
       time: props.time,
       imgSrc: props.imgSrc,
+      userId,
       modules: Modules.create(props.modules ?? []),
     };
     return Course.create(course, id);
@@ -116,6 +121,10 @@ export class Course extends AggregateRoot<CourseProps> {
 
   getLanguage(): CourseLanguage {
     return this.props.language ?? CourseLanguage.create({ language: "" });
+  }
+
+  getUserID(): UserId {
+    return this.props.userId;
   }
 
   setName(newName: CourseName): void {

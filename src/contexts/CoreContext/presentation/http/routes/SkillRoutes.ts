@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { container } from "@/di-container";
 import FreelancerController from "../controllers/FreelancerController";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 
 export const SkillRoutes = Router({ mergeParams: true });
 const controller = container.resolve(FreelancerController);
@@ -23,6 +24,10 @@ const controller = container.resolve(FreelancerController);
  *      responses:
  *          200:
  *              description: Everything is ok and returns user
+ *          401:
+ *              description: Invalid or missing token
+ *          403:
+ *              description: Forbidden access
  *          500:
  *              description: Everything is wrong
  *
@@ -34,6 +39,8 @@ SkillRoutes.get("", controller.getSkills);
  * /freelancers/{freelancerId}/skills:
  *  post:
  *      summary: Create a new skill for a freelancer
+ *      security:
+ *        - BearerAuth: []
  *      tags:
  *       - Skill
  *      parameters:
@@ -55,17 +62,23 @@ SkillRoutes.get("", controller.getSkills);
  *      responses:
  *          201:
  *              description: Everything is ok and returns skill
+ *          401:
+ *              description: Invalid or missing token
+ *          403:
+ *              description: Forbidden access
  *          500:
  *              description: Everything is wrong
  *
  */
-SkillRoutes.post("", controller.addSkill);
+SkillRoutes.post("", verifyToken(["FREELANCER"]), controller.addSkill);
 
 /**
  * @openapi
  * /freelancers/{freelancerId}/skills/{skillId}:
  *  put:
  *      summary: Update a skill of a freelancer
+ *      security:
+ *        - BearerAuth: []
  *      tags:
  *       - Skill
  *      parameters:
@@ -92,17 +105,23 @@ SkillRoutes.post("", controller.addSkill);
  *      responses:
  *          201:
  *              description: Everything is ok and returns skill
+ *          401:
+ *              description: Invalid or missing token
+ *          403:
+ *              description: Forbidden access
  *          500:
  *              description: Everything is wrong
  *
  */
-SkillRoutes.put("/:skillId", controller.editSkill);
+SkillRoutes.put("/:skillId", verifyToken(["FREELANCER"]), controller.editSkill);
 
 /**
  * @openapi
  * /freelancers/{freelancerId}/skills/{skillId}:
  *  delete:
  *      summary: Delete a skill of a freelancer
+ *      security:
+ *        - BearerAuth: []
  *      tags:
  *       - Skill
  *      parameters:
@@ -121,11 +140,19 @@ SkillRoutes.put("/:skillId", controller.editSkill);
  *      responses:
  *          204:
  *              description: Skill deleted successfully
+ *          401:
+ *              description: Invalid or missing token
+ *          403:
+ *              description: Forbidden access
  *          500:
  *              description: Everything is wrong
  *
  */
-SkillRoutes.delete("/:skillId", controller.deleteSkill);
+SkillRoutes.delete(
+  "/:skillId",
+  verifyToken(["FREELANCER"]),
+  controller.deleteSkill
+);
 
 /**
  * @openapi

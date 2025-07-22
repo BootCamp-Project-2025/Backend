@@ -35,7 +35,7 @@ describe("AuthController - updateUserRoles", () => {
 
   it("should update user roles and send success response", async () => {
     req = {
-      user: { id: "1", name: "Test", email: "test@example.com" },
+      user: { id: "1", name: "Test", email: "test@example.com", about: "" },
       body: { role: "admin" },
     } as Partial<Request> as Request;
     const mockUser = { id: "1" };
@@ -48,6 +48,7 @@ describe("AuthController - updateUserRoles", () => {
       userName: "Test",
       userEmail: "test@example.com",
       profilePicture: "",
+      about: "",
     });
     expect(mockAuthService.updateUserRoles).toHaveBeenCalledWith(
       mockUser,
@@ -78,7 +79,7 @@ describe("AuthController - updateUserRoles", () => {
 
   it("should throw BAD_REQUEST if role is missing", async () => {
     req = {
-      user: { id: "1", name: "Test", email: "test@example.com" },
+      user: { id: "1", name: "Test", email: "test@example.com", about: "" },
       body: {},
     } as Partial<Request> as Request;
 
@@ -95,7 +96,7 @@ describe("AuthController - updateUserRoles", () => {
 
   it("should handle errors from authService.updateUserRoles", async () => {
     req = {
-      user: { id: "1", name: "Test", email: "test@example.com" },
+      user: { id: "1", name: "Test", email: "test@example.com", about: "" },
       body: { role: "admin" },
     } as Partial<Request> as Request;
     const mockUser = { id: "1" };

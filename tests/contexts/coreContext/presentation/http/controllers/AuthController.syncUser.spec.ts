@@ -71,6 +71,7 @@ describe("AuthController.syncUser", () => {
       userName: "Test User",
       userEmail: "test@example.com",
       profilePicture: "",
+      about: "",
     });
 
     expect(userService.syncUser).toHaveBeenCalledWith(

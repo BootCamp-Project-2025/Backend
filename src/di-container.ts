@@ -138,6 +138,7 @@ import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/
 import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
+import { GetUserEnrollmentsUseCase } from "./contexts/CoreContext/application/useCases/GetUserEnrollmentsUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -159,6 +160,11 @@ container.registerSingleton<CreateUserFreelancerProfileUseCase>(
 container.registerSingleton<UpdateUserUseCase>(
   "UpdateUserUseCase",
   UpdateUserUseCase
+);
+
+container.registerSingleton<GetUserEnrollmentsUseCase>(
+  "GetUserEnrollmentsUseCase",
+  GetUserEnrollmentsUseCase
 );
 
 container.registerSingleton<IUserService>("IUserService", UserService);

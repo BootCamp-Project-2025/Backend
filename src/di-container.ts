@@ -82,6 +82,28 @@ import { ILanguagesService } from "./contexts/CoreContext/domain/interfaces/serv
 import LanguageService from "./contexts/CoreContext/application/services/LanguageService";
 import ILanguageController from "./contexts/CoreContext/domain/interfaces/controllers/ILanguageController";
 import LanguageController from "./contexts/CoreContext/presentation/http/controllers/LanguageController";
+import IModuleController from "./contexts/LearningContext/domain/interfaces/IModuleController";
+import ModuleController from "./contexts/LearningContext/presentation/http/controllers/ModuleController";
+import IModuleService from "./contexts/LearningContext/domain/interfaces/IModuleService";
+import ModuleService from "./contexts/LearningContext/application/services/ModuleService";
+import GetAllModulesUseCase from "./contexts/LearningContext/application/useCases/module/GetAllModulesUseCase";
+import DeleteModuleUseCase from "./contexts/LearningContext/application/useCases/module/DeleteModuleUseCase";
+import CreateModuleUseCase from "./contexts/LearningContext/application/useCases/module/CreateModuleUseCase";
+import UpdateModuleUseCase from "./contexts/LearningContext/application/useCases/module/UpdateModuleUseCase";
+import { Module } from "./contexts/LearningContext/domain/entities/Module";
+import { ModuleRepository } from "./contexts/LearningContext/infrastructure/database/ModuleRepository";
+import IModuleRepository from "./contexts/LearningContext/domain/interfaces/IModuleRepository";
+import ILessonController from "./contexts/LearningContext/domain/interfaces/ILessonController";
+import LessonController from "./contexts/LearningContext/presentation/http/controllers/LessonController";
+import ILessonService from "./contexts/LearningContext/domain/interfaces/ILessonService";
+import LessonService from "./contexts/LearningContext/application/services/LessonService";
+import ILessonRepository from "./contexts/LearningContext/domain/interfaces/ILessonRepository";
+import LessonRepository from "./contexts/LearningContext/infrastructure/database/LessonRepository";
+import { Lesson } from "./contexts/LearningContext/domain/entities/Lesson";
+import CreateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/CreateLessonUseCase";
+import DeleteLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/DeleteLessonUseCase";
+import UpdateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/UpdateLessonUseCase";
+import { PublishCourseUseCase } from "./contexts/LearningContext/application/useCases/PublishCourseUseCase";
 import { Freelancer } from "./contexts/CoreContext/domain/aggregates/Freelancer";
 import { GetAllFreelancersUseCase } from "./contexts/CoreContext/application/useCases/GetAllFreelancersUseCase";
 import { User } from "./contexts/CoreContext/domain/aggregates/User";
@@ -117,6 +139,23 @@ import { ChatRepository } from "./contexts/CoreContext/infrastructure/persistenc
 import { IMessageRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IMessageRepository";
 import { MessageRepository } from "./contexts/CoreContext/infrastructure/persistence/MessageRepository";
 import { GetChatByIdUseCase } from "./contexts/CoreContext/application/useCases/chats/GetChatByIdUseCase";
+import { IClientService } from "./contexts/CoreContext/domain/interfaces/services/IClientService";
+import ClientService from "./contexts/CoreContext/application/services/ClientService";
+import { IClientController } from "./contexts/CoreContext/domain/interfaces/controllers/IClientController";
+import { ClientController } from "./contexts/CoreContext/presentation/http/controllers/ClientController";
+import { GetClientUseCase } from "./contexts/CoreContext/application/useCases/client/GetClientUseCase";
+import { UpdateClientUseCase } from "./contexts/CoreContext/application/useCases/client/UpdateClientUseCase";
+import { ClientRepository } from "./contexts/CoreContext/infrastructure/persistence/ClientRepository";
+import { IClientRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IClientRepository";
+import { IEnrollmentService } from "./contexts/CoreContext/domain/interfaces/services/IEnrollmentService";
+import { EnrollmentService } from "./contexts/CoreContext/application/services/EnrollmentService";
+import { EnrollmentController } from "./contexts/CoreContext/presentation/http/controllers/EnrollmentController";
+import { CreateEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CreateEnrollmentUseCase";
+import { Enrollment } from "./contexts/CoreContext/domain/aggregates/Enrollment";
+import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/controllers/IEnrollmentController";
+import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
+import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
+import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -184,6 +223,10 @@ container.registerSingleton<CreateCourseUseCase>(
   CreateCourseUseCase
 );
 
+container.registerSingleton<IUseCase<string, boolean>>(
+  "PublishCourseUseCase",
+  PublishCourseUseCase
+);
 container.registerSingleton("UpdateCourseUseCase", UpdateCourseUseCase);
 container.registerSingleton("DeleteCourseUseCase", DeleteCourseUseCase);
 
@@ -229,6 +272,75 @@ container.registerSingleton<IUseCase<string, Skill[]>>(
 container.registerSingleton<IFreelancerService>(
   "IFreelancerService",
   FreelancerService
+);
+
+container.registerSingleton<ILessonController>(
+  "ILessonController",
+  LessonController
+);
+
+container.registerSingleton<ILessonService>("ILessonService", LessonService);
+
+container.registerSingleton<ILessonRepository>(
+  "ILessonRepository",
+  LessonRepository
+);
+
+container.registerSingleton<
+  IUseCase<
+    {
+      lesson: Lesson;
+      moduleId: string;
+    },
+    Lesson
+  >
+>("CreateLessonUseCase", CreateLessonUseCase);
+
+container.registerSingleton<IUseCase<Lesson, Lesson>>(
+  "UpdateLessonUseCase",
+  UpdateLessonUseCase
+);
+
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteLessonUseCase",
+  DeleteLessonUseCase
+);
+
+container.registerSingleton<IModuleController>(
+  "IModuleController",
+  ModuleController
+);
+
+container.registerSingleton<IModuleService>("IModuleService", ModuleService);
+
+container.registerSingleton<IModuleRepository>(
+  "IModuleRepository",
+  ModuleRepository
+);
+
+container.registerSingleton<IUseCase<string, Module[]>>(
+  "GetAllModulesUseCase",
+  GetAllModulesUseCase
+);
+
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteModuleUseCase",
+  DeleteModuleUseCase
+);
+
+container.registerSingleton<
+  IUseCase<
+    {
+      module: Module;
+      courseId: string;
+    },
+    Module
+  >
+>("CreateModuleUseCase", CreateModuleUseCase);
+
+container.registerSingleton<IUseCase<Module, Module>>(
+  "UpdateModuleUseCase",
+  UpdateModuleUseCase
 );
 
 container.registerSingleton<IFreelancerController>(
@@ -433,4 +545,71 @@ container.registerSingleton<IMessageRepository>(
   MessageRepository
 );
 
+container.registerSingleton<IEnrollmentService>(
+  "IEnrollmentService",
+  EnrollmentService
+);
+
+container.registerSingleton<IEnrollmentController>(
+  "IEnrollmentController",
+  EnrollmentController
+);
+
+container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
+  "CreateEnrollmentUseCase",
+  CreateEnrollmentUseCase
+);
+
+container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
+  "CancelEnrollmentUseCase",
+  CancelEnrollmentUseCase
+);
+
+container.registerSingleton<IEnrollmentRepository>(
+  "IEnrollmentRepository",
+  EnrollmentRepository
+);
+
+container.registerSingleton<IEnrollmentService>(
+  "IEnrollmentService",
+  EnrollmentService
+);
+
+container.registerSingleton<IEnrollmentController>(
+  "IEnrollmentController",
+  EnrollmentController
+);
+
+container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
+  "CreateEnrollmentUseCase",
+  CreateEnrollmentUseCase
+);
+
+container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
+  "CancelEnrollmentUseCase",
+  CancelEnrollmentUseCase
+);
+
+container.registerSingleton<IEnrollmentRepository>(
+  "IEnrollmentRepository",
+  EnrollmentRepository
+);
+
+container.registerSingleton<IClientService>("IClientService", ClientService);
+container.registerSingleton<IClientController>(
+  "IClientController",
+  ClientController
+);
+container.registerSingleton<GetClientUseCase>(
+  "GetClientUseCase",
+  GetClientUseCase
+);
+container.registerSingleton<UpdateClientUseCase>(
+  "UpdateClientUseCase",
+  UpdateClientUseCase
+);
+container.registerSingleton<IClientRepository>(
+  "IClientRepository",
+  ClientRepository
+);
 export { container };

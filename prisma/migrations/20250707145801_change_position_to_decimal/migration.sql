@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Lesson" ALTER COLUMN "position" SET DATA TYPE DECIMAL(65,30);
+
+-- AlterTable
+ALTER TABLE "Module" ALTER COLUMN "position" SET DATA TYPE DECIMAL(65,30);

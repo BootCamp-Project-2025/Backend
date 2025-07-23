@@ -18,7 +18,7 @@ datasource db {
 }
 
 model Course{
-   id      String      @id @default(uuid())
+  id      String      @id @default(uuid())
   name   String   @unique
   field String
   requirements String
@@ -28,14 +28,49 @@ model Course{
   category String   @default("")
   subCategory String   @default("")
   imgSrc String
+  published Boolean @default(false)
   modules Module[]
+  userId String
+  user    User   @relation("UserCourse", fields: [userId], references: [id])
+  Enrollment Enrollment[]
 }
 
 model Module{
   id      String      @id @default(uuid())
-  author   Course @relation(fields: [CourseId], references: [id])
-  CourseId String
-  name   String   @unique
+  position Decimal
+  author   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String
+  title   String
+  lessons Lesson[]
+  quizzes Quiz[]
+}
+
+model Lesson{
+  id      String      @id @default(uuid())
+  position Decimal
+  author   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  description String
+  resources Resource[]
+  videoUrls String[]
+  moduleId String
+  title   String
+  
+}
+
+model Resource{
+  id      String      @id @default(uuid())
+  author   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  name   String 
+  url   String   
+  lessonId String
+}
+
+model Quiz{
+  id      String      @id @default(uuid())
+  author   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  name   String 
+  url   String   
+  moduleId String
 }
 
 model SampleData {
@@ -62,6 +97,11 @@ model User {
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
   chats            Chat[]    @relation("UserChats")
+  Enrollment         Enrollment[]
+
+  proposals          Proposal[]
+  requests           Request[]   
+  Course             Course[]    @relation("UserCourse")
 }
 
 model Freelancer {
@@ -191,4 +231,62 @@ model Chat {
 enum ChatStatus {
     ACTIVE
     CLOSED
+}
+
+enum RequestStatus {
+  PENDING
+  AVAILABLE
+  ACCEPTED
+  REJECTED
+}
+
+enum RequestLanguage {
+  EN
+  ES
+}
+
+model Request {
+  id             String           @id @default(uuid())
+  userId         String
+  title          String
+  description    String
+  language       String
+  category       String
+  subcategory    String
+  status         RequestStatus    @default(PENDING)
+  createdAt      DateTime         @default(now())
+  estimation     Int
+  edited         Boolean          @default(false)
+  updatedAt      DateTime         @updatedAt
+
+  proposals      Proposal[]
+  user           User             @relation(fields: [userId], references: [id])
+}
+
+model Proposal {
+  id             String      @id @default(uuid())
+  requestId      String
+  userId         String
+  price          Int
+  estimatedTime  Int
+  message        String
+  createdAt      DateTime    @default(now())
+  request        Request     @relation(fields: [requestId], references: [id])
+  user           User        @relation(fields: [userId], references: [id])
+}
+
+enum EnrollmentStatus {
+  ENROLLED
+  COMPLETED
+  CANCELED
+}
+
+model Enrollment {
+  id          String     @id @default(uuid())
+  userId       String
+  courseId     String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  status       EnrollmentStatus @default(ENROLLED)
 }

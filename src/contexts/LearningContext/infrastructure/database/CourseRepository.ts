@@ -8,6 +8,7 @@ import { StatusCodes } from "http-status-codes";
 
 @injectable()
 export class CourseRepository implements ICourseRepository {
+  db = prismaClient;
   async delete(courseId: string): Promise<void> {
     try {
       await prismaClient.course.delete({ where: { id: courseId } });
@@ -52,7 +53,7 @@ export class CourseRepository implements ICourseRepository {
   async findById(id: string): Promise<Course | null> {
     try {
       const course = await prismaClient.course.findUnique({
-        where: { id: id },
+        where: { id },
       });
 
       if (!course) return null;
@@ -76,5 +77,20 @@ export class CourseRepository implements ICourseRepository {
     const data = CourseMapper.toPersistence(course);
     const created = await prismaClient.course.create({ data });
     return CourseMapper.toDomain(created);
+  }
+
+  async publish(id: string): Promise<boolean> {
+    try {
+      await this.db.course.update({
+        data: { published: true },
+        where: { id },
+      });
+      return true;
+    } catch {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "error saving the changes"
+      );
+    }
   }
 }

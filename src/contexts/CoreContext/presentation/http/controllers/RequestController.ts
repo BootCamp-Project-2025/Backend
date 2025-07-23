@@ -21,7 +21,7 @@ export class RequestController implements IRequestController {
 
   delete = async (req: ExpressRequest, res: Response): Promise<void> => {
     try {
-      const user = this.getUser(req);
+      const user = RequestController.getUser(req);
       await this.service.delete(user.id);
       const response = new SuccessResponseEntity({}, StatusCodes.NO_CONTENT);
       ResponseService.send(res, response);
@@ -37,7 +37,7 @@ export class RequestController implements IRequestController {
     res: Response
   ): Promise<void> => {
     try {
-      const user = this.getUser(req);
+      const user = RequestController.getUser(req);
       const title = (req.query.title as string) ?? "";
       const requestList: Request[] = await this.service.getUserActiveRequest(
         user.id,
@@ -65,8 +65,8 @@ export class RequestController implements IRequestController {
 
   create = async (req: ExpressRequest, res: Response): Promise<void> => {
     try {
-      const user = this.getUser(req);
-      const requestDto = this.changeTypeToDto(req.body);
+      const user = RequestController.getUser(req);
+      const requestDto = RequestController.changeTypeToDto(req.body);
       requestDto.userId = user.id;
       const requestDomain = RequestMapper.dtoToDomain(requestDto);
       const newRequestDomain = await this.service.create(requestDomain);
@@ -84,7 +84,7 @@ export class RequestController implements IRequestController {
     }
   };
 
-  private changeTypeToDto(body: unknown): RequestDto {
+  private static changeTypeToDto(body: unknown): RequestDto {
     try {
       return body as RequestDto;
     } catch {
@@ -95,7 +95,7 @@ export class RequestController implements IRequestController {
     }
   }
 
-  private getUser(req: ExpressRequest) {
+  private static getUser(req: ExpressRequest) {
     const user = req.user;
     if (!user || !user.id) {
       throw new ApiError(StatusCodes.BAD_REQUEST, "User info is not valid");

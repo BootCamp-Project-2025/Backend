@@ -31,7 +31,7 @@ export default class RequestRepository implements IRequestRepository {
   ): Promise<Request[]> {
     const requestDb = await this.db.request.findMany({
       where: {
-        userId: userId,
+        userId,
         title: { contains: title, mode: "insensitive" },
       },
       include: { proposals: true },

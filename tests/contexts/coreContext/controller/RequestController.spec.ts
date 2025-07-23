@@ -1,10 +1,8 @@
 import "reflect-metadata";
 import { Request as ExpressRequest, Response } from "express";
-import { Request } from "@/contexts/CoreContext/domain/aggregates/Request";
 import IRequestService from "@/contexts/CoreContext/domain/interfaces/services/IRequestService";
 import { RequestController } from "@/contexts/CoreContext/presentation/http/controllers/RequestController";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { RequestDto } from "@/contexts/CoreContext/domain/interfaces/dtos/RequestDto";
 import RequestMapper from "@/contexts/CoreContext/mappers/RequestMapper";
 
 describe("", () => {
@@ -17,8 +15,8 @@ describe("", () => {
 
   const serviceMock: IRequestService = {
     delete: deleteFunc,
-    create: create,
-    getUserActiveRequest: getUserActiveRequest,
+    create,
+    getUserActiveRequest,
   };
 
   const mockResponse = () => {

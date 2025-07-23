@@ -84,7 +84,7 @@ export class RequestController implements IRequestController {
     }
   };
 
-  changeTypeToDto(body: unknown): RequestDto {
+  private changeTypeToDto(body: unknown): RequestDto {
     try {
       return body as RequestDto;
     } catch {
@@ -95,7 +95,7 @@ export class RequestController implements IRequestController {
     }
   }
 
-  getUser(req: ExpressRequest) {
+  private getUser(req: ExpressRequest) {
     const user = req.user;
     if (!user || !user.id) {
       throw new ApiError(StatusCodes.BAD_REQUEST, "User info is not valid");

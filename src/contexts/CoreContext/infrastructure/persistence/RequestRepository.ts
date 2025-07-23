@@ -4,11 +4,12 @@ import IRequestRepository from "../../domain/interfaces/repositories/IRequestRep
 import RequestMapper from "../../mappers/RequestMapper";
 
 export default class RequestRepository implements IRequestRepository {
+  db = PrismaClient;
   async delete(requestId: string): Promise<void> {
-    await PrismaClient.request.delete({ where: { id: requestId } });
+    await this.db.request.delete({ where: { id: requestId } });
   }
   async findById(requestId: string): Promise<Request | null> {
-    const requestDb = await PrismaClient.request.findUnique({
+    const requestDb = await this.db.request.findUnique({
       where: { id: requestId },
       include: { proposals: true },
     });
@@ -20,7 +21,7 @@ export default class RequestRepository implements IRequestRepository {
 
   async create(request: Request): Promise<Request> {
     const requestDtoDb = RequestMapper.domainToPersistance(request);
-    const requestDb = await PrismaClient.request.create({ data: requestDtoDb });
+    const requestDb = await this.db.request.create({ data: requestDtoDb });
     return RequestMapper.dtoToDomain(requestDb);
   }
 
@@ -28,7 +29,7 @@ export default class RequestRepository implements IRequestRepository {
     userId: string,
     title: string
   ): Promise<Request[]> {
-    const requestDb = await PrismaClient.request.findMany({
+    const requestDb = await this.db.request.findMany({
       where: {
         userId: userId,
         title: { contains: title, mode: "insensitive" },

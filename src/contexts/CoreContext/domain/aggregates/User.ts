@@ -16,6 +16,7 @@ export interface UserProps {
   freelancerId?: UniqueEntityID;
   createdAt: Date;
   profilePicture?: string;
+  lastSeen?: Date;
   about: string;
 }
 
@@ -55,6 +56,10 @@ export class User extends AggregateRoot<UserProps> {
 
   get isFreelancer(): boolean {
     return this.roles.includes("FREELANCER");
+  }
+
+  get lastSeen(): Date {
+    return this.props.lastSeen ?? new Date();
   }
 
   // Methods to manage roles
@@ -119,6 +124,7 @@ export class User extends AggregateRoot<UserProps> {
         freelancerId: profiles.freelancerProfile,
         createdAt: props.createdAt ?? new Date(),
         profilePicture: props.profilePicture ?? "",
+        lastSeen: props.lastSeen ?? new Date(),
         about:
           props.about ??
           "Tell others a bit about your background, skills, and interests...",

@@ -115,6 +115,32 @@ router.patch("/:id", controller.updateUser);
  */
 router.put("/:id/freelance", verifyToken(), controller.freelance);
 
+/**
+ * @openapi
+ * /users/{id}/chats:
+ *  get:
+ *     summary: Get the chats of the user with id
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *          200:
+ *              description: Everything is ok and returns the user chats
+ *          404:
+ *              description: User not found
+ *          500:
+ *              description: Everything is wrong
+ *
+ */
+router.get("/:userId/chats", controller.getChats);
+
 export default router;
 
 /**

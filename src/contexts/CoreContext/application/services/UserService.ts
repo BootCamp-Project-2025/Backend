@@ -5,6 +5,10 @@ import { CreateUserFreelancerProfileUseCase } from "../useCases/CreateUserFreela
 import { CreateUserUseCase } from "../useCases/CreateUserUseCase";
 import { GetUserUseCase } from "../useCases/GetUserUseCase";
 import { UpdateUserUseCase } from "../useCases/UpdateUserUseCase";
+import { GetUserEnrollmentsUseCase } from "../useCases/GetUserEnrollmentsUseCase";
+import { Enrollment } from "../../domain/aggregates/Enrollment";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 @injectable()
 export class UserService implements IUserService {
@@ -16,7 +20,9 @@ export class UserService implements IUserService {
     @inject("CreateUserFreelancerProfileUseCase")
     private readonly createUserFreelancerProfileUseCase: CreateUserFreelancerProfileUseCase,
     @inject("UpdateUserUseCase")
-    private readonly updateUserUseCase: UpdateUserUseCase
+    private readonly updateUserUseCase: UpdateUserUseCase,
+    @inject("GetUserEnrollmentsUseCase")
+    private readonly getUserEnrollmentsUseCase: GetUserEnrollmentsUseCase
   ) {}
   async createFreelanceProfile(id: string): Promise<User> {
     const updatedUser =
@@ -41,5 +47,17 @@ export class UserService implements IUserService {
   }
   async create(user: User): Promise<User> {
     return await this.createUserUseCase.execute(user);
+  }
+
+  async getEnrollments(userId: string): Promise<Enrollment[]> {
+    try {
+      return await this.getUserEnrollmentsUseCase.execute(userId);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error fetching enrollments"
+      );
+    }
   }
 }

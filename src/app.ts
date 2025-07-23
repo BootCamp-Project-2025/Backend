@@ -7,6 +7,7 @@ import freelancersRoutes from "./contexts/CoreContext/presentation/http/routes/F
 import courseRoutes from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 import userRoutes from "./contexts/CoreContext/presentation/http/routes/UserRoutes";
+import { chatRoutes } from "./contexts/CoreContext/presentation/http/routes/ChatRoutes";
 import authRoutes from "./contexts/CoreContext/presentation/http/routes/AuthRoutes";
 import enrollmentRoutes from "./contexts/CoreContext/presentation/http/routes/EnrollmentRoutes";
 import moduleRoutes from "./contexts/LearningContext/presentation/http/routes/ModuleRoutes";
@@ -35,6 +36,9 @@ app.use("/api/modules", moduleRoutes);
 app.use("/api/lessons", lessonRoutes);
 
 app.use("/api/users", userRoutes);
+
+app.use("/api/chats", chatRoutes);
+
 app.use("/api/freelancers", freelancersRoutes);
 app.use("/api/clients", clientRoutes);
 

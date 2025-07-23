@@ -23,7 +23,7 @@ export class ChatRepository implements IChatRepository {
                   id: true,
                 },
               },
-              messages: { orderBy: { timestamp: "asc" } },
+              messages: { orderBy: { timestamp: "desc" }, take: 1 },
             },
           },
         },

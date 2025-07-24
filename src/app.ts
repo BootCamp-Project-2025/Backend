@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import "reflect-metadata";
 import "./di-container";
+import "./eventRegister";
 import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
 import freelancersRoutes from "./contexts/CoreContext/presentation/http/routes/FreelancersRoutes";
 import courseRoutes from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";

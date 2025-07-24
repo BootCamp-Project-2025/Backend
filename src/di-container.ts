@@ -131,6 +131,41 @@ import GetUserActiveRequestUseCase from "./contexts/CoreContext/application/useC
 import { Request } from "./contexts/CoreContext/domain/aggregates/Request";
 import DeleteRequestUseCase from "./contexts/CoreContext/application/useCases/requests/DeleteRequestUseCase";
 import CreateRequestUseCase from "./contexts/CoreContext/application/useCases/requests/CreateRequestUseCase";
+import { IChatController } from "./contexts/CoreContext/domain/interfaces/controllers/IChatController";
+import { ChatController } from "./contexts/CoreContext/presentation/http/controllers/ChatController";
+import { IChatService } from "./contexts/CoreContext/domain/interfaces/services/IChatService";
+import { ChatService } from "./contexts/CoreContext/application/services/ChatService";
+import { IMessageService } from "./contexts/CoreContext/domain/interfaces/services/IMessageService";
+import { MessageService } from "./contexts/CoreContext/application/services/MessageService";
+import { CreateChatUsecase } from "./contexts/CoreContext/application/useCases/chats/CreateChatUseCase";
+import { CreateMessageUseCase } from "./contexts/CoreContext/application/useCases/chats/CreateMessageUseCase";
+import { GetChatsByUserIdUseCase } from "./contexts/CoreContext/application/useCases/chats/GetChatsByUserIdUseCase";
+import { GetMessagesByChatIdUseCase } from "./contexts/CoreContext/application/useCases/chats/GetMessagesByChatIdUseCase";
+import { UpdateMessageStatusUseCase } from "./contexts/CoreContext/application/useCases/chats/UpdateMessageStatusUseCase";
+import { Chat } from "./contexts/CoreContext/domain/aggregates/Chat";
+import { Message } from "./contexts/CoreContext/domain/entities/Message";
+import { IChatRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IChatRepository";
+import { ChatRepository } from "./contexts/CoreContext/infrastructure/persistence/ChatRepository";
+import { IMessageRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IMessageRepository";
+import { MessageRepository } from "./contexts/CoreContext/infrastructure/persistence/MessageRepository";
+import { GetChatByIdUseCase } from "./contexts/CoreContext/application/useCases/chats/GetChatByIdUseCase";
+import { IClientService } from "./contexts/CoreContext/domain/interfaces/services/IClientService";
+import ClientService from "./contexts/CoreContext/application/services/ClientService";
+import { IClientController } from "./contexts/CoreContext/domain/interfaces/controllers/IClientController";
+import { ClientController } from "./contexts/CoreContext/presentation/http/controllers/ClientController";
+import { GetClientUseCase } from "./contexts/CoreContext/application/useCases/client/GetClientUseCase";
+import { UpdateClientUseCase } from "./contexts/CoreContext/application/useCases/client/UpdateClientUseCase";
+import { ClientRepository } from "./contexts/CoreContext/infrastructure/persistence/ClientRepository";
+import { IClientRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IClientRepository";
+import { IEnrollmentService } from "./contexts/CoreContext/domain/interfaces/services/IEnrollmentService";
+import { EnrollmentService } from "./contexts/CoreContext/application/services/EnrollmentService";
+import { EnrollmentController } from "./contexts/CoreContext/presentation/http/controllers/EnrollmentController";
+import { CreateEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CreateEnrollmentUseCase";
+import { Enrollment } from "./contexts/CoreContext/domain/aggregates/Enrollment";
+import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/controllers/IEnrollmentController";
+import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
+import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
+import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -506,4 +541,108 @@ container.registerSingleton<IUseCase<Request, Request>>(
   CreateRequestUseCase
 );
 
+// Chats
+container.registerSingleton<IChatController>("ChatController", ChatController);
+
+container.registerSingleton<IChatService>("IChatService", ChatService);
+container.registerSingleton<IMessageService>("IMessageService", MessageService);
+
+container.registerSingleton<IUseCase<Chat, Chat>>(
+  "CreateChatUseCase",
+  CreateChatUsecase
+);
+container.registerSingleton<IUseCase<string, Chat>>(
+  "GetChatByIdUseCase",
+  GetChatByIdUseCase
+);
+container.registerSingleton<IUseCase<Message, Message>>(
+  "CreateMessageUseCase",
+  CreateMessageUseCase
+);
+container.registerSingleton<IUseCase<string, Chat[]>>(
+  "GetChatsByUserIdUseCase",
+  GetChatsByUserIdUseCase
+);
+container.registerSingleton<IUseCase<string, Message[]>>(
+  "GetMessagesByChatIdUseCase",
+  GetMessagesByChatIdUseCase
+);
+container.registerSingleton<IUseCase<{ chatId: string; userId: string }, void>>(
+  "UpdateMessageStatusUseCase",
+  UpdateMessageStatusUseCase
+);
+
+container.registerSingleton<IChatRepository>("IChatRepository", ChatRepository);
+container.registerSingleton<IMessageRepository>(
+  "IMessageRepository",
+  MessageRepository
+);
+
+container.registerSingleton<IEnrollmentService>(
+  "IEnrollmentService",
+  EnrollmentService
+);
+
+container.registerSingleton<IEnrollmentController>(
+  "IEnrollmentController",
+  EnrollmentController
+);
+
+container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
+  "CreateEnrollmentUseCase",
+  CreateEnrollmentUseCase
+);
+
+container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
+  "CancelEnrollmentUseCase",
+  CancelEnrollmentUseCase
+);
+
+container.registerSingleton<IEnrollmentRepository>(
+  "IEnrollmentRepository",
+  EnrollmentRepository
+);
+
+container.registerSingleton<IEnrollmentService>(
+  "IEnrollmentService",
+  EnrollmentService
+);
+
+container.registerSingleton<IEnrollmentController>(
+  "IEnrollmentController",
+  EnrollmentController
+);
+
+container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
+  "CreateEnrollmentUseCase",
+  CreateEnrollmentUseCase
+);
+
+container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
+  "CancelEnrollmentUseCase",
+  CancelEnrollmentUseCase
+);
+
+container.registerSingleton<IEnrollmentRepository>(
+  "IEnrollmentRepository",
+  EnrollmentRepository
+);
+
+container.registerSingleton<IClientService>("IClientService", ClientService);
+container.registerSingleton<IClientController>(
+  "IClientController",
+  ClientController
+);
+container.registerSingleton<GetClientUseCase>(
+  "GetClientUseCase",
+  GetClientUseCase
+);
+container.registerSingleton<UpdateClientUseCase>(
+  "UpdateClientUseCase",
+  UpdateClientUseCase
+);
+container.registerSingleton<IClientRepository>(
+  "IClientRepository",
+  ClientRepository
+);
 export { container };

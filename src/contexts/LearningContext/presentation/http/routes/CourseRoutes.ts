@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { container } from "tsyringe";
 import { CourseController } from "../controllers/CourseController";
+import { verifyToken } from "@/contexts/Shared/infrastructure/middlewares/TokenVerifierMiddleware";
 
 import ModuleController from "../controllers/ModuleController";
 
@@ -59,6 +60,7 @@ courseRouter.post("/:id/modules", moduleController.create);
  *         description: A list of courses
  */
 courseRouter.get("/", controller.getAllCourses);
+
 /**
  * @openapi
  * /courses/{id}:
@@ -78,13 +80,14 @@ courseRouter.get("/", controller.getAllCourses);
  *         description: return the course
  */
 courseRouter.get("/:id", controller.getCourse);
+
 /**
  * @openapi
  * /courses/{id}:
  *   put:
  *     summary: Update an existing course
  *     tags:
- *       - Course
+ *       - Courses
  *     parameters:
  *       - in: path
  *         name: id
@@ -95,17 +98,22 @@ courseRouter.get("/:id", controller.getCourse);
  *     requestBody:
  *       required: true
  *       content:
- *         application/x-www-form-urlencoded:
- *           schema:
- *             $ref: '#/components/schemas/Language'
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Language'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               imgSrc:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Course updated successfully
  */
 courseRouter.put("/:id", controller.editCourse);
+
 /**
  * @openapi
  * /courses/{id}:
@@ -149,17 +157,28 @@ courseRouter.put("/:id/publish", controller.publish);
  *     requestBody:
  *       required: true
  *       content:
- *         application/x-www-form-urlencoded:
- *           schema:
- *             $ref: '#/components/schemas/Language'
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Language'
+ *             type: object
+ *             required:
+ *               - name
+ *               - description
+ *               - imgSrc
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Curso de TypeScript"
+ *               description:
+ *                 type: string
+ *                 example: "Aprende a usar TypeScript en proyectos reales"
+ *               imgSrc:
+ *                 type: string
+ *                 example: "https://example.com/img.png"
  *     responses:
  *       201:
  *         description: Course created successfully
  */
-courseRouter.post("/", async (req, res, next) => {
+courseRouter.post("/", verifyToken(), async (req, res, next) => {
   try {
     await controller.create(req, res);
   } catch (err) {

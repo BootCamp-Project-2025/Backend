@@ -11,6 +11,7 @@ import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { Modules } from "@/contexts/LearningContext/domain/OneToMany/Modules";
+import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 
 const mockRepository: jest.Mocked<ICourseRepository> = {
   update: jest.fn(),
@@ -22,6 +23,7 @@ const empyCourseProps: CourseProps = {
   description: CourseDescription.create({ description: "course" }),
   imgSrc: "dsadsa",
   modules: new Modules(),
+  userId: UserId.create(new UniqueEntityID("asdasd")),
 };
 
 const useCase = new EditCourseUseCase(mockRepository);
@@ -45,6 +47,7 @@ describe("EditCourseUseCase", () => {
       name: "name",
       description: "description",
       imgSrc: "imgSrc",
+      userId: "userId",
     };
     expect(async () => await useCase.execute(dto)).resolves;
   });
@@ -59,6 +62,7 @@ describe("EditCourseUseCase", () => {
       name: "name",
       description: "description",
       imgSrc: "imgSrc",
+      userId: "userId",
     };
     expect(async () => await useCase.execute(dto)).rejects.toThrow(ApiError);
   });
@@ -75,6 +79,7 @@ describe("EditCourseUseCase", () => {
       name: "name",
       description: "description",
       imgSrc: "imgSrc",
+      userId: "userId",
     };
     expect(async () => await useCase.execute(dto)).rejects.toThrow(ApiError);
   });

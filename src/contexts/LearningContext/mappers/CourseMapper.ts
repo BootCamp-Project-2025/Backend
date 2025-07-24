@@ -10,6 +10,7 @@ import { Modules } from "../domain/OneToMany/Modules";
 import { CourseCategory } from "../domain/valueObjects/CourseCategory";
 import { CourseSubCategory } from "../domain/valueObjects/CourseSubCategory";
 import { CourseLanguage } from "../domain/valueObjects/CourseLanguage";
+import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
@@ -34,6 +35,7 @@ export class CourseMapper {
       language: CourseLanguage.create({
         language: prismaCourse.language ?? "",
       }),
+      userId: UserId.create(new UniqueEntityID(prismaCourse.userId)),
     };
 
     return Course.create(
@@ -55,6 +57,7 @@ export class CourseMapper {
       category: domainCourse.getCategory().value,
       subCategory: domainCourse.getSubCategory().value,
       published: false,
+      userId: domainCourse.getUserID().toString(),
     };
   }
 
@@ -63,6 +66,7 @@ export class CourseMapper {
       name: body.props.name.value,
       description: body.props.description.value,
       imgSrc: body.props.imgSrc,
+      userId: body.props.userId.toString(),
     };
   }
 
@@ -72,6 +76,7 @@ export class CourseMapper {
       name: domainCourse.props.name.value,
       description: domainCourse.props.description.value,
       imgSrc: domainCourse.props.imgSrc,
+      userId: domainCourse.props.userId.toString(),
     };
   }
 
@@ -93,6 +98,7 @@ export class CourseMapper {
       }),
       language: CourseLanguage.create({ language: courseDto.language ?? "" }),
       modules: Modules.create([]),
+      userId: UserId.create(new UniqueEntityID(courseDto.userId)),
     };
     if (courseDto.id !== null)
       return Course.create(courseProps, new UniqueEntityID(courseDto.id));
@@ -110,6 +116,7 @@ export class CourseMapper {
       field: courseDto.props.field?.value ?? "",
       time: courseDto.props.time,
       requirements: courseDto.props.requirements?.value ?? "",
+      userId: courseDto.props.userId.toString(),
     };
   }
   static fromDTO(dto: CourseDTO): Course {
@@ -121,6 +128,7 @@ export class CourseMapper {
       description: descVO,
       imgSrc: dto.imgSrc,
       modules: Modules.create([]),
+      userId: UserId.create(new UniqueEntityID(dto.userId)),
     };
 
     return Course.create(props, new UniqueEntityID(dto.id));

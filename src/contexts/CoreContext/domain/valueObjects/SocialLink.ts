@@ -3,12 +3,12 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
 interface SocialLinkProps {
-  platform: "linkedin" | "youtube" | "facebook" | "instagram";
+  platform: "LINKEDIN" | "YOUTUBE" | "FACEBOOK" | "INSTAGRAM";
   url: string;
 }
 
 export class SocialLink extends ValueObject<SocialLinkProps> {
-  get platform(): "linkedin" | "youtube" | "facebook" | "instagram" {
+  get platform(): "LINKEDIN" | "YOUTUBE" | "FACEBOOK" | "INSTAGRAM" {
     return this.props.platform;
   }
 
@@ -26,7 +26,7 @@ export class SocialLink extends ValueObject<SocialLinkProps> {
   }
 
   private static isValidPlatform(value: string): boolean {
-    const validPlatforms = ["linkedin", "youtube", "facebook", "instagram"];
+    const validPlatforms = ["LINKEDIN", "YOUTUBE", "FACEBOOK", "INSTAGRAM"];
     return validPlatforms.some((platform) => value === platform);
   }
 

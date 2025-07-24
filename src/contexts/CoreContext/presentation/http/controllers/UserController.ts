@@ -1,7 +1,9 @@
 import { User } from "@/contexts/CoreContext/domain/aggregates/User";
 import { IUserController } from "@/contexts/CoreContext/domain/interfaces/controllers/IUserController";
 import { ICreateUserDto } from "@/contexts/CoreContext/domain/interfaces/dtos/ICreateUserDto";
+import { IChatService } from "@/contexts/CoreContext/domain/interfaces/services/IChatService";
 import { IUserService } from "@/contexts/CoreContext/domain/interfaces/services/IUserService";
+import { ChatMapper } from "@/contexts/CoreContext/mappers/ChatMapper";
 import UserMapper from "@/contexts/CoreContext/mappers/UserMapper";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
@@ -14,8 +16,26 @@ import { inject, injectable } from "tsyringe";
 export class UserController implements IUserController {
   constructor(
     @inject("IUserService")
-    private userService: IUserService
+    private userService: IUserService,
+    @inject("IChatService")
+    private chatService: IChatService
   ) {}
+  getChats = async (req: Request, res: Response): Promise<void> => {
+    // try {
+    const { userId } = req.params;
+    const chats = await this.chatService.getManyByUserId(userId);
+    const chatsDto = ChatMapper.ManyDomainToDto(chats);
+    const response = new SuccessResponseEntity(
+      chatsDto,
+      StatusCodes.OK,
+      "Chats retrieved successfully"
+    );
+    ResponseService.send(res, response);
+    // } catch (error) {
+    //   console.log(error);
+    //   throw new ApiError();
+    // }
+  };
 
   freelance = async (req: Request, res: Response) => {
     const userId = req.user?.id ?? req.params.id;

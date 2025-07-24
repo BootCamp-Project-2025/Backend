@@ -21,8 +21,8 @@ export class RequestController implements IRequestController {
 
   delete = async (req: ExpressRequest, res: Response): Promise<void> => {
     try {
-      const user = RequestController.getUser(req);
-      await this.service.delete(user.id);
+      const requestId = req.params.requestId;
+      await this.service.delete(requestId);
       const response = new SuccessResponseEntity({}, StatusCodes.NO_CONTENT);
       ResponseService.send(res, response);
     } catch (error) {

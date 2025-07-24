@@ -121,6 +121,16 @@ import { IExternarlAuthService } from "./contexts/CoreContext/domain/interfaces/
 import { KeycloakService } from "./contexts/CoreContext/infrastructure/keycloak/keycloakService";
 import { SyncUserUseCase } from "./contexts/CoreContext/application/useCases/auth/SyncUserUseCase";
 import { IAuthService } from "./contexts/CoreContext/domain/interfaces/services/IAuthService";
+import IRequestController from "./contexts/CoreContext/domain/interfaces/controllers/IRequestController";
+import { RequestController } from "./contexts/CoreContext/presentation/http/controllers/RequestController";
+import IRequestService from "./contexts/CoreContext/domain/interfaces/services/IRequestService";
+import IRequestRepository from "./contexts/CoreContext/domain/interfaces/repositories/IRequestRepository";
+import RequestService from "./contexts/CoreContext/application/services/RequestService";
+import RequestRepository from "./contexts/CoreContext/infrastructure/persistence/RequestRepository";
+import GetUserActiveRequestUseCase from "./contexts/CoreContext/application/useCases/requests/GetUserActiveRequestUseCase";
+import { Request } from "./contexts/CoreContext/domain/aggregates/Request";
+import DeleteRequestUseCase from "./contexts/CoreContext/application/useCases/requests/DeleteRequestUseCase";
+import CreateRequestUseCase from "./contexts/CoreContext/application/useCases/requests/CreateRequestUseCase";
 import { IChatController } from "./contexts/CoreContext/domain/interfaces/controllers/IChatController";
 import { ChatController } from "./contexts/CoreContext/presentation/http/controllers/ChatController";
 import { IChatService } from "./contexts/CoreContext/domain/interfaces/services/IChatService";
@@ -506,6 +516,29 @@ container.registerSingleton<IUseCase<{ user: User; role: string }, void>>(
 container.registerSingleton<IExternarlAuthService>(
   "IAuthManagerService",
   KeycloakService
+);
+
+container.registerSingleton<IRequestService>("IRequestService", RequestService);
+
+container.registerSingleton<IRequestController>(
+  "IRequestController",
+  RequestController
+);
+
+container.registerSingleton<IRequestRepository>(
+  "IRequestRepository",
+  RequestRepository
+);
+container.registerSingleton<
+  IUseCase<{ userId: string; title: string }, Request[]>
+>("GetUserActiveRequestUseCase", GetUserActiveRequestUseCase);
+container.registerSingleton<IUseCase<string, void>>(
+  "DeleteRequestUseCase",
+  DeleteRequestUseCase
+);
+container.registerSingleton<IUseCase<Request, Request>>(
+  "CreateRequestUseCase",
+  CreateRequestUseCase
 );
 
 // Chats

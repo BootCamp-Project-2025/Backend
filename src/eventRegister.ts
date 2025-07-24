@@ -6,5 +6,8 @@ const globalEventDispatcher = new EventDispatcher();
 globalEventDispatcher.register("ExampleCreated", sendExampleMsg);
 
 // Example usage of the event dispatcher
-// const event = new ExampleCreatedEvent({userId: "id", email: "email@example.com"});
+// const event = new ExampleCreatedEvent({
+//   userId: "id",
+//   email: "email@example.com",
+// });
 // globalEventDispatcher.dispatch(event);

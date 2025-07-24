@@ -11,7 +11,7 @@ export class EventDispatcher {
     this.handlers.get(eventName)!.push(handler);
   }
 
-  dispatch(event: DomainEvent) {
+  async dispatch(event: DomainEvent) {
     const handlers = this.handlers.get(event.name) || [];
     for (const handler of handlers) {
       handler(event);

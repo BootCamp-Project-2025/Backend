@@ -14,6 +14,8 @@ const controller = container.resolve(RequestController);
  *      summary: Get all the valid request of the user
  *      tags:
  *       - Requests
+ *      security:
+ *       - BearerAuth: []
  *      responses:
  *          200:
  *              description: Everything is ok and returns the list
@@ -37,6 +39,8 @@ requestRoutes.get(
  *      summary: Create a new request
  *      tags:
  *       - Requests
+ *      security:
+ *       - BearerAuth: []
  *      requestBody:
  *       required: true
  *       content:
@@ -60,11 +64,13 @@ requestRoutes.post("/", verifyToken(), controller.create);
 /**
  * @openapi
  *
- * /requests{requestId}:
+ * /requests/{requestId}:
  *  delete:
  *      summary: Create a new request
  *      tags:
  *       - Requests
+ *      security:
+ *       - BearerAuth: []
  *      parameters:
  *       - in: path
  *         name: requestId

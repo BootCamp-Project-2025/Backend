@@ -1,0 +1,15 @@
+export const basicRequest = {
+  id: "string",
+  title: "string",
+  description: "string",
+  language: "string",
+  category: "string",
+  subcategory: "string",
+  status: "AVAILABLE",
+  userId: "string",
+  estimation: 200,
+  edited: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  proposals: [],
+};

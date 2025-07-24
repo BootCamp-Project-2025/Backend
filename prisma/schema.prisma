@@ -98,6 +98,7 @@ model User {
   receivedMessages Message[] @relation("ReceivedMessages")
   chats            Chat[]    @relation("UserChats")
   Enrollment         Enrollment[]
+  about              String      @default("")
 
   proposals          Proposal[]
   requests           Request[]   
@@ -108,7 +109,6 @@ model Freelancer {
   id      String @id @default(uuid())
   userId  String @unique 
   user    User   @relation("UserFreelancer", fields: [userId], references: [id] , onDelete: Cascade)
-  about          String          @default("")
   skills         Skill[]
   languages      Language[]
   education      Education[]

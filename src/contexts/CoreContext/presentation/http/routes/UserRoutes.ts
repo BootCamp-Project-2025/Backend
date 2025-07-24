@@ -55,39 +55,40 @@ router.get("/:id", controller.get);
 router.post("/", controller.post);
 
 /**
- *
  * @openapi
- * /users:
- *  patch:
- *     summary: Updates the user data
+ * /users/{id}:
+ *   patch:
+ *     summary: Updates user data (userName, profilePicture or about)
  *     security:
  *      - BearerAuth: []
  *     tags:
  *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/x-www-form-urlencoded:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/UpdateUser'
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/UpdateUser'
  *     responses:
  *       200:
  *         description: User updated successfully
+ *       404:
+ *         description: User not found
  *       500:
  *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "An error occurred while updating the user"
  */
-router.patch("/", verifyToken(), controller.updateUser);
+router.patch("/:id", controller.updateUser);
+// router.patch("/users/me", verifyToken(), controller.updateUserOwnProfile);
 
 /**
  * @openapi
@@ -163,4 +164,27 @@ export default router;
  *       required:
  *         - userName
  *         - userEmail
+ */
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     UpdateUser:
+ *       type: object
+ *       properties:
+ *         userName:
+ *           type: string
+ *           description: New username of the user
+ *           example: "George Orwell"
+ *         profilePicture:
+ *           type: string
+ *           format: uri
+ *           description: URL of the profile picture
+ *           example: "https://example.com/avatar.jpg"
+ *         about:
+ *           type: string
+ *           description: Short bio or about section
+ *           example: "Passionate literature teacher inspiring young minds."
+ *       # No 'required' → todos los campos son opcionales
  */

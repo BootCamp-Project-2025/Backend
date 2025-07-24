@@ -18,6 +18,12 @@ const swaggerOptions: SwaggerOptions = {
       {
         name: "User",
       },
+      {
+        name: "Client",
+      },
+      {
+        name: "Freelancer",
+      },
     ],
     servers: [
       {

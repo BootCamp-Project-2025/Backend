@@ -33,7 +33,7 @@ describe("", () => {
 
   it("calls the delete service correctly", () => {
     const req = {
-      user: { id: "testId" },
+      params: { requestId: "testId" },
     } as unknown as ExpressRequest;
     const res = mockResponse();
     expect(controller.delete(req, res)).resolves.toBeUndefined();
@@ -120,7 +120,9 @@ describe("", () => {
   });
 
   it("throw error when it catch some error in the delete service", () => {
-    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
+    const req = {
+      params: { requestId: "testId" },
+    } as unknown as ExpressRequest;
     const res = mockResponse();
     deleteFunc.mockRejectedValue("error");
     expect(controller.delete(req, res)).rejects.toThrow(ApiError);
@@ -145,7 +147,9 @@ describe("", () => {
   });
 
   it("throw the catch ApiError when it catch some error in the delete service", () => {
-    const req = { user: { id: "testId" } } as unknown as ExpressRequest;
+    const req = {
+      params: { requestId: "testId" },
+    } as unknown as ExpressRequest;
     const res = mockResponse();
     const error = new ApiError();
     deleteFunc.mockRejectedValue(error);

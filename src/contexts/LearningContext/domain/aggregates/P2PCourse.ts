@@ -1,5 +1,4 @@
 import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
-import { CourseName } from "../valueObjects/CourseName";
 import P2PCourseStatus, {
   P2PStatusType,
 } from "../valueObjects/P2PCourseStatus";
@@ -13,6 +12,7 @@ import P2PRemainingSession from "../valueObjects/P2PremainingSession";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import UserId from "../valueObjects/UserId";
+import { P2PCourseName } from "../valueObjects/P2PCourseName";
 
 export type PrimitiveP2PCourseProps = {
   studentId: string;
@@ -28,7 +28,7 @@ export type PrimitiveP2PCourseProps = {
 type P2PCourseProps = {
   studentId: UserId;
   teacherId: UserId;
-  name: CourseName;
+  name: P2PCourseName;
   remainingSession: P2PRemainingSession;
   status: P2PCourseStatus;
   posts: Post[];
@@ -73,7 +73,7 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     return {
       teacherId: UserId.create({ userId: props.teacherId }),
       studentId: UserId.create({ userId: props.studentId }),
-      name: CourseName.create({ name: props.name }),
+      name: P2PCourseName.create({ name: props.name }),
       status: P2PCourseStatus.create({ status: props.status }),
       posts: props.posts.map((post) => Post.createFromPrimitive(post)),
       files: props.files.map((file) => FilePost.createFromPrimitive(file)),
@@ -86,7 +86,7 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     };
   }
 
-  get name(): CourseName {
+  get name(): P2PCourseName {
     return this.props.name;
   }
   get status(): P2PCourseStatus {

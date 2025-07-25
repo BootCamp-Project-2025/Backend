@@ -92,6 +92,8 @@ model User {
   profilePicture     String?
   freelancerProfile  Freelancer? @relation("UserFreelancer")
   clientProfile      Client?     @relation("UserClient")
+  p2pStudent      P2PCourse[]     @relation("student")
+  p2pTeacher      P2PCourse[]     @relation("teacher")
 
   lastSeen         DateTime  @default(now())
   sentMessages     Message[] @relation("SentMessages")
@@ -289,4 +291,57 @@ model Enrollment {
   course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
   status       EnrollmentStatus @default(ENROLLED)
+}
+
+enum P2PCourseStatus {
+  ACTIVE
+  CANCELED
+  COMPLETED
+}
+model P2PCourse{
+  id          String     @id @default(uuid())
+  teacherId     String
+  teacher         User       @relation(name: "teacher", fields: [teacherId], references: [id], onDelete: Cascade)
+  studentId     String
+  student         User       @relation(name: "student", fields: [studentId], references: [id], onDelete: Cascade)
+  name String
+  remainingSession Int
+  status P2PCourseStatus
+  posts P2PPost[]
+  files P2PFilePost[]
+  sessions LiveSession[]
+}
+
+model P2PPost{
+  id          String     @id @default(uuid())
+  p2pCourseId     String
+  p2pCourse         P2PCourse       @relation(fields: [p2pCourseId], references: [id], onDelete: Cascade)
+  title String
+  description String
+  url String
+  creationDate DateTime
+}
+
+model P2PFilePost{
+  id          String     @id @default(uuid())
+  p2pCourseId     String
+  p2pCourse         P2PCourse       @relation(fields: [p2pCourseId], references: [id], onDelete: Cascade)
+  url String
+  creationDate DateTime
+}
+
+enum LiveSessionStatus {
+  COMPLETED  
+  PENDING  
+  CANCELED
+}
+
+model LiveSession{
+  id          String     @id @default(uuid())
+  p2pCourseId     String
+  p2pCourse         P2PCourse       @relation(fields: [p2pCourseId], references: [id], onDelete: Cascade)
+  status LiveSessionStatus
+  creationDate DateTime
+  dateOfTheSession DateTime
+  url String
 }

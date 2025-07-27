@@ -1,9 +1,10 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { Entity } from "../../../Shared/domain/Entity";
-import { VideoProgress, VideoProgressProps } from "../valueObjects/VideoProgress";
+import { VideoProgress } from "../valueObjects/VideoProgress";
+import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";
 
 export interface StudentTrackProgressProps {
-    enrollmentId: string;
+    enrollmentId: EnrollmentId;
     lessonId: string;
     videoProgress: VideoProgress[];
     resourcesCompleted: string[];
@@ -31,14 +32,14 @@ export class StudentTrackProgress extends Entity<StudentTrackProgressProps> {
     }
 
     get enrollmentId(): string {
-        return this.props.enrollmentId;
+        return this.props.enrollmentId.toString();
     }
 
     get lessonId(): string {
         return this.props.lessonId;
     }
 
-    get videoProgress(): VideoProgressProps[] {
+    get videoProgress(): VideoProgress[] {
         return this.props.videoProgress;
     }
 
@@ -73,5 +74,9 @@ export class StudentTrackProgress extends Entity<StudentTrackProgressProps> {
             this.props.completed = true;
             this.props.completedAt = new Date();
         }
+    }
+
+    get id(): UniqueEntityID {
+        return this._id;
     }
 }

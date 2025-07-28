@@ -8,7 +8,7 @@ import LiveSession, {
   PrimitiveLiveSessionProps,
 } from "../entities/LiveSession";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import P2PRemainingSession from "../valueObjects/P2PremainingSession";
+import P2PRemainingSessions from "../valueObjects/P2PRemainingSessions";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import UserId from "../valueObjects/UserId";
@@ -29,7 +29,7 @@ type P2PCourseProps = {
   studentId: UserId;
   teacherId: UserId;
   name: P2PCourseName;
-  remainingSession: P2PRemainingSession;
+  remainingSessions: P2PRemainingSessions;
   status: P2PCourseStatus;
   posts: Post[];
   files: FilePost[];
@@ -80,7 +80,7 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
       sessions: props.sessions.map((session) =>
         LiveSession.createFromPrimitive(session)
       ),
-      remainingSession: P2PRemainingSession.create({
+      remainingSessions: P2PRemainingSessions.create({
         remainingSession: props.remainingSession,
       }),
     };
@@ -102,8 +102,8 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     return this.props.sessions;
   }
 
-  get remainingSessions(): P2PRemainingSession {
-    return this.props.remainingSession;
+  get remainingSessions(): P2PRemainingSessions {
+    return this.props.remainingSessions;
   }
 
   get id(): UniqueEntityID {
@@ -128,7 +128,7 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
   }
 
   private reduceRemainingSessions() {
-    this.props.remainingSession = P2PRemainingSession.create({
+    this.props.remainingSessions = P2PRemainingSessions.create({
       remainingSession: this.remainingSessions.value - 1,
     });
   }

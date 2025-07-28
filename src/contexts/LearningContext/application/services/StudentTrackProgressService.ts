@@ -10,7 +10,8 @@ import { StudentTrackProgress } from "../../domain/entities/StudentTrackProgress
 import { Lesson } from "../../domain/entities/Lesson";
 @injectable()
 export default class StudentTrackProgressService
-  implements IStudentTrackProgressService {
+  implements IStudentTrackProgressService
+{
   constructor(
     @inject("CreateStudentTrackProgressUseCase")
     private readonly createUseCase: IUseCase<
@@ -33,7 +34,7 @@ export default class StudentTrackProgressService
     >,
     @inject("GetLessonByIdUseCase")
     private readonly getLessonByIdUseCase: IUseCase<string, Lesson>
-  ) { }
+  ) {}
 
   async create(
     trackProgress: StudentTrackProgress,

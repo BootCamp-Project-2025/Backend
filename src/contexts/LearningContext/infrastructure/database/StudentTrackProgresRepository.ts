@@ -25,14 +25,14 @@ export class StudentTrackProgressRepository implements IStudentTrackProgressRepo
         }
     }
 
-    async findByEnrollmentAndLesson(enrollmentId: string, lessonId: string): Promise<StudentTrackProgress | null> {
+    async findByEnrollment(enrollmentId: string): Promise<StudentTrackProgress[] | []> {
         try {
-            const trackDb = await this.db.studentTrackProgress.findFirst({
-                where: { enrollmentId, lessonId },
+            const tracksDb = await this.db.studentTrackProgress.findMany({
+                where: { enrollmentId },
                 include: { videoProgresses: true, resourcesCompleted: true },
             });
-            if (!trackDb) return null;
-            return StudentTrackProgressMapper.PersistenceToDomain(trackDb);
+            if (!tracksDb) return [];
+            return tracksDb.map(StudentTrackProgressMapper.PersistenceToDomain);
         } catch (error) {
             console.log(error);
             if (error instanceof ApiError) throw error;

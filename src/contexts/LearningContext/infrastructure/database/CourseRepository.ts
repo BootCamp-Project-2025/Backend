@@ -1,7 +1,7 @@
 import { injectable } from "tsyringe";
 import { ICourseRepository } from "../../domain/interfaces/ICourseRepository";
 import { Course } from "../../domain/aggregates/Course";
-import prismaClient from "../../../Shared/infrastructure/database/PrismaClient"; // askDaniel
+import prismaClient from "../../../Shared/infrastructure/database/PrismaClient";
 import { CourseMapper } from "../../mappers/CourseMapper";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";

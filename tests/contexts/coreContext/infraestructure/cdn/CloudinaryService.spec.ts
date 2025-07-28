@@ -33,7 +33,7 @@ describe("CloudinaryService", () => {
       expect(cloudinary.uploader.upload).toHaveBeenCalledWith(mockUrl, {
         public_id: "file.txt",
         invalidate: true,
-        folder: "prod",
+        upload_preset: "ltcrowd_preset",
         resource_type: "raw",
       });
       expect(result).toBe(mockSecureUrl);

@@ -33,7 +33,7 @@ export class CloudinaryService implements ICdnService {
       const result = await this.cloudinary.uploader.upload(url, {
         public_id: `${url.split("/").pop()}`,
         invalidate: true,
-        folder: "prod",
+        upload_preset: "ltcrowd_preset",
         resource_type: "raw",
       });
       return result.secure_url;

@@ -6,10 +6,7 @@ import { ResponseService } from "@/contexts/Shared/application/services/Response
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { IStudentTrackProgressController } from "@/contexts/LearningContext/domain/interfaces/IStudentTrackProgressController";
 import { IStudentTrackProgressService } from "@/contexts/LearningContext/domain/interfaces/IStudentTrackProgressService";
-import {
-  StudentTrackProgressDto,
-  StudentTrackProgressDtoBuilder,
-} from "@/contexts/LearningContext/domain/dtos/StudentTrackProgressDto";
+import { StudentTrackProgressDto } from "@/contexts/LearningContext/domain/dtos/StudentTrackProgressDto";
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
 import { StudentTrackProgressMapper } from "@/contexts/LearningContext/mappers/StudentTrackProgressMapper";
 

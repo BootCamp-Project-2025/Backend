@@ -1,10 +1,6 @@
 import { StudentTrackProgress } from "../domain/entities/StudentTrackProgress";
 import { StudentTrackProgressDto } from "../domain/dtos/StudentTrackProgressDto";
-import {
-  StudentTrackProgressDb,
-  VideoProgressDb,
-  ResourceCompletedDb,
-} from "../domain/dtos/Dbtypes";
+import { StudentTrackProgressDb } from "../domain/dtos/Dbtypes";
 import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";
 import { VideoProgress } from "../domain/valueObjects/VideoProgress";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";

@@ -1,6 +1,5 @@
 /* import { StudentTrackProgress } from "../entities/StudentTrackProgress"; */
 import { VideoProgress } from "../valueObjects/VideoProgress";
-import { ResourceCompleted } from "../valueObjects/ResourceCompleted";
 
 export type StudentTrackProgressDto = {
   id?: string;

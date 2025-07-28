@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 
 export interface IStudentTrackProgressController {
-    trackVideoProgress(req: Request, res: Response): Promise<void>;
-    completeResource(req: Request, res: Response): Promise<void>;
-    getProgress(req: Request, res: Response): Promise<void>;
-    markAsCompleted(req: Request, res: Response): Promise<void>;
+    create(req: Request, res: Response): Promise<void>;
+    update(req: Request, res: Response): Promise<void>;
+    delete(req: Request, res: Response): Promise<void>;
+    getById(req: Request, res: Response): Promise<void>;
+    getByEnrollment(req: Request, res: Response): Promise<void>;
 }

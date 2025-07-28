@@ -7,12 +7,12 @@ export type StudentTrackProgressDto = {
     enrollmentId?: string;
     lessonId?: string;
     videoProgresses?: {
-        url?: string;
-        watchedSeconds?: number;
-        completed?: boolean;
+        url: string;
+        watchedSeconds: number;
+        completed: boolean;
     }[];
     resourcesCompleted?: {
-        url?: string;
+        url: string;
     }[];
     completed?: boolean;
     completedAt?: Date | null;

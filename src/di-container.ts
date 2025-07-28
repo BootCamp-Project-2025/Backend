@@ -175,6 +175,8 @@ import UpdateStudentTrackProgressUseCase from "./contexts/LearningContext/applic
 import { IStudentTrackProgressRepository } from "./contexts/LearningContext/domain/interfaces/IStudentTrackProgressRepository";
 import { IStudentTrackProgressService } from "./contexts/LearningContext/domain/interfaces/IStudentTrackProgressService";
 import StudentTrackProgressService from "./contexts/LearningContext/application/services/StudentTrackProgressService";
+import GetLessonByIdUseCase from "./contexts/LearningContext/application/useCases/lesson/GetLessonByIdUseCase";
+import StudentTrackProgressController from "./contexts/LearningContext/presentation/http/controllers/StudentTrackProgressController ";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -684,6 +686,9 @@ container.registerSingleton<UpdateStudentTrackProgressUseCase>(
   "UpdateStudentTrackProgressUseCase",
   UpdateStudentTrackProgressUseCase
 );
+
+container.registerSingleton<GetLessonByIdUseCase>("GetLessonByIdUseCase", GetLessonByIdUseCase);
+container.registerSingleton<StudentTrackProgressController>("StudentTrackProgressController", StudentTrackProgressController);
 
 container.registerSingleton<IStudentTrackProgressService>(
   "IStudentTrackProgressService",

@@ -1,4 +1,5 @@
 import { StudentTrackProgress } from "../domain/entities/StudentTrackProgress";
+import { StudentTrackProgressDto } from "../domain/dtos/StudentTrackProgressDto";
 import { StudentTrackProgressDb, VideoProgressDb, ResourceCompletedDb } from "../domain/dtos/Dbtypes";
 import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";
 import { VideoProgress } from "../domain/valueObjects/VideoProgress";
@@ -44,6 +45,45 @@ export class StudentTrackProgressMapper {
                     url,
                 })
             )),
+        };
+    }
+
+    static DtoToDomain(dto: StudentTrackProgressDto): StudentTrackProgress {
+        return StudentTrackProgress.create({
+            enrollmentId: EnrollmentId.create(new UniqueEntityID(dto.enrollmentId)),
+            lessonId: dto.lessonId ?? "",
+            videoProgresses: dto.videoProgresses?.map(v =>
+                VideoProgress.create({
+                    url: v.url,
+                    watchedSeconds: v.watchedSeconds,
+                    completed: v.completed,
+                })
+            ) ?? [],
+            resourcesCompleted: (dto.resourcesCompleted ?? [])
+                .filter(r => r.url)
+                .map(r => r.url!),
+            completed: dto.completed ?? false,
+            completedAt: dto.completedAt || undefined,
+        }, dto.id ? new UniqueEntityID(dto.id) : undefined);
+    }
+
+    static DomainToDto(entity: StudentTrackProgress): StudentTrackProgressDto {
+        return {
+            id: entity.id.toString(),
+            enrollmentId: entity.enrollmentId.toString(),
+            lessonId: entity.lessonId,
+            videoProgresses: entity.videoProgresses.map(v => ({
+                url: v.url,
+                watchedSeconds: v.watchedSeconds,
+                completed: v.completed,
+            })),
+            resourcesCompleted: entity.resourcesCompleted.map(url => (
+                ResourceCompleted.create({
+                    url,
+                })
+            )),
+            completed: entity.completed,
+            completedAt: entity.completedAt ?? null,
         };
     }
 }

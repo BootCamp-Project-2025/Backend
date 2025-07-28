@@ -1,14 +1,21 @@
 /* import { StudentTrackProgress } from "../entities/StudentTrackProgress"; */
 import { VideoProgress } from "../valueObjects/VideoProgress";
+import { ResourceCompleted } from "../valueObjects/ResourceCompleted";
 
 export type StudentTrackProgressDto = {
     id?: string;
     enrollmentId?: string;
     lessonId?: string;
-    videoProgress?: VideoProgress[];
-    resourcesCompleted?: string[];
+    videoProgresses?: {
+        url?: string;
+        watchedSeconds?: number;
+        completed?: boolean;
+    }[];
+    resourcesCompleted?: {
+        url?: string;
+    }[];
     completed?: boolean;
-    completedAt?: Date;
+    completedAt?: Date | null;
 };
 
 export class StudentTrackProgressDtoBuilder {
@@ -37,13 +44,17 @@ export class StudentTrackProgressDtoBuilder {
         return this;
     }
 
-    videoProgress(videoProgress: VideoProgress[]) {
-        this.dto.videoProgress = videoProgress;
+    videoProgresses(videoProgress: VideoProgress[]) {
+        this.dto.videoProgresses = videoProgress.map(v => ({
+            url: v.url,
+            watchedSeconds: v.watchedSeconds,
+            completed: v.completed,
+        }));
         return this;
     }
 
     resourcesCompleted(resourcesCompleted: string[]) {
-        this.dto.resourcesCompleted = resourcesCompleted;
+        this.dto.resourcesCompleted = resourcesCompleted.map(url => ({ url }));
         return this;
     }
 

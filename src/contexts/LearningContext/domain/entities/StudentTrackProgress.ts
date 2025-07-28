@@ -6,7 +6,7 @@ import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/Enrollm
 export interface StudentTrackProgressProps {
     enrollmentId: EnrollmentId;
     lessonId: string;
-    videoProgress: VideoProgress[];
+    videoProgresses: VideoProgress[];
     resourcesCompleted: string[];
     completed: boolean;
     completedAt?: Date;
@@ -22,7 +22,7 @@ export class StudentTrackProgress extends Entity<StudentTrackProgressProps> {
         return new StudentTrackProgress(
             {
                 ...props,
-                videoProgress: props.videoProgress ?? [],
+                videoProgresses: props.videoProgresses ?? [],
                 resourcesCompleted: props.resourcesCompleted ?? [],
                 completed: props.completed ?? false,
                 completedAt: props.completedAt ?? undefined,
@@ -39,8 +39,8 @@ export class StudentTrackProgress extends Entity<StudentTrackProgressProps> {
         return this.props.lessonId;
     }
 
-    get videoProgress(): VideoProgress[] {
-        return this.props.videoProgress;
+    get videoProgresses(): VideoProgress[] {
+        return this.props.videoProgresses;
     }
 
     get resourcesCompleted(): string[] {
@@ -60,8 +60,8 @@ export class StudentTrackProgress extends Entity<StudentTrackProgressProps> {
     }
 
     public getVideoCompletion(): boolean {
-        if (this.props.videoProgress.length === 0) return true;
-        return this.props.videoProgress.every(v => v.completed);
+        if (this.props.videoProgresses.length === 0) return true;
+        return this.props.videoProgresses.every(v => v.completed);
     }
 
     public getResourceCompletion(totalPdfResources: number): boolean {

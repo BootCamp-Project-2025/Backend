@@ -13,10 +13,12 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import UserId from "../valueObjects/UserId";
 import { P2PCourseName } from "../valueObjects/P2PCourseName";
+import ChatId from "../valueObjects/ChatId";
 
 export type PrimitiveP2PCourseProps = {
   studentId: string;
   teacherId: string;
+  chatId: string;
   name: string;
   remainingSession: number;
   status: P2PStatusType;
@@ -28,6 +30,7 @@ export type PrimitiveP2PCourseProps = {
 type P2PCourseProps = {
   studentId: UserId;
   teacherId: UserId;
+  chatId: UserId;
   name: P2PCourseName;
   remainingSessions: P2PRemainingSessions;
   status: P2PCourseStatus;
@@ -73,6 +76,7 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     return {
       teacherId: UserId.create({ userId: props.teacherId }),
       studentId: UserId.create({ userId: props.studentId }),
+      chatId: ChatId.create({ chatId: props.chatId }),
       name: P2PCourseName.create({ name: props.name }),
       status: P2PCourseStatus.create({ status: props.status }),
       posts: props.posts.map((post) => Post.createFromPrimitive(post)),

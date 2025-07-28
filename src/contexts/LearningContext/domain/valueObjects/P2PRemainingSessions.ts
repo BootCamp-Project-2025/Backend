@@ -12,7 +12,7 @@ export default class P2PRemainingSessions extends ValueObject<P2PRemainingSessio
   }
 
   public get value(): number {
-    return this.props.status;
+    return this.props.remainingSession;
   }
 
   public static create(props: P2PRemainingSessionPropss): P2PRemainingSessions {

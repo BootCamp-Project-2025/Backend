@@ -63,9 +63,9 @@ export class Post extends Entity<PostProps> {
   ): PostProps {
     return {
       title: PostTitle.create({ title: props.title }),
-      url: props.url ? PostDescription.create({ url: props.url }) : undefined,
+      url: props.url ? PostUrl.create({ url: props.url }) : undefined,
       description: props.description
-        ? PostUrl.create({ description: props.description })
+        ? PostDescription.create({ description: props.description })
         : undefined,
       creationDate: props.creationDate,
     };

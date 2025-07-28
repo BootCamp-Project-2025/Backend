@@ -18,8 +18,8 @@ export class CloudinaryService implements ICdnService {
   async deleteFile(fileName: string): Promise<void> {
     try {
       const parts = fileName.split("/");
-      const file = parts.pop();
-      await this.cloudinary.uploader.destroy(`temp/${file}`, {
+      const file = `${parts[parts.length - 2]}/${parts[parts.length - 1]}`;
+      await this.cloudinary.uploader.destroy(`${file}`, {
         invalidate: true,
         resource_type: "raw",
       });

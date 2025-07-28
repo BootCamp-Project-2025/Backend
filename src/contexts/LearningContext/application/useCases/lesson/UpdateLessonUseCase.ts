@@ -51,6 +51,11 @@ export default class UpdateLessonUseCase implements IUseCase<Lesson, Lesson> {
 
         lessonUrls = updatedResources;
       }
+      if (existingLesson.props.resources) {
+        existingLesson.props.resources.forEach(async (res) => {
+          await this.cdnService.deleteFile(res.url);
+        });
+      }
 
       lesson.updateResourcesUrl(lessonUrls);
       return await this.lessonRepository.update(lesson);

@@ -166,6 +166,8 @@ import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/
 import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
+import { ICdnService } from "./contexts/CoreContext/domain/interfaces/services/ICdnService";
+import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloundinaryService";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -645,4 +647,6 @@ container.registerSingleton<IClientRepository>(
   "IClientRepository",
   ClientRepository
 );
+
+container.registerSingleton<ICdnService>("ICdnService", CloudinaryService);
 export { container };

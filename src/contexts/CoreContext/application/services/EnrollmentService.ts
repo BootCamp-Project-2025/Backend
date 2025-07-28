@@ -29,7 +29,7 @@ export class EnrollmentService implements IEnrollmentService {
       const lessons = module.props.lessons.getItems();
       for (const lesson of lessons) {
         const trackProgress = StudentTrackProgress.create({
-          enrollmentId: EnrollmentId.create(enrollment.id),
+          enrollmentId: EnrollmentId.create(createdEnrollment.id),
           lessonId: lesson.id.toString(),
           videoProgresses: lesson.props.videoUrls.map(videoUrl =>
             VideoProgress.create({
@@ -42,7 +42,7 @@ export class EnrollmentService implements IEnrollmentService {
         });
         await this.createStudentTrackProgressUseCase.execute({
           trackProgress,
-          enrollmentId: enrollment.id.toString(),
+          enrollmentId: createdEnrollment.id.toString(),
         });
       }
     }

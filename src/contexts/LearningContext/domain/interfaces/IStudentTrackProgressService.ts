@@ -1,27 +1,21 @@
 import { StudentTrackProgress } from "../entities/StudentTrackProgress";
 
 export type StudentProgress = {
-    progress: number,
-    studentTrackProgresses: StudentTrackProgress[]
-}
+  progress: number;
+  studentTrackProgresses: StudentTrackProgress[];
+};
 
 export interface IStudentTrackProgressService {
-    getByEnrollment(
-        enrollmentId: string
-    ): Promise<StudentProgress>;
+  getByEnrollment(enrollmentId: string): Promise<StudentProgress>;
 
-    getById(id: string): Promise<StudentTrackProgress>;
+  getById(id: string): Promise<StudentTrackProgress>;
 
-    create(
-        trackProgress: StudentTrackProgress,
-        enrollmentId: string
-    ): Promise<void>;
+  create(
+    trackProgress: StudentTrackProgress,
+    enrollmentId: string
+  ): Promise<void>;
 
-    update(
-        trackProgress: StudentTrackProgress
-    ): Promise<void>;
+  update(trackProgress: StudentTrackProgress): Promise<void>;
 
-    delete(
-        id: string
-    ): Promise<void>;
+  delete(id: string): Promise<void>;
 }

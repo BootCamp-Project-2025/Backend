@@ -76,7 +76,10 @@ studentTrackProgressRoutes.delete("/:trackId", controller.delete);
  *       500:
  *         description: Internal server error
  */
-studentTrackProgressRoutes.get("/enrollment/:enrollmentId", controller.getByEnrollment);
+studentTrackProgressRoutes.get(
+  "/enrollment/:enrollmentId",
+  controller.getByEnrollment
+);
 
 /**
  * @openapi
@@ -167,4 +170,3 @@ export default studentTrackProgressRoutes;
  *           type: string
  *           format: date-time
  */
-

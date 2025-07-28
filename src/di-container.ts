@@ -687,8 +687,14 @@ container.registerSingleton<UpdateStudentTrackProgressUseCase>(
   UpdateStudentTrackProgressUseCase
 );
 
-container.registerSingleton<GetLessonByIdUseCase>("GetLessonByIdUseCase", GetLessonByIdUseCase);
-container.registerSingleton<StudentTrackProgressController>("StudentTrackProgressController", StudentTrackProgressController);
+container.registerSingleton<GetLessonByIdUseCase>(
+  "GetLessonByIdUseCase",
+  GetLessonByIdUseCase
+);
+container.registerSingleton<StudentTrackProgressController>(
+  "StudentTrackProgressController",
+  StudentTrackProgressController
+);
 
 container.registerSingleton<IStudentTrackProgressService>(
   "IStudentTrackProgressService",

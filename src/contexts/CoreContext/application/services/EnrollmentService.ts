@@ -17,13 +17,19 @@ export class EnrollmentService implements IEnrollmentService {
     @inject("GetAllModulesUseCase")
     private GetAllModulesUseCase: IUseCase<string, Module[]>,
     @inject("CreateStudentTrackProgressUseCase")
-    private createStudentTrackProgressUseCase: IUseCase<{ trackProgress: StudentTrackProgress; enrollmentId: string }, void>
-  ) { }
+    private createStudentTrackProgressUseCase: IUseCase<
+      { trackProgress: StudentTrackProgress; enrollmentId: string },
+      void
+    >
+  ) {}
 
   async create(enrollment: Enrollment): Promise<Enrollment> {
-    const createdEnrollment = await this.createEnrollmentUseCase.execute(enrollment);
+    const createdEnrollment =
+      await this.createEnrollmentUseCase.execute(enrollment);
 
-    const modules = await this.GetAllModulesUseCase.execute(createdEnrollment.courseId.toString());
+    const modules = await this.GetAllModulesUseCase.execute(
+      createdEnrollment.courseId.toString()
+    );
 
     for (const module of modules) {
       const lessons = module.props.lessons.getItems();
@@ -31,12 +37,13 @@ export class EnrollmentService implements IEnrollmentService {
         const trackProgress = StudentTrackProgress.create({
           enrollmentId: EnrollmentId.create(createdEnrollment.id),
           lessonId: lesson.id.toString(),
-          videoProgresses: lesson.props.videoUrls.map(videoUrl =>
+          videoProgresses: lesson.props.videoUrls.map((videoUrl) =>
             VideoProgress.create({
               url: videoUrl.value, // o simplemente videoUrl si no es value object
               watchedSeconds: 0,
-              completed: false
-            })),
+              completed: false,
+            })
+          ),
           resourcesCompleted: [],
           completed: false,
         });

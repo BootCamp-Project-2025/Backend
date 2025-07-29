@@ -33,11 +33,6 @@ const swaggerOptions: SwaggerOptions = {
         },
       },
     },
-    security: [
-      {
-        BearerAuth: [],
-      },
-    ],
   },
   apis: ["src/contexts/*/presentation/http/routes/*.ts"],
 };

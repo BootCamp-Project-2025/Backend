@@ -1,5 +1,6 @@
 import { ValueObject } from "@/contexts/Shared/domain/ValueObject";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { isAValidUrl } from "@/contexts/Shared/utils/UrlValidation";
 import { StatusCodes } from "http-status-codes";
 
 interface PostUrlProps {
@@ -16,17 +17,9 @@ export default class PostUrl extends ValueObject<PostUrlProps> {
   }
 
   public static create(props: PostUrlProps): PostUrl {
-    if (!this.isAValidUrl(props.url)) {
+    if (!isAValidUrl(props.url)) {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Url is not valid");
     }
     return new PostUrl(props);
-  }
-
-  private static isAValidUrl(url: string) {
-    try {
-      return new URL(url) !== undefined;
-    } catch {
-      return false;
-    }
   }
 }

@@ -14,6 +14,7 @@ import { StatusCodes } from "http-status-codes";
 import UserId from "../valueObjects/UserId";
 import { P2PCourseName } from "../valueObjects/P2PCourseName";
 import ChatId from "../valueObjects/ChatId";
+import { CourseName } from "../valueObjects/CourseName";
 
 export type PrimitiveP2PCourseProps = {
   studentId: string;
@@ -168,7 +169,7 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
    */
   public deleteSession(sessionId: UniqueEntityID): void {
     this.props.sessions = this.props.sessions.filter((session) => {
-      this.validateDeleteOrThrow(sessionId, session);
+      P2PCourse.validateDeleteOrThrow(sessionId, session);
       return !session.id.equals(sessionId);
     });
   }
@@ -177,7 +178,7 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
    * @description Check if the session that we are trying to delete is completed, in that case it throws
    * @throws If the session we are trying to delete is completed, it throws an ApiError
    */
-  validateDeleteOrThrow(
+  static validateDeleteOrThrow(
     deleteSessionId: UniqueEntityID,
     session: LiveSession
   ): void {
@@ -219,6 +220,10 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
 
   public addFilePost(file: FilePost) {
     this.props.files.push(file);
+  }
+
+  public changeName(name: string) {
+    this.props.name = CourseName.create({ name });
   }
 
   public deleteFilePost(fileId: UniqueEntityID) {

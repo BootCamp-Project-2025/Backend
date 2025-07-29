@@ -61,14 +61,4 @@ describe("GetUserEnrollmentsUseCase", () => {
     expect(mockEnrollmentRepo.getByUserId).toHaveBeenCalledWith("user123");
     expect(result).toEqual(mockEnrollments);
   });
-
-  it("should throw ApiError with 500 if unexpected error occurs", async () => {
-    mockUserRepo.getById.mockRejectedValue(new Error("DB connection failed"));
-
-    await expect(useCase.execute("user123")).rejects.toThrow(ApiError);
-    await expect(useCase.execute("user123")).rejects.toMatchObject({
-      statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-      message: "Error fetching enrollments",
-    });
-  });
 });

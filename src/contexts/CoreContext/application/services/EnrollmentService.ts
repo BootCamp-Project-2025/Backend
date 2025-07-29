@@ -9,7 +9,12 @@ export class EnrollmentService implements IEnrollmentService {
     @inject("CreateEnrollmentUseCase")
     private createEnrollmentUseCase: IUseCase<Enrollment, Enrollment>,
     @inject("CancelEnrollmentUseCase")
-    private cancelEnrollmentUseCAse: IUseCase<{ enrollmentId: string }, void>
+    private cancelEnrollmentUseCAse: IUseCase<{ enrollmentId: string }, void>,
+    @inject("CheckEnrollmentUseCase")
+    private checkEnrollmentUseCase: IUseCase<
+      { userId: string; courseId: string },
+      Enrollment | null
+    >
   ) {}
 
   async create(enrollment: Enrollment): Promise<Enrollment> {
@@ -17,5 +22,11 @@ export class EnrollmentService implements IEnrollmentService {
   }
   async cancel(enrollmentId: string): Promise<void> {
     await this.cancelEnrollmentUseCAse.execute({ enrollmentId });
+  }
+  async checkEnrollment(
+    userId: string,
+    courseId: string
+  ): Promise<Enrollment | null> {
+    return await this.checkEnrollmentUseCase.execute({ userId, courseId });
   }
 }

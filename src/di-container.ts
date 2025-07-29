@@ -166,6 +166,10 @@ import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/
 import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
+import { ISearchService } from "./contexts/CoreContext/domain/interfaces/services/ISearchService";
+import { ElasticSearchService } from "./contexts/CoreContext/application/services/ElasticSearchService";
+import { ISearchController } from "./contexts/CoreContext/domain/interfaces/controllers/ISearchController";
+import { SearchController } from "./contexts/CoreContext/presentation/http/controllers/SearchController";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -644,5 +648,15 @@ container.registerSingleton<UpdateClientUseCase>(
 container.registerSingleton<IClientRepository>(
   "IClientRepository",
   ClientRepository
+);
+
+container.registerSingleton<ISearchService>(
+  "ISearchService",
+  ElasticSearchService
+);
+
+container.registerSingleton<ISearchController>(
+  "ISearchController",
+  SearchController
 );
 export { container };

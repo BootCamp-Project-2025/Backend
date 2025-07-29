@@ -46,4 +46,36 @@ export class EnrollmentController implements IEnrollmentController {
     );
     ResponseService.send(res, response);
   };
+
+  checkEnrollment = async (req: Request, res: Response): Promise<void> => {
+    const { userId, courseId } = req.params;
+
+    if (!userId || !courseId) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "userId and courseId are required"
+      );
+    }
+
+    try {
+      const enrollment = await this.enrollmentService.checkEnrollment(
+        userId,
+        courseId
+      );
+
+      if (!enrollment) {
+        throw new ApiError(StatusCodes.NOT_FOUND, `Enrollment not found`);
+      }
+
+      const dto = EnrollmentMapper.domainToDto(enrollment);
+      const response = new SuccessResponseEntity(
+        { isEnrolled: true, enrollment: dto },
+        StatusCodes.OK
+      );
+      return ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Server error");
+    }
+  };
 }

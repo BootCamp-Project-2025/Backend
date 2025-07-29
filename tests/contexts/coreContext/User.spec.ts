@@ -3,7 +3,6 @@ import { Client } from "@/contexts/CoreContext/domain/aggregates/Client";
 import { Education } from "@/contexts/CoreContext/domain/entities/Education";
 import { Experience } from "@/contexts/CoreContext/domain/entities/Experience";
 import { Freelancer } from "@/contexts/CoreContext/domain/aggregates/Freelancer";
-import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
 import { Certification } from "@/contexts/CoreContext/domain/entities/Certification";
 import { Language } from "@/contexts/CoreContext/domain/entities/Language";
 import { Skill } from "@/contexts/CoreContext/domain/entities/Skill";
@@ -24,10 +23,6 @@ describe("User Aggregate", () => {
 
   //Client
   const client = Client.create({ userId });
-
-  const about = About.create(
-    "Passionate full-stack developer with 5+ years of experience."
-  );
 
   const skillService = Skills.create([
     new Skill(
@@ -80,7 +75,6 @@ describe("User Aggregate", () => {
   //Freelancer
   const freelancer = Freelancer.create({
     userId,
-    about,
     skills: skillService,
     languages: languageService,
     education: educationService,
@@ -95,6 +89,7 @@ describe("User Aggregate", () => {
       roles: ["CLIENT"],
       clientId: new UniqueEntityID(),
       createdAt: new Date(),
+      about: "",
     });
 
     expect(user).toBeDefined();
@@ -110,6 +105,7 @@ describe("User Aggregate", () => {
       roles: ["FREELANCER"],
       freelancerId: new UniqueEntityID(),
       createdAt: new Date(),
+      about: "",
     });
 
     expect(user).toBeDefined();
@@ -125,6 +121,7 @@ describe("User Aggregate", () => {
         userEmail,
         roles: ["FREELANCER"],
         createdAt: new Date(),
+        about: "",
       })
     ).toThrow("Freelancer profile is required for role FREELANCER.");
   });
@@ -149,6 +146,7 @@ describe("User Aggregate", () => {
       clientId: new UniqueEntityID(),
       createdAt: new Date(),
       roles: [],
+      about: "",
     });
 
     expect(user.roles).toContain("CLIENT");
@@ -162,6 +160,7 @@ describe("User Aggregate", () => {
       roles: ["CLIENT"],
       clientId: new UniqueEntityID(),
       createdAt: new Date(),
+      about: "",
     });
 
     user.assignFreelancerProfile(new UniqueEntityID());

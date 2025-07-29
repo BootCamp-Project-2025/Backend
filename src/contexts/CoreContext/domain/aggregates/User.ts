@@ -17,6 +17,7 @@ export interface UserProps {
   createdAt: Date;
   profilePicture?: string;
   lastSeen?: Date;
+  about: string;
 }
 
 export class User extends AggregateRoot<UserProps> {
@@ -42,6 +43,10 @@ export class User extends AggregateRoot<UserProps> {
 
   get profilePicture() {
     return this.props.profilePicture;
+  }
+
+  get about() {
+    return this.props.about;
   }
 
   // Getters per profile
@@ -120,6 +125,9 @@ export class User extends AggregateRoot<UserProps> {
         createdAt: props.createdAt ?? new Date(),
         profilePicture: props.profilePicture ?? "",
         lastSeen: props.lastSeen ?? new Date(),
+        about:
+          props.about ??
+          "Tell others a bit about your background, skills, and interests...",
       },
       id
     );

@@ -12,6 +12,7 @@ describe("SyncUserUseCase", () => {
     create: jest.Mock<Promise<User>, [User]>;
     addFreelancerProfile: jest.Mock;
     getUserProfileById: jest.Mock;
+    updateUserProfile: jest.Mock;
     getAll: jest.Mock;
     delete: jest.Mock;
     update: jest.Mock;
@@ -30,6 +31,7 @@ describe("SyncUserUseCase", () => {
 
     repository = {
       getById: jest.fn(),
+      updateUserProfile: jest.fn(),
       create: jest.fn(),
       addFreelancerProfile: jest.fn(),
       getUserProfileById: jest.fn(),

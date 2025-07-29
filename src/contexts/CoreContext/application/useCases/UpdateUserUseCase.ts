@@ -1,11 +1,11 @@
 import { inject, injectable } from "tsyringe";
-import { User } from "../../domain/aggregates/User";
+import { User, UserProps } from "../../domain/aggregates/User";
 import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 
 @injectable()
 export class UpdateUserUseCase
-  implements IUseCase<{ userId: string; userData: User }, User>
+  implements IUseCase<{ userId: string; userData: Partial<UserProps> }, User>
 {
   constructor(
     @inject("IUserRepository")
@@ -17,13 +17,18 @@ export class UpdateUserUseCase
     userData,
   }: {
     userId: string;
-    userData: User;
+    userData: Partial<UserProps>;
   }): Promise<User> {
-    const user = await this.userRepository.getById(userId);
-    if (!user) throw new Error("User not found");
+    const existingUser = await this.userRepository.getById(userId);
+    if (!existingUser) {
+      throw new Error("User not found");
+    }
 
-    Object.assign(user, userData);
-    const updatedUser = await this.userRepository.update(userId, user);
+    const updatedUser = await this.userRepository.updateUserProfile(
+      userId,
+      userData
+    );
+
     if (!updatedUser) throw new Error("Failed to update user");
     return updatedUser;
   }

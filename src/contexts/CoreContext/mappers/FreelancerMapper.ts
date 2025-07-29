@@ -1,7 +1,6 @@
 import { Freelancer } from "../domain/aggregates/Freelancer";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { IFreelancerProfileDto } from "../domain/interfaces/dtos/IFreelancerProfileDto";
-import { About } from "../domain/valueObjects/About";
 import { UserId } from "../domain/valueObjects/UserId";
 import { Skills } from "../domain/OneToMany/Skills";
 import { Languages } from "../domain/OneToMany/Languages";
@@ -25,7 +24,6 @@ export default class FreelancerMapper {
   static domainToDto(freelancer: Freelancer): IFreelancerProfileDto {
     return {
       id: freelancer.id.toString(),
-      about: freelancer.about.value,
       certifications: freelancer.certifications.currentItems.map((cert) => {
         return new CertificationMapper().mapDomainToDto(cert);
       }),
@@ -57,7 +55,6 @@ export default class FreelancerMapper {
       {
         //create mappers from eities
         userId: UserId.create(new UniqueEntityID(prismaFreelancer.userId)),
-        about: About.create(prismaFreelancer.about),
         skills: Skills.create(
           new SkillMapper().mapArrayPersistanceToDomain(prismaFreelancer.skills)
         ),

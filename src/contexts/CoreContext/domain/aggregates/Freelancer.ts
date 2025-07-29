@@ -1,5 +1,4 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { About } from "../valueObjects/About";
 import { UserId } from "../valueObjects/UserId";
 import { AggregateRoot } from "@/contexts/Shared/domain/AgregateRoot";
 import { Languages } from "../OneToMany/Languages";
@@ -10,7 +9,6 @@ import { Skills } from "../OneToMany/Skills";
 
 interface FreelancerProps {
   userId: UserId;
-  about: About;
   skills: Skills;
   languages: Languages;
   education: Educations;
@@ -26,10 +24,6 @@ export class Freelancer extends AggregateRoot<FreelancerProps> {
     props: FreelancerProps,
     id?: UniqueEntityID
   ): Freelancer {
-    if (!props.about) {
-      throw new Error("About is required.");
-    }
-
     return new Freelancer(props, id);
   }
 
@@ -39,10 +33,6 @@ export class Freelancer extends AggregateRoot<FreelancerProps> {
 
   get userId(): UserId {
     return this.props.userId;
-  }
-
-  get about(): About {
-    return this.props.about;
   }
 
   get skills(): Skills {

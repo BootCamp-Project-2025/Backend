@@ -182,6 +182,10 @@ import StudentTrackProgressService from "./contexts/LearningContext/application/
 import GetLessonByIdUseCase from "./contexts/LearningContext/application/useCases/lesson/GetLessonByIdUseCase";
 import StudentTrackProgressController from "./contexts/LearningContext/presentation/http/controllers/StudentTrackProgressController ";
 import { GetEnrollmentByIdUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetEnrollmentByIdUseCase";
+import { ISearchService } from "./contexts/CoreContext/domain/interfaces/services/ISearchService";
+import { ElasticSearchService } from "./contexts/CoreContext/application/services/ElasticSearchService";
+import { ISearchController } from "./contexts/CoreContext/domain/interfaces/controllers/ISearchController";
+import { SearchController } from "./contexts/CoreContext/presentation/http/controllers/SearchController";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -721,4 +725,14 @@ container.registerSingleton<IStudentTrackProgressService>(
   StudentTrackProgressService
 );
 
+
+container.registerSingleton<ISearchService>(
+  "ISearchService",
+  ElasticSearchService
+);
+
+container.registerSingleton<ISearchController>(
+  "ISearchController",
+  SearchController
+);
 export { container };

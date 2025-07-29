@@ -46,4 +46,26 @@ export class EnrollmentController implements IEnrollmentController {
     );
     ResponseService.send(res, response);
   };
+
+  getEnrollments = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userId = req.params.userId;
+      const enrollments = await this.enrollmentService.getEnrollments(userId);
+      const enrollmentsDTO = enrollments.map((e) =>
+        EnrollmentMapper.domainToDto(e)
+      );
+      const response = new SuccessResponseEntity(
+        enrollmentsDTO,
+        200,
+        "Enrollments retrieved successfully"
+      );
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error fetching enrollments"
+      );
+    }
+  };
 }

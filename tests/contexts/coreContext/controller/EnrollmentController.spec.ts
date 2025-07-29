@@ -22,8 +22,8 @@ describe("EnrollmentController", () => {
     enrollmentService = {
       create: jest.fn(),
       cancel: jest.fn(),
+      getEnrollments: jest.fn(),
     } as jest.Mocked<IEnrollmentService>;
-
     controller = new EnrollmentController(enrollmentService);
 
     req = {
@@ -102,6 +102,49 @@ describe("EnrollmentController", () => {
         message: "Enrollment canceled successfully",
       });
       expect(responseArg.statusCode).toBe(StatusCodes.OK);
+    });
+  });
+
+  describe("getEnrollments", () => {
+    it("should call EnrollmentService.getEnrollments and send response", async () => {
+      const userId = "user123";
+      const domainEnrollments = [
+        { id: "1" },
+        { id: "2" },
+      ] as unknown as Enrollment[];
+
+      const mappedDtos = [{ id: "dto1" }, { id: "dto2" }];
+
+      req.params = { userId };
+
+      enrollmentService.getEnrollments.mockResolvedValue(domainEnrollments);
+      (EnrollmentMapper.domainToDto as jest.Mock).mockImplementation((e) =>
+        mappedDtos.find((dto) => dto.id === `dto${e.id}`)
+      );
+
+      await controller.getEnrollments(req as Request, res as Response);
+
+      expect(enrollmentService.getEnrollments).toHaveBeenCalledWith(userId);
+      expect(EnrollmentMapper.domainToDto).toHaveBeenCalledTimes(2);
+      expect(ResponseService.send).toHaveBeenCalledWith(
+        res,
+        expect.any(SuccessResponseEntity)
+      );
+
+      const responseArg = (ResponseService.send as jest.Mock).mock.calls[0][1];
+      expect(responseArg.data).toEqual(mappedDtos);
+      expect(responseArg.statusCode).toBe(StatusCodes.OK);
+      expect(responseArg.message).toBe("Enrollments retrieved successfully");
+    });
+
+    it("should throw ApiError on internal error", async () => {
+      const userId = "user123";
+      req.params = { userId };
+      enrollmentService.getEnrollments.mockRejectedValue(new Error("DB error"));
+
+      await expect(
+        controller.getEnrollments(req as Request, res as Response)
+      ).rejects.toThrow(ApiError);
     });
   });
 });

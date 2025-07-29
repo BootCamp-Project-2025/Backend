@@ -2,7 +2,6 @@ import { User } from "@/contexts/CoreContext/domain/aggregates/User";
 import { IUserController } from "@/contexts/CoreContext/domain/interfaces/controllers/IUserController";
 import { ICreateUserDto } from "@/contexts/CoreContext/domain/interfaces/dtos/ICreateUserDto";
 import { IUserService } from "@/contexts/CoreContext/domain/interfaces/services/IUserService";
-import { EnrollmentMapper } from "@/contexts/CoreContext/mappers/EnrollmentMapper";
 import UserMapper from "@/contexts/CoreContext/mappers/UserMapper";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
@@ -78,29 +77,6 @@ export class UserController implements IUserController {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "Failed to update user"
-      );
-    }
-  };
-
-  getEnrollments = async (req: Request, res: Response): Promise<void> => {
-    const userId = req.params.id;
-
-    try {
-      const enrollments = await this.userService.getEnrollments(userId);
-      const enrollmentsDTO = enrollments.map((e) =>
-        EnrollmentMapper.domainToDto(e)
-      );
-      const response = new SuccessResponseEntity(
-        enrollmentsDTO,
-        200,
-        "Enrollments retrieved successfully"
-      );
-      ResponseService.send(res, response);
-    } catch (error) {
-      if (error instanceof ApiError) throw error;
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error fetching enrollments"
       );
     }
   };

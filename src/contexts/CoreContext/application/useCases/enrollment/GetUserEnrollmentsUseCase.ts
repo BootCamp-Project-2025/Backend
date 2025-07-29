@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
-import { IEnrollmentRepository } from "../../domain/interfaces/repositories/IEnrollmentRepository";
-import { Enrollment } from "../../domain/aggregates/Enrollment";
+import { IEnrollmentRepository } from "../../../domain/interfaces/repositories/IEnrollmentRepository";
+import { Enrollment } from "../../../domain/aggregates/Enrollment";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
-import { IUserRepository } from "../../domain/interfaces/repositories/IUserRepository";
+import { IUserRepository } from "../../../domain/interfaces/repositories/IUserRepository";
 
 @injectable()
 export class GetUserEnrollmentsUseCase {

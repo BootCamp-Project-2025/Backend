@@ -7,7 +7,7 @@ describe("EventDispatcher", () => {
     const dispatcher = new EventDispatcher();
     const mockHandler = jest.fn();
 
-    dispatcher.register("ExampleCreated", mockHandler);
+    dispatcher.register(ExampleCreatedEvent.name, mockHandler);
 
     const event = new ExampleCreatedEvent({
       userId: "456",

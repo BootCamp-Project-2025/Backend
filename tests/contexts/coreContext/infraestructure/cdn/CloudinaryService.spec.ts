@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { CloudinaryService } from "../../../../../src/contexts/CoreContext/infrastructure/cdn/CloundinaryService";
+import { CloudinaryService } from "../../../../../src/contexts/CoreContext/infrastructure/cdn/CloudinaryService";
 import { v2 as cloudinary } from "cloudinary";
 
 jest.mock("cloudinary", () => ({
@@ -46,7 +46,7 @@ describe("CloudinaryService", () => {
       const consoleSpy = jest.spyOn(console, "error").mockImplementation();
 
       await expect(service.updateFilePreset(mockUrl)).rejects.toThrow(
-        "Upload failed"
+        "Error updating preset"
       );
       expect(consoleSpy).toHaveBeenCalledWith(
         "Error updating Cloudinary file preset:",

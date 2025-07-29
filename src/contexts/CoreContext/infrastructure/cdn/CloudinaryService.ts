@@ -1,3 +1,4 @@
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { ICdnService } from "../../domain/interfaces/services/ICdnService";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
@@ -24,7 +25,8 @@ export class CloudinaryService implements ICdnService {
         resource_type: "raw",
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error deleting file:", error);
+      throw new ApiError(500, "Error deleting file");
     }
   }
 
@@ -39,7 +41,7 @@ export class CloudinaryService implements ICdnService {
       return result.secure_url;
     } catch (error) {
       console.error("Error updating Cloudinary file preset:", error);
-      throw error;
+      throw new ApiError(500, "Error updating preset");
     }
   }
 }

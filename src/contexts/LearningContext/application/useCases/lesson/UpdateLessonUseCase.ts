@@ -30,31 +30,24 @@ export default class UpdateLessonUseCase implements IUseCase<Lesson, Lesson> {
 
       let lessonUrls: LessonResource[] = [];
 
-      if (lesson.props.resources) {
-        const updatedResources = await Promise.all(
-          lesson.props.resources.map(async (resource) => {
-            if (!resource.url.includes("files")) {
-              const url = await this.cdnService.updateFilePreset(resource.url);
-              if (!url) {
-                throw new ApiError(
-                  StatusCodes.INTERNAL_SERVER_ERROR,
-                  "Failed to update resource URL"
-                );
-              }
-              const newResource = LessonResource.create({
-                url,
-                name: resource.name,
-              });
-              await this.cdnService.deleteFile(resource.url);
-              return newResource;
-            } else {
-              return resource;
-            }
-          })
-        );
+      const updatedResources = await Promise.all(
+        lesson.props.resources.map(async (resource) => {
+          if (resource.url.includes("temp")) {
+            const url = await this.cdnService.updateFilePreset(resource.url);
+            const newResource = LessonResource.create({
+              url,
+              name: resource.name,
+            });
+            await this.cdnService.deleteFile(resource.url);
+            return newResource;
+          } else {
+            return resource;
+          }
+        })
+      );
 
-        lessonUrls = updatedResources;
-      }
+      lessonUrls = updatedResources;
+
       if (existingLesson.props.resources) {
         existingLesson.props.resources.forEach(async (res) => {
           await this.cdnService.deleteFile(res.url);

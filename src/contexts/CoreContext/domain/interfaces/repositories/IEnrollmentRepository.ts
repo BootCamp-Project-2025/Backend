@@ -5,4 +5,8 @@ export interface IEnrollmentRepository {
   create(enrollment: Enrollment): Promise<Enrollment>;
   findById(enrollmentId: string): Promise<Enrollment>;
   isUserEnrolled(userId: string, courseId: string): Promise<boolean>;
+  findValidEnrollment(
+    userId: string,
+    courseId: string
+  ): Promise<Enrollment | null>;
 }

@@ -50,4 +50,21 @@ export class EnrollmentRepository implements IEnrollmentRepository {
 
     return enrollment !== null;
   }
+
+  async findValidEnrollment(
+    userId: string,
+    courseId: string
+  ): Promise<Enrollment | null> {
+    const enrollment = await this.db.enrollment.findFirst({
+      where: {
+        userId,
+        courseId,
+        status: {
+          in: ["ENROLLED", "COMPLETED"],
+        },
+      },
+    });
+
+    return enrollment ? EnrollmentMapper.persistanceToDomain(enrollment) : null;
+  }
 }

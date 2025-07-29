@@ -27,7 +27,7 @@ const controller = container.resolve(CourseController);
  *       200:
  *         description: A list of courses
  */
-courseRouter.get("/:id/modules", moduleController.getAll);
+courseRouter.get("/:courseId/modules", moduleController.getAll);
 
 /**
  * @openapi

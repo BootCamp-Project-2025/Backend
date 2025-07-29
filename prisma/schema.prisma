@@ -90,9 +90,17 @@ model User {
   roles              UserRole[]  @default([CLIENT])
   createdAt          DateTime    @default(now())
   profilePicture     String?
-  freelancerProfile  Freelancer? @relation("UserFreelancer") 
+  freelancerProfile  Freelancer? @relation("UserFreelancer")
   clientProfile      Client?     @relation("UserClient")
+  p2pStudent      P2PCourse[]     @relation("student")
+  p2pTeacher      P2PCourse[]     @relation("teacher")
+
+  lastSeen         DateTime  @default(now())
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  chats            Chat[]    @relation("UserChats")
   Enrollment         Enrollment[]
+  about              String      @default("")
 
   proposals          Proposal[]
   requests           Request[]   
@@ -103,7 +111,6 @@ model Freelancer {
   id      String @id @default(uuid())
   userId  String @unique 
   user    User   @relation("UserFreelancer", fields: [userId], references: [id] , onDelete: Cascade)
-  about          String          @default("")
   skills         Skill[]
   languages      Language[]
   education      Education[]
@@ -190,6 +197,44 @@ model Experience {
   freelancer   Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
 }
 
+enum MessageType {
+  TEXT
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+model Message {
+  id         String        @id @default(uuid())
+  content    String
+  type       MessageType
+  timestamp  DateTime      @db.Timestamptz()
+  status     MessageStatus @default(DELIVERED)
+  senderId   String
+  chatId     String
+  sender     User          @relation("SentMessages", fields: [senderId], references: [id])
+  receivers  User[]        @relation("ReceivedMessages")
+  chat       Chat          @relation(fields: [chatId], references: [id])
+}
+
+model Chat {
+  id           String     @id @default(uuid())
+  name         String     @default("")
+  createdAt    DateTime   @default(now())
+  messages     Message[]
+  participants User[]     @relation("UserChats")
+  status   ChatStatus @default(ACTIVE)
+}
+
+enum ChatStatus {
+    ACTIVE
+    CLOSED
+}
+
 enum RequestStatus {
   PENDING
   AVAILABLE
@@ -246,4 +291,57 @@ model Enrollment {
   course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
   status       EnrollmentStatus @default(ENROLLED)
+}
+
+enum P2PCourseStatus {
+  ACTIVE
+  CANCELED
+  COMPLETED
+}
+model P2PCourse{
+  id          String     @id @default(uuid())
+  teacherId     String
+  teacher         User       @relation(name: "teacher", fields: [teacherId], references: [id], onDelete: Cascade)
+  studentId     String
+  student         User       @relation(name: "student", fields: [studentId], references: [id], onDelete: Cascade)
+  name String
+  remainingSession Int
+  status P2PCourseStatus
+  posts P2PPost[]
+  files P2PFilePost[]
+  sessions LiveSession[]
+}
+
+model P2PPost{
+  id          String     @id @default(uuid())
+  p2pCourseId     String
+  p2pCourse         P2PCourse       @relation(fields: [p2pCourseId], references: [id], onDelete: Cascade)
+  title String
+  description String
+  url String
+  creationDate DateTime
+}
+
+model P2PFilePost{
+  id          String     @id @default(uuid())
+  p2pCourseId     String
+  p2pCourse         P2PCourse       @relation(fields: [p2pCourseId], references: [id], onDelete: Cascade)
+  url String
+  creationDate DateTime
+}
+
+enum LiveSessionStatus {
+  COMPLETED  
+  PENDING  
+  CANCELED
+}
+
+model LiveSession{
+  id          String     @id @default(uuid())
+  p2pCourseId     String
+  p2pCourse         P2PCourse       @relation(fields: [p2pCourseId], references: [id], onDelete: Cascade)
+  status LiveSessionStatus
+  creationDate DateTime
+  dateOfTheSession DateTime
+  url String
 }

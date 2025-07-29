@@ -5,7 +5,6 @@ import { ISkillRepository } from "@/contexts/CoreContext/domain/interfaces/repos
 import { Freelancer } from "@/contexts/CoreContext/domain/aggregates/Freelancer";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { About } from "@/contexts/CoreContext/domain/valueObjects/About";
 import { Certifications } from "@/contexts/CoreContext/domain/OneToMany/Certifications";
 import { Skills } from "@/contexts/CoreContext/domain/OneToMany/Skills";
 import { Languages } from "@/contexts/CoreContext/domain/OneToMany/Languages";
@@ -35,7 +34,6 @@ describe("testing EditSkillUseCase to change the params of a skill", () => {
   } as any;
   const empyFreelancer: Freelancer = Freelancer.create({
     userId: UserId.create(new UniqueEntityID()),
-    about: About.create(""),
     skills: Skills.create([]),
     languages: Languages.create([]),
     education: Educations.create([]),

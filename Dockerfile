@@ -13,7 +13,7 @@ COPY . .
 
 RUN npm install
 
-RUN npm run build
+RUN npx prisma generate --generator=develop && npm run build
 
 CMD ["sh", "-c", "npm run db:deploy && npm start"]
 

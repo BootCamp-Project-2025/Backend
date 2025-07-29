@@ -46,7 +46,9 @@ export default class ClientMapper {
           socialLinks: clientDto.socialLinks
             ? SocialLinks.create(
                 new SocialLinkMapper().mapArrayPersistanceToDomain(
-                  clientDto.socialLinks
+                  clientDto.socialLinks.filter(
+                    (link) => link.url?.trim() !== ""
+                  )
                 )
               )
             : undefined,

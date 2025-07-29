@@ -2,11 +2,13 @@ import express from "express";
 import cors from "cors";
 import "reflect-metadata";
 import "./di-container";
+import "./eventRegister";
 import healthRoutes from "./contexts/SystemHealth/presentation/http/routes/healthRoutes";
 import freelancersRoutes from "./contexts/CoreContext/presentation/http/routes/FreelancersRoutes";
 import courseRoutes from "./contexts/LearningContext/presentation/http/routes/CourseRoutes";
 import { ErrorHandlerMiddleware } from "./contexts/Shared/infrastructure/middlewares/ErrorHandlerMiddleware";
 import userRoutes from "./contexts/CoreContext/presentation/http/routes/UserRoutes";
+import { chatRoutes } from "./contexts/CoreContext/presentation/http/routes/ChatRoutes";
 import authRoutes from "./contexts/CoreContext/presentation/http/routes/AuthRoutes";
 import enrollmentRoutes from "./contexts/CoreContext/presentation/http/routes/EnrollmentRoutes";
 import moduleRoutes from "./contexts/LearningContext/presentation/http/routes/ModuleRoutes";
@@ -15,6 +17,7 @@ import lessonRoutes from "./contexts/LearningContext/presentation/http/routes/Le
 import clientRoutes from "./contexts/CoreContext/presentation/http/routes/ClientRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
+import { requestRoutes } from "./contexts/CoreContext/presentation/http/routes/RequestsRoutes";
 
 const app = express();
 
@@ -35,12 +38,17 @@ app.use("/api/modules", moduleRoutes);
 app.use("/api/lessons", lessonRoutes);
 
 app.use("/api/users", userRoutes);
+
+app.use("/api/chats", chatRoutes);
+
 app.use("/api/freelancers", freelancersRoutes);
 app.use("/api/clients", clientRoutes);
 
 app.use("/api/courses", courseRoutes);
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/requests", requestRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

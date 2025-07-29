@@ -1,4 +1,4 @@
-import { User } from "../domain/aggregates/User";
+import { User, UserProps } from "../domain/aggregates/User";
 import { User as PrismaUser, UserRole } from "@/generated/prisma";
 import { ICreateUserDto } from "../domain/interfaces/dtos/ICreateUserDto";
 import { UserEmail } from "../domain/valueObjects/UserEmail";
@@ -16,6 +16,7 @@ export default class UserMapper {
         roles: ["CLIENT"],
         createdAt: new Date(),
         profilePicture: dto.profilePicture,
+        about: dto.about,
       },
       new UniqueEntityID(dto.id)
     );
@@ -30,6 +31,8 @@ export default class UserMapper {
       profilePicture: user.profilePicture ?? null,
       roles: roles2,
       createdAt: user.createdAt,
+      lastSeen: user.lastSeen ?? new Date(),
+      about: user.about,
     };
   }
 
@@ -42,6 +45,7 @@ export default class UserMapper {
           roles: userDao.roles,
           createdAt: userDao.createdAt,
           profilePicture: userDao.profilePicture ?? undefined,
+          about: userDao.about,
           freelancerId: userDao.freelancerProfile
             ? new UniqueEntityID(userDao.freelancerProfile.id)
             : undefined,
@@ -67,6 +71,35 @@ export default class UserMapper {
       freelancerProfile: user.props.freelancerId?.toString(),
       clientProfile: user.props.clientId?.toString(),
       profilePicture: user.profilePicture ?? undefined,
+      about: user.about,
+    };
+  }
+
+  static partialDtoToUserProps(
+    dto: Partial<ICreateUserDto>
+  ): Partial<UserProps> {
+    const result: Partial<UserProps> = {};
+
+    if (dto.userName !== undefined) {
+      result.userName = UserName.create(dto.userName);
+    }
+    if (dto.profilePicture !== undefined) {
+      result.profilePicture = dto.profilePicture;
+    }
+    if (dto.about !== undefined) {
+      result.about = dto.about;
+    }
+
+    return result;
+  }
+
+  static partialDtoToUpdateProps(
+    dto: Partial<ICreateUserDto>
+  ): Partial<UserProps> {
+    return {
+      userName: dto.userName ? UserName.create(dto.userName) : undefined,
+      profilePicture: dto.profilePicture,
+      about: dto.about,
     };
   }
 }

@@ -17,7 +17,6 @@ export class ClientRepository implements IClientRepository {
     if (!clientProfile) {
       throw new ApiError(StatusCodes.NOT_FOUND, "The client doesn't exist");
     }
-
     const clientProfileDto = ClientMapper.persistanceToDto(clientProfile);
     return ClientMapper.persistanceTodomain(clientProfileDto);
   }

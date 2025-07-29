@@ -36,6 +36,7 @@ export class AuthController implements IAuthController {
         userName: tokenData.name ?? "Unknown User",
         userEmail: tokenData.email ?? "Unknown Email",
         profilePicture: "",
+        about: "",
       });
 
       await this.authService.updateUserRoles(user, role);
@@ -69,6 +70,7 @@ export class AuthController implements IAuthController {
         userName: tokenData.name ?? "Unknown User",
         userEmail: tokenData.email ?? "Unknown Email",
         profilePicture: "",
+        about: "",
       };
 
       console.log("Syncing user controller start", dto);

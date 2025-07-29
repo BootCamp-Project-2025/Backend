@@ -17,9 +17,6 @@ export class EnrollmentController implements IEnrollmentController {
   ) {}
 
   createEnrollment = async (req: Request, res: Response): Promise<void> => {
-    console.log(
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-    );
     const enrollmentDto: ICreateEnrollmentDto = req.body;
     if (!enrollmentDto)
       throw new ApiError(

@@ -37,6 +37,8 @@ const router = Router();
  *  /enrollments:
  *    post:
  *      summary: Create a new enrollment
+ *      security:
+ *       - BearerAuth: []
  *      tags:
  *        - Enrollment
  *      requestBody:
@@ -72,6 +74,8 @@ router.post("/", verifyToken(), controller.createEnrollment);
  *  /enrollments/{id}:
  *    put:
  *      summary: Cancel an enrollment
+ *      security:
+ *       - BearerAuth: []
  *      tags:
  *        - Enrollment
  *      parameters:

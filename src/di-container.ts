@@ -177,6 +177,7 @@ import { IStudentTrackProgressService } from "./contexts/LearningContext/domain/
 import StudentTrackProgressService from "./contexts/LearningContext/application/services/StudentTrackProgressService";
 import GetLessonByIdUseCase from "./contexts/LearningContext/application/useCases/lesson/GetLessonByIdUseCase";
 import StudentTrackProgressController from "./contexts/LearningContext/presentation/http/controllers/StudentTrackProgressController ";
+import { GetEnrollmentByIdUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetEnrollmentByIdUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -602,6 +603,11 @@ container.registerSingleton<IEnrollmentController>(
 container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
   "CreateEnrollmentUseCase",
   CreateEnrollmentUseCase
+);
+
+container.registerSingleton<GetEnrollmentByIdUseCase>(
+  "GetEnrollmentByIdUseCase",
+  GetEnrollmentByIdUseCase,
 );
 
 container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(

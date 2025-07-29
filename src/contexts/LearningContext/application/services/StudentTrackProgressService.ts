@@ -8,10 +8,11 @@ import {
 } from "../../domain/interfaces/IStudentTrackProgressService";
 import { StudentTrackProgress } from "../../domain/entities/StudentTrackProgress";
 import { Lesson } from "../../domain/entities/Lesson";
+import { Enrollment } from "@/contexts/CoreContext/domain/aggregates/Enrollment";
+import { Module } from "../../domain/entities/Module";
 @injectable()
 export default class StudentTrackProgressService
-  implements IStudentTrackProgressService
-{
+  implements IStudentTrackProgressService {
   constructor(
     @inject("CreateStudentTrackProgressUseCase")
     private readonly createUseCase: IUseCase<
@@ -33,8 +34,12 @@ export default class StudentTrackProgressService
       StudentTrackProgress | null
     >,
     @inject("GetLessonByIdUseCase")
-    private readonly getLessonByIdUseCase: IUseCase<string, Lesson>
-  ) {}
+    private readonly getLessonByIdUseCase: IUseCase<string, Lesson>,
+    @inject("GetEnrollmentByIdUseCase")
+    private readonly getEnrollmentByIdUseCase: IUseCase<string, Enrollment>,
+    @inject("GetAllModulesUseCase")
+    private getAllModulesUseCase: IUseCase<string, Module[]>,
+  ) { }
 
   async create(
     trackProgress: StudentTrackProgress,
@@ -98,8 +103,19 @@ export default class StudentTrackProgressService
       const progress =
         progresses.length === 0 ? 0 : completed.length / progresses.length;
 
+      const enrollment = await this.getEnrollmentByIdUseCase.execute(
+        enrollmentId
+      );
+
+      const modules = await this.getAllModulesUseCase.execute(
+        enrollment.props.courseId.toString(),
+      );
+      console.log(modules);
+
       return {
         progress,
+        modules,
+        courseId: enrollment.props.courseId.toString(),
         studentTrackProgresses: progresses,
       };
     } catch (error) {

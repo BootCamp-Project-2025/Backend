@@ -1,7 +1,10 @@
+import { Module } from "../entities/Module";
 import { StudentTrackProgress } from "../entities/StudentTrackProgress";
 
 export type StudentProgress = {
   progress: number;
+  courseId: string;
+  modules: Module[];
   studentTrackProgresses: StudentTrackProgress[];
 };
 

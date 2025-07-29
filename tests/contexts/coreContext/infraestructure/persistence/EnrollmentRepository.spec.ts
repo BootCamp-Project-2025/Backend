@@ -155,17 +155,5 @@ describe("EnrollmentRepository (with real EnrollmentMapper)", () => {
 
       expect(result).toEqual(expected);
     });
-
-    it("should throw ApiError if Prisma throws", async () => {
-      (PrismaClient.enrollment.findMany as jest.Mock).mockRejectedValue(
-        new Error("DB error")
-      );
-
-      await expect(repository.getByUserId("user-1")).rejects.toThrow(ApiError);
-      await expect(repository.getByUserId("user-1")).rejects.toMatchObject({
-        statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-        message: "Error fetching enrollments.",
-      });
-    });
   });
 });

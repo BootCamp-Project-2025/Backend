@@ -12,7 +12,7 @@ export class EventDispatcher {
   }
 
   async dispatch(event: DomainEvent) {
-    const handlers = this.handlers.get(event.name) || [];
+    const handlers = this.handlers.get(event.constructor.name) || [];
     for (const handler of handlers) {
       handler(event);
     }

@@ -15,24 +15,16 @@ export class GetUserEnrollmentsUseCase {
   ) {}
 
   async execute(userId: string): Promise<Enrollment[]> {
-    try {
-      if (!userId) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, "User ID is required.");
-      }
-
-      const userExists = await this.userRepository.getById(userId);
-      if (!userExists) {
-        throw new ApiError(StatusCodes.NOT_FOUND, "User not found.");
-      }
-
-      const enrollments = await this.enrollmentRepo.getByUserId(userId);
-      return enrollments;
-    } catch (error) {
-      if (error instanceof ApiError) throw error;
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error fetching enrollments"
-      );
+    if (!userId) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "User ID is required.");
     }
+
+    const userExists = await this.userRepository.getById(userId);
+    if (!userExists) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "User not found.");
+    }
+
+    const enrollments = await this.enrollmentRepo.getByUserId(userId);
+    return enrollments;
   }
 }

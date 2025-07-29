@@ -52,19 +52,10 @@ export class EnrollmentRepository implements IEnrollmentRepository {
   }
 
   async getByUserId(userId: string): Promise<Enrollment[]> {
-    try {
-      const enrollments = await PrismaClient.enrollment.findMany({
-        where: { userId },
-        orderBy: { createdAt: "desc" },
-      });
-
-      return enrollments.map(EnrollmentMapper.persistanceToDomain);
-    } catch (error) {
-      console.error(error);
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error fetching enrollments."
-      );
-    }
+    const enrollments = await PrismaClient.enrollment.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
+    return enrollments.map(EnrollmentMapper.persistanceToDomain);
   }
 }

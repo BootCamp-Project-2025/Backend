@@ -97,21 +97,14 @@ router.put("/:id", verifyToken(), controller.cancelEnrollment);
 
 /**
  * @openapi
- * /enrollments/user/{userId}:
+ * /enrollments/user:
  *   get:
- *     summary: Retrieve all course enrollments for a specific user
- *     description: Returns all enrollments associated with a user. Requires authentication. Validates user existence before retrieving enrollments.
+ *     summary: Retrieve all course enrollments for the authenticated user
+ *     description: Returns all enrollments associated with the authenticated user. Requires a valid Bearer token.
  *     security:
  *       - BearerAuth: []
  *     tags:
  *       - Enrollment
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         description: The unique identifier of the user
- *         schema:
- *           type: string
  *     responses:
  *       200:
  *         description: Enrollments successfully retrieved
@@ -122,15 +115,13 @@ router.put("/:id", verifyToken(), controller.cancelEnrollment);
  *               items:
  *                 $ref: '#/components/schemas/Enrollment'
  *       400:
- *         description: Bad request – userId is missing or invalid
+ *         description: Bad request – User ID is missing in token
  *       401:
  *         description: Unauthorized – Token is missing or invalid
- *       404:
- *         description: User not found
  *       500:
  *         description: Internal server error while fetching enrollments
  */
 
-router.get("/user/:userId", verifyToken(), controller.getEnrollments);
+router.get("/user", verifyToken(), controller.getEnrollments);
 
 export default router;

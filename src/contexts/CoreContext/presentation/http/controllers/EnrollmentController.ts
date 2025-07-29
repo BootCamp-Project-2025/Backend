@@ -17,6 +17,9 @@ export class EnrollmentController implements IEnrollmentController {
   ) {}
 
   createEnrollment = async (req: Request, res: Response): Promise<void> => {
+    console.log(
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    );
     const enrollmentDto: ICreateEnrollmentDto = req.body;
     if (!enrollmentDto)
       throw new ApiError(
@@ -49,7 +52,13 @@ export class EnrollmentController implements IEnrollmentController {
 
   getEnrollments = async (req: Request, res: Response): Promise<void> => {
     try {
-      const userId = req.params.userId;
+      const userId = req?.user?.id;
+      if (!userId) {
+        throw new ApiError(
+          StatusCodes.BAD_REQUEST,
+          "User ID is missing from request"
+        );
+      }
       const enrollments = await this.enrollmentService.getEnrollments(userId);
       const enrollmentsDTO = enrollments.map((e) =>
         EnrollmentMapper.domainToDto(e)

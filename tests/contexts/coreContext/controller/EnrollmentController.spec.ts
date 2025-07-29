@@ -115,7 +115,7 @@ describe("EnrollmentController", () => {
 
       const mappedDtos = [{ id: "dto1" }, { id: "dto2" }];
 
-      req.params = { userId };
+      req.user = { id: userId };
 
       enrollmentService.getEnrollments.mockResolvedValue(domainEnrollments);
       (EnrollmentMapper.domainToDto as jest.Mock).mockImplementation((e) =>
@@ -137,9 +137,18 @@ describe("EnrollmentController", () => {
       expect(responseArg.message).toBe("Enrollments retrieved successfully");
     });
 
+    it("should throw ApiError when user ID is missing", async () => {
+      req.user = undefined;
+
+      await expect(
+        controller.getEnrollments(req as Request, res as Response)
+      ).rejects.toThrow(ApiError);
+    });
+
     it("should throw ApiError on internal error", async () => {
       const userId = "user123";
-      req.params = { userId };
+      req.user = { id: userId };
+
       enrollmentService.getEnrollments.mockRejectedValue(new Error("DB error"));
 
       await expect(

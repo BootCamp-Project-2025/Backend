@@ -35,17 +35,24 @@ export class CreateEnrollmentUseCase
       throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");
     }
 
-    const isEnrolled = await this.enrollmentRepository.isUserEnrolled(
-      enrollment.userId.toString(),
-      enrollment.courseId.toString()
-    );
-    if (isEnrolled) {
-      throw new ApiError(
-        StatusCodes.CONFLICT,
-        "User is already enrolled in this course"
+    const existingEnrollment =
+      await this.enrollmentRepository.findValidEnrollment(
+        enrollment.userId.toString(),
+        enrollment.courseId.toString()
       );
-    }
 
+    if (existingEnrollment) {
+      if (existingEnrollment.status === "CANCELED") {
+        return await this.enrollmentRepository.reactivateEnrollment(
+          existingEnrollment.id.toString()
+        );
+      } else {
+        throw new ApiError(
+          StatusCodes.CONFLICT,
+          "User is already enrolled in this course"
+        );
+      }
+    }
     return await this.enrollmentRepository.create(enrollment);
   }
 }

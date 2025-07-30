@@ -40,17 +40,6 @@ export class EnrollmentRepository implements IEnrollmentRepository {
     return EnrollmentMapper.persistanceToDomain(enrollment);
   }
 
-  async isUserEnrolled(userId: string, courseId: string): Promise<boolean> {
-    const enrollment = await this.db.enrollment.findFirst({
-      where: {
-        userId,
-        courseId,
-      },
-    });
-
-    return enrollment !== null;
-  }
-
   async findValidEnrollment(
     userId: string,
     courseId: string
@@ -59,9 +48,6 @@ export class EnrollmentRepository implements IEnrollmentRepository {
       where: {
         userId,
         courseId,
-        status: {
-          in: ["ENROLLED", "COMPLETED"],
-        },
       },
     });
 
@@ -74,5 +60,16 @@ export class EnrollmentRepository implements IEnrollmentRepository {
       orderBy: { createdAt: "desc" },
     });
     return enrollments.map(EnrollmentMapper.persistanceToDomain);
+  }
+
+  async reactivateEnrollment(enrollmentId: string): Promise<Enrollment> {
+    const updated = await this.db.enrollment.update({
+      where: { id: enrollmentId },
+      data: {
+        status: "ENROLLED",
+      },
+    });
+
+    return EnrollmentMapper.persistanceToDomain(updated);
   }
 }

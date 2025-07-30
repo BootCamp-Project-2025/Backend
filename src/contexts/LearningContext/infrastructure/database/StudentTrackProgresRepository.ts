@@ -5,7 +5,7 @@ import { injectable } from "tsyringe";
 import { IStudentTrackProgressRepository } from "../../domain/interfaces/IStudentTrackProgressRepository";
 import { StudentTrackProgress } from "../../domain/entities/StudentTrackProgress";
 import { StudentTrackProgressDb } from "../../domain/dtos/Dbtypes";
-import { StudentTrackProgressMapper } from "../../mappers/StudentTrackProgressMapper";
+import StudentTrackProgressMapper from "../../mappers/StudentTrackProgressMapper";
 
 @injectable()
 export class StudentTrackProgressRepository

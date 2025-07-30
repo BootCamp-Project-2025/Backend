@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { StatusCodes } from "http-status-codes";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import StudentTrackProgressService from "@/contexts/LearningContext/application/services/StudentTrackProgressService";
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";

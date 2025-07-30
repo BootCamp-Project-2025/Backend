@@ -3,16 +3,29 @@ import { StatusCodes } from "http-status-codes";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import CreateStudentTrackProgressUseCase from "@/contexts/LearningContext/application/useCases/studentTrackProgress/CreateStudentTrackProgressUseCase";
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
+import { IStudentTrackProgressRepository } from "@/contexts/LearningContext/domain/interfaces/IStudentTrackProgressRepository";
+import { IEnrollmentRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 
-const mockTrackRepository = { create: jest.fn() };
-const mockEnrollmentRepository = { findById: jest.fn() };
+const mockTrackRepository = {
+  findById: jest.fn(),
+  update: jest.fn(),
+  create: jest.fn(),
+  delete: jest.fn(),
+  findByEnrollment: jest.fn(),
+};
+const mockEnrollmentRepository = {
+  findById: jest.fn(),
+  cancelEnrollment: jest.fn(),
+  create: jest.fn(),
+  isUserEnrolled: jest.fn(),
+};
 const fakeTrackProgress = {} as StudentTrackProgress;
 const fakeEnrollment = { id: "enroll1" };
 
 function makeUseCase() {
   return new CreateStudentTrackProgressUseCase(
-    mockTrackRepository as any,
-    mockEnrollmentRepository as any
+    mockTrackRepository as IStudentTrackProgressRepository,
+    mockEnrollmentRepository as IEnrollmentRepository
   );
 }
 

@@ -5,7 +5,7 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import StudentTrackProgressController from "@/contexts/LearningContext/presentation/http/controllers/StudentTrackProgressController ";
 import { IStudentTrackProgressService } from "@/contexts/LearningContext/domain/interfaces/IStudentTrackProgressService";
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
-import { StudentTrackProgressMapper } from "@/contexts/LearningContext/mappers/StudentTrackProgressMapper";
+import StudentTrackProgressMapper from "@/contexts/LearningContext/mappers/StudentTrackProgressMapper";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 
 // Mock dependencies

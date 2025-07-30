@@ -14,6 +14,7 @@ export interface StudentTrackProgressProps {
 
 export class StudentTrackProgress extends Entity<StudentTrackProgressProps> {
   constructor(props: StudentTrackProgressProps, id?: UniqueEntityID) {
+    if (!props.enrollmentId) throw new Error("Missing enrollmentId");
     super(props, id);
   }
 

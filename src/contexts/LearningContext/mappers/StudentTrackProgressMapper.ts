@@ -7,8 +7,8 @@ import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { ResourceCompleted } from "../domain/valueObjects/ResourceCompleted";
 import { StudentProgress } from "../domain/interfaces/IStudentTrackProgressService";
 
-export class StudentTrackProgressMapper {
-  static PersistenceToDomain(db: StudentTrackProgressDb): StudentTrackProgress {
+const StudentTrackProgressMapper = {
+  PersistenceToDomain(db: StudentTrackProgressDb): StudentTrackProgress {
     return StudentTrackProgress.create(
       {
         enrollmentId: EnrollmentId.create(new UniqueEntityID(db.enrollmentId)),
@@ -28,11 +28,9 @@ export class StudentTrackProgressMapper {
       },
       new UniqueEntityID(db.id)
     );
-  }
+  },
 
-  static DomainToPersistence(
-    entity: StudentTrackProgress
-  ): StudentTrackProgressDb {
+  DomainToPersistence(entity: StudentTrackProgress): StudentTrackProgressDb {
     return {
       id: entity.id.toString(),
       enrollmentId: entity.enrollmentId.toString(),
@@ -45,12 +43,12 @@ export class StudentTrackProgressMapper {
         completed: videoProgress.completed,
       })),
       resourcesCompleted: entity.resourcesCompleted.map((url) => ({
-        url: url,
+        url,
       })),
     };
-  }
+  },
 
-  static DtoToDomain(dto: StudentTrackProgressDto): StudentTrackProgress {
+  DtoToDomain(dto: StudentTrackProgressDto): StudentTrackProgress {
     return StudentTrackProgress.create(
       {
         enrollmentId: EnrollmentId.create(new UniqueEntityID(dto.enrollmentId)),
@@ -69,9 +67,9 @@ export class StudentTrackProgressMapper {
       },
       dto.id ? new UniqueEntityID(dto.id) : undefined
     );
-  }
+  },
 
-  static DomainToDto(entity: StudentTrackProgress): StudentTrackProgressDto {
+  DomainToDto(entity: StudentTrackProgress): StudentTrackProgressDto {
     return {
       id: entity.id.toString(),
       enrollmentId: entity.enrollmentId.toString(),
@@ -85,9 +83,9 @@ export class StudentTrackProgressMapper {
       completed: entity.completed,
       completedAt: entity.completedAt ?? null,
     };
-  }
+  },
 
-  static DomaintoDataStudentProgres(studentProgress: StudentProgress) {
+  DomaintoDataStudentProgres(studentProgress: StudentProgress) {
     const trackProgressMap = new Map(
       studentProgress.studentTrackProgresses.map((tp) => [
         tp.lessonId,
@@ -148,5 +146,7 @@ export class StudentTrackProgressMapper {
         }))
         .sort((a, b) => a.position - b.position),
     };
-  }
-}
+  },
+};
+
+export default StudentTrackProgressMapper;

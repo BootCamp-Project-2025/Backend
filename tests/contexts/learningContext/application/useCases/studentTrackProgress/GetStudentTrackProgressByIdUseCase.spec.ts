@@ -1,19 +1,26 @@
 import "reflect-metadata";
-import { StatusCodes } from "http-status-codes";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import GetStudentTrackProgressByIdUseCase from "@/contexts/LearningContext/application/useCases/studentTrackProgress/GetStudentTrackProgressByIdUseCase";
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { IStudentTrackProgressRepository } from "@/contexts/LearningContext/domain/interfaces/IStudentTrackProgressRepository";
+import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";
 
 const mockRepository = {
   findById: jest.fn(),
+  update: jest.fn(),
+  create: jest.fn(),
+  delete: jest.fn(),
+  findByEnrollment: jest.fn(),
 };
 
 function makeUseCase() {
-  return new GetStudentTrackProgressByIdUseCase(mockRepository as any);
+  return new GetStudentTrackProgressByIdUseCase(
+    mockRepository as IStudentTrackProgressRepository
+  );
 }
 
-const fakeEnrollmentId = { toString: () => "enroll1" } as any;
+const fakeEnrollmentId = { toString: () => "enroll1" } as EnrollmentId;
 
 const fakeProps = {
   enrollmentId: fakeEnrollmentId,

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { StudentTrackProgressRepository } from "@/contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";
-import { StudentTrackProgressMapper } from "@/contexts/LearningContext/mappers/StudentTrackProgressMapper";
+import StudentTrackProgressMapper from "@/contexts/LearningContext/mappers/StudentTrackProgressMapper";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
 import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";

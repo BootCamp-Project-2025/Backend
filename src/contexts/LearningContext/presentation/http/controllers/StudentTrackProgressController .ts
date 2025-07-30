@@ -8,7 +8,7 @@ import { IStudentTrackProgressController } from "@/contexts/LearningContext/doma
 import { IStudentTrackProgressService } from "@/contexts/LearningContext/domain/interfaces/IStudentTrackProgressService";
 import { StudentTrackProgressDto } from "@/contexts/LearningContext/domain/dtos/StudentTrackProgressDto";
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
-import { StudentTrackProgressMapper } from "@/contexts/LearningContext/mappers/StudentTrackProgressMapper";
+import StudentTrackProgressMapper from "@/contexts/LearningContext/mappers/StudentTrackProgressMapper";
 
 @injectable()
 export default class StudentTrackProgressController

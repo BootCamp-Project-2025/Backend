@@ -31,6 +31,14 @@ export class ElasticSearchService implements ISearchService {
     await this.esClient.index({
       index: resource,
       document: resourceDto,
+      id: resourceDto.id,
+    });
+  }
+
+  async removeResource(resource: string, resourceId: string): Promise<void> {
+    await this.esClient.delete({
+      index: resource,
+      id: resourceId,
     });
   }
 }

@@ -170,6 +170,9 @@ import { ISearchService } from "./contexts/CoreContext/domain/interfaces/service
 import { ElasticSearchService } from "./contexts/CoreContext/application/services/ElasticSearchService";
 import { ISearchController } from "./contexts/CoreContext/domain/interfaces/controllers/ISearchController";
 import { SearchController } from "./contexts/CoreContext/presentation/http/controllers/SearchController";
+import { QueryParamsDto } from "./contexts/CoreContext/domain/interfaces/dtos/search/QueryParamsDto";
+import { SearchRequestUseCase } from "./contexts/CoreContext/application/useCases/requests/SearchRequestUseCase";
+import { PageDto } from "./contexts/CoreContext/domain/interfaces/dtos/search/PageDto";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -522,6 +525,21 @@ container.registerSingleton<IExternarlAuthService>(
   KeycloakService
 );
 
+container.registerSingleton<ISearchService>(
+  "ISearchService",
+  ElasticSearchService
+);
+
+container.registerSingleton<ISearchController>(
+  "ISearchController",
+  SearchController
+);
+
+container.registerSingleton<IUseCase<QueryParamsDto, PageDto<Request>>>(
+  "SearchRequestUseCase",
+  SearchRequestUseCase
+);
+
 container.registerSingleton<IRequestService>("IRequestService", RequestService);
 
 container.registerSingleton<IRequestController>(
@@ -650,13 +668,4 @@ container.registerSingleton<IClientRepository>(
   ClientRepository
 );
 
-container.registerSingleton<ISearchService>(
-  "ISearchService",
-  ElasticSearchService
-);
-
-container.registerSingleton<ISearchController>(
-  "ISearchController",
-  SearchController
-);
 export { container };

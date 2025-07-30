@@ -2,6 +2,9 @@ import "reflect-metadata";
 import { StudentTrackProgressRepository } from "@/contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";
 import { StudentTrackProgressMapper } from "@/contexts/LearningContext/mappers/StudentTrackProgressMapper";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
+import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";
+import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
 jest.mock("@/contexts/Shared/infrastructure/database/PrismaClient", () => ({
   studentTrackProgress: {
@@ -18,7 +21,14 @@ const prismaMock = require("@/contexts/Shared/infrastructure/database/PrismaClie
 
 describe("StudentTrackProgressRepository", () => {
   let repo: StudentTrackProgressRepository;
-  const fakeDomainObj = { id: "1", foo: "bar" };
+  const fakeDomainObj: StudentTrackProgress = StudentTrackProgress.create({
+    enrollmentId: EnrollmentId.create(new UniqueEntityID("enrollmentId")),
+    lessonId: "lesson-id",
+    videoProgresses: [],
+    resourcesCompleted: [],
+    completed: false,
+    completedAt: new Date(),
+  });
   const fakeDbObj = {
     id: "1",
     foo: "bar",
@@ -94,7 +104,7 @@ describe("StudentTrackProgressRepository", () => {
         StudentTrackProgressMapper.DomainToPersistence as jest.Mock
       ).mockReturnValue(fakeDbObj);
 
-      await repo.create(fakeDomainObj as any);
+      await repo.create(fakeDomainObj);
 
       expect(prismaMock.studentTrackProgress.create).toHaveBeenCalledWith({
         data: {
@@ -113,7 +123,7 @@ describe("StudentTrackProgressRepository", () => {
         StudentTrackProgressMapper.DomainToPersistence as jest.Mock
       ).mockReturnValue(fakeDbObj);
 
-      await expect(repo.create(fakeDomainObj as any)).rejects.toThrow(ApiError);
+      await expect(repo.create(fakeDomainObj)).rejects.toThrow(ApiError);
     });
   });
 
@@ -123,7 +133,7 @@ describe("StudentTrackProgressRepository", () => {
         StudentTrackProgressMapper.DomainToPersistence as jest.Mock
       ).mockReturnValue(fakeDbObj);
 
-      await repo.update(fakeDomainObj as any);
+      await repo.update(fakeDomainObj);
 
       expect(prismaMock.studentTrackProgress.update).toHaveBeenCalledWith({
         where: { id: fakeDbObj.id },

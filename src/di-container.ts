@@ -168,7 +168,6 @@ import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
 import { StudentTrackProgressRepository } from "./contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";
 import CreateStudentTrackProgressUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/CreateStudentTrackProgressUseCase";
-import DeleteStudentTrackProgressUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/DeleteStudentTrackProgressUseCase";
 import GetStudentTrackProgressByEnrollmentUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/GetStudentTrackProgressByEnrollmentUseCase";
 import GetStudentTrackProgressByIdUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/GetStudentTrackProgressByIdUseCase";
 import UpdateStudentTrackProgressUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/UpdateStudentTrackProgressUseCase";
@@ -671,11 +670,6 @@ container.registerSingleton<IStudentTrackProgressRepository>(
 container.registerSingleton<CreateStudentTrackProgressUseCase>(
   "CreateStudentTrackProgressUseCase",
   CreateStudentTrackProgressUseCase
-);
-
-container.registerSingleton<DeleteStudentTrackProgressUseCase>(
-  "DeleteStudentTrackProgressUseCase",
-  DeleteStudentTrackProgressUseCase
 );
 
 container.registerSingleton<GetStudentTrackProgressByEnrollmentUseCase>(

@@ -1,171 +1,164 @@
 import "reflect-metadata";
-import { StudentTrackProgressRepository } from "@/contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";
-import StudentTrackProgressMapper from "@/contexts/LearningContext/mappers/StudentTrackProgressMapper";
+import { StatusCodes } from "http-status-codes";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import UpdateStudentTrackProgressUseCase from "@/contexts/LearningContext/application/useCases/studentTrackProgress/UpdateStudentTrackProgressUseCase";
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
 import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
-jest.mock("@/contexts/Shared/infrastructure/database/PrismaClient", () => ({
-  studentTrackProgress: {
-    findUnique: jest.fn(),
-    findMany: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-  },
-}));
-jest.mock("@/contexts/LearningContext/mappers/StudentTrackProgressMapper");
+const mockRepository = {
+  findById: jest.fn(),
+  update: jest.fn(),
+  create: jest.fn(),
+  delete: jest.fn(),
+  findByEnrollment: jest.fn(),
+};
 
-// deepsource-disable-next-line
-const prismaMock = require("@/contexts/Shared/infrastructure/database/PrismaClient");
+function makeUseCase() {
+  return new UpdateStudentTrackProgressUseCase(mockRepository as any);
+}
 
-describe("StudentTrackProgressRepository", () => {
-  let repo: StudentTrackProgressRepository;
-  const fakeDomainObj: StudentTrackProgress = StudentTrackProgress.create({
-    enrollmentId: EnrollmentId.create(new UniqueEntityID("enrollmentId")),
-    lessonId: "lesson-id",
-    videoProgresses: [],
-    resourcesCompleted: [],
-    completed: false,
-    completedAt: new Date(),
-  });
-  const fakeDbObj = {
-    id: "1",
-    foo: "bar",
-    videoProgresses: [],
-    resourcesCompleted: [],
-  };
+const fakeEnrollmentId = EnrollmentId.create(new UniqueEntityID("enroll1"));
 
+const fakeProps = {
+  enrollmentId: fakeEnrollmentId,
+  lessonId: "lesson1",
+  videoProgresses: [],
+  resourcesCompleted: [],
+  completed: false,
+  completedAt: undefined,
+};
+
+const fakeTrackProgress = StudentTrackProgress.create(
+  fakeProps,
+  new UniqueEntityID("track1")
+);
+
+const existingTrackProgress = StudentTrackProgress.create(
+  fakeProps,
+  new UniqueEntityID("existing1")
+);
+
+describe("UpdateStudentTrackProgressUseCase", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    repo = new StudentTrackProgressRepository();
   });
 
-  describe("findById", () => {
-    it("should return mapped domain object if found", async () => {
-      prismaMock.studentTrackProgress.findUnique.mockResolvedValue(fakeDbObj);
-      (
-        StudentTrackProgressMapper.PersistenceToDomain as jest.Mock
-      ).mockReturnValue(fakeDomainObj);
+  it("should update StudentTrackProgress successfully when it exists", async () => {
+    mockRepository.findById.mockResolvedValue(existingTrackProgress);
+    mockRepository.update.mockResolvedValue(undefined);
 
-      const result = await repo.findById("1");
-      expect(prismaMock.studentTrackProgress.findUnique).toHaveBeenCalledWith({
-        where: { id: "1" },
-        include: { videoProgresses: true, resourcesCompleted: true },
-      });
-      expect(result).toBe(fakeDomainObj);
-    });
+    const useCase = makeUseCase();
+    await useCase.execute(fakeTrackProgress);
 
-    it("should return null if not found", async () => {
-      prismaMock.studentTrackProgress.findUnique.mockResolvedValue(null);
-
-      const result = await repo.findById("2");
-      expect(result).toBeNull();
-    });
-
-    it("should throw ApiError if unknown error occurs", async () => {
-      prismaMock.studentTrackProgress.findUnique.mockRejectedValue(
-        new Error("fail")
-      );
-
-      await expect(repo.findById("x")).rejects.toThrow(ApiError);
-    });
+    expect(mockRepository.findById).toHaveBeenCalledWith("track1");
+    expect(mockRepository.update).toHaveBeenCalledWith(fakeTrackProgress);
+    expect(mockRepository.findById).toHaveBeenCalledTimes(1);
+    expect(mockRepository.update).toHaveBeenCalledTimes(1);
   });
 
-  describe("findByEnrollment", () => {
-    it("should return mapped array", async () => {
-      prismaMock.studentTrackProgress.findMany.mockResolvedValue([fakeDbObj]);
-      (
-        StudentTrackProgressMapper.PersistenceToDomain as jest.Mock
-      ).mockReturnValue(fakeDomainObj);
+  it("should throw ApiError 404 if StudentTrackProgress does not exist", async () => {
+    mockRepository.findById.mockResolvedValue(null);
 
-      const result = await repo.findByEnrollment("enroll-1");
-      expect(Array.isArray(result)).toBe(true);
-      expect(result[0]).toBe(fakeDomainObj);
-    });
+    const useCase = makeUseCase();
 
-    it("should return empty array if none found", async () => {
-      prismaMock.studentTrackProgress.findMany.mockResolvedValue([]);
-      const result = await repo.findByEnrollment("enroll-x");
-      expect(result).toEqual([]);
-    });
+    await expect(useCase.execute(fakeTrackProgress)).rejects.toThrow(
+      new ApiError(StatusCodes.NOT_FOUND, "StudentTrackProgress not found")
+    );
 
-    it("should throw ApiError on error", async () => {
-      prismaMock.studentTrackProgress.findMany.mockRejectedValue(
-        new Error("fail")
-      );
-      await expect(repo.findByEnrollment("x")).rejects.toThrow(ApiError);
-    });
+    expect(mockRepository.findById).toHaveBeenCalledWith("track1");
+    expect(mockRepository.update).not.toHaveBeenCalled();
   });
 
-  describe("create", () => {
-    it("should call prisma.create with mapped data", async () => {
-      (
-        StudentTrackProgressMapper.DomainToPersistence as jest.Mock
-      ).mockReturnValue(fakeDbObj);
+  it("should throw ApiError 404 if findById returns undefined", async () => {
+    mockRepository.findById.mockResolvedValue(undefined);
 
-      await repo.create(fakeDomainObj);
+    const useCase = makeUseCase();
 
-      expect(prismaMock.studentTrackProgress.create).toHaveBeenCalledWith({
-        data: {
-          ...fakeDbObj,
-          videoProgresses: { create: fakeDbObj.videoProgresses },
-          resourcesCompleted: { create: fakeDbObj.resourcesCompleted },
-        },
-      });
-    });
+    await expect(useCase.execute(fakeTrackProgress)).rejects.toThrow(
+      new ApiError(StatusCodes.NOT_FOUND, "StudentTrackProgress not found")
+    );
 
-    it("should throw ApiError on error", async () => {
-      prismaMock.studentTrackProgress.create.mockRejectedValue(
-        new Error("fail")
-      );
-      (
-        StudentTrackProgressMapper.DomainToPersistence as jest.Mock
-      ).mockReturnValue(fakeDbObj);
-
-      await expect(repo.create(fakeDomainObj)).rejects.toThrow(ApiError);
-    });
+    expect(mockRepository.findById).toHaveBeenCalledWith("track1");
+    expect(mockRepository.update).not.toHaveBeenCalled();
   });
 
-  describe("update", () => {
-    it("should call prisma.update with mapped data", async () => {
-      (
-        StudentTrackProgressMapper.DomainToPersistence as jest.Mock
-      ).mockReturnValue(fakeDbObj);
+  it("should re-throw ApiError when findById throws ApiError", async () => {
+    const apiError = new ApiError(StatusCodes.BAD_REQUEST, "Invalid ID format");
+    mockRepository.findById.mockRejectedValue(apiError);
 
-      await repo.update(fakeDomainObj);
+    const useCase = makeUseCase();
 
-      expect(prismaMock.studentTrackProgress.update).toHaveBeenCalledWith({
-        where: { id: fakeDbObj.id },
-        data: {
-          ...fakeDbObj,
-          videoProgresses: {
-            deleteMany: {},
-            create: fakeDbObj.videoProgresses,
-          },
-          resourcesCompleted: {
-            deleteMany: {},
-            create: fakeDbObj.resourcesCompleted,
-          },
-        },
-      });
-    });
+    await expect(useCase.execute(fakeTrackProgress)).rejects.toThrow(apiError);
+
+    expect(mockRepository.findById).toHaveBeenCalledWith("track1");
+    expect(mockRepository.update).not.toHaveBeenCalled();
   });
 
-  describe("delete", () => {
-    it("should call prisma.delete with id", async () => {
-      await repo.delete("some-id");
-      expect(prismaMock.studentTrackProgress.delete).toHaveBeenCalledWith({
-        where: { id: "some-id" },
-      });
-    });
+  it("should re-throw ApiError when update throws ApiError", async () => {
+    const apiError = new ApiError(StatusCodes.CONFLICT, "Update conflict");
+    mockRepository.findById.mockResolvedValue(existingTrackProgress);
+    mockRepository.update.mockRejectedValue(apiError);
 
-    it("should throw ApiError on error", async () => {
-      prismaMock.studentTrackProgress.delete.mockRejectedValue(
-        new Error("fail")
-      );
-      await expect(repo.delete("fail")).rejects.toThrow(ApiError);
-    });
+    const useCase = makeUseCase();
+
+    await expect(useCase.execute(fakeTrackProgress)).rejects.toThrow(apiError);
+
+    expect(mockRepository.findById).toHaveBeenCalledWith("track1");
+    expect(mockRepository.update).toHaveBeenCalledWith(fakeTrackProgress);
+  });
+
+  it("should throw INTERNAL_SERVER_ERROR when findById throws generic error", async () => {
+    const genericError = new Error("Database connection failed");
+    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => { });
+    mockRepository.findById.mockRejectedValue(genericError);
+
+    const useCase = makeUseCase();
+
+    await expect(useCase.execute(fakeTrackProgress)).rejects.toThrow(
+      new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error executing the update")
+    );
+
+    expect(consoleSpy).toHaveBeenCalledWith(genericError);
+    expect(mockRepository.findById).toHaveBeenCalledWith("track1");
+    expect(mockRepository.update).not.toHaveBeenCalled();
+
+    consoleSpy.mockRestore();
+  });
+
+  it("should throw INTERNAL_SERVER_ERROR when update throws generic error", async () => {
+    const genericError = new Error("Database update failed");
+    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => { });
+    mockRepository.findById.mockResolvedValue(existingTrackProgress);
+    mockRepository.update.mockRejectedValue(genericError);
+
+    const useCase = makeUseCase();
+
+    await expect(useCase.execute(fakeTrackProgress)).rejects.toThrow(
+      new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error executing the update")
+    );
+
+    expect(consoleSpy).toHaveBeenCalledWith(genericError);
+    expect(mockRepository.findById).toHaveBeenCalledWith("track1");
+    expect(mockRepository.update).toHaveBeenCalledWith(fakeTrackProgress);
+
+    consoleSpy.mockRestore();
+  });
+
+  it("should call toString() method on id correctly", async () => {
+    const mockId = { toString: jest.fn().mockReturnValue("custom-id-123") };
+    const customTrackProgress = StudentTrackProgress.create(
+      fakeProps,
+      mockId as any
+    );
+
+    mockRepository.findById.mockResolvedValue(existingTrackProgress);
+    mockRepository.update.mockResolvedValue(undefined);
+
+    const useCase = makeUseCase();
+    await useCase.execute(customTrackProgress);
+
+    expect(mockId.toString).toHaveBeenCalledTimes(1);
+    expect(mockRepository.findById).toHaveBeenCalledWith("custom-id-123");
   });
 });

@@ -6,6 +6,8 @@ import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities
 import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 
+import * as PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
+
 jest.mock("@/contexts/Shared/infrastructure/database/PrismaClient", () => ({
   studentTrackProgress: {
     findUnique: jest.fn(),
@@ -17,6 +19,7 @@ jest.mock("@/contexts/Shared/infrastructure/database/PrismaClient", () => ({
 }));
 jest.mock("@/contexts/LearningContext/mappers/StudentTrackProgressMapper");
 
+// deepcode ignore javascript/node/avoid-require: Required for Jest mocking
 const prismaMock = require("@/contexts/Shared/infrastructure/database/PrismaClient");
 
 describe("StudentTrackProgressRepository", () => {
@@ -159,6 +162,7 @@ describe("StudentTrackProgressRepository", () => {
         where: { id: "some-id" },
       });
     });
+
     it("should throw ApiError on error", async () => {
       prismaMock.studentTrackProgress.delete.mockRejectedValue(
         new Error("fail")

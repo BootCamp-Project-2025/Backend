@@ -68,32 +68,14 @@ export default class StudentTrackProgressController
     }
   };
 
-  delete = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const id: string = req.params.trackId;
-      await this.studentTrackService.delete(id);
-
-      const response = new SuccessResponseEntity(
-        {},
-        StatusCodes.OK,
-        "Student track progress deleted successfully"
-      );
-      ResponseService.send(res, response);
-    } catch (error) {
-      if (error instanceof ApiError) throw error;
-      console.error(error);
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error deleting student track progress"
-      );
-    }
-  };
-
   getByEnrollment = async (req: Request, res: Response): Promise<void> => {
     try {
       const enrollmentId: string = req.params.enrollmentId;
-      const result =
+      const dataResult =
         await this.studentTrackService.getByEnrollment(enrollmentId);
+
+      const result =
+        StudentTrackProgressMapper.DomaintoDataStudentProgres(dataResult);
 
       const response = new SuccessResponseEntity(
         result,

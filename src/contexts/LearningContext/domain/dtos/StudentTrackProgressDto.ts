@@ -1,4 +1,3 @@
-/* import { StudentTrackProgress } from "../entities/StudentTrackProgress"; */
 import { VideoProgress } from "../valueObjects/VideoProgress";
 
 export type StudentTrackProgressDto = {
@@ -66,17 +65,6 @@ export class StudentTrackProgressDtoBuilder {
     this.dto.completedAt = completedAt;
     return this;
   }
-
-  /* fromEntity(entity: StudentTrackProgress): this {
-        return this
-            .id(entity.id?.toString())
-            .enrollmentId(entity.enrollmentId)
-            .lessonId(entity.lessonId)
-            .videoProgress(entity.videoProgress)
-            .resourcesCompleted(entity.resourcesCompleted)
-            .completed(entity.completed)
-            .completedAt(entity.completedAt || undefined);
-    } */
 
   build() {
     return this.dto;

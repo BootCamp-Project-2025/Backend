@@ -10,6 +10,7 @@ import { StudentTrackProgress } from "../../domain/entities/StudentTrackProgress
 import { Lesson } from "../../domain/entities/Lesson";
 import { Enrollment } from "@/contexts/CoreContext/domain/aggregates/Enrollment";
 import { Module } from "../../domain/entities/Module";
+import { Course } from "../../domain/aggregates/Course";
 @injectable()
 export default class StudentTrackProgressService
   implements IStudentTrackProgressService
@@ -20,8 +21,6 @@ export default class StudentTrackProgressService
       { trackProgress: StudentTrackProgress; enrollmentId: string },
       void
     >,
-    @inject("DeleteStudentTrackProgressUseCase")
-    private readonly deleteUseCase: IUseCase<string, void>,
     @inject("UpdateStudentTrackProgressUseCase")
     private readonly updateUseCase: IUseCase<StudentTrackProgress, void>,
     @inject("GetStudentTrackProgressByEnrollmentUseCase")
@@ -39,7 +38,9 @@ export default class StudentTrackProgressService
     @inject("GetEnrollmentByIdUseCase")
     private readonly getEnrollmentByIdUseCase: IUseCase<string, Enrollment>,
     @inject("GetAllModulesUseCase")
-    private getAllModulesUseCase: IUseCase<string, Module[]>
+    private getAllModulesUseCase: IUseCase<string, Module[]>,
+    @inject("GetCourseUseCase")
+    private readonly GetCourseUseCase: IUseCase<string, Course>
   ) {}
 
   async create(
@@ -54,19 +55,6 @@ export default class StudentTrackProgressService
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "Error creating student track progress"
-      );
-    }
-  }
-
-  async delete(id: string): Promise<void> {
-    try {
-      await this.deleteUseCase.execute(id);
-    } catch (error) {
-      if (error instanceof ApiError) throw error;
-      console.error(error);
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error deleting student track progress"
       );
     }
   }
@@ -102,7 +90,9 @@ export default class StudentTrackProgressService
       });
       const completed = progresses.filter((tp) => tp.isCompleted());
       const progress =
-        progresses.length === 0 ? 0 : completed.length / progresses.length;
+        progresses.length === 0
+          ? 0
+          : parseFloat((completed.length / progresses.length).toFixed(2));
 
       const enrollment =
         await this.getEnrollmentByIdUseCase.execute(enrollmentId);
@@ -111,8 +101,13 @@ export default class StudentTrackProgressService
         enrollment.props.courseId.toString()
       );
 
+      const course = await this.GetCourseUseCase.execute(
+        enrollment.props.courseId.toString()
+      );
+
       return {
         progress,
+        courseName: course.getName().value,
         modules,
         courseId: enrollment.props.courseId.toString(),
         studentTrackProgresses: progresses,

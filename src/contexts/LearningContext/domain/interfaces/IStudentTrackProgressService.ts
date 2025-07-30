@@ -3,6 +3,7 @@ import { StudentTrackProgress } from "../entities/StudentTrackProgress";
 
 export type StudentProgress = {
   progress: number;
+  courseName: string;
   courseId: string;
   modules: Module[];
   studentTrackProgresses: StudentTrackProgress[];
@@ -19,6 +20,4 @@ export interface IStudentTrackProgressService {
   ): Promise<void>;
 
   update(trackProgress: StudentTrackProgress): Promise<void>;
-
-  delete(id: string): Promise<void>;
 }

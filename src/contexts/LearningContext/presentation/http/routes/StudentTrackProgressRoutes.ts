@@ -36,28 +36,6 @@ studentTrackProgressRoutes.put("/:trackId", controller.update);
 
 /**
  * @openapi
- * /student-track-progress/{trackId}:
- *   delete:
- *     summary: Delete a student track progress
- *     tags: [StudentTrackProgress]
- *     parameters:
- *       - in: path
- *         name: trackId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: StudentTrackProgress deleted
- *       404:
- *         description: Not found
- *       500:
- *         description: Internal server error
- */
-studentTrackProgressRoutes.delete("/:trackId", controller.delete);
-
-/**
- * @openapi
  * /student-track-progress/enrollment/{enrollmentId}:
  *   get:
  *     summary: Get student progress and percentage for enrollment

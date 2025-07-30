@@ -5,6 +5,8 @@ import UpdateStudentTrackProgressUseCase from "@/contexts/LearningContext/applic
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
 import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { IStudentTrackProgressRepository } from "@/contexts/LearningContext/domain/interfaces/IStudentTrackProgressRepository";
+import { Identifier } from "@/contexts/Shared/domain/Identifier";
 
 const mockRepository = {
   findById: jest.fn(),
@@ -15,7 +17,9 @@ const mockRepository = {
 };
 
 function makeUseCase() {
-  return new UpdateStudentTrackProgressUseCase(mockRepository as any);
+  return new UpdateStudentTrackProgressUseCase(
+    mockRepository as IStudentTrackProgressRepository
+  );
 }
 
 const fakeEnrollmentId = EnrollmentId.create(new UniqueEntityID("enroll1"));
@@ -110,13 +114,18 @@ describe("UpdateStudentTrackProgressUseCase", () => {
 
   it("should throw INTERNAL_SERVER_ERROR when findById throws generic error", async () => {
     const genericError = new Error("Database connection failed");
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => { });
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     mockRepository.findById.mockRejectedValue(genericError);
 
     const useCase = makeUseCase();
 
     await expect(useCase.execute(fakeTrackProgress)).rejects.toThrow(
-      new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error executing the update")
+      new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error executing the update"
+      )
     );
 
     expect(consoleSpy).toHaveBeenCalledWith(genericError);
@@ -128,14 +137,19 @@ describe("UpdateStudentTrackProgressUseCase", () => {
 
   it("should throw INTERNAL_SERVER_ERROR when update throws generic error", async () => {
     const genericError = new Error("Database update failed");
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => { });
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     mockRepository.findById.mockResolvedValue(existingTrackProgress);
     mockRepository.update.mockRejectedValue(genericError);
 
     const useCase = makeUseCase();
 
     await expect(useCase.execute(fakeTrackProgress)).rejects.toThrow(
-      new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error executing the update")
+      new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error executing the update"
+      )
     );
 
     expect(consoleSpy).toHaveBeenCalledWith(genericError);
@@ -149,7 +163,7 @@ describe("UpdateStudentTrackProgressUseCase", () => {
     const mockId = { toString: jest.fn().mockReturnValue("custom-id-123") };
     const customTrackProgress = StudentTrackProgress.create(
       fakeProps,
-      mockId as any
+      mockId as unknown as UniqueEntityID
     );
 
     mockRepository.findById.mockResolvedValue(existingTrackProgress);

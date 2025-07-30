@@ -172,6 +172,8 @@ import { GetProposalByChatIdUseCase } from "./contexts/CoreContext/application/u
 import { Proposal } from "./contexts/CoreContext/domain/entities/Proposal";
 import { UpdateProposalUseCase } from "./contexts/CoreContext/application/useCases/proposal/UpdateProposalUseCase";
 import { CreateProposalUseCase } from "./contexts/CoreContext/application/useCases/proposal/CreateProposalUseCase";
+import { IProposalService } from "./contexts/CoreContext/domain/interfaces/services/IProposalService";
+import { ProposalService } from "./contexts/CoreContext/application/services/ProposalService";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -653,6 +655,11 @@ container.registerSingleton<IClientRepository>(
 );
 
 // Proposals
+container.registerSingleton<IProposalService>(
+  "IProposalService",
+  ProposalService
+);
+
 container.registerSingleton<IUseCase<string, Proposal>>(
   "GetProposalByChatId",
   GetProposalByChatIdUseCase

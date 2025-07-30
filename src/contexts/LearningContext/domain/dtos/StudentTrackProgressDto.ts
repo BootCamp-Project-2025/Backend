@@ -9,9 +9,7 @@ export type StudentTrackProgressDto = {
     watchedSeconds: number;
     completed: boolean;
   }[];
-  resourcesCompleted?: {
-    url: string;
-  }[];
+  resourcesCompleted?: string[];
   completed?: boolean;
   completedAt?: Date | null;
 };
@@ -52,7 +50,7 @@ export class StudentTrackProgressDtoBuilder {
   }
 
   resourcesCompleted(resourcesCompleted: string[]) {
-    this.dto.resourcesCompleted = resourcesCompleted.map((url) => ({ url }));
+    this.dto.resourcesCompleted = resourcesCompleted.map((url) => (url));
     return this;
   }
 

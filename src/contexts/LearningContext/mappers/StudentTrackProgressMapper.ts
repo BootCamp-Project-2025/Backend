@@ -82,9 +82,7 @@ export class StudentTrackProgressMapper {
         completed: v.completed,
       })),
       resourcesCompleted: entity.resourcesCompleted.map((url) =>
-        ResourceCompleted.create({
-          url,
-        })
+        url
       ),
       completed: entity.completed,
       completedAt: entity.completedAt ?? null,

@@ -19,7 +19,6 @@ import clientRoutes from "./contexts/CoreContext/presentation/http/routes/Client
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
 import { requestRoutes } from "./contexts/CoreContext/presentation/http/routes/RequestsRoutes";
-import { router as searchRoutes } from "./contexts/CoreContext/presentation/http/routes/SearchRoutes";
 
 const app = express();
 
@@ -57,8 +56,6 @@ app.use("/api/student-track-progress", studentTrackProgressRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/api/enrollments", enrollmentRoutes);
-
-app.use("/api/requests", searchRoutes);
 
 app.use(ErrorHandlerMiddleware.handle);
 

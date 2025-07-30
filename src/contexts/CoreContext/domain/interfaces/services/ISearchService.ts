@@ -9,4 +9,5 @@ export interface ISearchService {
     resource: string,
     resourceDto: CourseDTO | RequestDto
   ): Promise<void>;
+  removeResource(resource: string, resourceId: string): Promise<void>;
 }

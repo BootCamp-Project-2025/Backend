@@ -138,7 +138,7 @@ describe("UpdateStudentTrackProgressUseCase", () => {
     const genericError = new Error("Database update failed");
     const consoleSpy = jest
       .spyOn(console, "error")
-      .mockImplementation(() => { });
+      .mockImplementation(jest.fn());
     mockRepository.findById.mockResolvedValue(existingTrackProgress);
     mockRepository.update.mockRejectedValue(genericError);
 

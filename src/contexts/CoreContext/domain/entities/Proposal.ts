@@ -1,18 +1,23 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { Content } from "../valueObjects/Content";
-import { CreationDate } from "../valueObjects/CreationDate";
+// import { Content } from "../valueObjects/Content";
+// import { CreationDate } from "../valueObjects/CreationDate";
 import {
   ProposalStatus,
   ProposalStatusEnum,
 } from "../valueObjects/ProposalStatus";
 import { Entity } from "@/contexts/Shared/domain/Entity";
-import { UserId } from "../valueObjects/UserId";
+// import { UserId } from "../valueObjects/UserId";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 export interface ProposalProps {
-  content: Content;
+  requestId: UniqueEntityID;
+  userId: UniqueEntityID;
+  description: string;
+  sessions: string[];
+  createdAt: Date;
+  chatId?: UniqueEntityID;
   status: ProposalStatus;
-  creationDate: CreationDate;
-  userId: UserId;
 }
 
 export class Proposal extends Entity<ProposalProps> {
@@ -21,8 +26,8 @@ export class Proposal extends Entity<ProposalProps> {
   }
 
   public static create(props: ProposalProps, id?: UniqueEntityID): Proposal {
-    if (!props.content) {
-      throw new Error("Content is required");
+    if (!props.description) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Description is required");
     }
 
     return new Proposal(props, id);
@@ -40,19 +45,31 @@ export class Proposal extends Entity<ProposalProps> {
     return this._id;
   }
 
-  get userId(): UserId {
+  get requestId(): UniqueEntityID {
+    return this.props.requestId;
+  }
+
+  get userId(): UniqueEntityID {
     return this.props.userId;
+  }
+
+  get sessions(): string[] {
+    return this.props.sessions;
+  }
+
+  get chatId(): UniqueEntityID | undefined {
+    return this.props.chatId;
   }
 
   get status(): ProposalStatus {
     return this.props.status;
   }
 
-  get content(): Content {
-    return this.props.content;
+  get description(): string {
+    return this.props.description;
   }
 
-  get creationDate(): CreationDate {
-    return this.props.creationDate;
+  get createdAt(): Date {
+    return this.props.createdAt;
   }
 }

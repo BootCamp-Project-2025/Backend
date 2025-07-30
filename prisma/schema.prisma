@@ -266,15 +266,24 @@ model Request {
 }
 
 model Proposal {
-  id             String      @id @default(uuid())
-  requestId      String
-  userId         String
-  price          Int
-  estimatedTime  Int
-  message        String
-  createdAt      DateTime    @default(now())
-  request        Request     @relation(fields: [requestId], references: [id])
-  user           User        @relation(fields: [userId], references: [id])
+  id                String          @id @default(uuid())
+  requestId         String
+  userId            String
+  description       String
+  sessions          Json[]          @default([])
+  createdAt         DateTime        @default(now()) @db.Timestamptz()
+  updatedAt         DateTime        @updatedAt @db.Timestamptz()
+  chatId            String?
+  status            ProposalStatus  @default(NEW)
+  request           Request         @relation(fields: [requestId], references: [id])
+  user              User            @relation(fields: [userId], references: [id])
+}
+
+enum ProposalStatus {
+  NEW
+  SENT
+  ACCEPTED
+  REJECTED
 }
 
 enum EnrollmentStatus {

@@ -14,6 +14,7 @@ jest.mock("@/contexts/Shared/infrastructure/database/PrismaClient", () => ({
       update: jest.fn(),
       findUnique: jest.fn(),
       findFirst: jest.fn(),
+      findMany: jest.fn(),
     },
   },
 }));
@@ -128,6 +129,31 @@ describe("EnrollmentRepository (with real EnrollmentMapper)", () => {
       );
 
       expect(result).toBe(false);
+    });
+  });
+
+  describe("getByUserId", () => {
+    it("should return a list of enrollments for the given user", async () => {
+      const mockEnrollments = [
+        mockEnrollmentDTO,
+        { ...mockEnrollmentDTO, id: "enroll-2" },
+      ];
+      const expected = mockEnrollments.map(
+        EnrollmentMapper.persistanceToDomain
+      );
+
+      (PrismaClient.enrollment.findMany as jest.Mock).mockResolvedValue(
+        mockEnrollments
+      );
+
+      const result = await repository.getByUserId(mockEnrollmentDTO.userId);
+
+      expect(PrismaClient.enrollment.findMany).toHaveBeenCalledWith({
+        where: { userId: mockEnrollmentDTO.userId },
+        orderBy: { createdAt: "desc" },
+      });
+
+      expect(result).toEqual(expected);
     });
   });
 });

@@ -167,6 +167,7 @@ import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useC
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
 import { CheckEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CheckEnrollmentUseCase";
+import { GetUserEnrollmentsUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetUserEnrollmentsUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -626,6 +627,11 @@ container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
 container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
   "CancelEnrollmentUseCase",
   CancelEnrollmentUseCase
+);
+
+container.registerSingleton<GetUserEnrollmentsUseCase>(
+  "GetUserEnrollmentsUseCase",
+  GetUserEnrollmentsUseCase
 );
 
 container.registerSingleton<IEnrollmentRepository>(

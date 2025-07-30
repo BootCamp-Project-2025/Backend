@@ -9,4 +9,5 @@ export interface IEnrollmentRepository {
     userId: string,
     courseId: string
   ): Promise<Enrollment | null>;
+  getByUserId(userId: string): Promise<Enrollment[]>;
 }

@@ -67,4 +67,12 @@ export class EnrollmentRepository implements IEnrollmentRepository {
 
     return enrollment ? EnrollmentMapper.persistanceToDomain(enrollment) : null;
   }
+
+  async getByUserId(userId: string): Promise<Enrollment[]> {
+    const enrollments = await PrismaClient.enrollment.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
+    return enrollments.map(EnrollmentMapper.persistanceToDomain);
+  }
 }

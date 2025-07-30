@@ -63,9 +63,7 @@ export class StudentTrackProgressMapper {
               completed: v.completed,
             })
           ) ?? [],
-        resourcesCompleted: (dto.resourcesCompleted ?? [])
-          .filter((r) => r.url)
-          .map((r) => r.url!),
+        resourcesCompleted: dto.resourcesCompleted?.map((r) => r) ?? [],
         completed: dto.completed ?? false,
         completedAt: dto.completedAt || undefined,
       },

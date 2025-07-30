@@ -98,20 +98,17 @@ router.post("/", verifyToken(), controller.createEnrollment);
  *          description: Enrollment not found
  */
 router.put("/:id", verifyToken(), controller.cancelEnrollment);
+
 /**
  * @openapi
- * /enrollments/{userId}/{courseId}:
+ * /enrollments/course/{courseId}:
  *   get:
- *     summary: Get enrollment details for a user in a course
+ *     summary: Get enrollment details for the authenticated user in a course
+ *     security:
+ *       - BearerAuth: []
  *     tags:
  *       - Enrollment
  *     parameters:
- *       - name: userId
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the user
  *       - name: courseId
  *         in: path
  *         required: true
@@ -148,14 +145,14 @@ router.put("/:id", verifyToken(), controller.cancelEnrollment);
  *                           type: string
  *                           format: date-time
  *       '404':
- *         description: User, course, or enrollment not found
+ *         description: Course or enrollment not found
  *       '400':
- *         description: Invalid userId or courseId
+ *         description: Invalid courseId
  *       '401':
  *         description: Unauthorized
  */
 
-router.get("/:userId/:courseId", verifyToken(), controller.checkEnrollment);
+router.get("/course/:courseId", verifyToken(), controller.checkEnrollment);
 
 /**
  * @openapi

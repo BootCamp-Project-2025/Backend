@@ -22,6 +22,7 @@ describe("EnrollmentController", () => {
     enrollmentService = {
       create: jest.fn(),
       cancel: jest.fn(),
+      checkEnrollment: jest.fn(),
       getEnrollments: jest.fn(),
     } as jest.Mocked<IEnrollmentService>;
     controller = new EnrollmentController(enrollmentService);

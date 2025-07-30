@@ -38,18 +38,14 @@ export class StudentTrackProgressMapper {
       lessonId: entity.lessonId,
       completed: entity.completed,
       completedAt: entity.completedAt || null,
-      videoProgresses: entity.videoProgresses.map((videoProgress) =>
-        VideoProgress.create({
-          url: videoProgress.url,
-          watchedSeconds: videoProgress.watchedSeconds,
-          completed: videoProgress.completed,
-        })
-      ),
-      resourcesCompleted: entity.resourcesCompleted.map((url) =>
-        ResourceCompleted.create({
-          url,
-        })
-      ),
+      videoProgresses: entity.videoProgresses.map((videoProgress) => ({
+        url: videoProgress.url,
+        watchedSeconds: videoProgress.watchedSeconds,
+        completed: videoProgress.completed,
+      })),
+      resourcesCompleted: entity.resourcesCompleted.map((url) => ({
+        url: url,
+      })),
     };
   }
 

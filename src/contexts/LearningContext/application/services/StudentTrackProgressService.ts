@@ -110,7 +110,6 @@ export default class StudentTrackProgressService
       const modules = await this.getAllModulesUseCase.execute(
         enrollment.props.courseId.toString(),
       );
-      console.log(modules);
 
       return {
         progress,

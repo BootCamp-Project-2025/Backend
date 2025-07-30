@@ -21,7 +21,7 @@ export class EnrollmentService implements IEnrollmentService {
       { trackProgress: StudentTrackProgress; enrollmentId: string },
       void
     >
-  ) {}
+  ) { }
 
   async create(enrollment: Enrollment): Promise<Enrollment> {
     const createdEnrollment =
@@ -39,7 +39,7 @@ export class EnrollmentService implements IEnrollmentService {
           lessonId: lesson.id.toString(),
           videoProgresses: lesson.props.videoUrls.map((videoUrl) =>
             VideoProgress.create({
-              url: videoUrl.value, // o simplemente videoUrl si no es value object
+              url: videoUrl.value,
               watchedSeconds: 0,
               completed: false,
             })

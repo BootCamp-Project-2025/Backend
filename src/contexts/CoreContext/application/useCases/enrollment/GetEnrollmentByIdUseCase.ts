@@ -6,20 +6,19 @@ import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class GetEnrollmentByIdUseCase
-    implements IUseCase<string, Enrollment> {
-    constructor(
-        @inject("IEnrollmentRepository")
-        private enrollmentRepository: IEnrollmentRepository
-    ) { }
+export class GetEnrollmentByIdUseCase implements IUseCase<string, Enrollment> {
+  constructor(
+    @inject("IEnrollmentRepository")
+    private enrollmentRepository: IEnrollmentRepository
+  ) {}
 
-    async execute(enrollmentId: string): Promise<Enrollment> {
-        const enrollment = await this.enrollmentRepository.findById(enrollmentId);
+  async execute(enrollmentId: string): Promise<Enrollment> {
+    const enrollment = await this.enrollmentRepository.findById(enrollmentId);
 
-        if (!enrollment) {
-            throw new ApiError(StatusCodes.NOT_FOUND, "Enrollment not found");
-        }
-
-        return enrollment;
+    if (!enrollment) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Enrollment not found");
     }
+
+    return enrollment;
+  }
 }

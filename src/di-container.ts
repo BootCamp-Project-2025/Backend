@@ -607,7 +607,7 @@ container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
 
 container.registerSingleton<GetEnrollmentByIdUseCase>(
   "GetEnrollmentByIdUseCase",
-  GetEnrollmentByIdUseCase,
+  GetEnrollmentByIdUseCase
 );
 
 container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(

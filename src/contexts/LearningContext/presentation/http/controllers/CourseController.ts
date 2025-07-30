@@ -14,7 +14,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 export class CourseController implements ICourseController {
   constructor(
     @inject("ICourseService") private readonly courseService: ICourseService
-  ) { }
+  ) {}
   /* eslint-disable */
   getCompleteCourse(req: Request, res: Response): Promise<void> {
     throw new Error("Method not implemented.");

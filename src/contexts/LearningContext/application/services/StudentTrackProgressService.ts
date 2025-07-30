@@ -12,7 +12,8 @@ import { Enrollment } from "@/contexts/CoreContext/domain/aggregates/Enrollment"
 import { Module } from "../../domain/entities/Module";
 @injectable()
 export default class StudentTrackProgressService
-  implements IStudentTrackProgressService {
+  implements IStudentTrackProgressService
+{
   constructor(
     @inject("CreateStudentTrackProgressUseCase")
     private readonly createUseCase: IUseCase<
@@ -38,8 +39,8 @@ export default class StudentTrackProgressService
     @inject("GetEnrollmentByIdUseCase")
     private readonly getEnrollmentByIdUseCase: IUseCase<string, Enrollment>,
     @inject("GetAllModulesUseCase")
-    private getAllModulesUseCase: IUseCase<string, Module[]>,
-  ) { }
+    private getAllModulesUseCase: IUseCase<string, Module[]>
+  ) {}
 
   async create(
     trackProgress: StudentTrackProgress,
@@ -103,12 +104,11 @@ export default class StudentTrackProgressService
       const progress =
         progresses.length === 0 ? 0 : completed.length / progresses.length;
 
-      const enrollment = await this.getEnrollmentByIdUseCase.execute(
-        enrollmentId
-      );
+      const enrollment =
+        await this.getEnrollmentByIdUseCase.execute(enrollmentId);
 
       const modules = await this.getAllModulesUseCase.execute(
-        enrollment.props.courseId.toString(),
+        enrollment.props.courseId.toString()
       );
 
       return {

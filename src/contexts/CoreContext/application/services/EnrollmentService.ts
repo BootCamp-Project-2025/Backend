@@ -21,7 +21,7 @@ export class EnrollmentService implements IEnrollmentService {
       { trackProgress: StudentTrackProgress; enrollmentId: string },
       void
     >
-  ) { }
+  ) {}
 
   async create(enrollment: Enrollment): Promise<Enrollment> {
     const createdEnrollment =

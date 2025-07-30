@@ -6,7 +6,6 @@ import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities
 import { EnrollmentId } from "@/contexts/CoreContext/domain/valueObjects/EnrollmentId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { IStudentTrackProgressRepository } from "@/contexts/LearningContext/domain/interfaces/IStudentTrackProgressRepository";
-import { Identifier } from "@/contexts/Shared/domain/Identifier";
 
 const mockRepository = {
   findById: jest.fn(),
@@ -116,7 +115,7 @@ describe("UpdateStudentTrackProgressUseCase", () => {
     const genericError = new Error("Database connection failed");
     const consoleSpy = jest
       .spyOn(console, "error")
-      .mockImplementation(() => {});
+      .mockImplementation(jest.fn());
     mockRepository.findById.mockRejectedValue(genericError);
 
     const useCase = makeUseCase();
@@ -139,7 +138,7 @@ describe("UpdateStudentTrackProgressUseCase", () => {
     const genericError = new Error("Database update failed");
     const consoleSpy = jest
       .spyOn(console, "error")
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
     mockRepository.findById.mockResolvedValue(existingTrackProgress);
     mockRepository.update.mockRejectedValue(genericError);
 

@@ -199,6 +199,7 @@ model Experience {
 
 enum MessageType {
   TEXT
+  PROPOSAL
 }
 
 enum MessageStatus {
@@ -233,6 +234,7 @@ model Chat {
 enum ChatStatus {
     ACTIVE
     CLOSED
+    PROPOSAL
 }
 
 enum RequestStatus {

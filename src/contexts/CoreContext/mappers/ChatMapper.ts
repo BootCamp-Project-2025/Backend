@@ -16,7 +16,7 @@ export class ChatMapper {
         ),
         createdAt: chatDto.createdAt,
         name: ChatName.create(chatDto.name ?? ""),
-        status: chatDto.status,
+        status: chatDto.status ?? "ACTIVE",
       },
       new UniqueEntityID(chatDto.id)
     );
@@ -27,7 +27,7 @@ export class ChatMapper {
       name: chatDomain.chatName?.value,
       messages: MessageMapper.ManyDomainToDto(chatDomain.messages),
       participantsIds: chatDomain.participantsIds.map((id) => id.toString()),
-      status: chatDomain.status ?? "ACTIVE",
+      status: chatDomain.status,
       createdAt: chatDomain.createdAt,
     };
   }
@@ -37,7 +37,7 @@ export class ChatMapper {
       id: chatDomain.id.toString(),
       createdAt: chatDomain.createdAt ?? new Date(),
       name: chatDomain.chatName?.value ?? "",
-      status: chatDomain.status ?? "ACTIVE",
+      status: chatDomain.status,
       participantsIds: chatDomain.participantsIds.map((id) => id.toString()),
       messages: MessageMapper.ManyDomainToPersistence(chatDomain.messages),
     };

@@ -19,7 +19,7 @@ export class ChatController implements IChatController {
     const chat = req.body as ChatDto;
     console.log(chat);
 
-    const chatDto: ChatDto = { ...chat, messages: [], status: "ACTIVE" };
+    const chatDto: ChatDto = { ...chat, messages: [] };
     const chatDomain = ChatMapper.DtoToDomain(chatDto);
     const newChatDomain = await this.chatService.create(chatDomain);
     const newChatDto = ChatMapper.DomainToDto(newChatDomain);

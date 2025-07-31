@@ -5,7 +5,7 @@ import { MessageStatus as MessageStatusPrisma } from "@/generated/prisma";
 import { MessageType as MessageTypePrisma } from "@/generated/prisma";
 import { StatusCodes } from "http-status-codes";
 
-export type MessageType = "TEXT";
+export type MessageType = "TEXT" | "PROPOSAL";
 
 export type MessageStatus = "SENT" | "DELIVERED" | "READ" | "FAILED";
 

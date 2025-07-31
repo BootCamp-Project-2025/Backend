@@ -96,6 +96,7 @@ export class ChatRepository implements IChatRepository {
       const newChat = await PrismaClient.chat.create({
         data: {
           name: chatPrisma.name,
+          status: chatPrisma.status,
           participants: {
             connect: chatPrisma.participantsIds.map((id) => ({ id })),
           },

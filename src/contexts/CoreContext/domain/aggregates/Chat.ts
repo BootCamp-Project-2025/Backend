@@ -5,14 +5,14 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { Message } from "../entities/Message";
 
-export type ChatStatus = "ACTIVE" | "CLOSED";
+export type ChatStatus = "ACTIVE" | "CLOSED" | "PROPOSAL";
 
 export interface ChatProps {
   name?: ChatName;
   createdAt?: Date;
   messages: Message[];
   participantsIds: UniqueEntityID[];
-  status?: ChatStatus;
+  status: ChatStatus;
 }
 
 export class Chat extends AggregateRoot<ChatProps> {
@@ -55,6 +55,7 @@ export class Chat extends AggregateRoot<ChatProps> {
         name: props.name ?? ChatName.create(""),
         createdAt: props.createdAt ?? new Date(),
         messages: props.messages ?? [],
+        status: props.status,
         participantsIds: props.participantsIds,
       },
       id

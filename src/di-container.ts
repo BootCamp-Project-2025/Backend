@@ -174,6 +174,8 @@ import { UpdateProposalUseCase } from "./contexts/CoreContext/application/useCas
 import { CreateProposalUseCase } from "./contexts/CoreContext/application/useCases/proposal/CreateProposalUseCase";
 import { IProposalService } from "./contexts/CoreContext/domain/interfaces/services/IProposalService";
 import { ProposalService } from "./contexts/CoreContext/application/services/ProposalService";
+import { ProposalController } from "./contexts/CoreContext/presentation/http/controllers/ProposalController";
+import { IProposalController } from "./contexts/CoreContext/domain/interfaces/controllers/IProposalController";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -655,18 +657,23 @@ container.registerSingleton<IClientRepository>(
 );
 
 // Proposals
+container.registerSingleton<IProposalController>(
+  "IProposalController",
+  ProposalController
+);
+
 container.registerSingleton<IProposalService>(
   "IProposalService",
   ProposalService
 );
 
 container.registerSingleton<IUseCase<string, Proposal>>(
-  "GetProposalByChatId",
+  "GetProposalByChatIdUseCase",
   GetProposalByChatIdUseCase
 );
 container.registerSingleton<
   IUseCase<{ proposalId: string; proposal: Proposal }, Proposal>
->("UpdateProposaluseCase", UpdateProposalUseCase);
+>("UpdateProposalUseCase", UpdateProposalUseCase);
 
 container.registerSingleton<IUseCase<Proposal, Proposal>>(
   "CreateProposalUseCase",

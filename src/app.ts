@@ -18,6 +18,7 @@ import clientRoutes from "./contexts/CoreContext/presentation/http/routes/Client
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
 import { requestRoutes } from "./contexts/CoreContext/presentation/http/routes/RequestsRoutes";
+import { proposalRoutes } from "./contexts/CoreContext/presentation/http/routes/ProposalRoutes";
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/api/lessons", lessonRoutes);
 app.use("/api/users", userRoutes);
 
 app.use("/api/chats", chatRoutes);
+app.use("/api/proposals", proposalRoutes);
 
 app.use("/api/freelancers", freelancersRoutes);
 app.use("/api/clients", clientRoutes);

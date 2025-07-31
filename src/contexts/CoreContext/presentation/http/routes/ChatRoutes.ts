@@ -2,10 +2,12 @@ import { Router } from "express";
 import { container } from "@/di-container";
 import { ChatController } from "../controllers/ChatController";
 import { MessageController } from "../controllers/MessageController";
+import { ProposalController } from "../controllers/ProposalController";
 
 export const chatRoutes = Router({ mergeParams: true });
 const chatController = container.resolve(ChatController);
 const messageController = container.resolve(MessageController);
+const proposalController = container.resolve(ProposalController);
 
 /**
  * @openapi
@@ -60,6 +62,31 @@ chatRoutes.post("", chatController.create);
  *
  */
 chatRoutes.get("/:chatId", chatController.get);
+
+/**
+ * @openapi
+ * /chats/{chatId}/proposals:
+ *   get:
+ *     summary: Get proposal information
+ *     tags:
+ *       - Chat
+ *     parameters:
+ *       - in: path
+ *         name: chatId
+ *         required: true
+ *         description: The ID of the chat
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Proposal retrieved successfully
+ *       404:
+ *         description: Proposal not found
+ *       500:
+ *         description: Server error
+ *
+ */
+chatRoutes.get("/:chatId/proposals", proposalController.getByChatId);
 
 /**
  * @openapi

@@ -103,7 +103,11 @@ router.put("/:id", verifyToken(), controller.cancelEnrollment);
  * @openapi
  * /enrollments/course/{courseId}:
  *   get:
- *     summary: Get enrollment details for the authenticated user in a course
+ *     summary: Check if the authenticated user is enrolled in a specific course
+ *     description: |
+ *       Returns whether the authenticated user is enrolled in the specified course.
+ *       If the user is enrolled, detailed enrollment information is returned.
+ *       If not, the `isEnrolled` field will be false and `enrollment` will be null.
  *     security:
  *       - BearerAuth: []
  *     tags:
@@ -114,10 +118,10 @@ router.put("/:id", verifyToken(), controller.cancelEnrollment);
  *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the course
+ *         description: The ID of the course to check enrollment for.
  *     responses:
  *       '200':
- *         description: Enrollment found
+ *         description: Enrollment status retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -128,9 +132,12 @@ router.put("/:id", verifyToken(), controller.cancelEnrollment);
  *                   properties:
  *                     isEnrolled:
  *                       type: boolean
+ *                       description: Indicates whether the user is currently enrolled in the course
  *                       example: true
  *                     enrollment:
  *                       type: object
+ *                       nullable: true
+ *                       description: Enrollment details if the user is enrolled
  *                       properties:
  *                         id:
  *                           type: string
@@ -140,16 +147,36 @@ router.put("/:id", verifyToken(), controller.cancelEnrollment);
  *                           type: string
  *                         status:
  *                           type: string
- *                           enum: [ENROLLED, COMPLETED]
+ *                           enum: [ENROLLED, COMPLETED, CANCELED]
  *                         createdAt:
  *                           type: string
  *                           format: date-time
- *       '404':
- *         description: Course or enrollment not found
+ *             examples:
+ *               Enrolled:
+ *                 summary: User is enrolled
+ *                 value:
+ *                   data:
+ *                     isEnrolled: true
+ *                     enrollment:
+ *                       id: "abc123"
+ *                       userId: "user456"
+ *                       courseId: "course789"
+ *                       status: "ENROLLED"
+ *                       createdAt: "2025-07-31T02:36:14.533Z"
+ *               NotEnrolled:
+ *                 summary: User is not enrolled
+ *                 value:
+ *                   data:
+ *                     isEnrolled: false
+ *                     enrollment: null
  *       '400':
- *         description: Invalid courseId
+ *         description: Invalid courseId or missing user ID
  *       '401':
- *         description: Unauthorized
+ *         description: Unauthorized – missing or invalid authentication token
+ *       '404':
+ *         description: Course or user not found
+ *       '500':
+ *         description: Internal server error
  */
 
 router.get("/course/:courseId", verifyToken(), controller.checkEnrollment);

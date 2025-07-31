@@ -64,15 +64,16 @@ export class EnrollmentController implements IEnrollmentController {
         courseId
       );
 
-      if (!enrollment) {
-        throw new ApiError(StatusCodes.NOT_FOUND, `Enrollment not found`);
-      }
-
-      const dto = EnrollmentMapper.domainToDto(enrollment);
       const response = new SuccessResponseEntity(
-        { isEnrolled: true, enrollment: dto },
+        {
+          isEnrolled: !!enrollment,
+          enrollment: enrollment
+            ? EnrollmentMapper.domainToDto(enrollment)
+            : null,
+        },
         StatusCodes.OK
       );
+
       return ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof ApiError) throw error;

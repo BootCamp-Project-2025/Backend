@@ -115,6 +115,18 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     return this._id;
   }
 
+  get studentId(): string {
+    return this.props.studentId.value;
+  }
+
+  get teacherId(): string {
+    return this.props.teacherId.value;
+  }
+
+  get chatId(): string {
+    return this.props.chatId.value;
+  }
+
   public cancelCourse(): void {
     this.props.status = P2PCourseStatus.create({ status: "CANCELED" });
   }

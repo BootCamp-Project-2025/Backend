@@ -8,15 +8,18 @@ import { ProposalStatus } from "../domain/valueObjects/ProposalStatus";
 
 const ProposalMapper = {
   dtoToDomain(proposalDto: ProposalDto): Proposal {
-    return Proposal.create({
-      requestId: new UniqueEntityID(proposalDto.requestId),
-      userId: new UniqueEntityID(proposalDto.userId),
-      description: proposalDto.description ?? "",
-      sessions: proposalDto.sessions ?? [],
-      createdAt: proposalDto.createdAt ?? new Date(),
-      status: ProposalStatus.create(proposalDto.status),
-      chatId: new UniqueEntityID(proposalDto.chatId),
-    });
+    return Proposal.create(
+      {
+        requestId: new UniqueEntityID(proposalDto.requestId),
+        userId: new UniqueEntityID(proposalDto.userId),
+        description: proposalDto.description ?? "",
+        sessions: proposalDto.sessions ?? [],
+        createdAt: proposalDto.createdAt ?? new Date(),
+        status: ProposalStatus.create(proposalDto.status),
+        chatId: new UniqueEntityID(proposalDto.chatId),
+      },
+      new UniqueEntityID(proposalDto.id)
+    );
   },
 
   bulkDomainToDto(proposalList: Proposal[]): ProposalDto[] {

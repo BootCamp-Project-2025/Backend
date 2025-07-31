@@ -3,7 +3,7 @@ import { IProposalService } from "../../domain/interfaces/services/IProposalServ
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { Proposal } from "../../domain/entities/Proposal";
 
-injectable();
+@injectable()
 export class ProposalService implements IProposalService {
   constructor(
     @inject("CreateProposalUseCase")

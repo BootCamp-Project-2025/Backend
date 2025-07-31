@@ -31,6 +31,7 @@ export class ProposalRepository implements IProposalReposisory {
   }
   async update(proposalId: string, proposal: Proposal): Promise<Proposal> {
     try {
+      console.log(proposal);
       const updatedProposal = await PrismaClient.proposal.update({
         where: { id: proposalId },
         data: {
@@ -61,6 +62,5 @@ export class ProposalRepository implements IProposalReposisory {
       console.log(error);
       throw new ApiError();
     }
-    throw new Error("Method not implemented.");
   }
 }

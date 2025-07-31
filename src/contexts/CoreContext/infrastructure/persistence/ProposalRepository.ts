@@ -5,11 +5,23 @@ import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient
 import ProposalMapper from "../../mappers/ProposalMapper";
 import { ProposalDto } from "../../domain/interfaces/dtos/ProposalDto";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { PrismaClientKnownRequestError } from "@/generated/prisma/runtime/library";
+import { StatusCodes } from "http-status-codes";
 
 @injectable()
 export class ProposalRepository implements IProposalReposisory {
   async create(proposal: Proposal): Promise<Proposal> {
     try {
+      await PrismaClient.user.findUniqueOrThrow({
+        where: { id: proposal.userId.toString() },
+      });
+      if (proposal.chatId)
+        await PrismaClient.chat.findUniqueOrThrow({
+          where: { id: proposal.chatId.toString() },
+        });
+      await PrismaClient.request.findUniqueOrThrow({
+        where: { id: proposal.requestId.toString() },
+      });
       const newProposal = await PrismaClient.proposal.create({
         data: {
           request: { connect: { id: proposal.requestId.toString() } },
@@ -26,7 +38,17 @@ export class ProposalRepository implements IProposalReposisory {
       return newProposalDomain;
     } catch (error) {
       console.log(error);
-      throw new ApiError();
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new ApiError(
+          StatusCodes.NOT_FOUND,
+          `${error.meta?.modelName ?? "Resource"} not found`
+        );
+      } else {
+        throw new ApiError();
+      }
     }
   }
   async update(proposalId: string, proposal: Proposal): Promise<Proposal> {
@@ -46,7 +68,17 @@ export class ProposalRepository implements IProposalReposisory {
       return updatedProposalDomain;
     } catch (error) {
       console.log(error);
-      throw new ApiError();
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new ApiError(
+          StatusCodes.NOT_FOUND,
+          `${error.meta?.modelName ?? "Resource"} not found`
+        );
+      } else {
+        throw new ApiError();
+      }
     }
   }
   async getByChatId(chatId: string): Promise<Proposal> {
@@ -60,7 +92,17 @@ export class ProposalRepository implements IProposalReposisory {
       return proposalDomain;
     } catch (error) {
       console.log(error);
-      throw new ApiError();
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new ApiError(
+          StatusCodes.NOT_FOUND,
+          `${error.meta?.modelName ?? "Resource"} not found`
+        );
+      } else {
+        throw new ApiError();
+      }
     }
   }
 }

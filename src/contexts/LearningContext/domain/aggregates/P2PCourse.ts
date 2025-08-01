@@ -31,7 +31,7 @@ export type PrimitiveP2PCourseProps = {
 type P2PCourseProps = {
   studentId: UserId;
   teacherId: UserId;
-  chatId: UserId;
+  chatId: ChatId;
   name: P2PCourseName;
   remainingSessions: P2PRemainingSessions;
   status: P2PCourseStatus;

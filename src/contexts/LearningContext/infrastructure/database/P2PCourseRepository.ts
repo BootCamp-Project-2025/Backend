@@ -8,6 +8,7 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
 
   async create(p2pCourse: P2PCourse): Promise<P2PCourse> {
     const p2pCourseDto = P2PCourseMapper.domainToDto(p2pCourse);
+    console.log(p2pCourseDto);
     const p2pCourseDb = await this.p2pCourseDbConnection.create({
       data: {
         ...p2pCourseDto,
@@ -29,12 +30,15 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
     }
     return P2PCourseMapper.dtoToDomain(p2pCourse);
   }
-  async findByTeacherIdAndCourseId(
+  async findByUserIdAndCourseId(
     p2pCourseId: string,
     userId: string
   ): Promise<P2PCourse | null> {
     const p2pCourse = await this.p2pCourseDbConnection.findUnique({
-      where: { id: p2pCourseId, teacherId: userId },
+      where: {
+        id: p2pCourseId,
+        OR: [{ teacherId: userId }, { studentId: userId }],
+      },
       include: { posts: true, files: true, sessions: true },
     });
     if (!p2pCourse) {

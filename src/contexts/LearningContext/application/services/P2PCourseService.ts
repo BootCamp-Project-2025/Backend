@@ -56,8 +56,8 @@ export class P2PCourseService implements IP2PCourseService {
       { p2pCourse: P2PCourse; filePostId: string },
       void
     >,
-    @inject("GetByUserIdAndCourseIdUseCase")
-    private readonly getByUserIdAndCourseIdUseCase: IUseCase<
+    @inject("GetByTeacherIdAndCourseIdUseCase")
+    private readonly GetByTeacherIdAndCourseIdUseCase: IUseCase<
       { p2pCourseId: string; userId: string },
       P2PCourse
     >,
@@ -125,7 +125,7 @@ export class P2PCourseService implements IP2PCourseService {
     p2pCourseId: string,
     userId: string
   ): Promise<P2PCourse> {
-    return await this.getByUserIdAndCourseIdUseCase.execute({
+    return await this.GetByTeacherIdAndCourseIdUseCase.execute({
       p2pCourseId,
       userId,
     });

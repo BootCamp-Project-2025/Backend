@@ -6,7 +6,7 @@ import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCours
 describe("GetByUserIdAndCourseIdUseCase component", () => {
   const p2pCourseRepositoryMock = {
     create: jest.fn(),
-    findByUserId: jest.fn(),
+    findById: jest.fn(),
     findByUserIdAndCourseId: jest.fn(),
   };
   it("Creates correctly", () => {

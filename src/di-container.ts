@@ -179,6 +179,7 @@ import { IProposalController } from "./contexts/CoreContext/domain/interfaces/co
 import { UpdateChatUseCase } from "./contexts/CoreContext/application/useCases/chats/UpdateChatUseCase";
 import GetRequestUseCase from "./contexts/CoreContext/application/useCases/requests/GetRequestUseCase";
 import GetUserProposalsUseCase from "./contexts/CoreContext/application/useCases/proposal/GetUserProposalsUseCase";
+import UpdateRequestUseCase from "./contexts/CoreContext/application/useCases/requests/UpdateRequestUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -557,6 +558,9 @@ container.registerSingleton<IUseCase<string, Request | null>>(
   "GetRequestUseCase",
   GetRequestUseCase
 );
+container.registerSingleton<
+  IUseCase<{ requestId: string; request: Request }, Request>
+>("UpdateRequestUseCase", UpdateRequestUseCase);
 
 // Chats
 container.registerSingleton<IChatController>("ChatController", ChatController);

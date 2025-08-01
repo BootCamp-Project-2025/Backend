@@ -123,7 +123,7 @@ export class Request extends AggregateRoot<RequestProps> {
   public rejectRemainingProposals(acceptedId?: UniqueEntityID): void {
     this.props.proposals.forEach((p) => {
       if (p.id.equals(acceptedId)) return;
-      if (p.status.isPending()) {
+      if (p.status.isNew() || p.status.isSent()) {
         p.reject();
       }
     });

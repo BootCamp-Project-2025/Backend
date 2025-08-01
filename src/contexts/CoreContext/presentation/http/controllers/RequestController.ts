@@ -128,4 +128,31 @@ export class RequestController implements IRequestController {
       } else throw new ApiError();
     }
   };
+
+  update = async (req: ExpressRequest, res: Response): Promise<void> => {
+    try {
+      const { requestId } = req.params;
+      const requestDto = req.body as RequestDto;
+
+      const requestDomain = RequestMapper.dtoToDomain(requestDto);
+      const updatedRequestDomain = await this.service.update(
+        requestId,
+        requestDomain
+      );
+
+      const requestDtoResponse =
+        RequestMapper.domainToDto(updatedRequestDomain);
+      const response = new SuccessResponseEntity(
+        requestDtoResponse,
+        StatusCodes.OK,
+        "Request updated successfully"
+      );
+
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else throw new ApiError();
+    }
+  };
 }

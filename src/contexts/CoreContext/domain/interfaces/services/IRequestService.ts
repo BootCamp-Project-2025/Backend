@@ -5,4 +5,5 @@ export default interface IRequestService {
   create(request: Request): Promise<Request>;
   getUserActiveRequest(userId: string, title: string): Promise<Request[]>;
   getById(params: { requestId: string }): Promise<Request | null>;
+  update(requestId: string, request: Request): Promise<Request>;
 }

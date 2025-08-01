@@ -15,20 +15,20 @@ export const ParamMapper = {
     if (query.language)
       filters.push({ term: { "language.keyword": query.language } });
     if (query.subcategory)
-      filters.push({ term: { "subcategory.keyword": query.subcategory } });
+      filters.push({ term: { "subCategory.keyword": query.subcategory } });
 
     const trimmedQuery = query.query?.trim();
 
     const mustClause = trimmedQuery
       ? [
-          {
-            multi_match: {
-              query: trimmedQuery,
-              fields: multimatchFields,
-              fuzziness: "AUTO" as const,
-            },
+        {
+          multi_match: {
+            query: trimmedQuery,
+            fields: multimatchFields,
+            fuzziness: "AUTO" as const,
           },
-        ]
+        },
+      ]
       : [{ match_all: {} }];
 
     const size = Number(query.size) || 10;
@@ -38,8 +38,8 @@ export const ParamMapper = {
     const sort =
       query.sort && (query.order === "asc" || query.order === "desc")
         ? ([{ [query.sort]: { order: query.order as "asc" | "desc" } }] as [
-            { [key: string]: { order: "asc" | "desc" } },
-          ])
+          { [key: string]: { order: "asc" | "desc" } },
+        ])
         : undefined;
 
     return {
@@ -63,9 +63,9 @@ export const ParamMapper = {
       size: request.query.size ? Number(request.query.size) : 10,
       order: request.query.order as string,
       sort: request.query.sort as "asc" | "desc",
-      category: request.query.category as string,
-      subcategory: request.query.subcategory as string,
-      language: request.query.language as string,
+      category: (request.query.category as string)?.toLowerCase(),
+      subcategory: (request.query.subcategory as string)?.toLowerCase(),
+      language: (request.query.language as string)?.toLowerCase(),
     };
   },
 };

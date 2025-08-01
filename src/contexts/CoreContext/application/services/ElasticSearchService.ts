@@ -3,9 +3,9 @@ import { SearchQueryDto } from "../../domain/interfaces/dtos/search/SearchQueryD
 import { ISearchService } from "../../domain/interfaces/services/ISearchService";
 import { Client } from "@elastic/elasticsearch";
 import { SearchResponse } from "@elastic/elasticsearch/lib/api/types";
-import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { RequestDto } from "../../domain/interfaces/dtos/RequestDto";
 import dotenv from "dotenv";
+import { CourseIndex } from "@/contexts/LearningContext/domain/dtos/CourseIndex";
 
 dotenv.config();
 
@@ -23,13 +23,29 @@ export class ElasticSearchService implements ISearchService {
     });
   }
 
+  async updateResource(
+    resource: string,
+    resourceDto: CourseIndex | RequestDto
+  ): Promise<void> {
+    try {
+      await this.esClient.update({
+        index: resource,
+        id: resourceDto.id as string,
+        doc: resourceDto,
+        doc_as_upsert: true,
+      });
+    } catch (error) {
+      console.error("Method not implemented.", error);
+    }
+  }
+
   async search(params: SearchQueryDto): Promise<SearchResponse> {
     return await this.esClient.search(params);
   }
 
   async indexResource(
     resource: string,
-    resourceDto: CourseDTO | RequestDto
+    resourceDto: CourseIndex | RequestDto
   ): Promise<void> {
     await this.esClient.index({
       index: resource,

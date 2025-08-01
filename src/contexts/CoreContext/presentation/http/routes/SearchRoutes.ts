@@ -2,7 +2,15 @@ import { ISearchController } from "@/contexts/CoreContext/domain/interfaces/cont
 import { Router } from "express";
 import { container } from "tsyringe";
 
-const controller = container.resolve<ISearchController>("ISearchController");
+const requestSearchController = container.resolve<ISearchController>(
+  "RequestSearchController"
+);
+const courseSearchController = container.resolve<ISearchController>(
+  "CourseSearchController"
+);
+
 export const router = Router();
 
-router.get("/search", controller.search);
+router.get("/courses/search", courseSearchController.search);
+
+router.get("/requests/search", requestSearchController.search);

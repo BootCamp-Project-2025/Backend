@@ -1,10 +1,10 @@
 import { RequestDto } from "@/contexts/CoreContext/domain/interfaces/dtos/RequestDto";
 import { DomainEvent } from "./DomainEvent";
-import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
+import { CourseIndex } from "@/contexts/LearningContext/domain/dtos/CourseIndex";
 
 export class IndexResourceEvent implements DomainEvent {
   occurredOn = new Date();
   constructor(
-    public payload: { resource: string; resourceDto: RequestDto | CourseDTO }
+    public payload: { resource: string; resourceDto: RequestDto | CourseIndex }
   ) {}
 }

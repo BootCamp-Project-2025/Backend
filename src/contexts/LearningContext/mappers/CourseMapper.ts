@@ -11,6 +11,9 @@ import { CourseCategory } from "../domain/valueObjects/CourseCategory";
 import { CourseSubCategory } from "../domain/valueObjects/CourseSubCategory";
 import { CourseLanguage } from "../domain/valueObjects/CourseLanguage";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
+import { CourseIndex } from "../domain/dtos/CourseIndex";
+import { Module } from "../domain/entities/Module";
+import { Lesson } from "../domain/entities/Lesson";
 
 export class CourseMapper {
   static toDomain(prismaCourse: PrismaCourse): Course {
@@ -132,5 +135,28 @@ export class CourseMapper {
     };
 
     return Course.create(props, new UniqueEntityID(dto.id));
+  }
+
+  static domainToIndex(course: Course): CourseIndex {
+    return {
+      id: course.id.toString(),
+      name: course.getName().value,
+      description: course.getDescription().value,
+      category: course.getCategory()?.value,
+      subCategory: course.getSubCategory()?.value,
+      language: course.getLanguage()?.value,
+      field: course.getField()?.value,
+      time: course.getTime(),
+      userId: course.getUserID().toString(),
+      modules: course
+        .getModules()
+        ?.getItems()
+        .map((module: Module) => ({
+          title: module.props.title.value,
+          lessons: module.props.lessons.getItems().map((lesson: Lesson) => ({
+            description: lesson.props.description.value,
+          })),
+        })),
+    };
   }
 }

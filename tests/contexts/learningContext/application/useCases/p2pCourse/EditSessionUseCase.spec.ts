@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import AddSessionUseCase from "@/contexts/LearningContext/application/useCases/p2pCourse/AddSessionUseCase";
 import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCourse";
 import LiveSession from "@/contexts/LearningContext/domain/entities/LiveSession";
 import EditSessionUseCase from "@/contexts/LearningContext/application/useCases/p2pCourse/EditSessionUseCase";

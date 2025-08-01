@@ -1,6 +1,5 @@
 import "reflect-metadata";
 
-import { FilePost } from "@/contexts/LearningContext/domain/entities/FilePost";
 import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCourse";
 import RemoveFilePostUseCase from "@/contexts/LearningContext/application/useCases/p2pCourse/RemoveFilePostUseCase";
 

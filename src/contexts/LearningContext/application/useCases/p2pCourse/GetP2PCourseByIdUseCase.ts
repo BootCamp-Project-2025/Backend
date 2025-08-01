@@ -3,8 +3,9 @@ import IP2PCourseRepository from "@/contexts/LearningContext/domain/interfaces/I
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export default class GetP2PCourseByIdUseCase
   implements IUseCase<string, P2PCourse | null>
 {

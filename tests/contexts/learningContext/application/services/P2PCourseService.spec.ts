@@ -20,8 +20,8 @@ describe("P2PCourseService component", () => {
   const editPostUseCase = { execute: jest.fn() };
   const addFilePostUseCase = { execute: jest.fn() };
   const removeFilePostUseCase = { execute: jest.fn() };
-  const GetByTeacherIdAndCourseIdUseCase = { execute: jest.fn() };
-  const getByIdUseCase = { execute: jest.fn() };
+  const getByTeacherIdAndCourseIdUseCase = { execute: jest.fn() };
+  const getP2PCourseByIdUseCase = { execute: jest.fn() };
   const service = new P2PCourseService(
     createP2PCourseUseCase,
     addSessionUseCase,
@@ -33,8 +33,8 @@ describe("P2PCourseService component", () => {
     editPostUseCase,
     addFilePostUseCase,
     removeFilePostUseCase,
-    GetByTeacherIdAndCourseIdUseCase,
-    getByIdUseCase
+    getByTeacherIdAndCourseIdUseCase,
+    getP2PCourseByIdUseCase
   );
 
   const p2pCourse = P2PCourse.createFromPrimitive({
@@ -49,7 +49,7 @@ describe("P2PCourseService component", () => {
     sessions: [],
   });
 
-  getByIdUseCase.execute.mockResolvedValue(p2pCourse);
+  getP2PCourseByIdUseCase.execute.mockResolvedValue(p2pCourse);
 
   it("Creates correctly", () => {
     expect(service).toBeInstanceOf(P2PCourseService);
@@ -169,9 +169,9 @@ describe("P2PCourseService component", () => {
     });
   });
 
-  it("Calls GetByTeacherIdAndCourseIdUseCase correctly", async () => {
+  it("Calls getByTeacherIdAndCourseIdUseCase correctly", async () => {
     await service.getByUserIdAndCourseId("p2pCourseTestId", "userTestId");
-    expect(GetByTeacherIdAndCourseIdUseCase.execute).toHaveBeenCalledWith({
+    expect(getByTeacherIdAndCourseIdUseCase.execute).toHaveBeenCalledWith({
       p2pCourseId: "p2pCourseTestId",
       userId: "userTestId",
     });

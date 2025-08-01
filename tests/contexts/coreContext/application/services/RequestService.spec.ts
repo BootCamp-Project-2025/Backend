@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import RequestServicec from "@/contexts/CoreContext/application/services/RequestService";
+import RequestService from "@/contexts/CoreContext/application/services/RequestService";
 import RequestMapper from "@/contexts/CoreContext/mappers/RequestMapper";
 
 const basicRequest = {
@@ -26,10 +26,14 @@ describe("RequestService", () => {
   const deleteRequestUseCase = { execute: mockFn };
   const createRequestUseCase = { execute: mockFn };
   const getUserActiveRequestUseCase = { execute: mockFn };
-  const service = new RequestServicec(
+  const updateRequestUseCase = { execute: mockFn };
+  const getRequestUseCase = { execute: mockFn };
+  const service = new RequestService(
     deleteRequestUseCase,
     createRequestUseCase,
-    getUserActiveRequestUseCase
+    getUserActiveRequestUseCase,
+    updateRequestUseCase,
+    getRequestUseCase
   );
   it("exists", () => {
     expect(service.create).toBeDefined();

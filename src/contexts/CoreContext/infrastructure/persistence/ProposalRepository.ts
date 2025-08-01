@@ -105,4 +105,30 @@ export class ProposalRepository implements IProposalReposisory {
       }
     }
   }
+  async findAllByUserId(userId: string): Promise<Proposal[]> {
+    try {
+      const proposalsDb = await PrismaClient.proposal.findMany({
+        where: { userId },
+        include: {
+          request: true,
+          user: true,
+        },
+      });
+      console.log("proposallsss", proposalsDb);
+      return ProposalMapper.bulkDtoToDomain(proposalsDb as ProposalDto[]);
+    } catch (error) {
+      console.log(error);
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new ApiError(
+          StatusCodes.NOT_FOUND,
+          `${error.meta?.modelName ?? "Resource"} not found`
+        );
+      } else {
+        throw new ApiError();
+      }
+    }
+  }
 }

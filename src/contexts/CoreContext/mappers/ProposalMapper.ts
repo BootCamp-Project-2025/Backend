@@ -25,6 +25,11 @@ const ProposalMapper = {
   bulkDomainToDto(proposalList: Proposal[]): ProposalDto[] {
     return proposalList.map((proposal) => ProposalMapper.DomainToDto(proposal));
   },
+  bulkDtoToDomain(proposalListDto: ProposalDto[]): Proposal[] {
+    return proposalListDto.map((proposalDto) =>
+      ProposalMapper.dtoToDomain(proposalDto)
+    );
+  },
 
   DomainToDto(proposal: Proposal): ProposalDto {
     return ProposalBuilder.builder()

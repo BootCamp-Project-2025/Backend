@@ -3,7 +3,7 @@ import { PostDTO } from "./PostDTO";
 import { SessionDTO } from "./SessionDTO";
 
 export type P2PCourseDTO = {
-  id: string;
+  id?: string;
   studentId: string;
   teacherId: string;
   chatId: string;

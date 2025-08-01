@@ -12,7 +12,7 @@ export class SearchController implements ISearchController {
   constructor(
     @inject("ISearchService")
     private searchService: ISearchService
-  ) { }
+  ) {}
 
   search = async (req: Request, res: Response): Promise<void> => {
     const params: QueryParamsDto = {

@@ -180,9 +180,17 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
    * @throws If session was completed throw an ApiError
    */
   public deleteSession(sessionId: UniqueEntityID): void {
-    this.props.sessions = this.props.sessions.filter((session) => {
-      P2PCourse.validateDeleteOrThrow(sessionId, session);
-      return !session.id.equals(sessionId);
+    const deleteIndex = this.props.sessions.findIndex((session) => {
+      session.id.equals(sessionId);
+    });
+    this.validateDeleteOrThrow(deleteIndex);
+    this.props.sessions.splice(deleteIndex, 0);
+    this.addRemainingSessions();
+  }
+
+  private addRemainingSessions() {
+    this.props.remainingSessions = P2PRemainingSessions.create({
+      remainingSession: this.remainingSessions.value + 1,
     });
   }
 
@@ -190,17 +198,17 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
    * @description Check if the session that we are trying to delete is completed, in that case it throws
    * @throws If the session we are trying to delete is completed, it throws an ApiError
    */
-  static validateDeleteOrThrow(
-    deleteSessionId: UniqueEntityID,
-    session: LiveSession
-  ): void {
-    if (
-      session.id.equals(deleteSessionId) &&
-      session.status.value === "COMPLETED"
-    ) {
+  private validateDeleteOrThrow(deleteIndex: number): void {
+    if (deleteIndex === -1) {
       throw new ApiError(
-        StatusCodes.CONFLICT,
-        "A completed session can not be deleted"
+        StatusCodes.NOT_FOUND,
+        "The session you are trying to delete doesn't exist"
+      );
+    }
+    if (this.props.sessions[deleteIndex].status.value === "COMPLETED") {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        "A completed session can't be deleted"
       );
     }
   }

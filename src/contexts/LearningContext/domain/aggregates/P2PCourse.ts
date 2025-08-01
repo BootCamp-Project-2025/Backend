@@ -80,10 +80,12 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
       chatId: ChatId.create({ chatId: props.chatId }),
       name: P2PCourseName.create({ name: props.name }),
       status: P2PCourseStatus.create({ status: props.status }),
-      posts: props.posts.map((post) => Post.createFromPrimitive(post)),
-      files: props.files.map((file) => FilePost.createFromPrimitive(file)),
+      posts: props.posts.map((post) => Post.createFromPrimitive(post, post.id)),
+      files: props.files.map((file) =>
+        FilePost.createFromPrimitive(file, file.id)
+      ),
       sessions: props.sessions.map((session) =>
-        LiveSession.createFromPrimitive(session)
+        LiveSession.createFromPrimitive(session, session.id)
       ),
       remainingSessions: P2PRemainingSessions.create({
         remainingSession: props.remainingSession,
@@ -250,5 +252,81 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     this.props.files = this.props.files.filter(
       (file) => !file.id.equals(fileId)
     );
+  }
+
+  public getSession(sessionId: UniqueEntityID): LiveSession {
+    const sessionIndex = this.sessions.findIndex((session) =>
+      session.id.equals(sessionId)
+    );
+
+    if (sessionIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Session not found");
+    }
+    return this.sessions[sessionIndex];
+  }
+
+  public updateSession(newSession: LiveSession): LiveSession {
+    const sessionIndex = this.sessions.findIndex((post) =>
+      post.id.equals(newSession.id)
+    );
+    if (sessionIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Session not found");
+    }
+    P2PCourse.validateChanges<LiveSession>(
+      newSession,
+      this.sessions[sessionIndex]
+    );
+    this.sessions[sessionIndex] = newSession;
+    return this.sessions[sessionIndex];
+  }
+
+  public getPost(postId: UniqueEntityID): Post {
+    const postIndex = this.posts.findIndex((post) => post.id.equals(postId));
+
+    if (postIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Post not found");
+    }
+    return this.posts[postIndex];
+  }
+
+  public updatePost(newPost: Post): Post {
+    const postIndex = this.posts.findIndex((post) =>
+      post.id.equals(newPost.id)
+    );
+    if (postIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Post not found");
+    }
+    P2PCourse.validateChanges<Post>(newPost, this.posts[postIndex]);
+    this.posts[postIndex] = newPost;
+    return this.posts[postIndex];
+  }
+
+  public getFilePost(filePostId: UniqueEntityID): FilePost {
+    const filePostIndex = this.files.findIndex((filePost) =>
+      filePost.id.equals(filePostId)
+    );
+
+    if (filePostIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "File not found");
+    }
+    return this.files[filePostIndex];
+  }
+
+  public updateFilePost(newFilePost: FilePost): FilePost {
+    const filePostIndex = this.files.findIndex((filePost) =>
+      filePost.id.equals(newFilePost.id)
+    );
+    if (filePostIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "File not found");
+    }
+    P2PCourse.validateChanges<FilePost>(newFilePost, this.files[filePostIndex]);
+    this.files[filePostIndex] = newFilePost;
+    return this.files[filePostIndex];
+  }
+
+  private static validateChanges<T>(object1: T, object2: T) {
+    if (JSON.stringify(object1) === JSON.stringify(object2)) {
+      throw new ApiError(StatusCodes.OK, "No changes where made");
+    }
   }
 }

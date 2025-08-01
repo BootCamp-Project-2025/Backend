@@ -3,6 +3,7 @@ import { Entity } from "@/contexts/Shared/domain/Entity";
 import FilePostUrl from "../valueObjects/FilePostUrl";
 
 export type PrimitiveFilePostProps = {
+  id?: string;
   url: string;
   creationDate: Date;
 };

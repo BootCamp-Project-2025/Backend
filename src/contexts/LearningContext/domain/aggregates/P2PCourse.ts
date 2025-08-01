@@ -225,7 +225,7 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
       session.id.equals(sessionId)
     );
     this.validateDeleteOrThrow(deleteIndex);
-    this.props.sessions.splice(deleteIndex, 0);
+    this.props.sessions.splice(deleteIndex, 1);
   }
 
   /**

@@ -6,7 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-export default class GetByTeacherIdAndCourseIdUseCase
+export default class GetByUserIdAndCourseIdUseCase
   implements IUseCase<{ p2pCourseId: string; userId: string }, P2PCourse>
 {
   constructor(
@@ -20,7 +20,7 @@ export default class GetByTeacherIdAndCourseIdUseCase
     p2pCourseId: string;
     userId: string;
   }): Promise<P2PCourse> {
-    const p2pCourse = await this.p2pCourseRepository.findByTeacherIdAndCourseId(
+    const p2pCourse = await this.p2pCourseRepository.findByUserIdAndCourseId(
       p2pCourseId,
       userId
     );

@@ -5,6 +5,9 @@ import { Client } from "@elastic/elasticsearch";
 import { SearchResponse } from "@elastic/elasticsearch/lib/api/types";
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { RequestDto } from "../../domain/interfaces/dtos/RequestDto";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 @injectable()
 export class ElasticSearchService implements ISearchService {
@@ -12,10 +15,10 @@ export class ElasticSearchService implements ISearchService {
 
   constructor() {
     this.esClient = new Client({
-      node: "http://localhost:9200",
+      node: process.env.ELASTICSEARCH_URL || "http://localhost:9200",
       auth: {
-        username: "elastic",
-        password: "5tuXfkkZ",
+        username: process.env.ELASTICSEARCH_USER || "elastic",
+        password: process.env.ELASTICSEARCH_PASSWORD || "5tuXfkkZ",
       },
     });
   }

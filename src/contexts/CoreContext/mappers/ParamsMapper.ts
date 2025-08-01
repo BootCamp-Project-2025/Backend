@@ -21,14 +21,14 @@ export const ParamMapper = {
 
     const mustClause = trimmedQuery
       ? [
-        {
-          multi_match: {
-            query: trimmedQuery,
-            fields: multimatchFields,
-            fuzziness: "AUTO" as const,
+          {
+            multi_match: {
+              query: trimmedQuery,
+              fields: multimatchFields,
+              fuzziness: "AUTO" as const,
+            },
           },
-        },
-      ]
+        ]
       : [{ match_all: {} }];
 
     const size = Number(query.size) || 10;
@@ -38,8 +38,8 @@ export const ParamMapper = {
     const sort =
       query.sort && (query.order === "asc" || query.order === "desc")
         ? ([{ [query.sort]: { order: query.order as "asc" | "desc" } }] as [
-          { [key: string]: { order: "asc" | "desc" } },
-        ])
+            { [key: string]: { order: "asc" | "desc" } },
+          ])
         : undefined;
 
     return {

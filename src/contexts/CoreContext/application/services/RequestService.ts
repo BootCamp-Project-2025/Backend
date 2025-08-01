@@ -14,7 +14,9 @@ export default class RequestService implements IRequestService {
     private readonly getUserActiveRequestUseCase: IUseCase<
       { userId: string; title: string },
       Request[]
-    >
+    >,
+    @inject("GetRequestUseCase")
+    private readonly getRequestUseCase: IUseCase<string, Request>
   ) {}
 
   async delete(requestId: string): Promise<void> {
@@ -28,5 +30,8 @@ export default class RequestService implements IRequestService {
     title: string
   ): Promise<Request[]> {
     return await this.getUserActiveRequestUseCase.execute({ userId, title });
+  }
+  async getById({ requestId }: { requestId: string }): Promise<Request | null> {
+    return await this.getRequestUseCase.execute(requestId);
   }
 }

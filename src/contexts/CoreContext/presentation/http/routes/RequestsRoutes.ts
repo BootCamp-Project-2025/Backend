@@ -91,6 +91,33 @@ requestRoutes.delete("/:requestId", controller.delete);
 
 /**
  * @openapi
+ *
+ * /requests/{requestId}:
+ *  get:
+ *      summary: Get a request by ID
+ *      tags:
+ *       - Requests
+ *      security:
+ *       - BearerAuth: []
+ *      parameters:
+ *       - in: path
+ *         name: requestId
+ *         required: true
+ *         description: The ID of the request
+ *         schema:
+ *           type: string
+ *      responses:
+ *          200:
+ *              description: Returns the requested entity
+ *          404:
+ *              description: Request not found
+ *          401:
+ *              description: Unauthorized (missing or invalid token)
+ */
+requestRoutes.get("/:requestId", verifyToken(), controller.getById);
+
+/**
+ * @openapi
  * components:
  *   schemas:
  *     Request:

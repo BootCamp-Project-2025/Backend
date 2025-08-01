@@ -178,37 +178,6 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
   }
 
   /**
-   * @description Delete a session of the sessions list
-   * @throws If session was completed throw an ApiError
-   */
-  public deleteSession(sessionId: UniqueEntityID): void {
-    const deleteIndex = this.props.sessions.findIndex((session) => {
-      session.id.equals(sessionId);
-    });
-    this.validateDeleteOrThrow(deleteIndex);
-    this.props.sessions.splice(deleteIndex, 0);
-  }
-
-  /**
-   * @description Check if the session that we are trying to delete is completed, in that case it throws
-   * @throws If the session we are trying to delete is completed, it throws an ApiError
-   */
-  private validateDeleteOrThrow(deleteIndex: number): void {
-    if (deleteIndex === -1) {
-      throw new ApiError(
-        StatusCodes.NOT_FOUND,
-        "The session you are trying to delete doesn't exist"
-      );
-    }
-    if (this.props.sessions[deleteIndex].status.value === "COMPLETED") {
-      throw new ApiError(
-        StatusCodes.NOT_FOUND,
-        "A completed session can't be deleted"
-      );
-    }
-  }
-
-  /**
    * @description Add a new session to the sessions list if the number of existing sessions doesnt excede the remaining sessions
    * @throws If alredy has enoguh sessions to cover the remaining session
    */
@@ -247,14 +216,38 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     );
   }
 
+  /**
+   * @description Delete a session of the sessions list
+   * @throws If session was completed throw an ApiError
+   */
+  public deleteSession(sessionId: UniqueEntityID): void {
+    const deleteIndex = this.props.sessions.findIndex((session) =>
+      session.id.equals(sessionId)
+    );
+    this.validateDeleteOrThrow(deleteIndex);
+    this.props.sessions.splice(deleteIndex, 0);
+  }
+
+  /**
+   * @description Check if the session that we are trying to delete is completed, in that case it throws
+   * @throws If the session we are trying to delete is completed, it throws an ApiError
+   */
+  private validateDeleteOrThrow(deleteIndex: number): void {
+    P2PCourse.validateSessionIndex(deleteIndex);
+    if (this.props.sessions[deleteIndex].status.value === "COMPLETED") {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        "A completed session can't be deleted"
+      );
+    }
+  }
+
   public getSession(sessionId: UniqueEntityID): LiveSession {
     const sessionIndex = this.sessions.findIndex((session) =>
       session.id.equals(sessionId)
     );
 
-    if (sessionIndex === -1) {
-      throw new ApiError(StatusCodes.NOT_FOUND, "Session not found");
-    }
+    P2PCourse.validateSessionIndex(sessionIndex);
     return this.sessions[sessionIndex];
   }
 
@@ -262,15 +255,19 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     const sessionIndex = this.sessions.findIndex((session) =>
       session.id.equals(newSession.id)
     );
-    if (sessionIndex === -1) {
-      throw new ApiError(StatusCodes.NOT_FOUND, "Session not found");
-    }
+    P2PCourse.validateSessionIndex(sessionIndex);
     P2PCourse.validateChanges<LiveSession>(
       newSession,
       this.sessions[sessionIndex]
     );
     this.sessions[sessionIndex] = newSession;
     return this.sessions[sessionIndex];
+  }
+
+  private static validateSessionIndex(sessionIndex: number) {
+    if (sessionIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Session not found");
+    }
   }
 
   public getPost(postId: UniqueEntityID): Post {

@@ -57,6 +57,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/api/enrollments", enrollmentRoutes);
 
+/*app.use("/api/requestsSearch", searchRoutes);
+app.use("/api/coursesSearch", searchRoutes);*/
+
 app.use(ErrorHandlerMiddleware.handle);
 
 export default app;

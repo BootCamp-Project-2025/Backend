@@ -6,6 +6,8 @@ import IUseCase from "../../domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { QueryParamsDto } from "@/contexts/CoreContext/domain/interfaces/dtos/search/QueryParamsDto";
+import { PageDto } from "@/contexts/CoreContext/domain/interfaces/dtos/search/PageDto";
 
 @injectable()
 export class CourseService implements ICourseService {
@@ -27,7 +29,13 @@ export class CourseService implements ICourseService {
     private readonly deleteCourseUseCase: IUseCase<string, void>,
 
     @inject("PublishCourseUseCase")
-    private publishCourseUseCase: IUseCase<string, boolean>
+    private publishCourseUseCase: IUseCase<string, boolean>,
+
+    @inject("SearchCoursesUseCase")
+    private readonly searchCoursesUseCase: IUseCase<
+      QueryParamsDto,
+      PageDto<Course>
+    >
   ) {}
 
   async getAllCourses(): Promise<CourseDTO[]> {
@@ -70,5 +78,9 @@ export class CourseService implements ICourseService {
 
   async deleteCourse(id: string): Promise<void> {
     await this.deleteCourseUseCase.execute(id);
+  }
+
+  async searchCourse(params: QueryParamsDto): Promise<PageDto<Course>> {
+    return await this.searchCoursesUseCase.execute(params);
   }
 }

@@ -189,6 +189,8 @@ import { SearchController } from "./contexts/CoreContext/presentation/http/contr
 import { QueryParamsDto } from "./contexts/CoreContext/domain/interfaces/dtos/search/QueryParamsDto";
 import { SearchRequestUseCase } from "./contexts/CoreContext/application/useCases/requests/SearchRequestUseCase";
 import { PageDto } from "./contexts/CoreContext/domain/interfaces/dtos/search/PageDto";
+import { CourseSearchController } from "./contexts/CoreContext/presentation/http/controllers/SearchCourseController";
+import { SearchCourseUseCase } from "./contexts/LearningContext/application/useCases/searchCourseUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -784,5 +786,25 @@ container.registerSingleton<IStudentTrackProgressService>(
   StudentTrackProgressService
 );
 
+
+container.registerSingleton<ISearchService>(
+  "ISearchService",
+  ElasticSearchService
+);
+
+container.registerSingleton<ISearchController>(
+  "RequestSearchController",
+  SearchController
+);
+
+container.registerSingleton<ISearchController>(
+  "CourseSearchController",
+  CourseSearchController
+);
+
+container.registerSingleton<SearchCourseUseCase>(
+  "SearchCoursesUseCase",
+  SearchCourseUseCase
+);
 
 export { container };

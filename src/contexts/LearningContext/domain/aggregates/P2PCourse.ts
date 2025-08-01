@@ -266,8 +266,8 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
   }
 
   public updateSession(newSession: LiveSession): LiveSession {
-    const sessionIndex = this.sessions.findIndex((post) =>
-      post.id.equals(newSession.id)
+    const sessionIndex = this.sessions.findIndex((session) =>
+      session.id.equals(newSession.id)
     );
     if (sessionIndex === -1) {
       throw new ApiError(StatusCodes.NOT_FOUND, "Session not found");

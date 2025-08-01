@@ -7,7 +7,7 @@ describe("GetByUserIdAndCourseIdUseCase component", () => {
   const p2pCourseRepositoryMock = {
     create: jest.fn(),
     findById: jest.fn(),
-    findByUserIdAndCourseId: jest.fn(),
+    findByTeacherIdAndCourseId: jest.fn(),
   };
   it("Creates correctly", () => {
     const useCase = new GetByUserIdAndCourseIdUseCase(p2pCourseRepositoryMock);
@@ -16,7 +16,7 @@ describe("GetByUserIdAndCourseIdUseCase component", () => {
 
   it("Throws error if there is no course found", async () => {
     const useCase = new GetByUserIdAndCourseIdUseCase(p2pCourseRepositoryMock);
-    p2pCourseRepositoryMock.findByUserIdAndCourseId.mockResolvedValue(null);
+    p2pCourseRepositoryMock.findByTeacherIdAndCourseId.mockResolvedValue(null);
     expect(
       useCase.execute({ p2pCourseId: "p2pCourseTestId", userId: "userTestId" })
     ).rejects.toThrow(ApiError);
@@ -35,7 +35,7 @@ describe("GetByUserIdAndCourseIdUseCase component", () => {
       files: [],
       sessions: [],
     });
-    p2pCourseRepositoryMock.findByUserIdAndCourseId.mockResolvedValue(
+    p2pCourseRepositoryMock.findByTeacherIdAndCourseId.mockResolvedValue(
       p2pCourse
     );
     expect(

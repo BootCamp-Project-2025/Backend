@@ -57,12 +57,12 @@ export class P2PCourseService implements IP2PCourseService {
       void
     >,
     @inject("GetByTeacherIdAndCourseIdUseCase")
-    private readonly GetByTeacherIdAndCourseIdUseCase: IUseCase<
+    private readonly getByTeacherIdAndCourseIdUseCase: IUseCase<
       { p2pCourseId: string; userId: string },
       P2PCourse
     >,
-    @inject("GetByIdUseCase")
-    private readonly GetByIdUseCase: IUseCase<string, P2PCourse>
+    @inject("GetP2PCourseByIdUseCase")
+    private readonly getP2PCourseByIdUseCase: IUseCase<string, P2PCourse>
   ) {}
   async create(course: P2PCourse): Promise<P2PCourse> {
     return await this.createP2PCourseUseCase.execute(course);
@@ -71,51 +71,51 @@ export class P2PCourseService implements IP2PCourseService {
     p2pCourseId: string,
     session: LiveSession
   ): Promise<LiveSession> {
-    const p2pCourse = await this.GetByIdUseCase.execute(p2pCourseId);
+    const p2pCourse = await this.getP2PCourseByIdUseCase.execute(p2pCourseId);
     return await this.addSessionUseCase.execute({ p2pCourse, session });
   }
   async removeSession(p2pCourseId: string, sessionId: string): Promise<void> {
-    const p2pCourse = await this.GetByIdUseCase.execute(p2pCourseId);
+    const p2pCourse = await this.getP2PCourseByIdUseCase.execute(p2pCourseId);
     return await this.removeSessionUseCase.execute({ p2pCourse, sessionId });
   }
   async editSession(
     p2pCourseId: string,
     session: LiveSession
   ): Promise<LiveSession> {
-    const p2pCourse = await this.GetByIdUseCase.execute(p2pCourseId);
+    const p2pCourse = await this.getP2PCourseByIdUseCase.execute(p2pCourseId);
     return await this.editSessionUseCase.execute({ p2pCourse, session });
   }
   async completeSession(
     p2pCourseId: string,
     sessionId: string
   ): Promise<LiveSession> {
-    const p2pCourse = await this.GetByIdUseCase.execute(p2pCourseId);
+    const p2pCourse = await this.getP2PCourseByIdUseCase.execute(p2pCourseId);
     return await this.completeSessionUseCase.execute({
       p2pCourse,
       sessionId,
     });
   }
   async addPost(p2pCourseId: string, post: Post): Promise<Post> {
-    const p2pCourse = await this.GetByIdUseCase.execute(p2pCourseId);
+    const p2pCourse = await this.getP2PCourseByIdUseCase.execute(p2pCourseId);
     return await this.addPostUseCase.execute({ p2pCourse, post });
   }
   async removePost(p2pCourseId: string, postId: string): Promise<void> {
-    const p2pCourse = await this.GetByIdUseCase.execute(p2pCourseId);
+    const p2pCourse = await this.getP2PCourseByIdUseCase.execute(p2pCourseId);
     return await this.removePostUseCase.execute({ p2pCourse, postId });
   }
   async editPost(p2pCourseId: string, post: Post): Promise<Post> {
-    const p2pCourse = await this.GetByIdUseCase.execute(p2pCourseId);
+    const p2pCourse = await this.getP2PCourseByIdUseCase.execute(p2pCourseId);
     return await this.editPostUseCase.execute({ p2pCourse, post });
   }
   async addFilePost(
     p2pCourseId: string,
     filePost: FilePost
   ): Promise<FilePost> {
-    const p2pCourse = await this.GetByIdUseCase.execute(p2pCourseId);
+    const p2pCourse = await this.getP2PCourseByIdUseCase.execute(p2pCourseId);
     return await this.addFilePostUseCase.execute({ p2pCourse, filePost });
   }
   async removeFilePost(p2pCourseId: string, filePostId: string): Promise<void> {
-    const p2pCourse = await this.GetByIdUseCase.execute(p2pCourseId);
+    const p2pCourse = await this.getP2PCourseByIdUseCase.execute(p2pCourseId);
     return await this.removeFilePostUseCase.execute({
       p2pCourse,
       filePostId,
@@ -125,7 +125,7 @@ export class P2PCourseService implements IP2PCourseService {
     p2pCourseId: string,
     userId: string
   ): Promise<P2PCourse> {
-    return await this.GetByTeacherIdAndCourseIdUseCase.execute({
+    return await this.getByTeacherIdAndCourseIdUseCase.execute({
       p2pCourseId,
       userId,
     });

@@ -2,8 +2,9 @@ import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCours
 import IPostRepository from "@/contexts/LearningContext/domain/interfaces/IPostRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export default class RemovePostUseCase
   implements IUseCase<{ p2pCourse: P2PCourse; postId: string }, void>
 {

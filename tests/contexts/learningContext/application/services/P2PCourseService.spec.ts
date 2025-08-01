@@ -21,6 +21,7 @@ describe("P2PCourseService component", () => {
   const addFilePostUseCase = { execute: jest.fn() };
   const removeFilePostUseCase = { execute: jest.fn() };
   const getByUserIdAndCourseIdUseCase = { execute: jest.fn() };
+  const getByIdUseCase = { execute: jest.fn() };
   const service = new P2PCourseService(
     createP2PCourseUseCase,
     addSessionUseCase,
@@ -32,8 +33,24 @@ describe("P2PCourseService component", () => {
     editPostUseCase,
     addFilePostUseCase,
     removeFilePostUseCase,
-    getByUserIdAndCourseIdUseCase
+    getByUserIdAndCourseIdUseCase,
+    getByIdUseCase
   );
+
+  const p2pCourse = P2PCourse.createFromPrimitive({
+    studentId: "studentId",
+    teacherId: "teacherId",
+    chatId: "chatId",
+    name: "Test name",
+    remainingSession: 10,
+    status: "ACTIVE",
+    posts: [],
+    files: [],
+    sessions: [],
+  });
+
+  getByIdUseCase.execute.mockResolvedValue(p2pCourse);
+
   it("Creates correctly", () => {
     expect(service).toBeInstanceOf(P2PCourseService);
   });
@@ -63,7 +80,7 @@ describe("P2PCourseService component", () => {
     });
     await service.addSession("testCourseId", session);
     expect(addSessionUseCase.execute).toHaveBeenCalledWith({
-      p2pCourseId: "testCourseId",
+      p2pCourse,
       session: session,
     });
   });
@@ -71,7 +88,7 @@ describe("P2PCourseService component", () => {
   it("Calls removeSessionUseCase correctly", async () => {
     await service.removeSession("testCourseId", "testSessionId");
     expect(removeSessionUseCase.execute).toHaveBeenCalledWith({
-      p2pCourseId: "testCourseId",
+      p2pCourse,
       sessionId: "testSessionId",
     });
   });
@@ -85,7 +102,7 @@ describe("P2PCourseService component", () => {
     });
     await service.editSession("p2pCourseTestId", session);
     expect(editSessionUseCase.execute).toHaveBeenCalledWith({
-      p2pCourseId: "p2pCourseTestId",
+      p2pCourse,
       session: session,
     });
   });
@@ -93,7 +110,7 @@ describe("P2PCourseService component", () => {
   it("Calls completeSessionUseCase correctly", async () => {
     await service.completeSession("p2pCourseTestId", "sessionTestId");
     expect(completeSessionUseCase.execute).toHaveBeenCalledWith({
-      p2pCourseId: "p2pCourseTestId",
+      p2pCourse,
       sessionId: "sessionTestId",
     });
   });
@@ -101,7 +118,7 @@ describe("P2PCourseService component", () => {
   it("Calls removePostUseCase correctly", async () => {
     await service.removePost("p2pCourseTestId", "postTestId");
     expect(removePostUseCase.execute).toHaveBeenCalledWith({
-      p2pCourseId: "p2pCourseTestId",
+      p2pCourse,
       postId: "postTestId",
     });
   });
@@ -114,7 +131,7 @@ describe("P2PCourseService component", () => {
     });
     await service.addPost("p2pCourseTestId", post);
     expect(addPostUseCase.execute).toHaveBeenCalledWith({
-      p2pCourseId: "p2pCourseTestId",
+      p2pCourse,
       post,
     });
   });
@@ -127,7 +144,7 @@ describe("P2PCourseService component", () => {
     });
     await service.editPost("p2pCourseTestId", post);
     expect(editPostUseCase.execute).toHaveBeenCalledWith({
-      p2pCourseId: "p2pCourseTestId",
+      p2pCourse,
       post,
     });
   });
@@ -139,7 +156,7 @@ describe("P2PCourseService component", () => {
     });
     await service.addFilePost("p2pCourseTestId", filePost);
     expect(addFilePostUseCase.execute).toHaveBeenCalledWith({
-      p2pCourseId: "p2pCourseTestId",
+      p2pCourse,
       filePost,
     });
   });
@@ -147,7 +164,7 @@ describe("P2PCourseService component", () => {
   it("Calls removeFilePostUseCase correctly", async () => {
     await service.removeFilePost("p2pCourseTestId", "filePostTestId");
     expect(removeFilePostUseCase.execute).toHaveBeenCalledWith({
-      p2pCourseId: "p2pCourseTestId",
+      p2pCourse,
       filePostId: "filePostTestId",
     });
   });

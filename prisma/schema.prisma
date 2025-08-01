@@ -332,6 +332,7 @@ enum P2PCourseStatus {
 model P2PCourse{
   id          String     @id @default(uuid())
   teacherId     String
+  chatId     String
   teacher         User       @relation(name: "teacher", fields: [teacherId], references: [id], onDelete: Cascade)
   studentId     String
   student         User       @relation(name: "student", fields: [studentId], references: [id], onDelete: Cascade)
@@ -348,8 +349,8 @@ model P2PPost{
   p2pCourseId     String
   p2pCourse         P2PCourse       @relation(fields: [p2pCourseId], references: [id], onDelete: Cascade)
   title String
-  description String
-  url String
+  description String @default("")
+  url String @default("")
   creationDate DateTime
 }
 

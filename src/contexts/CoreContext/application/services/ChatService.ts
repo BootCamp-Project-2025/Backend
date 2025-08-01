@@ -12,7 +12,9 @@ export class ChatService implements IChatService {
     @inject("GetChatsByUserIdUseCase")
     private getChatsByUserIdUseCase: IUseCase<string, Chat[]>,
     @inject("GetChatByIdUseCase")
-    private getChatByIdUseCase: IUseCase<string, Chat>
+    private getChatByIdUseCase: IUseCase<string, Chat>,
+    @inject("UpdateChatUseCase")
+    private updateChatUseCase: IUseCase<{ chatId: string; chat: Chat }, Chat>
   ) {}
   async getManyByUserId(userId: string): Promise<Chat[]> {
     return await this.getChatsByUserIdUseCase.execute(userId);
@@ -23,8 +25,8 @@ export class ChatService implements IChatService {
   getAll(): Promise<Chat[]> {
     throw new Error("Method not implemented.");
   }
-  update(id: string, object: Chat): Promise<Chat> {
-    throw new Error("Method not implemented.");
+  async update(id: string, object: Chat): Promise<Chat> {
+    return await this.updateChatUseCase.execute({ chatId: id, chat: object });
   }
   async create(chat: Chat): Promise<Chat> {
     return await this.createChatUseCase.execute(chat);

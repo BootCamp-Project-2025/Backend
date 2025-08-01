@@ -187,13 +187,6 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     });
     this.validateDeleteOrThrow(deleteIndex);
     this.props.sessions.splice(deleteIndex, 0);
-    this.addRemainingSessions();
-  }
-
-  private addRemainingSessions() {
-    this.props.remainingSessions = P2PRemainingSessions.create({
-      remainingSession: this.remainingSessions.value + 1,
-    });
   }
 
   /**
@@ -226,7 +219,7 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
 
   public availableRemainingSessionsOrThrow() {
     if (this.sessions.length === this.remainingSessions.value) {
-      throw new ApiError(StatusCodes.CONFLICT);
+      throw new ApiError(StatusCodes.CONFLICT, "Cant have more sessions");
     }
   }
 

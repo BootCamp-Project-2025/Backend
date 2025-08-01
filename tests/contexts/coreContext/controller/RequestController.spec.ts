@@ -206,4 +206,3 @@ describe("", () => {
     await expect(controller.search(req, res)).rejects.toStrictEqual(error);
   });
 });
-

@@ -67,18 +67,17 @@ describe("RequestService", () => {
       page: 1,
       size: 10,
       category: "test-category",
-      subcategory: "test-subcategory"
+      subcategory: "test-subcategory",
     };
     const testRequest = RequestMapper.dtoToDomain(basicRequest);
     const returnPage: PageDto<Request> = {
       data: [testRequest, testRequest],
       total: 2,
       page: 1,
-      size: 10
+      size: 10,
     };
     mockFn.mockResolvedValue(returnPage);
     expect(service.searchRequest(testQueryParams)).resolves.toBe(returnPage);
     expect(mockFn).toHaveBeenCalledWith(testQueryParams);
   });
 });
-

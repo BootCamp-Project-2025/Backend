@@ -20,7 +20,7 @@ export default class GetByUserIdAndCourseIdUseCase
     p2pCourseId: string;
     userId: string;
   }): Promise<P2PCourse> {
-    const p2pCourse = await this.p2pCourseRepository.findByUserIdAndCourseId(
+    const p2pCourse = await this.p2pCourseRepository.findByTeacherIdAndCourseId(
       p2pCourseId,
       userId
     );

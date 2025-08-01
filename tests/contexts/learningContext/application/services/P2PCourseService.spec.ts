@@ -20,7 +20,7 @@ describe("P2PCourseService component", () => {
   const editPostUseCase = { execute: jest.fn() };
   const addFilePostUseCase = { execute: jest.fn() };
   const removeFilePostUseCase = { execute: jest.fn() };
-  const getByUserIdAndCourseIdUseCase = { execute: jest.fn() };
+  const GetByTeacherIdAndCourseIdUseCase = { execute: jest.fn() };
   const getByIdUseCase = { execute: jest.fn() };
   const service = new P2PCourseService(
     createP2PCourseUseCase,
@@ -33,7 +33,7 @@ describe("P2PCourseService component", () => {
     editPostUseCase,
     addFilePostUseCase,
     removeFilePostUseCase,
-    getByUserIdAndCourseIdUseCase,
+    GetByTeacherIdAndCourseIdUseCase,
     getByIdUseCase
   );
 
@@ -169,9 +169,9 @@ describe("P2PCourseService component", () => {
     });
   });
 
-  it("Calls getByUserIdAndCourseIdUseCase correctly", async () => {
+  it("Calls GetByTeacherIdAndCourseIdUseCase correctly", async () => {
     await service.getByUserIdAndCourseId("p2pCourseTestId", "userTestId");
-    expect(getByUserIdAndCourseIdUseCase.execute).toHaveBeenCalledWith({
+    expect(GetByTeacherIdAndCourseIdUseCase.execute).toHaveBeenCalledWith({
       p2pCourseId: "p2pCourseTestId",
       userId: "userTestId",
     });

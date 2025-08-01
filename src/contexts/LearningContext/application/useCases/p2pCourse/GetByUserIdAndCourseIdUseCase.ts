@@ -6,7 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-export default class GetByUserIdAndCourseIdUseCase
+export default class GetByTeacherIdAndCourseIdUseCase
   implements IUseCase<{ p2pCourseId: string; userId: string }, P2PCourse>
 {
   constructor(

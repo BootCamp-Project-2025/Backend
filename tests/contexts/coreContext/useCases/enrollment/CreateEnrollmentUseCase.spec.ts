@@ -8,16 +8,28 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { User } from "@/contexts/CoreContext/domain/aggregates/User";
 import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
+import { Module } from "@/contexts/LearningContext/domain/entities/Module";
+import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
+import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 
 describe("CreateEnrollmentUseCase", () => {
   let enrollmentRepository: jest.Mocked<IEnrollmentRepository>;
   let courseRepository: jest.Mocked<ICourseRepository>;
   let userRepository: jest.Mocked<IUserRepository>;
+  let getAllModulesUseCase: jest.Mocked<IUseCase<string, Module[]>>;
+  let createStudentTrackProgressUseCase: jest.Mocked<
+    IUseCase<
+      { trackProgress: StudentTrackProgress; enrollmentId: string },
+      void
+    >
+  >;
   let useCase: CreateEnrollmentUseCase;
 
   const fakeEnrollment = {
-    userId: "user123",
-    courseId: "course123",
+    id: "enroll1",
+    userId: { toString: () => "user123" },
+    courseId: { toString: () => "course123" },
+    status: "ENROLLED",
   } as unknown as Enrollment;
 
   beforeEach(() => {
@@ -35,10 +47,25 @@ describe("CreateEnrollmentUseCase", () => {
       getById: jest.fn(),
     } as unknown as jest.Mocked<IUserRepository>;
 
+    getAllModulesUseCase = {
+      execute: jest.fn().mockResolvedValue([]),
+    } as unknown as jest.Mocked<IUseCase<string, Module[]>>;
+
+    createStudentTrackProgressUseCase = {
+      execute: jest.fn().mockResolvedValue(undefined),
+    } as unknown as jest.Mocked<
+      IUseCase<
+        { trackProgress: StudentTrackProgress; enrollmentId: string },
+        void
+      >
+    >;
+
     useCase = new CreateEnrollmentUseCase(
       enrollmentRepository,
       courseRepository,
-      userRepository
+      userRepository,
+      getAllModulesUseCase,
+      createStudentTrackProgressUseCase
     );
   });
 
@@ -139,13 +166,20 @@ describe("CreateEnrollmentUseCase", () => {
       id: "course123",
     } as unknown as Course);
     enrollmentRepository.findValidEnrollment.mockResolvedValue(null);
+
     enrollmentRepository.create.mockResolvedValue({
       id: "enroll1",
+      courseId: {
+        toString: () => "course123",
+      },
     } as unknown as Enrollment);
+
+    getAllModulesUseCase.execute.mockResolvedValue([]);
 
     const result = await useCase.execute(fakeEnrollment);
 
-    expect(result).toEqual({ id: "enroll1" });
+    expect(result.id).toBe("enroll1");
+    expect(result.courseId).toEqual({ toString: expect.any(Function) });
     expect(enrollmentRepository.create).toHaveBeenCalledWith(fakeEnrollment);
   });
 });

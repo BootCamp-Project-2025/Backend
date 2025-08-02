@@ -59,7 +59,6 @@ export class CourseController implements ICourseController {
         StatusCodes.INTERNAL_SERVER_ERROR,
         message
       );
-      console.log(response);
       return ResponseService.send(res, response);
     }
   };

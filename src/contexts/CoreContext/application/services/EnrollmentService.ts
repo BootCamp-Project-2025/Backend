@@ -23,6 +23,7 @@ export class EnrollmentService implements IEnrollmentService {
   async create(enrollment: Enrollment): Promise<Enrollment> {
     return await this.createEnrollmentUseCase.execute(enrollment);
   }
+
   async cancel(enrollmentId: string): Promise<void> {
     await this.cancelEnrollmentUseCAse.execute({ enrollmentId });
   }

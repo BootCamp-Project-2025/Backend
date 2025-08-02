@@ -54,7 +54,7 @@ model Lesson{
   videoUrls String[]
   moduleId String
   title   String
-  
+  studentTrackProgresses StudentTrackProgress[]
 }
 
 model Resource{
@@ -291,8 +291,39 @@ model Enrollment {
   course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
   status       EnrollmentStatus @default(ENROLLED)
+  studentTrackProgress StudentTrackProgress[] @relation("EnrollmentStudentTrackProgress")
 }
 
+model StudentTrackProgress {
+  id                 String   @id @default(uuid())
+  enrollmentId       String
+  lessonId           String
+  completed          Boolean  @default(false)
+  completedAt        DateTime?
+
+  enrollment         Enrollment @relation("EnrollmentStudentTrackProgress", fields: [enrollmentId], references: [id])
+  lesson             Lesson     @relation(fields: [lessonId], references: [id])
+  videoProgresses    VideoProgress[]
+  resourcesCompleted ResourceCompleted[]
+}
+
+model VideoProgress {
+  id                     String                @id @default(uuid())
+  studentTrackProgressId  String
+  url                    String
+  watchedSeconds         Int
+  completed              Boolean @default(false)
+
+  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id])
+}
+
+model ResourceCompleted {
+  id                     String                @id @default(uuid())
+  studentTrackProgressId  String
+  url                    String
+
+  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id])
+}
 enum P2PCourseStatus {
   ACTIVE
   CANCELED

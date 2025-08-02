@@ -8,7 +8,6 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
 
   async create(p2pCourse: P2PCourse): Promise<P2PCourse> {
     const p2pCourseDto = P2PCourseMapper.domainToDto(p2pCourse);
-    console.log(p2pCourseDto);
     const p2pCourseDb = await this.p2pCourseDbConnection.create({
       data: {
         ...p2pCourseDto,

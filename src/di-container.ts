@@ -166,6 +166,25 @@ import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/
 import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
+import IP2PCourseController from "./contexts/LearningContext/domain/interfaces/IP2PCourseController";
+import { P2PCourseController } from "./contexts/LearningContext/presentation/http/controllers/P2PCourseController";
+import IP2PCourseService from "./contexts/LearningContext/domain/interfaces/IP2PCourseService";
+import { P2PCourseService } from "./contexts/LearningContext/application/services/P2PCourseService";
+import CreateP2PCourseUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/CreateP2PCourseUseCase";
+import { P2PCourse } from "./contexts/LearningContext/domain/aggregates/P2PCourse";
+import LiveSession from "./contexts/LearningContext/domain/entities/LiveSession";
+import AddSessionUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/AddSessionUseCase";
+import RemoveSessionUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/RemoveSessionUseCase";
+import EditSessionUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/EditSessionUseCase";
+import CompleteSessionUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/CompleteSessionUseCase";
+import AddPostUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/AddPostUseCase";
+import { Post } from "./contexts/LearningContext/domain/entities/Posts";
+import RemovePostUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/RemovePostUseCase";
+import EditPostUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/EditPostUseCase";
+import AddFilePostUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/AddFilePostUseCase";
+import { FilePost } from "./contexts/LearningContext/domain/entities/FilePost";
+import RemoveFilePostUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/RemoveFilePostUseCase";
+import GetByUserIdAndCourseIdUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/GetByUserIdAndCourseIdUseCase";
 import { CheckEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CheckEnrollmentUseCase";
 import { GetUserEnrollmentsUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetUserEnrollmentsUseCase";
 import { StudentTrackProgressRepository } from "./contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";
@@ -179,6 +198,15 @@ import StudentTrackProgressService from "./contexts/LearningContext/application/
 import GetLessonByIdUseCase from "./contexts/LearningContext/application/useCases/lesson/GetLessonByIdUseCase";
 import StudentTrackProgressController from "./contexts/LearningContext/presentation/http/controllers/StudentTrackProgressController ";
 import { GetEnrollmentByIdUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetEnrollmentByIdUseCase";
+import IPostRepository from "./contexts/LearningContext/domain/interfaces/IPostRepository";
+import ILiveSessionRepository from "./contexts/LearningContext/domain/interfaces/ILiveSessionRepository";
+import IFilePostRepository from "./contexts/LearningContext/domain/interfaces/IFilePostRepository";
+import IP2PCourseRepository from "./contexts/LearningContext/domain/interfaces/IP2PCourseRepository";
+import PostRepository from "./contexts/LearningContext/infrastructure/database/PostRepository";
+import LiveSessionRepository from "./contexts/LearningContext/infrastructure/database/LiveSessionRepository";
+import FilePostRepository from "./contexts/LearningContext/infrastructure/database/FilePostRepository";
+import P2PCourseRepository from "./contexts/LearningContext/infrastructure/database/P2PCourseRepository";
+import GetP2PCourseByIdUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/GetP2PCourseByIdUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -710,6 +738,82 @@ container.registerSingleton<StudentTrackProgressController>(
 container.registerSingleton<IStudentTrackProgressService>(
   "IStudentTrackProgressService",
   StudentTrackProgressService
+);
+
+container.registerSingleton<IP2PCourseController>(
+  "IP2PCourseController",
+  P2PCourseController
+);
+
+container.registerSingleton<IP2PCourseService>(
+  "IP2PCourseService",
+  P2PCourseService
+);
+
+container.registerSingleton<IPostRepository>("IPostRepository", PostRepository);
+
+container.registerSingleton<ILiveSessionRepository>(
+  "ILiveSessionRepository",
+  LiveSessionRepository
+);
+
+container.registerSingleton<IFilePostRepository>(
+  "IFilePostRepository",
+  FilePostRepository
+);
+
+container.registerSingleton<IP2PCourseRepository>(
+  "IP2PCourseRepository",
+  P2PCourseRepository
+);
+
+container.registerSingleton<IUseCase<P2PCourse, P2PCourse>>(
+  "CreateP2PCourseUseCase",
+  CreateP2PCourseUseCase
+);
+container.registerSingleton<
+  IUseCase<{ p2pCourse: P2PCourse; session: LiveSession }, LiveSession>
+>("AddSessionUseCase", AddSessionUseCase);
+
+container.registerSingleton<
+  IUseCase<{ p2pCourse: P2PCourse; sessionId: string }, void>
+>("RemoveSessionUseCase", RemoveSessionUseCase);
+
+container.registerSingleton<
+  IUseCase<{ p2pCourse: P2PCourse; session: LiveSession }, LiveSession>
+>("EditSessionUseCase", EditSessionUseCase);
+
+container.registerSingleton<
+  IUseCase<{ p2pCourse: P2PCourse; sessionId: string }, LiveSession>
+>("CompleteSessionUseCase", CompleteSessionUseCase);
+
+container.registerSingleton<
+  IUseCase<{ p2pCourse: P2PCourse; post: Post }, Post>
+>("AddPostUseCase", AddPostUseCase);
+
+container.registerSingleton<
+  IUseCase<{ p2pCourse: P2PCourse; postId: string }, void>
+>("RemovePostUseCase", RemovePostUseCase);
+
+container.registerSingleton<
+  IUseCase<{ p2pCourse: P2PCourse; post: Post }, Post>
+>("EditPostUseCase", EditPostUseCase);
+
+container.registerSingleton<
+  IUseCase<{ p2pCourse: P2PCourse; filePost: FilePost }, FilePost>
+>("AddFilePostUseCase", AddFilePostUseCase);
+
+container.registerSingleton<
+  IUseCase<{ p2pCourse: P2PCourse; filePostId: string }, void>
+>("RemoveFilePostUseCase", RemoveFilePostUseCase);
+
+container.registerSingleton<
+  IUseCase<{ p2pCourseId: string; userId: string }, P2PCourse>
+>("GetByUserIdAndCourseIdUseCase", GetByUserIdAndCourseIdUseCase);
+
+container.registerSingleton<IUseCase<string, P2PCourse>>(
+  "GetP2PCourseByIdUseCase",
+  GetP2PCourseByIdUseCase
 );
 
 export { container };

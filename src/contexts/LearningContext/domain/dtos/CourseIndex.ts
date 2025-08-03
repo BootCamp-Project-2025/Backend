@@ -14,4 +14,5 @@ export interface CourseIndex {
       description: string;
     }[];
   }[];
+  createdAt: Date;
 }

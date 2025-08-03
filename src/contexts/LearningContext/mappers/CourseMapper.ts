@@ -148,6 +148,7 @@ export class CourseMapper {
       field: course.getField()?.value,
       time: course.getTime(),
       userId: course.getUserID().toString(),
+      createdAt: new Date(),
       modules: course
         .getModules()
         ?.getItems()

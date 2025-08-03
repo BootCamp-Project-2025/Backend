@@ -302,7 +302,7 @@ model StudentTrackProgress {
   completedAt        DateTime?
 
   enrollment         Enrollment @relation("EnrollmentStudentTrackProgress", fields: [enrollmentId], references: [id])
-  lesson             Lesson     @relation(fields: [lessonId], references: [id])
+  lesson             Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   videoProgresses    VideoProgress[]
   resourcesCompleted ResourceCompleted[]
 }
@@ -314,7 +314,7 @@ model VideoProgress {
   watchedSeconds         Int
   completed              Boolean @default(false)
 
-  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id])
+  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id], onDelete: Cascade)
 }
 
 model ResourceCompleted {
@@ -322,7 +322,7 @@ model ResourceCompleted {
   studentTrackProgressId  String
   url                    String
 
-  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id])
+  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id], onDelete: Cascade)
 }
 enum P2PCourseStatus {
   ACTIVE

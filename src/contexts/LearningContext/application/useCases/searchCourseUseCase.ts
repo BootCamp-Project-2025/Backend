@@ -6,8 +6,13 @@ import { ISearchService } from "@/contexts/CoreContext/domain/interfaces/service
 import { ParamMapper } from "@/contexts/CoreContext/mappers/ParamsMapper";
 import { inject, injectable } from "tsyringe";
 
-const RESOURCE = "courses";
-const COURSE_FIELDS = ["title", "description"];
+const RESOURCE = "course";
+const COURSE_FIELDS = [
+  "name",
+  "description",
+  "modules.title",
+  "modules.lessons.description",
+];
 
 @injectable()
 export class SearchCourseUseCase

@@ -14,6 +14,7 @@ jest.mock("@/contexts/Shared/infrastructure/database/PrismaClient", () => ({
       update: jest.fn(),
       findUnique: jest.fn(),
       findFirst: jest.fn(),
+      findMany: jest.fn(),
     },
   },
 }));
@@ -23,7 +24,9 @@ const prismaMock = PrismaClient.enrollment as unknown as {
   update: jest.Mock;
   findUnique: jest.Mock;
   findFirst: jest.Mock;
+  findMany: jest.Mock;
 };
+
 const mockEnrollmentDTO = {
   id: "enroll-1",
   userId: "user-1",
@@ -69,7 +72,7 @@ describe("EnrollmentRepository (with real EnrollmentMapper)", () => {
 
       expect(prismaMock.update).toHaveBeenCalledWith({
         where: { id: mockEnrollmentDTO.id },
-        data: { status: mockEnrollmentDTO.status },
+        data: { status: domainEnrollment.status },
       });
     });
   });
@@ -101,11 +104,11 @@ describe("EnrollmentRepository (with real EnrollmentMapper)", () => {
     });
   });
 
-  describe("isUserEnrolled", () => {
-    it("should return true if enrollment exists", async () => {
+  describe("findValidEnrollment", () => {
+    it("should return domain enrollment if found", async () => {
       prismaMock.findFirst.mockResolvedValue(mockEnrollmentDTO);
 
-      const result = await repository.isUserEnrolled(
+      const result = await repository.findValidEnrollment(
         mockEnrollmentDTO.userId,
         mockEnrollmentDTO.courseId
       );
@@ -116,18 +119,60 @@ describe("EnrollmentRepository (with real EnrollmentMapper)", () => {
           courseId: mockEnrollmentDTO.courseId,
         },
       });
-      expect(result).toBe(true);
+      expect(result).toEqual(domainEnrollment);
     });
 
-    it("should return false if enrollment does not exist", async () => {
+    it("should return null if not found", async () => {
       prismaMock.findFirst.mockResolvedValue(null);
 
-      const result = await repository.isUserEnrolled(
+      const result = await repository.findValidEnrollment(
         mockEnrollmentDTO.userId,
         mockEnrollmentDTO.courseId
       );
 
-      expect(result).toBe(false);
+      expect(result).toBeNull();
+    });
+  });
+
+  describe("getByUserId", () => {
+    it("should return a list of enrollments for the given user", async () => {
+      const mockEnrollments = [
+        mockEnrollmentDTO,
+        { ...mockEnrollmentDTO, id: "enroll-2" },
+      ];
+      prismaMock.findMany.mockResolvedValue(mockEnrollments);
+
+      const expected = mockEnrollments.map(
+        EnrollmentMapper.persistanceToDomain
+      );
+
+      const result = await repository.getByUserId(mockEnrollmentDTO.userId);
+
+      expect(prismaMock.findMany).toHaveBeenCalledWith({
+        where: { userId: mockEnrollmentDTO.userId },
+        orderBy: { createdAt: "desc" },
+      });
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe("reactivateEnrollment", () => {
+    it("should update enrollment status to ENROLLED and return updated domain enrollment", async () => {
+      const updatedDTO = {
+        ...mockEnrollmentDTO,
+        status: EnrollmentStatus.ENROLLED,
+      };
+      prismaMock.update.mockResolvedValue(updatedDTO);
+
+      const result = await repository.reactivateEnrollment(
+        mockEnrollmentDTO.id
+      );
+
+      expect(prismaMock.update).toHaveBeenCalledWith({
+        where: { id: mockEnrollmentDTO.id },
+        data: { status: "ENROLLED" },
+      });
+      expect(result).toEqual(EnrollmentMapper.persistanceToDomain(updatedDTO));
     });
   });
 });

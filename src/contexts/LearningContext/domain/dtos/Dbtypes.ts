@@ -31,3 +31,25 @@ export type ResourceDb = {
   url: string;
   lessonId: string;
 };
+
+export type VideoProgressDb = {
+  id?: string;
+  url: string;
+  watchedSeconds: number;
+  completed: boolean;
+};
+
+export type ResourceCompletedDb = {
+  id?: string;
+  url: string;
+};
+
+export type StudentTrackProgressDb = {
+  id: string;
+  enrollmentId: string;
+  lessonId: string;
+  completed: boolean;
+  completedAt: Date | null;
+  videoProgresses: VideoProgressDb[];
+  resourcesCompleted: ResourceCompletedDb[];
+};

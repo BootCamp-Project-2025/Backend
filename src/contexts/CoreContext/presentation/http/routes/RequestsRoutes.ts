@@ -94,7 +94,7 @@ requestRoutes.post("/", verifyToken(), controller.create);
  *          500:
  *              description: Unexpected error
  */
-requestRoutes.put("/:requestId", verifyToken(), controller.update);
+requestRoutes.put("/:requestId", controller.update);
 
 /**
  * @openapi
@@ -149,7 +149,7 @@ requestRoutes.delete("/:requestId", controller.delete);
  *          401:
  *              description: Unauthorized (missing or invalid token)
  */
-requestRoutes.get("/:requestId", verifyToken(), controller.getById);
+requestRoutes.get("/:requestId", controller.getById);
 
 /**
  * @openapi

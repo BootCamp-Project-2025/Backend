@@ -5,27 +5,45 @@ import CreateStudentTrackProgressUseCase from "@/contexts/LearningContext/applic
 import { StudentTrackProgress } from "@/contexts/LearningContext/domain/entities/StudentTrackProgress";
 import { IStudentTrackProgressRepository } from "@/contexts/LearningContext/domain/interfaces/IStudentTrackProgressRepository";
 import { IEnrollmentRepository } from "@/contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
+import { Enrollment } from "@/contexts/CoreContext/domain/aggregates/Enrollment";
 
-const mockTrackRepository = {
+const fakeEnrollment = {
+  id: "enroll1",
+  userId: "user1",
+  courseId: "course1",
+  orderedAt: new Date(),
+  canceledAt: null,
+  completedAt: null,
+  isActive: () => true,
+  isCanceled: () => false,
+  isCompleted: () => false,
+  cancel: jest.fn(),
+  complete: jest.fn(),
+} as unknown as Enrollment;
+
+const fakeTrackProgress = {} as StudentTrackProgress;
+
+const mockTrackRepository: jest.Mocked<IStudentTrackProgressRepository> = {
   findById: jest.fn(),
   update: jest.fn(),
   create: jest.fn(),
   delete: jest.fn(),
   findByEnrollment: jest.fn(),
 };
-const mockEnrollmentRepository = {
+
+const mockEnrollmentRepository: jest.Mocked<IEnrollmentRepository> = {
   findById: jest.fn(),
   cancelEnrollment: jest.fn(),
   create: jest.fn(),
-  isUserEnrolled: jest.fn(),
+  findValidEnrollment: jest.fn(),
+  getByUserId: jest.fn(),
+  reactivateEnrollment: jest.fn(),
 };
-const fakeTrackProgress = {} as StudentTrackProgress;
-const fakeEnrollment = { id: "enroll1" };
 
 function makeUseCase() {
   return new CreateStudentTrackProgressUseCase(
-    mockTrackRepository as IStudentTrackProgressRepository,
-    mockEnrollmentRepository as IEnrollmentRepository
+    mockTrackRepository,
+    mockEnrollmentRepository
   );
 }
 
@@ -39,6 +57,7 @@ describe("CreateStudentTrackProgressUseCase", () => {
     mockTrackRepository.create.mockResolvedValue(undefined);
 
     const useCase = makeUseCase();
+
     await expect(
       useCase.execute({
         trackProgress: fakeTrackProgress,
@@ -51,7 +70,10 @@ describe("CreateStudentTrackProgressUseCase", () => {
   });
 
   it("lanza ApiError si no existe el enrollment", async () => {
-    mockEnrollmentRepository.findById.mockResolvedValue(undefined);
+    mockEnrollmentRepository.findById.mockResolvedValue(
+      undefined as unknown as Enrollment
+    );
+
     const useCase = makeUseCase();
 
     await expect(
@@ -68,6 +90,7 @@ describe("CreateStudentTrackProgressUseCase", () => {
     mockEnrollmentRepository.findById.mockImplementation(() => {
       throw new ApiError(StatusCodes.BAD_REQUEST, "bad");
     });
+
     const useCase = makeUseCase();
 
     await expect(
@@ -80,6 +103,7 @@ describe("CreateStudentTrackProgressUseCase", () => {
 
   it("lanza ApiError 500 si ocurre error desconocido", async () => {
     mockEnrollmentRepository.findById.mockRejectedValue(new Error("fail"));
+
     const useCase = makeUseCase();
 
     await expect(

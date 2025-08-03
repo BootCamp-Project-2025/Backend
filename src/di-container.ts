@@ -166,6 +166,8 @@ import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/
 import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
+import { CheckEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CheckEnrollmentUseCase";
+import { GetUserEnrollmentsUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetUserEnrollmentsUseCase";
 import { StudentTrackProgressRepository } from "./contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";
 import CreateStudentTrackProgressUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/CreateStudentTrackProgressUseCase";
 import GetStudentTrackProgressByEnrollmentUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/GetStudentTrackProgressByEnrollmentUseCase";
@@ -614,6 +616,10 @@ container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
   CancelEnrollmentUseCase
 );
 
+container.registerSingleton<
+  IUseCase<{ userId: string; courseId: string }, Enrollment | null>
+>("CheckEnrollmentUseCase", CheckEnrollmentUseCase);
+
 container.registerSingleton<IEnrollmentRepository>(
   "IEnrollmentRepository",
   EnrollmentRepository
@@ -637,6 +643,11 @@ container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
 container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
   "CancelEnrollmentUseCase",
   CancelEnrollmentUseCase
+);
+
+container.registerSingleton<GetUserEnrollmentsUseCase>(
+  "GetUserEnrollmentsUseCase",
+  GetUserEnrollmentsUseCase
 );
 
 container.registerSingleton<IEnrollmentRepository>(

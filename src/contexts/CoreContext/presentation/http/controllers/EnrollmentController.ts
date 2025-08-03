@@ -46,4 +46,66 @@ export class EnrollmentController implements IEnrollmentController {
     );
     ResponseService.send(res, response);
   };
+
+  checkEnrollment = async (req: Request, res: Response): Promise<void> => {
+    const { courseId } = req.params;
+    const userId = req?.user?.id;
+
+    if (!userId || !courseId) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        "userId and courseId are required"
+      );
+    }
+
+    try {
+      const enrollment = await this.enrollmentService.checkEnrollment(
+        userId,
+        courseId
+      );
+
+      const response = new SuccessResponseEntity(
+        {
+          isEnrolled: !!enrollment,
+          enrollment: enrollment
+            ? EnrollmentMapper.domainToDto(enrollment)
+            : null,
+        },
+        StatusCodes.OK
+      );
+
+      return ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Server error");
+    }
+  };
+
+  getEnrollments = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userId = req?.user?.id;
+      if (!userId) {
+        throw new ApiError(
+          StatusCodes.BAD_REQUEST,
+          "User ID is missing from request"
+        );
+      }
+      const enrollments = await this.enrollmentService.getEnrollments(userId);
+      const enrollmentsDTO = enrollments.map((e) =>
+        EnrollmentMapper.domainToDto(e)
+      );
+      const response = new SuccessResponseEntity(
+        enrollmentsDTO,
+        200,
+        "Enrollments retrieved successfully"
+      );
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Error fetching enrollments"
+      );
+    }
+  };
 }

@@ -14,7 +14,7 @@ export class DeleteCourseUseCase implements IUseCase<string, void> {
     await this.courseRepo.delete(id);
     const event = new DeleteResourceEvent({
       resource: "course",
-      id: id,
+      resourceId: id,
     });
 
     globalEventDispatcher.dispatch(event);

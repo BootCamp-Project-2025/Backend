@@ -186,7 +186,7 @@ import { FilePost } from "./contexts/LearningContext/domain/entities/FilePost";
 import RemoveFilePostUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/RemoveFilePostUseCase";
 import GetByUserIdAndCourseIdUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/GetByUserIdAndCourseIdUseCase";
 import { ICdnService } from "./contexts/CoreContext/domain/interfaces/services/ICdnService";
-import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloundinaryService";
+import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloudinaryService";
 import { CheckEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CheckEnrollmentUseCase";
 import { GetUserEnrollmentsUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetUserEnrollmentsUseCase";
 import { StudentTrackProgressRepository } from "./contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";

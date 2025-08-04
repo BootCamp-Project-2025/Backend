@@ -21,10 +21,9 @@ export default class CompleteSessionUseCase
     sessionId: string;
   }): Promise<LiveSession> {
     p2pCourse.completeSession(new UniqueEntityID(sessionId));
-    const session = p2pCourse.getSession(new UniqueEntityID(sessionId));
-    const savedSession = await this.sessionRepository.update(
-      sessionId,
-      session
+    const savedSession = await this.sessionRepository.completeSession(
+      p2pCourse.id.toValue(),
+      sessionId
     );
     return savedSession;
   }

@@ -143,14 +143,14 @@ router.get("/:userId/chats", controller.getChats);
 
 /**
  * @openapi
- * /users/{userId}/courses:
+ * /users/{id}/courses:
  *  get:
  *     summary: Get the courses of the user with id
  *     tags:
  *       - User
  *     parameters:
  *       - in: path
- *         name: userId
+ *         name: id
  *         required: true
  *         description: The ID of the user
  *         schema:

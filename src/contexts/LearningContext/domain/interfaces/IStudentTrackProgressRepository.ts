@@ -1,4 +1,3 @@
-import { LessonDb } from "../dtos/Dbtypes";
 import { StudentTrackProgress } from "../entities/StudentTrackProgress";
 
 export interface IStudentTrackProgressRepository {

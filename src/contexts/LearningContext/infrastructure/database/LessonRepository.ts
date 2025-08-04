@@ -5,7 +5,12 @@ import LessonMapper from "../../mappers/LessonMapper";
 import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
-import { LessonDb } from "../../domain/dtos/Dbtypes";
+import {
+  LessonDb,
+  ResourceCompletedDb,
+  ResourceDb,
+  VideoProgressDb,
+} from "../../domain/dtos/Dbtypes";
 import { StudentTrackProgressDb } from "../../domain/dtos/Dbtypes";
 
 export default class LessonRepository implements ILessonRepository {
@@ -90,13 +95,15 @@ export default class LessonRepository implements ILessonRepository {
     }
   }
 
-  private async syncStudentTrackProgress(updatedLesson: LessonDb): Promise<void> {
+  private async syncStudentTrackProgress(
+    updatedLesson: LessonDb
+  ): Promise<void> {
     const trackProgressList = await this.db.studentTrackProgress.findMany({
       where: { lessonId: updatedLesson.id.toString() },
       include: {
         videoProgresses: true,
-        resourcesCompleted: true
-      }
+        resourcesCompleted: true,
+      },
     });
 
     if (trackProgressList.length === 0) return;
@@ -109,23 +116,24 @@ export default class LessonRepository implements ILessonRepository {
     trackProgress: StudentTrackProgressDb,
     updatedLesson: LessonDb
   ): Promise<void> {
-
     const existingVideoProgresses = trackProgress.videoProgresses || [];
-    const newVideoProgresses = updatedLesson.videoUrls?.map((videoUrl: any) => {
-      const existing = existingVideoProgresses.find(
-        (vp: any) => vp.url === videoUrl.url
-      );
+    const newVideoProgresses =
+      updatedLesson.videoUrls?.map((videoUrl: string) => {
+        const existing = existingVideoProgresses.find(
+          (vp: VideoProgressDb) => vp.url === videoUrl
+        );
 
-      return {
-        url: videoUrl.url,
-        watchedSeconds: existing?.watchedSeconds || 0,
-        completed: existing?.completed || false,
-      };
-    }) || [];
+        return {
+          url: videoUrl,
+          watchedSeconds: existing?.watchedSeconds || 0,
+          completed: existing?.completed || false,
+        };
+      }) || [];
 
     const existingResourcesCompleted = trackProgress.resourcesCompleted || [];
     const newResourcesCompleted = existingResourcesCompleted.filter(
-      (rc: any) => updatedLesson.resources.some((r: any) => r.id === rc.resourceId)
+      (rc: ResourceCompletedDb) =>
+        updatedLesson.resources.some((r: ResourceDb) => r.url === rc.url)
     );
 
     await this.db.studentTrackProgress.update({

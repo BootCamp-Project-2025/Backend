@@ -9,7 +9,8 @@ import StudentTrackProgressMapper from "../../mappers/StudentTrackProgressMapper
 
 @injectable()
 export class StudentTrackProgressRepository
-  implements IStudentTrackProgressRepository {
+  implements IStudentTrackProgressRepository
+{
   db = PrismaClient;
   async findById(id: string): Promise<StudentTrackProgress | null> {
     try {

@@ -11,7 +11,7 @@ export default class DeleteRequestUseCase implements IUseCase<string, void> {
   constructor(
     @inject("IRequestRepository")
     private readonly repository: IRequestRepository
-  ) { }
+  ) {}
   async execute(requestId: string): Promise<void> {
     await this.checkIfRequestExist(requestId);
     console.log(`Deleting request with ID: ${requestId}`);

@@ -4,7 +4,7 @@ import IRequestRepository from "../../domain/interfaces/repositories/IRequestRep
 import RequestMapper from "../../mappers/RequestMapper";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
-import { PrismaClientKnownRequestError } from "@/generated/prisma/runtime/library";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export default class RequestRepository implements IRequestRepository {
   db = PrismaClient;

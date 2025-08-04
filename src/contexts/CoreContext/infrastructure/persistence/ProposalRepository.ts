@@ -5,7 +5,7 @@ import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient
 import ProposalMapper from "../../mappers/ProposalMapper";
 import { ProposalDto } from "../../domain/interfaces/dtos/ProposalDto";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { PrismaClientKnownRequestError } from "@/generated/prisma/runtime/library";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { StatusCodes } from "http-status-codes";
 
 @injectable()

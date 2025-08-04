@@ -40,7 +40,10 @@ export class EnrollmentRepository implements IEnrollmentRepository {
     return EnrollmentMapper.persistanceToDomain(enrollment);
   }
 
-  async isUserEnrolled(userId: string, courseId: string): Promise<boolean> {
+  async findValidEnrollment(
+    userId: string,
+    courseId: string
+  ): Promise<Enrollment | null> {
     const enrollment = await this.db.enrollment.findFirst({
       where: {
         userId,
@@ -48,6 +51,25 @@ export class EnrollmentRepository implements IEnrollmentRepository {
       },
     });
 
-    return enrollment !== null;
+    return enrollment ? EnrollmentMapper.persistanceToDomain(enrollment) : null;
+  }
+
+  async getByUserId(userId: string): Promise<Enrollment[]> {
+    const enrollments = await PrismaClient.enrollment.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
+    return enrollments.map(EnrollmentMapper.persistanceToDomain);
+  }
+
+  async reactivateEnrollment(enrollmentId: string): Promise<Enrollment> {
+    const updated = await this.db.enrollment.update({
+      where: { id: enrollmentId },
+      data: {
+        status: "ENROLLED",
+      },
+    });
+
+    return EnrollmentMapper.persistanceToDomain(updated);
   }
 }

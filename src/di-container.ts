@@ -167,6 +167,21 @@ import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useC
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
 import { GetUserCoursesUseCase } from "./contexts/CoreContext/application/useCases/GetUserCoursesUseCase";
+import { ICdnService } from "./contexts/CoreContext/domain/interfaces/services/ICdnService";
+import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloudinaryService";
+import { CheckEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CheckEnrollmentUseCase";
+import { GetUserEnrollmentsUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetUserEnrollmentsUseCase";
+import { StudentTrackProgressRepository } from "./contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";
+import CreateStudentTrackProgressUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/CreateStudentTrackProgressUseCase";
+import GetStudentTrackProgressByEnrollmentUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/GetStudentTrackProgressByEnrollmentUseCase";
+import GetStudentTrackProgressByIdUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/GetStudentTrackProgressByIdUseCase";
+import UpdateStudentTrackProgressUseCase from "./contexts/LearningContext/application/useCases/studentTrackProgress/UpdateStudentTrackProgressUseCase";
+import { IStudentTrackProgressRepository } from "./contexts/LearningContext/domain/interfaces/IStudentTrackProgressRepository";
+import { IStudentTrackProgressService } from "./contexts/LearningContext/domain/interfaces/IStudentTrackProgressService";
+import StudentTrackProgressService from "./contexts/LearningContext/application/services/StudentTrackProgressService";
+import GetLessonByIdUseCase from "./contexts/LearningContext/application/useCases/lesson/GetLessonByIdUseCase";
+import StudentTrackProgressController from "./contexts/LearningContext/presentation/http/controllers/StudentTrackProgressController ";
+import { GetEnrollmentByIdUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetEnrollmentByIdUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -599,10 +614,19 @@ container.registerSingleton<IUseCase<Enrollment, Enrollment>>(
   CreateEnrollmentUseCase
 );
 
+container.registerSingleton<GetEnrollmentByIdUseCase>(
+  "GetEnrollmentByIdUseCase",
+  GetEnrollmentByIdUseCase
+);
+
 container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
   "CancelEnrollmentUseCase",
   CancelEnrollmentUseCase
 );
+
+container.registerSingleton<
+  IUseCase<{ userId: string; courseId: string }, Enrollment | null>
+>("CheckEnrollmentUseCase", CheckEnrollmentUseCase);
 
 container.registerSingleton<IEnrollmentRepository>(
   "IEnrollmentRepository",
@@ -629,6 +653,11 @@ container.registerSingleton<IUseCase<{ enrollmentId: string }, void>>(
   CancelEnrollmentUseCase
 );
 
+container.registerSingleton<GetUserEnrollmentsUseCase>(
+  "GetUserEnrollmentsUseCase",
+  GetUserEnrollmentsUseCase
+);
+
 container.registerSingleton<IEnrollmentRepository>(
   "IEnrollmentRepository",
   EnrollmentRepository
@@ -651,4 +680,45 @@ container.registerSingleton<IClientRepository>(
   "IClientRepository",
   ClientRepository
 );
+
+container.registerSingleton<ICdnService>("ICdnService", CloudinaryService);
+container.registerSingleton<IStudentTrackProgressRepository>(
+  "IStudentTrackProgressRepository",
+  StudentTrackProgressRepository
+);
+
+container.registerSingleton<CreateStudentTrackProgressUseCase>(
+  "CreateStudentTrackProgressUseCase",
+  CreateStudentTrackProgressUseCase
+);
+
+container.registerSingleton<GetStudentTrackProgressByEnrollmentUseCase>(
+  "GetStudentTrackProgressByEnrollmentUseCase",
+  GetStudentTrackProgressByEnrollmentUseCase
+);
+
+container.registerSingleton<GetStudentTrackProgressByIdUseCase>(
+  "GetStudentTrackProgressByIdUseCase",
+  GetStudentTrackProgressByIdUseCase
+);
+
+container.registerSingleton<UpdateStudentTrackProgressUseCase>(
+  "UpdateStudentTrackProgressUseCase",
+  UpdateStudentTrackProgressUseCase
+);
+
+container.registerSingleton<GetLessonByIdUseCase>(
+  "GetLessonByIdUseCase",
+  GetLessonByIdUseCase
+);
+container.registerSingleton<StudentTrackProgressController>(
+  "StudentTrackProgressController",
+  StudentTrackProgressController
+);
+
+container.registerSingleton<IStudentTrackProgressService>(
+  "IStudentTrackProgressService",
+  StudentTrackProgressService
+);
+
 export { container };

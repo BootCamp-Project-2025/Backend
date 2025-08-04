@@ -49,7 +49,7 @@ const getByEnrollmentUseCase: IUseCase<
 > = {
   execute: jest.fn(),
 };
-const getP2PCourseByIdUseCase: IUseCase<string, StudentTrackProgress | null> = {
+const getByIdUseCase: IUseCase<string, StudentTrackProgress | null> = {
   execute: jest.fn(),
 };
 const getLessonByIdUseCase: IUseCase<string, Lesson> = {
@@ -70,7 +70,7 @@ function makeService() {
     createUseCase,
     updateUseCase,
     getByEnrollmentUseCase,
-    getP2PCourseByIdUseCase,
+    getByIdUseCase,
     getLessonByIdUseCase,
     getEnrollmentByIdUseCase,
     getAllModulesUseCase,
@@ -192,7 +192,7 @@ describe("StudentTrackProgressService", () => {
 
   describe("getById", () => {
     it("should return trackProgress if found", async () => {
-      (getP2PCourseByIdUseCase.execute as jest.Mock).mockResolvedValue(
+      (getByIdUseCase.execute as jest.Mock).mockResolvedValue(
         fakeTrackProgress
       );
       const service = makeService();
@@ -202,13 +202,13 @@ describe("StudentTrackProgressService", () => {
     });
 
     it("should throw ApiError if not found", async () => {
-      (getP2PCourseByIdUseCase.execute as jest.Mock).mockResolvedValue(null);
+      (getByIdUseCase.execute as jest.Mock).mockResolvedValue(null);
       const service = makeService();
       await expect(service.getById("id123")).rejects.toThrow(ApiError);
     });
 
     it("should throw ApiError on unknown error", async () => {
-      (getP2PCourseByIdUseCase.execute as jest.Mock).mockRejectedValue(
+      (getByIdUseCase.execute as jest.Mock).mockRejectedValue(
         new Error("fail")
       );
       const service = makeService();

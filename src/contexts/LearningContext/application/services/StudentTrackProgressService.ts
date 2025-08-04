@@ -29,7 +29,7 @@ export default class StudentTrackProgressService
       StudentTrackProgress[]
     >,
     @inject("GetStudentTrackProgressByIdUseCase")
-    private readonly findP2PCourseByIdUseCase: IUseCase<
+    private readonly getByIdUseCase: IUseCase<
       string,
       StudentTrackProgress | null
     >,
@@ -124,7 +124,7 @@ export default class StudentTrackProgressService
 
   async getById(id: string): Promise<StudentTrackProgress> {
     try {
-      const track = await this.findP2PCourseByIdUseCase.execute(id);
+      const track = await this.getByIdUseCase.execute(id);
       if (!track) {
         throw new ApiError(
           StatusCodes.NOT_FOUND,

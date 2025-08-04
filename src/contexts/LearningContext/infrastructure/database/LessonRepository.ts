@@ -5,6 +5,8 @@ import LessonMapper from "../../mappers/LessonMapper";
 import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
+import { LessonDb } from "../../domain/dtos/Dbtypes";
+import { StudentTrackProgressDb } from "../../domain/dtos/Dbtypes";
 
 export default class LessonRepository implements ILessonRepository {
   db = PrismaClient;
@@ -74,6 +76,9 @@ export default class LessonRepository implements ILessonRepository {
         include: { resources: true },
         where: { id: lessonDto.id },
       });
+
+      await this.syncStudentTrackProgress(lessonDb);
+
       return LessonMapper.PersistanceToDomain(lessonDb);
     } catch (error) {
       console.log(error);
@@ -83,5 +88,59 @@ export default class LessonRepository implements ILessonRepository {
         "unkown error on database"
       );
     }
+  }
+
+  private async syncStudentTrackProgress(updatedLesson: LessonDb): Promise<void> {
+    const trackProgressList = await this.db.studentTrackProgress.findMany({
+      where: { lessonId: updatedLesson.id.toString() },
+      include: {
+        videoProgresses: true,
+        resourcesCompleted: true
+      }
+    });
+
+    if (trackProgressList.length === 0) return;
+    for (const trackProgress of trackProgressList) {
+      await this.updateTrackProgressStructure(trackProgress, updatedLesson);
+    }
+  }
+
+  private async updateTrackProgressStructure(
+    trackProgress: StudentTrackProgressDb,
+    updatedLesson: LessonDb
+  ): Promise<void> {
+
+    const existingVideoProgresses = trackProgress.videoProgresses || [];
+    const newVideoProgresses = updatedLesson.videoUrls?.map((videoUrl: any) => {
+      const existing = existingVideoProgresses.find(
+        (vp: any) => vp.url === videoUrl.url
+      );
+
+      return {
+        url: videoUrl.url,
+        watchedSeconds: existing?.watchedSeconds || 0,
+        completed: existing?.completed || false,
+      };
+    }) || [];
+
+    const existingResourcesCompleted = trackProgress.resourcesCompleted || [];
+    const newResourcesCompleted = existingResourcesCompleted.filter(
+      (rc: any) => updatedLesson.resources.some((r: any) => r.id === rc.resourceId)
+    );
+
+    await this.db.studentTrackProgress.update({
+      where: { id: trackProgress.id },
+      data: {
+        videoProgresses: {
+          deleteMany: {},
+          create: newVideoProgresses,
+        },
+        resourcesCompleted: {
+          deleteMany: {},
+          create: newResourcesCompleted,
+        },
+        completed: false,
+      },
+    });
   }
 }

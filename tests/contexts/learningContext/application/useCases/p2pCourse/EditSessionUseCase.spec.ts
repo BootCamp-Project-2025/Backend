@@ -8,6 +8,7 @@ describe("AddSessionUseCase component", () => {
     create: jest.fn(),
     delete: jest.fn(),
     update: jest.fn(),
+    completeSession: jest.fn(),
   };
 
   const useCase = new EditSessionUseCase(sessionRepositoryMock);

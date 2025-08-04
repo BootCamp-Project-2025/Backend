@@ -9,6 +9,7 @@ describe("CompleteSessionUseCase component", () => {
     create: jest.fn(),
     delete: jest.fn(),
     update: jest.fn(),
+    completeSession: jest.fn(),
   };
 
   const useCase = new CompleteSessionUseCase(sessionRepositoryMock);
@@ -42,7 +43,7 @@ describe("CompleteSessionUseCase component", () => {
       creationDate: new Date(),
       status: "COMPLETED",
     });
-    sessionRepositoryMock.update.mockResolvedValue(session);
+    sessionRepositoryMock.completeSession.mockResolvedValue(session);
     const useCase = new CompleteSessionUseCase(sessionRepositoryMock);
     expect(
       useCase.execute({ p2pCourse, sessionId: "testSessionId" })

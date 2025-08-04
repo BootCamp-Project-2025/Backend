@@ -2,12 +2,15 @@ import "reflect-metadata";
 import AddSessionUseCase from "@/contexts/LearningContext/application/useCases/p2pCourse/AddSessionUseCase";
 import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCourse";
 import LiveSession from "@/contexts/LearningContext/domain/entities/LiveSession";
+import { ICdnService } from "@/contexts/CoreContext/domain/interfaces/services/ICdnService";
+import ILiveSessionRepository from "@/contexts/LearningContext/domain/interfaces/ILiveSessionRepository";
 
 describe("AddSessionUseCase component", () => {
   const sessionRepositoryMock = {
     create: jest.fn(),
     delete: jest.fn(),
     update: jest.fn(),
+    completeSession: jest.fn(),
   };
 
   const useCase = new AddSessionUseCase(sessionRepositoryMock);

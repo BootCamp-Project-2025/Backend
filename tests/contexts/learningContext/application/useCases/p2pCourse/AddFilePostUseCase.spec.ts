@@ -7,13 +7,19 @@ import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCours
 describe("AddFilePostUseCase component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    cdnMock.updateFilePreset.mockResolvedValue("https://www.youtube.com/");
   });
 
   const filePostRepositoryMock = {
     create: jest.fn(),
     delete: jest.fn(),
   };
-  const useCase = new AddFilePostUseCase(filePostRepositoryMock);
+  const cdnMock = {
+    updateFilePreset: jest.fn(),
+    deleteFile: jest.fn(),
+  };
+
+  const useCase = new AddFilePostUseCase(filePostRepositoryMock, cdnMock);
   it("Creates correctly", () => {
     expect(useCase).toBeInstanceOf(AddFilePostUseCase);
   });

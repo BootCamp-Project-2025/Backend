@@ -5,7 +5,7 @@ import { ISearchService } from "@/contexts/CoreContext/domain/interfaces/service
 import { ParamMapper } from "@/contexts/CoreContext/mappers/ParamsMapper";
 import { SearchResponse } from "@elastic/elasticsearch/lib/api/types";
 
-describe('SearchRequestUseCase', () => {
+describe("SearchRequestUseCase", () => {
   let useCase: SearchRequestUseCase;
   let mockSearchService: jest.Mocked<ISearchService>;
   const RESOURCE = "requests";
@@ -19,12 +19,12 @@ describe('SearchRequestUseCase', () => {
     useCase = new SearchRequestUseCase(mockSearchService);
   });
 
-  describe('searchParams generation', () => {
-    it('should generate correct search params with basic query', async () => {
+  describe("searchParams generation", () => {
+    it("should generate correct search params with basic query", async () => {
       const queryParams: QueryParamsDto = {
-        query: 'test query',
+        query: "test query",
         page: 1,
-        size: 10
+        size: 10,
       };
 
       const expectedSearchParams = ParamMapper.queryToSearchParams(
@@ -36,53 +36,55 @@ describe('SearchRequestUseCase', () => {
       mockSearchService.search.mockResolvedValue({
         hits: {
           hits: [],
-          total: 0
-        }
+          total: 0,
+        },
       } as unknown as SearchResponse);
 
       await useCase.execute(queryParams);
 
-      expect(mockSearchService.search).toHaveBeenCalledWith(expectedSearchParams);
+      expect(mockSearchService.search).toHaveBeenCalledWith(
+        expectedSearchParams
+      );
     });
 
-    it('should generate search params with correct fields and resource', async () => {
+    it("should generate search params with correct fields and resource", async () => {
       const queryParams: QueryParamsDto = {
-        query: 'search term',
+        query: "search term",
         page: 2,
-        size: 20
+        size: 20,
       };
 
       mockSearchService.search.mockResolvedValue({
         hits: {
           hits: [],
-          total: 0
-        }
+          total: 0,
+        },
       } as unknown as SearchResponse);
 
-      const paramMapperSpy = jest.spyOn(ParamMapper, 'queryToSearchParams');
+      const paramMapperSpy = jest.spyOn(ParamMapper, "queryToSearchParams");
 
       await useCase.execute(queryParams);
 
       expect(paramMapperSpy).toHaveBeenCalledWith(
         queryParams,
-        ['title', 'description'],
-        'requests'
+        ["title", "description"],
+        "requests"
       );
     });
 
-    it('should generate search params with default pagination when not provided', async () => {
+    it("should generate search params with default pagination when not provided", async () => {
       const queryParams: QueryParamsDto = {
-        query: 'test'
+        query: "test",
       };
 
       mockSearchService.search.mockResolvedValue({
         hits: {
           hits: [],
-          total: 0
-        }
+          total: 0,
+        },
       } as unknown as SearchResponse);
 
-      const paramMapperSpy = jest.spyOn(ParamMapper, 'queryToSearchParams');
+      const paramMapperSpy = jest.spyOn(ParamMapper, "queryToSearchParams");
 
       await useCase.execute(queryParams);
 

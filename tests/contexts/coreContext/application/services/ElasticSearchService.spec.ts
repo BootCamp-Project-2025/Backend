@@ -5,7 +5,7 @@ import { SearchQueryDto } from "@/contexts/CoreContext/domain/interfaces/dtos/se
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { Client } from "@elastic/elasticsearch";
 
-describe('ElasticSearchService', () => {
+describe("ElasticSearchService", () => {
   let service: ElasticSearchService;
   let mockEsClient: jest.Mocked<Client>;
 
@@ -20,11 +20,11 @@ describe('ElasticSearchService', () => {
     service.esClient = mockEsClient;
   });
 
-  describe('search', () => {
-    it('should call elasticsearch search with provided params', async () => {
+  describe("search", () => {
+    it("should call elasticsearch search with provided params", async () => {
       const searchParams: SearchQueryDto = {
-        index: 'test-index',
-        query: { bool: { must: [{ match_all: {} }] } }
+        index: "test-index",
+        query: { bool: { must: [{ match_all: {} }] } },
       };
       const expectedResponse = { hits: { hits: [] } };
       mockEsClient.search.mockResolvedValue(expectedResponse as any);
@@ -36,49 +36,49 @@ describe('ElasticSearchService', () => {
     });
   });
 
-  describe('indexResource', () => {
-    it('should index a CourseDTO resource', async () => {
+  describe("indexResource", () => {
+    it("should index a CourseDTO resource", async () => {
       const courseDto: CourseDTO = {
-        id: 'course-123',
-        title: 'Test Course',
-        description: 'Test Description'
+        id: "course-123",
+        title: "Test Course",
+        description: "Test Description",
       } as unknown as CourseDTO;
 
-      await service.indexResource('courses', courseDto);
+      await service.indexResource("courses", courseDto);
 
       expect(mockEsClient.index).toHaveBeenCalledWith({
-        index: 'courses',
+        index: "courses",
         document: courseDto,
-        id: 'course-123'
+        id: "course-123",
       });
     });
 
-    it('should index a RequestDto resource', async () => {
+    it("should index a RequestDto resource", async () => {
       const requestDto: RequestDto = {
-        id: 'request-456',
-        title: 'Test Request'
+        id: "request-456",
+        title: "Test Request",
       } as unknown as RequestDto;
 
-      await service.indexResource('requests', requestDto);
+      await service.indexResource("requests", requestDto);
 
       expect(mockEsClient.index).toHaveBeenCalledWith({
-        index: 'requests',
+        index: "requests",
         document: requestDto,
-        id: 'request-456'
+        id: "request-456",
       });
     });
   });
 
-  describe('removeResource', () => {
-    it('should delete a resource by id', async () => {
-      const resourceId = 'resource-789';
-      const resourceIndex = 'test-index';
+  describe("removeResource", () => {
+    it("should delete a resource by id", async () => {
+      const resourceId = "resource-789";
+      const resourceIndex = "test-index";
 
       await service.removeResource(resourceIndex, resourceId);
 
       expect(mockEsClient.delete).toHaveBeenCalledWith({
         index: resourceIndex,
-        id: resourceId
+        id: resourceId,
       });
     });
   });

@@ -745,7 +745,6 @@ container.registerSingleton<IStudentTrackProgressService>(
   StudentTrackProgressService
 );
 
-
 container.registerSingleton<ICdnService>("ICdnService", CloudinaryService);
 container.registerSingleton<IStudentTrackProgressRepository>(
   "IStudentTrackProgressRepository",
@@ -785,7 +784,6 @@ container.registerSingleton<IStudentTrackProgressService>(
   "IStudentTrackProgressService",
   StudentTrackProgressService
 );
-
 
 container.registerSingleton<ISearchService>(
   "ISearchService",

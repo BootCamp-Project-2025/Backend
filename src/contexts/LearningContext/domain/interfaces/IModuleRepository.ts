@@ -6,4 +6,5 @@ export default interface IModuleRepository {
   create(module: Module, courseId: string): Promise<Module>;
   delete(moduleId: string): Promise<void>;
   update(module: Module): Promise<Module>;
+  findCourseIdByModuleId(moduleId: string): Promise<string>;
 }

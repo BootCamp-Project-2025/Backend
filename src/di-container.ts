@@ -166,6 +166,8 @@ import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/
 import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
+import { ICdnService } from "./contexts/CoreContext/domain/interfaces/services/ICdnService";
+import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloundinaryService";
 import { CheckEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CheckEnrollmentUseCase";
 import { GetUserEnrollmentsUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetUserEnrollmentsUseCase";
 import { StudentTrackProgressRepository } from "./contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";
@@ -673,6 +675,7 @@ container.registerSingleton<IClientRepository>(
   ClientRepository
 );
 
+container.registerSingleton<ICdnService>("ICdnService", CloudinaryService);
 container.registerSingleton<IStudentTrackProgressRepository>(
   "IStudentTrackProgressRepository",
   StudentTrackProgressRepository

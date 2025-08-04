@@ -57,4 +57,8 @@ export class FilePost extends Entity<FilePostProps> {
   get creationDate(): Date {
     return this.props.creationDate;
   }
+
+  public updateUrl(url: string): void {
+    this.props.url = FilePostUrl.create({ url: url });
+  }
 }

@@ -4,6 +4,7 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import ILessonRepository from "@/contexts/LearningContext/domain/interfaces/ILessonRepository";
 import LessonMapper from "@/contexts/LearningContext/mappers/LessonMapper";
 import UpdateLessonUseCase from "@/contexts/LearningContext/application/useCases/lesson/UpdateLessonUseCase";
+import { ICdnService } from "@/contexts/CoreContext/domain/interfaces/services/ICdnService";
 
 const mockRepository: jest.Mocked<ILessonRepository> = {
   update: jest.fn(),
@@ -12,7 +13,12 @@ const mockRepository: jest.Mocked<ILessonRepository> = {
   delete: jest.fn(),
 };
 
-const useCase = new UpdateLessonUseCase(mockRepository);
+const mockCdnService: jest.Mocked<ICdnService> = {
+  deleteFile: jest.fn(),
+  updateFilePreset: jest.fn(),
+};
+
+const useCase = new UpdateLessonUseCase(mockRepository, mockCdnService);
 
 beforeEach(() => {
   jest.clearAllMocks();

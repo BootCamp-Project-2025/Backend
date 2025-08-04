@@ -4,6 +4,7 @@ import { RequestDto } from "@/contexts/CoreContext/domain/interfaces/dtos/Reques
 import { SearchQueryDto } from "@/contexts/CoreContext/domain/interfaces/dtos/search/SearchQueryDto";
 import { CourseDTO } from "@/contexts/LearningContext/domain/dtos/CourseDTO";
 import { Client } from "@elastic/elasticsearch";
+import { SearchResponse } from "@elastic/elasticsearch/lib/api/types";
 
 describe("ElasticSearchService", () => {
   let service: ElasticSearchService;
@@ -14,7 +15,7 @@ describe("ElasticSearchService", () => {
       search: jest.fn(),
       index: jest.fn(),
       delete: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<Client>;
 
     service = new ElasticSearchService();
     service.esClient = mockEsClient;
@@ -27,7 +28,9 @@ describe("ElasticSearchService", () => {
         query: { bool: { must: [{ match_all: {} }] } },
       };
       const expectedResponse = { hits: { hits: [] } };
-      mockEsClient.search.mockResolvedValue(expectedResponse as any);
+      mockEsClient.search.mockResolvedValue(
+        expectedResponse as unknown as SearchResponse
+      );
 
       const result = await service.search(searchParams);
 

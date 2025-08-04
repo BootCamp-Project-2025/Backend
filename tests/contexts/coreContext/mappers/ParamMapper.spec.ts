@@ -200,8 +200,8 @@ describe("ParamMapper", () => {
     it("should not apply sort when order is invalid", () => {
       const query: QueryParamsDto = {
         query: "test",
-        sort: "invalid" as any,
-        order: "title" as any,
+        sort: "invalid" as unknown as "asc" | "desc",
+        order: "title" as unknown as "asc" | "desc",
         page: 1,
         size: 10,
       };

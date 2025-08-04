@@ -59,6 +59,6 @@ export class FilePost extends Entity<FilePostProps> {
   }
 
   public updateUrl(url: string): void {
-    this.props.url = FilePostUrl.create({ url: url });
+    this.props.url = FilePostUrl.create({ url });
   }
 }

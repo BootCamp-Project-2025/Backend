@@ -2,7 +2,6 @@ import "reflect-metadata";
 import GetByUserIdAndCourseIdUseCase from "@/contexts/LearningContext/application/useCases/p2pCourse/GetByUserIdAndCourseIdUseCase";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCourse";
-import IP2PCourseRepository from "@/contexts/LearningContext/domain/interfaces/IP2PCourseRepository";
 
 describe("GetByTeacherIdAndCourseIdUseCase component", () => {
   const p2pCourseRepositoryMock = {

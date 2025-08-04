@@ -1,8 +1,5 @@
 import "reflect-metadata";
-import IP2PCourseService from "@/contexts/LearningContext/domain/interfaces/IP2PCourseService";
 import { P2PCourseController } from "@/contexts/LearningContext/presentation/http/controllers/P2PCourseController";
-
-jest.mock("@/contexts/Shared/application/services/ResponseService");
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { Request, Response } from "express";
 import IP2PCourseController from "@/contexts/LearningContext/domain/interfaces/IP2PCourseController";
@@ -11,13 +8,14 @@ import SessionMapper from "@/contexts/LearningContext/mappers/SessionMapper";
 import { PostDTO } from "@/contexts/LearningContext/domain/dtos/PostDTO";
 import PostMapper from "@/contexts/LearningContext/mappers/PostMapper";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
-import { StatusCodes } from "http-status-codes";
 import LiveSession from "@/contexts/LearningContext/domain/entities/LiveSession";
 import { FilePostDTO } from "@/contexts/LearningContext/domain/dtos/FilePostDTO";
 import FilePostMapper from "@/contexts/LearningContext/mappers/FilePostMapper";
 import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCourse";
 import { P2PCourseDTO } from "@/contexts/LearningContext/domain/dtos/P2PCourseDTO";
 import P2PCourseMapper from "@/contexts/LearningContext/mappers/P2PCourseMapper";
+
+jest.mock("@/contexts/Shared/application/services/ResponseService");
 
 describe("P2PCourseController.spec", () => {
   let req: Request;
@@ -49,8 +47,6 @@ describe("P2PCourseController.spec", () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     } as unknown as Response;
-
-    (ResponseService.send as jest.Mock).mockImplementation(() => {});
 
     controller = new P2PCourseController(serviceMock);
 

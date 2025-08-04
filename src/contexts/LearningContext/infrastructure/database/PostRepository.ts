@@ -10,7 +10,7 @@ export default class PostRepository implements IPostRepository {
     const postDto = PostMapper.domainToDto(post);
     return PostMapper.dtoToDomain(
       await this.postDbConnection.create({
-        data: { ...postDto, p2pCourseId: p2pCourseId },
+        data: { ...postDto, p2pCourseId },
       })
     );
   }

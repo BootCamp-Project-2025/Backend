@@ -3,7 +3,6 @@ import LiveSession from "../domain/entities/LiveSession";
 
 const SessionMapper = {
   dtoToDomain(sessionDto: SessionDTO): LiveSession {
-    sessionDto.status = sessionDto.status;
     return LiveSession.createFromPrimitive(sessionDto, sessionDto.id);
   },
   domainToDto(session: LiveSession): SessionDTO {

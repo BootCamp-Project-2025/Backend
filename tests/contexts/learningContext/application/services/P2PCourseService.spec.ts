@@ -81,7 +81,7 @@ describe("P2PCourseService component", () => {
     await service.addSession("testCourseId", session);
     expect(addSessionUseCase.execute).toHaveBeenCalledWith({
       p2pCourse,
-      session: session,
+      session,
     });
   });
 
@@ -103,7 +103,7 @@ describe("P2PCourseService component", () => {
     await service.editSession("p2pCourseTestId", session);
     expect(editSessionUseCase.execute).toHaveBeenCalledWith({
       p2pCourse,
-      session: session,
+      session,
     });
   });
 

@@ -10,7 +10,7 @@ export default class FilePostRepository implements IFilePostRepository {
     const filePostDto = FilePostMapper.domainToDto(filePost);
     return FilePostMapper.dtoToDomain(
       await this.filePostDbConnection.create({
-        data: { ...filePostDto, p2pCourseId: p2pCourseId },
+        data: { ...filePostDto, p2pCourseId },
       })
     );
   }

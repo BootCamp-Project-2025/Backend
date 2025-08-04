@@ -11,14 +11,18 @@ export default class DeleteRequestUseCase implements IUseCase<string, void> {
   constructor(
     @inject("IRequestRepository")
     private readonly repository: IRequestRepository
-  ) {}
+  ) { }
   async execute(requestId: string): Promise<void> {
     await this.checkIfRequestExist(requestId);
+    console.log(`Deleting request with ID: ${requestId}`);
     await this.repository.delete(requestId);
     const event = new DeleteResourceEvent({
       resource: "requests",
       resourceId: requestId,
     });
+    console.log(
+      `Dispatching DeleteResourceEvent for request ID: ${event.payload}`
+    );
     globalEventDispatcher.dispatch(event);
   }
 

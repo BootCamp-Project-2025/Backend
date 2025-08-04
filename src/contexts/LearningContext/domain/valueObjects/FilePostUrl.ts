@@ -13,7 +13,7 @@ export default class FilePostUrl extends ValueObject<FilePostUrlProps> {
   }
 
   public get value(): string {
-    return this.props.status;
+    return this.props.url;
   }
 
   public static create(props: FilePostUrlProps): FilePostUrl {

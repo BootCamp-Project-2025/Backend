@@ -16,6 +16,6 @@ export default class FilePostRepository implements IFilePostRepository {
   }
 
   async delete(filePostId: string): Promise<void> {
-    this.filePostDbConnection.delete({ where: { id: filePostId } });
+    await this.filePostDbConnection.delete({ where: { id: filePostId } });
   }
 }

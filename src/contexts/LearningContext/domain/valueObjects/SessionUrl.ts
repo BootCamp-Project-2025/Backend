@@ -13,7 +13,7 @@ export default class SessionUrl extends ValueObject<SessionUrlProps> {
   }
 
   public get value(): string {
-    return this.props.status;
+    return this.props.url;
   }
 
   public static create(props: SessionUrlProps): SessionUrl {

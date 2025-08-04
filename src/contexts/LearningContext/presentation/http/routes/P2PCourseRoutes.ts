@@ -18,11 +18,18 @@ p2pCourseRoutes.post("/", verifyToken(), p2pCourseController.create);
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/userCourse:
+ * /p2pCourses/{p2pCourseId}/userCourse:
  *   get:
  *     summary: Get the course if the user is part of the course
  *     tags:
  *       - P2PCourses
+ *     responses:
+ *       200:
+ *         description: Returns the course
+ *       404:
+ *         description: The course does not exit
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.get(
   "/:p2pCourseId/userCourse",
@@ -32,11 +39,26 @@ p2pCourseRoutes.get(
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/posts:
+ * /p2pCourses/{p2pCourseId}/posts:
  *   post:
  *     summary: Create a new post in the p2p course
  *     tags:
  *       - P2PCourses
+ *     parameters:
+ *       - in: path
+ *         name: p2pCourseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       201:
+ *         description: The posts was created correctly in the course
+ *       400:
+ *         description: The data is incorrect
+ *       409:
+ *         description: The data conficts with other records
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.post(
   "/:p2pCourseId/posts",
@@ -46,11 +68,31 @@ p2pCourseRoutes.post(
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/posts/:postId:
+ * /p2pCourses/{p2pCourseId}/posts/{postId}:
  *   put:
  *     summary: Update the a post in the p2p course
  *     tags:
  *       - P2PCourses
+ *     parameters:
+ *       - in: path
+ *         name: p2pCourseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The posts was updated correctly in the course
+ *       400:
+ *         description: The data is incorrect
+ *       409:
+ *         description: The data conficts with other records
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.put(
   "/:p2pCourseId/posts/:postId",
@@ -60,11 +102,27 @@ p2pCourseRoutes.put(
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/posts/:postId:
+ * /p2pCourses/{p2pCourseId}/posts/{postId}:
  *   delete:
  *     summary: Deletes a post in the p2p course
  *     tags:
  *       - P2PCourses
+ *     parameters:
+ *       - in: path
+ *         name: p2pCourseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The posts was deleted correctly of the course
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.delete(
   "/:p2pCourseId/posts/:postId",
@@ -74,11 +132,24 @@ p2pCourseRoutes.delete(
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/sessions:
+ * /p2pCourses/{p2pCourseId}/sessions:
  *   post:
  *     summary: Create a new session in the p2p course
  *     tags:
  *       - P2PCourses
+ *     parameters:
+ *       - in: path
+ *         name: p2pCourseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       201:
+ *         description: The session was created correctly on the course
+ *       400:
+ *         description: The data is incorrect
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.post(
   "/:p2pCourseId/sessions",
@@ -88,11 +159,31 @@ p2pCourseRoutes.post(
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/sessions/:sessionId:
+ * /p2pCourses/{p2pCourseId}/sessions/{sessionId}:
  *   put:
  *     summary: Updates a session in the p2p course
  *     tags:
  *       - P2PCourses
+ *     parameters:
+ *       - in: path
+ *         name: p2pCourseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *
+ *         name: sessionId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The session was updated correctly on the course
+ *       400:
+ *         description: The data is incorrect
+ *       409:
+ *         description: The data conficts with other records
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.put(
   "/:p2pCourseId/sessions/:sessionId",
@@ -102,11 +193,27 @@ p2pCourseRoutes.put(
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/sessions/:sessionId:
+ * /p2pCourses/{p2pCourseId}/sessions/{sessionId}:
  *   delete:
  *     summary: Removes a session of the p2p course
  *     tags:
  *       - P2PCourses
+ *     parameters:
+ *       - in: path
+ *         name: p2pCourseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *
+ *         name: sessionId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The session was delete correctly of the course
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.delete(
   "/:p2pCourseId/sessions/:sessionId",
@@ -116,11 +223,29 @@ p2pCourseRoutes.delete(
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/sessions/:sessionId/status:
+ * /p2pCourses/{p2pCourseId}/sessions/{sessionId}/complete:
  *   patch:
  *     summary: Updates the status of a session to completed
  *     tags:
  *       - P2PCourses
+ *     parameters:
+ *       - in: path
+ *         name: p2pCourseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *
+ *         name: sessionId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The session status was set to completed on the course
+ *       409:
+ *         description: The request conficts with other records
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.patch(
   "/:p2pCourseId/sessions/:sessionId/complete",
@@ -130,11 +255,24 @@ p2pCourseRoutes.patch(
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/files:
+ * /p2pCourses/{p2pCourseId}/files:
  *   post:
  *     summary: Create a new filePost in the p2p course
  *     tags:
  *       - P2PCourses
+ *     parameters:
+ *       - in: path
+ *         name: p2pCourseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       201:
+ *         description: The filePost was created correctly on the course
+ *       400:
+ *         description: The data is incorrect
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.post(
   "/:p2pCourseId/files",
@@ -144,11 +282,27 @@ p2pCourseRoutes.post(
 
 /**
  * @openapi
- * /p2pCourses/:p2pCourseId/files/fileId:
+ * /p2pCourses/{p2pCourseId}/files/{fileId}:
  *   delete:
  *     summary: Deletes a filePost in the p2p course
  *     tags:
  *       - P2PCourses
+ *     parameters:
+ *       - in: path
+ *         name: p2pCourseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *
+ *         name: fileId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The filePost was deleted correctly of the course
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.delete(
   "/:p2pCourseId/files/:filePostId",

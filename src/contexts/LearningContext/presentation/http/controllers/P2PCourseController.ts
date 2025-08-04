@@ -48,6 +48,7 @@ export class P2PCourseController implements IP2PCourseController {
     try {
       const sessionDto = req.body as SessionDTO;
       const p2pCourseId = req.params.p2pCourseId;
+      sessionDto.status = "PENDING";
       const user = getUserFromRequest(req);
       this.validateEditPermision(p2pCourseId, user.id);
       const session = SessionMapper.dtoToDomain(sessionDto);

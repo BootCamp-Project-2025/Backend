@@ -26,6 +26,6 @@ export default class LiveSessionRepository implements ILiveSessionRepository {
     );
   }
   async delete(sessionId: string): Promise<void> {
-    this.liveSessionDbConnection.delete({ where: { id: sessionId } });
+    await this.liveSessionDbConnection.delete({ where: { id: sessionId } });
   }
 }

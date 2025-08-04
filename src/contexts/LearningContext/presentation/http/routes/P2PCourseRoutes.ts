@@ -151,7 +151,7 @@ p2pCourseRoutes.post(
  *       - P2PCourses
  */
 p2pCourseRoutes.delete(
-  "/:p2pCourseId/files/:fileId",
+  "/:p2pCourseId/files/:filePostId",
   verifyToken(["FREELANCER"]),
   p2pCourseController.removeFilePost
 );

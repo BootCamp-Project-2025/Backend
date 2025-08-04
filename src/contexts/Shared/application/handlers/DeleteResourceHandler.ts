@@ -1,6 +1,6 @@
+import { ElasticSearchService } from "@/contexts/CoreContext/application/services/ElasticSearchService";
 import { container } from "tsyringe";
 import { DomainEvent } from "../../domain/events/DomainEvent";
-import { ElasticSearchService } from "@/contexts/CoreContext/application/services/ElasticSearchService";
 import { DeleteResourceEvent } from "../../domain/events/DeleteResourceEvent";
 
 const elasticSearchService = container.resolve(ElasticSearchService);

@@ -5,6 +5,7 @@ import SessionMapper from "../../mappers/SessionMapper";
 
 export default class LiveSessionRepository implements ILiveSessionRepository {
   private liveSessionDbConnection = PrismaClient.liveSession;
+  private p2pCourseDbConnection = PrismaClient.p2PCourse;
   async create(
     p2pCourseId: string,
     session: LiveSession
@@ -27,5 +28,23 @@ export default class LiveSessionRepository implements ILiveSessionRepository {
   }
   async delete(sessionId: string): Promise<void> {
     await this.liveSessionDbConnection.delete({ where: { id: sessionId } });
+  }
+
+  async completeSession(
+    p2pCourseId: string,
+    sessionId: string
+  ): Promise<LiveSession> {
+    await this.p2pCourseDbConnection.update({
+      data: {
+        remainingSession: { decrement: 1 },
+      },
+      where: { id: p2pCourseId },
+    });
+    return SessionMapper.dtoToDomain(
+      await this.liveSessionDbConnection.update({
+        data: { status: "COMPLETED" },
+        where: { id: sessionId },
+      })
+    );
   }
 }

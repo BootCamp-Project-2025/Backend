@@ -137,13 +137,14 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
    * @description Mark a session as completed and reduces the number of remaining session of the course
    * @param sessionId Id of the session that was completed
    */
-  public completeSession(sessionId: UniqueEntityID): void {
+  public completeSession(sessionId: UniqueEntityID): LiveSession {
     this.validateRemainingSessionsOrThrow();
     const sessionIndex = this.props.sessions.findIndex((session) =>
       session.id.equals(sessionId)
     );
     this.props.sessions[sessionIndex].complete();
     this.reduceRemainingSessions();
+    return this.props.sessions[sessionIndex];
   }
 
   private reduceRemainingSessions() {
@@ -187,7 +188,11 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
   }
 
   public availableRemainingSessionsOrThrow() {
-    if (this.sessions.length === this.remainingSessions.value) {
+    const remainingSession = this.sessions.filter(
+      (session) => session.status.value === "PENDING"
+    );
+    console.log(remainingSession.length);
+    if (remainingSession.length >= this.remainingSessions.value) {
       throw new ApiError(StatusCodes.CONFLICT, "Cant have more sessions");
     }
   }

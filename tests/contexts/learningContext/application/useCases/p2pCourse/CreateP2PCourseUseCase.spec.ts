@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCourse";
 import CreateP2PCourseUseCase from "@/contexts/LearningContext/application/useCases/p2pCourse/CreateP2PCourseUseCase";
-import IP2PCourseRepository from "@/contexts/LearningContext/domain/interfaces/IP2PCourseRepository";
 
 describe("CreateP2PCourseUseCase component", () => {
   const p2pCourseRepositoryMock = {

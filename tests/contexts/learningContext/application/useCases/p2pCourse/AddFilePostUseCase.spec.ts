@@ -5,11 +5,6 @@ import { FilePost } from "@/contexts/LearningContext/domain/entities/FilePost";
 import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCourse";
 
 describe("AddFilePostUseCase component", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    cdnMock.updateFilePreset.mockResolvedValue("https://www.youtube.com/");
-  });
-
   const filePostRepositoryMock = {
     create: jest.fn(),
     delete: jest.fn(),
@@ -18,6 +13,11 @@ describe("AddFilePostUseCase component", () => {
     updateFilePreset: jest.fn(),
     deleteFile: jest.fn(),
   };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    cdnMock.updateFilePreset.mockResolvedValue("https://www.youtube.com/");
+  });
 
   const useCase = new AddFilePostUseCase(filePostRepositoryMock, cdnMock);
   it("Creates correctly", () => {

@@ -13,7 +13,7 @@ export default class LiveSessionRepository implements ILiveSessionRepository {
     const sessionDb = SessionMapper.domainToDto(session);
     return SessionMapper.dtoToDomain(
       await this.liveSessionDbConnection.create({
-        data: { ...sessionDb, p2pCourseId: p2pCourseId },
+        data: { ...sessionDb, p2pCourseId },
       })
     );
   }

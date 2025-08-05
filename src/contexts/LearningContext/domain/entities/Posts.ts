@@ -7,6 +7,7 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
 export type PrimitivePostProps = {
+  id?: string;
   title: string;
   description?: string;
   url?: string;

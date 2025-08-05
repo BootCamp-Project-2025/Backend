@@ -31,7 +31,7 @@ export type PrimitiveP2PCourseProps = {
 type P2PCourseProps = {
   studentId: UserId;
   teacherId: UserId;
-  chatId: UserId;
+  chatId: ChatId;
   name: P2PCourseName;
   remainingSessions: P2PRemainingSessions;
   status: P2PCourseStatus;
@@ -80,10 +80,12 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
       chatId: ChatId.create({ chatId: props.chatId }),
       name: P2PCourseName.create({ name: props.name }),
       status: P2PCourseStatus.create({ status: props.status }),
-      posts: props.posts.map((post) => Post.createFromPrimitive(post)),
-      files: props.files.map((file) => FilePost.createFromPrimitive(file)),
+      posts: props.posts.map((post) => Post.createFromPrimitive(post, post.id)),
+      files: props.files.map((file) =>
+        FilePost.createFromPrimitive(file, file.id)
+      ),
       sessions: props.sessions.map((session) =>
-        LiveSession.createFromPrimitive(session)
+        LiveSession.createFromPrimitive(session, session.id)
       ),
       remainingSessions: P2PRemainingSessions.create({
         remainingSession: props.remainingSession,
@@ -115,6 +117,18 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     return this._id;
   }
 
+  get studentId(): string {
+    return this.props.studentId.value;
+  }
+
+  get teacherId(): string {
+    return this.props.teacherId.value;
+  }
+
+  get chatId(): string {
+    return this.props.chatId.value;
+  }
+
   public cancelCourse(): void {
     this.props.status = P2PCourseStatus.create({ status: "CANCELED" });
   }
@@ -123,13 +137,14 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
    * @description Mark a session as completed and reduces the number of remaining session of the course
    * @param sessionId Id of the session that was completed
    */
-  public completeSession(sessionId: UniqueEntityID): void {
+  public completeSession(sessionId: UniqueEntityID): LiveSession {
     this.validateRemainingSessionsOrThrow();
     const sessionIndex = this.props.sessions.findIndex((session) =>
       session.id.equals(sessionId)
     );
     this.props.sessions[sessionIndex].complete();
     this.reduceRemainingSessions();
+    return this.props.sessions[sessionIndex];
   }
 
   private reduceRemainingSessions() {
@@ -164,36 +179,6 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
   }
 
   /**
-   * @description Delete a session of the sessions list
-   * @throws If session was completed throw an ApiError
-   */
-  public deleteSession(sessionId: UniqueEntityID): void {
-    this.props.sessions = this.props.sessions.filter((session) => {
-      P2PCourse.validateDeleteOrThrow(sessionId, session);
-      return !session.id.equals(sessionId);
-    });
-  }
-
-  /**
-   * @description Check if the session that we are trying to delete is completed, in that case it throws
-   * @throws If the session we are trying to delete is completed, it throws an ApiError
-   */
-  static validateDeleteOrThrow(
-    deleteSessionId: UniqueEntityID,
-    session: LiveSession
-  ): void {
-    if (
-      session.id.equals(deleteSessionId) &&
-      session.status.value === "COMPLETED"
-    ) {
-      throw new ApiError(
-        StatusCodes.CONFLICT,
-        "A completed session can not be deleted"
-      );
-    }
-  }
-
-  /**
    * @description Add a new session to the sessions list if the number of existing sessions doesnt excede the remaining sessions
    * @throws If alredy has enoguh sessions to cover the remaining session
    */
@@ -203,8 +188,12 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
   }
 
   public availableRemainingSessionsOrThrow() {
-    if (this.sessions.length === this.remainingSessions.value) {
-      throw new ApiError(StatusCodes.CONFLICT);
+    const remainingSession = this.sessions.filter(
+      (session) => session.status.value === "PENDING"
+    );
+    console.log(remainingSession.length);
+    if (remainingSession.length >= this.remainingSessions.value) {
+      throw new ApiError(StatusCodes.CONFLICT, "Cant have more sessions");
     }
   }
 
@@ -230,5 +219,109 @@ export class P2PCourse extends AggregateRoot<P2PCourseProps> {
     this.props.files = this.props.files.filter(
       (file) => !file.id.equals(fileId)
     );
+  }
+
+  /**
+   * @description Delete a session of the sessions list
+   * @throws If session was completed throw an ApiError
+   */
+  public deleteSession(sessionId: UniqueEntityID): void {
+    const deleteIndex = this.props.sessions.findIndex((session) =>
+      session.id.equals(sessionId)
+    );
+    this.validateDeleteOrThrow(deleteIndex);
+    this.props.sessions.splice(deleteIndex, 1);
+  }
+
+  /**
+   * @description Check if the session that we are trying to delete is completed, in that case it throws
+   * @throws If the session we are trying to delete is completed, it throws an ApiError
+   */
+  private validateDeleteOrThrow(deleteIndex: number): void {
+    P2PCourse.validateSessionIndex(deleteIndex);
+    if (this.props.sessions[deleteIndex].status.value === "COMPLETED") {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        "A completed session can't be deleted"
+      );
+    }
+  }
+
+  public getSession(sessionId: UniqueEntityID): LiveSession {
+    const sessionIndex = this.sessions.findIndex((session) =>
+      session.id.equals(sessionId)
+    );
+
+    P2PCourse.validateSessionIndex(sessionIndex);
+    return this.sessions[sessionIndex];
+  }
+
+  public updateSession(newSession: LiveSession): LiveSession {
+    const sessionIndex = this.sessions.findIndex((session) =>
+      session.id.equals(newSession.id)
+    );
+    P2PCourse.validateSessionIndex(sessionIndex);
+    P2PCourse.validateChanges<LiveSession>(
+      newSession,
+      this.sessions[sessionIndex]
+    );
+    this.sessions[sessionIndex] = newSession;
+    return this.sessions[sessionIndex];
+  }
+
+  private static validateSessionIndex(sessionIndex: number) {
+    if (sessionIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Session not found");
+    }
+  }
+
+  public getPost(postId: UniqueEntityID): Post {
+    const postIndex = this.posts.findIndex((post) => post.id.equals(postId));
+
+    if (postIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Post not found");
+    }
+    return this.posts[postIndex];
+  }
+
+  public updatePost(newPost: Post): Post {
+    const postIndex = this.posts.findIndex((post) =>
+      post.id.equals(newPost.id)
+    );
+    if (postIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Post not found");
+    }
+    P2PCourse.validateChanges<Post>(newPost, this.posts[postIndex]);
+    this.posts[postIndex] = newPost;
+    return this.posts[postIndex];
+  }
+
+  public getFilePost(filePostId: UniqueEntityID): FilePost {
+    const filePostIndex = this.files.findIndex((filePost) =>
+      filePost.id.equals(filePostId)
+    );
+
+    if (filePostIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "File not found");
+    }
+    return this.files[filePostIndex];
+  }
+
+  public updateFilePost(newFilePost: FilePost): FilePost {
+    const filePostIndex = this.files.findIndex((filePost) =>
+      filePost.id.equals(newFilePost.id)
+    );
+    if (filePostIndex === -1) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "File not found");
+    }
+    P2PCourse.validateChanges<FilePost>(newFilePost, this.files[filePostIndex]);
+    this.files[filePostIndex] = newFilePost;
+    return this.files[filePostIndex];
+  }
+
+  private static validateChanges<T>(object1: T, object2: T) {
+    if (JSON.stringify(object1) === JSON.stringify(object2)) {
+      throw new ApiError(StatusCodes.OK, "No changes where made");
+    }
   }
 }

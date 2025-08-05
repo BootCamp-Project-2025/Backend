@@ -12,7 +12,7 @@ export default class PostTitle extends ValueObject<PostTitleProps> {
   }
 
   public get value(): string {
-    return this.props.status;
+    return this.props.title;
   }
 
   public static create(props: PostTitleProps): PostTitle {

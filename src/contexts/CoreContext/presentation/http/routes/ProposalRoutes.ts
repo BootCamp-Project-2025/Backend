@@ -7,7 +7,7 @@ const proposalController = container.resolve(ProposalController);
 
 /**
  * @openapi
- * /proposals/users/{userId}:
+ * /proposals/{userId}:
  *   get:
  *     summary: Get all proposals of a user
  *     tags:
@@ -27,7 +27,7 @@ const proposalController = container.resolve(ProposalController);
  *       500:
  *         description: Server error
  */
-proposalRoutes.get("/users/:userId", proposalController.getByUserId);
+proposalRoutes.get("/:userId", proposalController.getByUserId);
 
 /**
  * @openapi

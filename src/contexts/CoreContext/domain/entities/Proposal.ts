@@ -1,12 +1,9 @@
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-// import { Content } from "../valueObjects/Content";
-// import { CreationDate } from "../valueObjects/CreationDate";
 import {
   ProposalStatus,
   ProposalStatusEnum,
 } from "../valueObjects/ProposalStatus";
 import { Entity } from "@/contexts/Shared/domain/Entity";
-// import { UserId } from "../valueObjects/UserId";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 

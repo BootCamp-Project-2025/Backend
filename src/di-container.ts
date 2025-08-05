@@ -166,6 +166,9 @@ import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/
 import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
+import { GetUserCoursesUseCase } from "./contexts/CoreContext/application/useCases/GetUserCoursesUseCase";
+import { ICdnService } from "./contexts/CoreContext/domain/interfaces/services/ICdnService";
+import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloudinaryService";
 import { CheckEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CheckEnrollmentUseCase";
 import { GetUserEnrollmentsUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetUserEnrollmentsUseCase";
 import { StudentTrackProgressRepository } from "./contexts/LearningContext/infrastructure/database/StudentTrackProgresRepository";
@@ -200,6 +203,11 @@ container.registerSingleton<CreateUserFreelancerProfileUseCase>(
 container.registerSingleton<UpdateUserUseCase>(
   "UpdateUserUseCase",
   UpdateUserUseCase
+);
+
+container.registerSingleton<GetUserCoursesUseCase>(
+  "GetUserCoursesUseCase",
+  GetUserCoursesUseCase
 );
 
 container.registerSingleton<IUserService>("IUserService", UserService);
@@ -673,6 +681,7 @@ container.registerSingleton<IClientRepository>(
   ClientRepository
 );
 
+container.registerSingleton<ICdnService>("ICdnService", CloudinaryService);
 container.registerSingleton<IStudentTrackProgressRepository>(
   "IStudentTrackProgressRepository",
   StudentTrackProgressRepository

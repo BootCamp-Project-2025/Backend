@@ -142,6 +142,7 @@ export class UserRepository implements IUserRepository {
       where: {
         userId,
       },
+      orderBy: { createdAt: "desc" },
     });
     return courses.map(CourseMapper.toDomain);
   }

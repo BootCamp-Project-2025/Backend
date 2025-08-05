@@ -169,6 +169,17 @@ import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/
 import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
+import { IProposalReposisory } from "./contexts/CoreContext/domain/interfaces/repositories/IProposalRepository";
+import { ProposalRepository } from "./contexts/CoreContext/infrastructure/persistence/ProposalRepository";
+import { GetProposalByChatIdUseCase } from "./contexts/CoreContext/application/useCases/proposal/GetProposalByChatIdUseCase";
+import { Proposal } from "./contexts/CoreContext/domain/entities/Proposal";
+import { UpdateProposalUseCase } from "./contexts/CoreContext/application/useCases/proposal/UpdateProposalUseCase";
+import { CreateProposalUseCase } from "./contexts/CoreContext/application/useCases/proposal/CreateProposalUseCase";
+import { IProposalService } from "./contexts/CoreContext/domain/interfaces/services/IProposalService";
+import { ProposalService } from "./contexts/CoreContext/application/services/ProposalService";
+import { ProposalController } from "./contexts/CoreContext/presentation/http/controllers/ProposalController";
+import { IProposalController } from "./contexts/CoreContext/domain/interfaces/controllers/IProposalController";
+import { UpdateChatUseCase } from "./contexts/CoreContext/application/useCases/chats/UpdateChatUseCase";
 import IP2PCourseController from "./contexts/LearningContext/domain/interfaces/IP2PCourseController";
 import { P2PCourseController } from "./contexts/LearningContext/presentation/http/controllers/P2PCourseController";
 import IP2PCourseService from "./contexts/LearningContext/domain/interfaces/IP2PCourseService";
@@ -623,6 +634,10 @@ container.registerSingleton<IUseCase<string, Chat>>(
   "GetChatByIdUseCase",
   GetChatByIdUseCase
 );
+container.registerSingleton<IUseCase<{ chatId: string; chat: Chat }, Chat>>(
+  "UpdateChatUseCase",
+  UpdateChatUseCase
+);
 container.registerSingleton<IUseCase<Message, Message>>(
   "CreateMessageUseCase",
   CreateMessageUseCase
@@ -728,6 +743,34 @@ container.registerSingleton<IClientRepository>(
   ClientRepository
 );
 
+// Proposals
+container.registerSingleton<IProposalController>(
+  "IProposalController",
+  ProposalController
+);
+
+container.registerSingleton<IProposalService>(
+  "IProposalService",
+  ProposalService
+);
+
+container.registerSingleton<IUseCase<string, Proposal>>(
+  "GetProposalByChatIdUseCase",
+  GetProposalByChatIdUseCase
+);
+container.registerSingleton<
+  IUseCase<{ proposalId: string; proposal: Proposal }, Proposal>
+>("UpdateProposalUseCase", UpdateProposalUseCase);
+
+container.registerSingleton<IUseCase<Proposal, Proposal>>(
+  "CreateProposalUseCase",
+  CreateProposalUseCase
+);
+
+container.registerSingleton<IProposalReposisory>(
+  "IProposalRepository",
+  ProposalRepository
+);
 container.registerSingleton<ICdnService>("ICdnService", CloudinaryService);
 container.registerSingleton<IStudentTrackProgressRepository>(
   "IStudentTrackProgressRepository",

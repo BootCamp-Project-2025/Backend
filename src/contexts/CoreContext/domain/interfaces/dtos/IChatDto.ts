@@ -7,5 +7,5 @@ export interface ChatDto {
   messages: MessageDto[];
   participantsIds: string[];
   createdAt?: Date;
-  status: ChatStatus;
+  status?: ChatStatus;
 }

@@ -33,6 +33,7 @@ model Course{
   userId String
   user    User   @relation("UserCourse", fields: [userId], references: [id])
   Enrollment Enrollment[]
+  createdAt DateTime? @default(now())
 }
 
 model Module{
@@ -256,7 +257,7 @@ model Request {
   description    String
   language       String
   category       String
-  subCategory    String
+  subCategory    String           @default("")
   status         RequestStatus    @default(PENDING)
   createdAt      DateTime         @default(now())
   estimation     Int

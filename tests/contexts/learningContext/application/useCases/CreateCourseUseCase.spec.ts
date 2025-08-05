@@ -24,6 +24,7 @@ describe("CreateCourseUseCase", () => {
       description: "Descripción de prueba",
       imgSrc: "https://example.com/img.png",
       userId: "userId",
+      published: false,
     };
 
     const fakeCourse = Course.create({
@@ -32,7 +33,9 @@ describe("CreateCourseUseCase", () => {
       imgSrc: dto.imgSrc,
       userId: UserId.create(new UniqueEntityID(dto.userId)),
       modules: Modules.create([]),
+      published: dto.published ?? false,
     });
+
     repoMock.insert.mockResolvedValue(fakeCourse);
 
     const result = await useCase.execute(dto);
@@ -45,6 +48,7 @@ describe("CreateCourseUseCase", () => {
     expect(passedCourse.getName().value).toBe(dto.name);
     expect(passedCourse.getDescription().value).toBe(dto.description);
     expect(passedCourse.getImgSrc()).toBe(dto.imgSrc);
+    expect(passedCourse.getPublished()).toBe(dto.published);
 
     expect(result).toBe(fakeCourse);
   });

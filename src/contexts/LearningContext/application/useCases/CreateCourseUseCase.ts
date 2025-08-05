@@ -28,6 +28,7 @@ export class CreateCourseUseCase implements IUseCase<CourseDTO, Course> {
       imgSrc: courseDto.imgSrc,
       modules: Modules.create([]),
       userId,
+      published: courseDto.published ?? false,
     });
     return await this.courseRepo.insert(course);
   }

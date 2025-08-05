@@ -24,6 +24,7 @@ const empyCourseProps: CourseProps = {
   imgSrc: "dsadsa",
   modules: new Modules(),
   userId: UserId.create(new UniqueEntityID("asdasd")),
+  published: false,
 };
 
 const useCase = new EditCourseUseCase(mockRepository);

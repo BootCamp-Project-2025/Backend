@@ -36,6 +36,7 @@ export class CourseMapper {
         language: prismaCourse.language ?? "",
       }),
       userId: UserId.create(new UniqueEntityID(prismaCourse.userId)),
+      published: prismaCourse.published,
     };
 
     return Course.create(
@@ -56,7 +57,7 @@ export class CourseMapper {
       language: domainCourse.getLanguage().value,
       category: domainCourse.getCategory().value,
       subCategory: domainCourse.getSubCategory().value,
-      published: false,
+      published: domainCourse.getPublished(),
       userId: domainCourse.getUserID().toString(),
     };
   }
@@ -67,6 +68,7 @@ export class CourseMapper {
       description: body.props.description.value,
       imgSrc: body.props.imgSrc,
       userId: body.props.userId.toString(),
+      published: body.getPublished(),
     };
   }
 
@@ -77,6 +79,7 @@ export class CourseMapper {
       description: domainCourse.props.description.value,
       imgSrc: domainCourse.props.imgSrc,
       userId: domainCourse.props.userId.toString(),
+      published: domainCourse.getPublished(),
     };
   }
 
@@ -99,6 +102,7 @@ export class CourseMapper {
       language: CourseLanguage.create({ language: courseDto.language ?? "" }),
       modules: Modules.create([]),
       userId: UserId.create(new UniqueEntityID(courseDto.userId)),
+      published: courseDto.published ?? false,
     };
     if (courseDto.id !== null)
       return Course.create(courseProps, new UniqueEntityID(courseDto.id));
@@ -117,6 +121,7 @@ export class CourseMapper {
       time: courseDto.props.time,
       requirements: courseDto.props.requirements?.value ?? "",
       userId: courseDto.props.userId.toString(),
+      published: courseDto.getPublished(),
     };
   }
   static fromDTO(dto: CourseDTO): Course {
@@ -129,6 +134,7 @@ export class CourseMapper {
       imgSrc: dto.imgSrc,
       modules: Modules.create([]),
       userId: UserId.create(new UniqueEntityID(dto.userId)),
+      published: dto.published ?? false,
     };
 
     return Course.create(props, new UniqueEntityID(dto.id));

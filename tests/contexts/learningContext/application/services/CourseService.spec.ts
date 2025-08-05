@@ -13,6 +13,7 @@ describe("CourseService", () => {
   let deleteCourseUseCase: { execute: jest.Mock };
   let publish: { execute: jest.Mock };
   let service: CourseService;
+  let seachCourseUseCase: { execute: jest.Mock };
 
   beforeEach(() => {
     getAllCoursesUseCase = { execute: jest.fn() };
@@ -22,6 +23,7 @@ describe("CourseService", () => {
     updateCourseUseCase = { execute: jest.fn() };
     deleteCourseUseCase = { execute: jest.fn() };
     publish = { execute: jest.fn() };
+    seachCourseUseCase = { execute: jest.fn() };
 
     service = new CourseService(
       getAllCoursesUseCase,
@@ -30,7 +32,8 @@ describe("CourseService", () => {
       createCourseUseCase,
       updateCourseUseCase,
       deleteCourseUseCase,
-      publish
+      publish,
+      seachCourseUseCase
     );
   });
 

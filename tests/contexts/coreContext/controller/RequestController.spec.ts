@@ -12,11 +12,13 @@ describe("", () => {
   const create = jest.fn();
   const deleteFunc = jest.fn();
   const getUserActiveRequest = jest.fn();
+  const searchRequest = jest.fn();
 
   const serviceMock: IRequestService = {
     delete: deleteFunc,
     create,
     getUserActiveRequest,
+    searchRequest,
   };
 
   const mockResponse = () => {
@@ -167,5 +169,40 @@ describe("", () => {
     expect(controller.getUserActiveRequest(req, res)).rejects.toStrictEqual(
       error
     );
+  });
+
+  it("calls the search service correctly", async () => {
+    const req = {
+      query: { title: "test", category: "programming" },
+    } as unknown as ExpressRequest;
+    const res = mockResponse();
+    const mockResult = [{ id: "1", title: "test request" }];
+    searchRequest.mockResolvedValue(mockResult);
+
+    await expect(controller.search(req, res)).resolves.toBeUndefined();
+    expect(serviceMock.searchRequest).toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalled();
+  });
+
+  it("throw error when it catch some error in the search service", async () => {
+    const req = {
+      query: { title: "test" },
+    } as unknown as ExpressRequest;
+    const res = mockResponse();
+    searchRequest.mockRejectedValue(new ApiError(500, "error"));
+
+    await expect(controller.search(req, res)).rejects.toThrow(ApiError);
+  });
+
+  it("throw the catch ApiError when it catch some error in the search service", async () => {
+    const req = {
+      query: { title: "test" },
+    } as unknown as ExpressRequest;
+    const res = mockResponse();
+    const error = new ApiError();
+    searchRequest.mockRejectedValue(error);
+
+    await expect(controller.search(req, res)).rejects.toStrictEqual(error);
   });
 });

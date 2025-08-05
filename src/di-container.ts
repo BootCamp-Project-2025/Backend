@@ -169,15 +169,6 @@ import { IEnrollmentController } from "./contexts/CoreContext/domain/interfaces/
 import { CancelEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CancelEnrollmenetUseCase";
 import { IEnrollmentRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IEnrollmentRepository";
 import { EnrollmentRepository } from "./contexts/CoreContext/infrastructure/persistence/EnrollmentRepository";
-import { ISearchService } from "./contexts/CoreContext/domain/interfaces/services/ISearchService";
-import { ElasticSearchService } from "./contexts/CoreContext/application/services/ElasticSearchService";
-import { ISearchController } from "./contexts/CoreContext/domain/interfaces/controllers/ISearchController";
-import { SearchController } from "./contexts/CoreContext/presentation/http/controllers/SearchController";
-import { QueryParamsDto } from "./contexts/CoreContext/domain/interfaces/dtos/search/QueryParamsDto";
-import { SearchRequestUseCase } from "./contexts/CoreContext/application/useCases/requests/SearchRequestUseCase";
-import { PageDto } from "./contexts/CoreContext/domain/interfaces/dtos/search/PageDto";
-import { CourseSearchController } from "./contexts/CoreContext/presentation/http/controllers/SearchCourseController";
-import { SearchCourseUseCase } from "./contexts/LearningContext/application/useCases/searchCourseUseCase";
 import { GetUserCoursesUseCase } from "./contexts/CoreContext/application/useCases/GetUserCoursesUseCase";
 import { ICdnService } from "./contexts/CoreContext/domain/interfaces/services/ICdnService";
 import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloudinaryService";
@@ -194,6 +185,12 @@ import StudentTrackProgressService from "./contexts/LearningContext/application/
 import GetLessonByIdUseCase from "./contexts/LearningContext/application/useCases/lesson/GetLessonByIdUseCase";
 import StudentTrackProgressController from "./contexts/LearningContext/presentation/http/controllers/StudentTrackProgressController ";
 import { GetEnrollmentByIdUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetEnrollmentByIdUseCase";
+import { ISearchService } from "./contexts/CoreContext/domain/interfaces/services/ISearchService";
+import { ElasticSearchService } from "./contexts/CoreContext/application/services/ElasticSearchService";
+import { QueryParamsDto } from "./contexts/CoreContext/domain/interfaces/dtos/search/QueryParamsDto";
+import { SearchRequestUseCase } from "./contexts/CoreContext/application/useCases/requests/SearchRequestUseCase";
+import { PageDto } from "./contexts/CoreContext/domain/interfaces/dtos/search/PageDto";
+import { SearchCourseUseCase } from "./contexts/LearningContext/application/useCases/searchCourseUseCase";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -556,11 +553,6 @@ container.registerSingleton<ISearchService>(
   ElasticSearchService
 );
 
-container.registerSingleton<ISearchController>(
-  "ISearchController",
-  SearchController
-);
-
 container.registerSingleton<IUseCase<QueryParamsDto, PageDto<Request>>>(
   "SearchRequestUseCase",
   SearchRequestUseCase
@@ -708,24 +700,44 @@ container.registerSingleton<IClientRepository>(
   ClientRepository
 );
 
-container.registerSingleton<ISearchService>(
-  "ISearchService",
-  ElasticSearchService
+container.registerSingleton<ICdnService>("ICdnService", CloudinaryService);
+container.registerSingleton<IStudentTrackProgressRepository>(
+  "IStudentTrackProgressRepository",
+  StudentTrackProgressRepository
 );
 
-container.registerSingleton<ISearchController>(
-  "RequestSearchController",
-  SearchController
+container.registerSingleton<CreateStudentTrackProgressUseCase>(
+  "CreateStudentTrackProgressUseCase",
+  CreateStudentTrackProgressUseCase
 );
 
-container.registerSingleton<ISearchController>(
-  "CourseSearchController",
-  CourseSearchController
+container.registerSingleton<GetStudentTrackProgressByEnrollmentUseCase>(
+  "GetStudentTrackProgressByEnrollmentUseCase",
+  GetStudentTrackProgressByEnrollmentUseCase
 );
 
-container.registerSingleton<SearchCourseUseCase>(
-  "SearchCoursesUseCase",
-  SearchCourseUseCase
+container.registerSingleton<GetStudentTrackProgressByIdUseCase>(
+  "GetStudentTrackProgressByIdUseCase",
+  GetStudentTrackProgressByIdUseCase
+);
+
+container.registerSingleton<UpdateStudentTrackProgressUseCase>(
+  "UpdateStudentTrackProgressUseCase",
+  UpdateStudentTrackProgressUseCase
+);
+
+container.registerSingleton<GetLessonByIdUseCase>(
+  "GetLessonByIdUseCase",
+  GetLessonByIdUseCase
+);
+container.registerSingleton<StudentTrackProgressController>(
+  "StudentTrackProgressController",
+  StudentTrackProgressController
+);
+
+container.registerSingleton<IStudentTrackProgressService>(
+  "IStudentTrackProgressService",
+  StudentTrackProgressService
 );
 
 container.registerSingleton<ICdnService>("ICdnService", CloudinaryService);
@@ -768,4 +780,13 @@ container.registerSingleton<IStudentTrackProgressService>(
   StudentTrackProgressService
 );
 
+container.registerSingleton<ISearchService>(
+  "ISearchService",
+  ElasticSearchService
+);
+
+container.registerSingleton<SearchCourseUseCase>(
+  "SearchCoursesUseCase",
+  SearchCourseUseCase
+);
 export { container };

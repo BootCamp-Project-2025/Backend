@@ -100,17 +100,26 @@ export class CourseController implements ICourseController {
   public publish = async (req: Request, res: Response): Promise<void> => {
     try {
       const id = req.params.id;
-      const result = await this.courseService.publish(id);
-      res.status(201).json({ published: result });
+      const { published } = req.body;
+
+      if (typeof published !== "boolean") {
+        throw new ApiError(
+          StatusCodes.BAD_REQUEST,
+          "Invalid 'published' value"
+        );
+      }
+
+      const result = await this.courseService.publish(id, published);
+      res.status(200).json({ published: result });
     } catch (error) {
       if (error instanceof ApiError) throw error;
-      console.error(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "Error accessing the publish service"
       );
     }
   };
+
   public getCourse = async (req: Request, res: Response): Promise<void> => {
     try {
       const course = await this.courseService.getCourse(req.params.id);

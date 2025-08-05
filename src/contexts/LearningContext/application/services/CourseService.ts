@@ -4,8 +4,6 @@ import { CourseDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
 import IUseCase from "../../domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
-import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { StatusCodes } from "http-status-codes";
 import { QueryParamsDto } from "@/contexts/CoreContext/domain/interfaces/dtos/search/QueryParamsDto";
 import { PageDto } from "@/contexts/CoreContext/domain/interfaces/dtos/search/PageDto";
 
@@ -29,7 +27,10 @@ export class CourseService implements ICourseService {
     private readonly deleteCourseUseCase: IUseCase<string, void>,
 
     @inject("PublishCourseUseCase")
-    private publishCourseUseCase: IUseCase<string, boolean>,
+    private publishCourseUseCase: IUseCase<
+      { id: string; published: boolean },
+      boolean
+    >,
 
     @inject("SearchCoursesUseCase")
     private readonly searchCoursesUseCase: IUseCase<
@@ -48,17 +49,11 @@ export class CourseService implements ICourseService {
     return CourseMapper.toAplicationDTO(created);
   }
 
-  async publish(courseId: string): Promise<boolean> {
-    try {
-      return await this.publishCourseUseCase.execute(courseId);
-    } catch (error) {
-      if (error instanceof ApiError) throw error;
-      console.error(error);
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Error accesing the publish execution"
-      );
-    }
+  async publish(courseId: string, published: boolean): Promise<boolean> {
+    return await this.publishCourseUseCase.execute({
+      id: courseId,
+      published,
+    });
   }
   async getCourse(courseId: string): Promise<CourseDTO> {
     const course = await this.GetCourseUseCase.execute(courseId);

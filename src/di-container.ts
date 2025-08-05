@@ -103,7 +103,10 @@ import { Lesson } from "./contexts/LearningContext/domain/entities/Lesson";
 import CreateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/CreateLessonUseCase";
 import DeleteLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/DeleteLessonUseCase";
 import UpdateLessonUseCase from "./contexts/LearningContext/application/useCases/lesson/UpdateLessonUseCase";
-import { PublishCourseUseCase } from "./contexts/LearningContext/application/useCases/PublishCourseUseCase";
+import {
+  PublishCourseUseCase,
+  PublishInput,
+} from "./contexts/LearningContext/application/useCases/PublishCourseUseCase";
 import { Freelancer } from "./contexts/CoreContext/domain/aggregates/Freelancer";
 import { GetAllFreelancersUseCase } from "./contexts/CoreContext/application/useCases/GetAllFreelancersUseCase";
 import { User } from "./contexts/CoreContext/domain/aggregates/User";
@@ -263,7 +266,7 @@ container.registerSingleton<CreateCourseUseCase>(
   CreateCourseUseCase
 );
 
-container.registerSingleton<IUseCase<string, boolean>>(
+container.registerSingleton<IUseCase<PublishInput, boolean>>(
   "PublishCourseUseCase",
   PublishCourseUseCase
 );

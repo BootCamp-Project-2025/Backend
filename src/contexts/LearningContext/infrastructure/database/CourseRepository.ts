@@ -79,18 +79,12 @@ export class CourseRepository implements ICourseRepository {
     return CourseMapper.toDomain(created);
   }
 
-  async publish(id: string): Promise<boolean> {
-    try {
-      await this.db.course.update({
-        data: { published: true },
-        where: { id },
-      });
-      return true;
-    } catch {
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "error saving the changes"
-      );
-    }
+  async publish(id: string, published: boolean): Promise<boolean> {
+    const updated = await this.db.course.update({
+      data: { published },
+      where: { id },
+      select: { published: true },
+    });
+    return updated.published;
   }
 }

@@ -25,7 +25,7 @@ const router = Router();
  *          200:
  *              description: Everything is ok and returns user
  *          500:
- *              description: Everything is wrong
+ *              description: Internal server error
  *
  */
 router.get("/:id", controller.get);
@@ -50,7 +50,7 @@ router.get("/:id", controller.get);
  *          201:
  *              description: Everything is ok and returns user
  *          500:
- *              description: Everything is wrong
+ *              description: Internal server error
  */
 router.post("/", controller.post);
 
@@ -110,7 +110,7 @@ router.patch("/:id", controller.updateUser);
  *          200:
  *              description: User enabled and freelancer profile created
  *          500:
- *              description: Everything is wrong
+ *              description: Internal server error
  *
  */
 router.put("/:id/freelance", verifyToken(), controller.freelance);
@@ -136,10 +136,36 @@ router.put("/:id/freelance", verifyToken(), controller.freelance);
  *          404:
  *              description: User not found
  *          500:
- *              description: Everything is wrong
+ *              description: Internal server error
  *
  */
 router.get("/:userId/chats", controller.getChats);
+
+/**
+ * @openapi
+ * /users/{id}/courses:
+ *  get:
+ *     summary: Get the courses of the user with id
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
+ *          200:
+ *              description: Everything is ok and returns the user courses
+ *          404:
+ *              description: User not found
+ *          500:
+ *              description: Internal server error
+ *
+ */
+
+router.get("/:userId/courses", controller.getCourses);
 
 export default router;
 

@@ -185,6 +185,7 @@ import AddFilePostUseCase from "./contexts/LearningContext/application/useCases/
 import { FilePost } from "./contexts/LearningContext/domain/entities/FilePost";
 import RemoveFilePostUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/RemoveFilePostUseCase";
 import GetByUserIdAndCourseIdUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/GetByUserIdAndCourseIdUseCase";
+import { GetUserCoursesUseCase } from "./contexts/CoreContext/application/useCases/GetUserCoursesUseCase";
 import { ICdnService } from "./contexts/CoreContext/domain/interfaces/services/ICdnService";
 import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloudinaryService";
 import { CheckEnrollmentUseCase } from "./contexts/CoreContext/application/useCases/enrollment/CheckEnrollmentUseCase";
@@ -230,6 +231,11 @@ container.registerSingleton<CreateUserFreelancerProfileUseCase>(
 container.registerSingleton<UpdateUserUseCase>(
   "UpdateUserUseCase",
   UpdateUserUseCase
+);
+
+container.registerSingleton<GetUserCoursesUseCase>(
+  "GetUserCoursesUseCase",
+  GetUserCoursesUseCase
 );
 
 container.registerSingleton<IUserService>("IUserService", UserService);

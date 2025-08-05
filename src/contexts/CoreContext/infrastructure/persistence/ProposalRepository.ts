@@ -5,7 +5,7 @@ import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient
 import ProposalMapper from "../../mappers/ProposalMapper";
 import { ProposalDto } from "../../domain/interfaces/dtos/ProposalDto";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { PrismaClientKnownRequestError } from "@/generated/prisma/runtime/library";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { StatusCodes } from "http-status-codes";
 
 @injectable()
@@ -30,6 +30,11 @@ export class ProposalRepository implements IProposalReposisory {
           sessions: proposal.sessions,
           chatId: proposal.chatId?.toString(),
           status: "NEW",
+        },
+        include: {
+          request: {
+            include: { proposals: true },
+          },
         },
       });
       const newProposalDomain = ProposalMapper.dtoToDomain(
@@ -89,6 +94,32 @@ export class ProposalRepository implements IProposalReposisory {
         proposal as ProposalDto
       );
       return proposalDomain;
+    } catch (error) {
+      console.log(error);
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new ApiError(
+          StatusCodes.NOT_FOUND,
+          `${error.meta?.modelName ?? "Resource"} not found`
+        );
+      } else {
+        throw new ApiError();
+      }
+    }
+  }
+  async findAllByUserId(userId: string): Promise<Proposal[]> {
+    try {
+      const proposalsDb = await PrismaClient.proposal.findMany({
+        where: { userId },
+        include: {
+          request: true,
+          user: true,
+        },
+      });
+      console.log("proposallsss", proposalsDb);
+      return ProposalMapper.bulkDtoToDomain(proposalsDb as ProposalDto[]);
     } catch (error) {
       console.log(error);
       if (

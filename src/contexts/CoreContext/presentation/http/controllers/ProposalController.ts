@@ -58,4 +58,17 @@ export class ProposalController implements IProposalController {
     );
     ResponseService.send(res, response);
   };
+
+  getByUserId = async (req: Request, res: Response): Promise<void> => {
+    const { userId } = req.params;
+    const proposalsDomain = await this.proposalService.getByUserId(userId);
+
+    const proposalsDto = proposalsDomain.map(ProposalMapper.DomainToDto);
+    const response = new SuccessResponseEntity(
+      proposalsDto,
+      StatusCodes.OK,
+      "Proposals fetched successfully"
+    );
+    ResponseService.send(res, response);
+  };
 }

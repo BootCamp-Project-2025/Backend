@@ -7,6 +7,30 @@ const proposalController = container.resolve(ProposalController);
 
 /**
  * @openapi
+ * /proposals/{userId}:
+ *   get:
+ *     summary: Get all proposals of a user
+ *     tags:
+ *       - Proposal
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Returns list of proposals for the user
+ *       404:
+ *         description: No proposals found
+ *       500:
+ *         description: Server error
+ */
+proposalRoutes.get("/:userId", proposalController.getByUserId);
+
+/**
+ * @openapi
  * /proposals:
  *  post:
  *      summary: Create a new proposal

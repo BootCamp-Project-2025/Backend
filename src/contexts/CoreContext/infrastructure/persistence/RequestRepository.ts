@@ -2,6 +2,9 @@ import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient
 import { Request } from "../../domain/aggregates/Request";
 import IRequestRepository from "../../domain/interfaces/repositories/IRequestRepository";
 import RequestMapper from "../../mappers/RequestMapper";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export default class RequestRepository implements IRequestRepository {
   db = PrismaClient;
@@ -37,5 +40,35 @@ export default class RequestRepository implements IRequestRepository {
       include: { proposals: true },
     });
     return RequestMapper.bulkDtoToDomain(requestDb);
+  }
+
+  async update(requestId: string, request: Request): Promise<Request> {
+    try {
+      const updatedRequest = await this.db.request.update({
+        where: { id: requestId },
+        data: {
+          title: request.getTitle().value,
+          description: request.getDescription().value,
+          language: request.getLanguage().value,
+          category: request.getCategory().value,
+          subcategory: request.getSubcategory().value,
+          updatedAt: new Date(),
+        },
+      });
+
+      return RequestMapper.dtoToDomain(updatedRequest);
+    } catch (error) {
+      console.error(error);
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new ApiError(
+          StatusCodes.NOT_FOUND,
+          `${error.meta?.modelName ?? "Request"} not found`
+        );
+      }
+      throw new ApiError();
+    }
   }
 }

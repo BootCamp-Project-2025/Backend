@@ -21,6 +21,13 @@ export default class RequestService implements IRequestService {
     private readonly searchRequestUseCase: IUseCase<
       QueryParamsDto,
       PageDto<Request>
+    >,
+    @inject("GetRequestUseCase")
+    private readonly getRequestUseCase: IUseCase<string, Request>,
+    @inject("UpdateRequestUseCase")
+    private readonly updateRequestUseCase: IUseCase<
+      { requestId: string; request: Request },
+      Request
     >
   ) {}
   async delete(requestId: string): Promise<void> {
@@ -38,5 +45,14 @@ export default class RequestService implements IRequestService {
 
   async searchRequest(params: QueryParamsDto): Promise<PageDto<Request>> {
     return await this.searchRequestUseCase.execute(params);
+  }
+  async getById({ requestId }: { requestId: string }): Promise<Request | null> {
+    return await this.getRequestUseCase.execute(requestId);
+  }
+  async update(requestId: string, request: Request): Promise<Request> {
+    return await this.updateRequestUseCase.execute({
+      requestId: requestId,
+      request,
+    });
   }
 }

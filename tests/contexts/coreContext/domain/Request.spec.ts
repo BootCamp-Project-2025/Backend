@@ -21,12 +21,14 @@ import { CreationDate } from "@/contexts/CoreContext/domain/valueObjects/Creatio
 export function makeMockProposal(overrides = {}) {
   return Proposal.create(
     {
-      content: Content.create(
-        "I can teach you React with the complete formation that you need for this request"
-      ),
-      status: ProposalStatus.create(ProposalStatusEnum.PENDING),
-      creationDate: CreationDate.create(new Date()),
-      userId: UserId.create(new UniqueEntityID()),
+      description:
+        "I can teach you React with the complete formation that you need for this request",
+      status: ProposalStatus.create(ProposalStatusEnum.NEW),
+      createdAt: new Date(),
+      sessions: [],
+      requestId: new UniqueEntityID(),
+      userId: new UniqueEntityID(),
+      chatId: new UniqueEntityID(),
       ...overrides,
     },
     new UniqueEntityID()
@@ -182,7 +184,7 @@ describe("Request Aggregate", () => {
 
     request.rejectRemainingProposals(p1.id);
 
-    expect(p1.status.isPending()).toBe(true); // not modified
+    expect(p1.status.isSent()).toBe(false); // not modified
     expect(p2.status.isRejected()).toBe(true);
     expect(p3.status.isRejected()).toBe(true); // stays rejected
   });

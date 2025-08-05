@@ -36,7 +36,9 @@ const RequestMapper = {
         edited: RequestEdited.create(requestDto.edited ?? false),
         createdAt: requestDto.createdAt ?? new Date(),
         updatedAt: requestDto.updatedAt ?? new Date(),
-        proposals: [],
+        proposals: requestDto.proposals
+          ? ProposalMapper.bulkDtoToDomain(requestDto.proposals)
+          : [],
       },
       new UniqueEntityID(requestDto.id)
     );

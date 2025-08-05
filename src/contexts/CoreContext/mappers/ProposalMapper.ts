@@ -40,6 +40,7 @@ const ProposalMapper = {
       .sessions(proposal.sessions)
       .createdAt(proposal.createdAt)
       .status(proposal.status.value)
+      .chatId(proposal.chatId?.toString())
       .build();
   },
 };

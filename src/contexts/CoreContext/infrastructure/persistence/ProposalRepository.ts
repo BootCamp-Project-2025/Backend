@@ -31,6 +31,11 @@ export class ProposalRepository implements IProposalReposisory {
           chatId: proposal.chatId?.toString(),
           status: "NEW",
         },
+        include: {
+          request: {
+            include: { proposals: true },
+          },
+        },
       });
       const newProposalDomain = ProposalMapper.dtoToDomain(
         newProposal as ProposalDto

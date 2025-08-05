@@ -20,6 +20,7 @@ const mockModuleRepository: jest.Mocked<IModuleRepository> = {
   create: jest.fn(),
   delete: jest.fn(),
   update: jest.fn(),
+  findCourseIdByModuleId: jest.fn(),
 };
 
 const useCase = new CreateLessonUseCase(mockModuleRepository, mockRepository);

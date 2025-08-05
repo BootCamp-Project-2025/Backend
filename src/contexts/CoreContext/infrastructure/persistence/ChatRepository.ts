@@ -49,10 +49,6 @@ export class ChatRepository implements IChatRepository {
     }
   }
 
-  getAll(): Promise<Chat[]> {
-    throw new Error("Method not implemented.");
-  }
-
   async getById(id: string): Promise<Chat | null> {
     try {
       const chatPrisma = await PrismaClient.chat.findFirst({
@@ -86,16 +82,13 @@ export class ChatRepository implements IChatRepository {
     }
   }
 
-  delete(id: string): Promise<string | void> {
-    throw new Error("Method not implemented.");
-  }
-
   async create(object: Chat): Promise<Chat> {
     try {
       const chatPrisma = ChatMapper.DomainToPersistence(object);
       const newChat = await PrismaClient.chat.create({
         data: {
           name: chatPrisma.name,
+          status: chatPrisma.status,
           participants: {
             connect: chatPrisma.participantsIds.map((id) => ({ id })),
           },
@@ -121,7 +114,35 @@ export class ChatRepository implements IChatRepository {
     }
   }
 
-  update(id: string, object: Chat): Promise<void | Chat> {
-    throw new Error("Method not implemented.");
+  async update(id: string, object: Chat): Promise<Chat> {
+    try {
+      const chatRepository = ChatMapper.DomainToPersistence(object);
+      const updatedChatPrisma = await PrismaClient.chat.update({
+        where: { id },
+        data: {
+          name: chatRepository.name,
+          status: chatRepository.status,
+        },
+        include: {
+          messages: { orderBy: { timestamp: "desc" }, take: 1 },
+          participants: { select: { id: true } },
+        },
+      });
+      const updatedChatDao: ChatDao = {
+        ...updatedChatPrisma,
+        participantsIds: updatedChatPrisma.participants.map((p) => p.id),
+      };
+      const updatedChatDomain = ChatMapper.PersistenceToDomain(updatedChatDao);
+      return updatedChatDomain;
+    } catch (error) {
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Chat not found");
+      } else {
+        throw new ApiError();
+      }
+    }
   }
 }

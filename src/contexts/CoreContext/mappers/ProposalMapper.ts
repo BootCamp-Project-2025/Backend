@@ -4,19 +4,22 @@ import {
   ProposalBuilder,
   ProposalDto,
 } from "../domain/interfaces/dtos/ProposalDto";
-import { Content } from "../domain/valueObjects/Content";
-import { CreationDate } from "../domain/valueObjects/CreationDate";
 import { ProposalStatus } from "../domain/valueObjects/ProposalStatus";
-import { UserId } from "../domain/valueObjects/UserId";
 
 const ProposalMapper = {
   dtoToDomain(proposalDto: ProposalDto): Proposal {
-    return Proposal.create({
-      content: Content.create(proposalDto.content),
-      status: ProposalStatus.create(proposalDto.status),
-      creationDate: CreationDate.create(proposalDto.creationDate),
-      userId: UserId.create(new UniqueEntityID(proposalDto.userId)),
-    });
+    return Proposal.create(
+      {
+        requestId: new UniqueEntityID(proposalDto.requestId),
+        userId: new UniqueEntityID(proposalDto.userId),
+        description: proposalDto.description ?? "",
+        sessions: proposalDto.sessions ?? [],
+        createdAt: proposalDto.createdAt ?? new Date(),
+        status: ProposalStatus.create(proposalDto.status),
+        chatId: new UniqueEntityID(proposalDto.chatId),
+      },
+      new UniqueEntityID(proposalDto.id)
+    );
   },
 
   bulkDomainToDto(proposalList: Proposal[]): ProposalDto[] {
@@ -26,10 +29,12 @@ const ProposalMapper = {
   DomainToDto(proposal: Proposal): ProposalDto {
     return ProposalBuilder.builder()
       .id(proposal.id.toValue())
-      .content(proposal.content.value)
+      .userId(proposal.userId.toString())
+      .requestId(proposal.requestId.toString())
+      .description(proposal.description)
+      .sessions(proposal.sessions)
+      .createdAt(proposal.createdAt)
       .status(proposal.status.value)
-      .creationDate(proposal.creationDate.value)
-      .userId(proposal.userId.getValue().toValue())
       .build();
   },
 };

@@ -5,7 +5,8 @@ import { StatusCodes } from "http-status-codes";
 export enum ProposalStatusEnum {
   REJECTED = "REJECTED",
   ACCEPTED = "ACCEPTED",
-  PENDING = "PENDING",
+  NEW = "NEW",
+  SENT = "SENT",
 }
 
 interface StatusProps {
@@ -37,7 +38,11 @@ export class ProposalStatus extends ValueObject<StatusProps> {
     return this.value === ProposalStatusEnum.ACCEPTED;
   }
 
-  public isPending(): boolean {
-    return this.value === ProposalStatusEnum.PENDING;
+  public isNew(): boolean {
+    return this.value === ProposalStatusEnum.NEW;
+  }
+
+  public isSent(): boolean {
+    return this.value === ProposalStatusEnum.SENT;
   }
 }

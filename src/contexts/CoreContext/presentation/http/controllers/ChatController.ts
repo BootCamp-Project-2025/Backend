@@ -17,9 +17,7 @@ export class ChatController implements IChatController {
   ) {}
   create = async (req: Request, res: Response): Promise<void> => {
     const chat = req.body as ChatDto;
-    console.log(chat);
-
-    const chatDto: ChatDto = { ...chat, messages: [], status: "ACTIVE" };
+    const chatDto: ChatDto = { ...chat, messages: [] };
     const chatDomain = ChatMapper.DtoToDomain(chatDto);
     const newChatDomain = await this.chatService.create(chatDomain);
     const newChatDto = ChatMapper.DomainToDto(newChatDomain);
@@ -40,6 +38,21 @@ export class ChatController implements IChatController {
       chatDto,
       StatusCodes.OK,
       "Chat retrieved successfully"
+    );
+    ResponseService.send(res, response);
+  };
+  update = async (req: Request, res: Response): Promise<void> => {
+    const { chatId } = req.params;
+    const chatDto = { ...req.body, messages: [] } as ChatDto;
+    const chatDomain = ChatMapper.DtoToDomain(chatDto);
+    const updatedChatDomain = await this.chatService.update(chatId, chatDomain);
+    if (!updatedChatDomain)
+      throw new ApiError(StatusCodes.NOT_FOUND, "Chat not found");
+    const updatedChatDto = ChatMapper.DomainToDto(updatedChatDomain);
+    const response = new SuccessResponseEntity(
+      updatedChatDto,
+      StatusCodes.OK,
+      "Chat updated successfully"
     );
     ResponseService.send(res, response);
   };

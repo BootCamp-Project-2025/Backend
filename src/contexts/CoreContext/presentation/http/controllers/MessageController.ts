@@ -19,6 +19,10 @@ export class MessageController implements IMessageController {
     const message = req.body;
     const messageDto: MessageDto = {
       ...message,
+      content:
+        message.type != "TEXT"
+          ? JSON.stringify(message.content)
+          : message.content,
       timestamp: new Date(message.timestamp),
     };
     const messageDomain = MessageMapper.DtoToDomain(messageDto);

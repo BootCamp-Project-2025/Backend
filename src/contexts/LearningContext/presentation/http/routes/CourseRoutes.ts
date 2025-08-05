@@ -11,6 +11,83 @@ const controller = container.resolve(CourseController);
 
 /**
  * @openapi
+ * /courses/search:
+ *   get:
+ *     summary: Search courses
+ *     tags:
+ *       - Courses
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         description: Search term to match course name, description, module titles, or lesson descriptions
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Filter courses by category
+ *       - in: query
+ *         name: subcategory
+ *         schema:
+ *           type: string
+ *         description: Filter courses by subcategory
+ *       - in: query
+ *         name: language
+ *         schema:
+ *           type: string
+ *         description: Filter courses by language
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           format: int32
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: size
+ *         schema:
+ *           type: integer
+ *           format: int32
+ *         description: Number of results per page
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *         description: Field to sort by (e.g., name, description, createdAt)
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *         description: Sort order direction
+ *     responses:
+ *       200:
+ *         description: Courses matching search criteria
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Course'
+ *                 page:
+ *                   type: integer
+ *                 size:
+ *                   type: integer
+ *                 total:
+ *                   type: integer
+ *       400:
+ *         description: Invalid query parameters
+ *       500:
+ *         description: Internal server error
+ */
+
+courseRouter.get("/search", controller.search);
+
+/**
+ * @openapi
  * /courses/{courseId}/modules:
  *   get:
  *     summary: Get all the modules of a course
@@ -138,13 +215,54 @@ courseRouter.delete("/:id", controller.delete);
  * @openapi
  * /courses/{id}/publish:
  *   put:
- *     summary: Updated the state of a course as published
+ *     summary: Publish or unpublish a course
+ *     description: >
+ *       Updates the published state of a course by its ID.
+ *       - Set published: true to publish the course.
+ *       - Set published: false to unpublish the course.
+ *       This controls the visibility of the course for users.
  *     tags:
  *       - Courses
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the course to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - published
+ *             properties:
+ *               published:
+ *                 type: boolean
+ *                 description: Whether to publish (`true`) or unpublish (`false`) the course
+ *                 example: true
  *     responses:
  *       200:
- *         description: the course was published successfully
+ *         description: The publication status of the course was updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 published:
+ *                   type: boolean
+ *                   description: Final state of the course after the update
+ *                   example: false
+ *       400:
+ *         description: Invalid input,published is missing or not boolean
+ *       404:
+ *         description: Course not found
+ *       500:
+ *         description: Server error while updating the course
  */
+
 courseRouter.put("/:id/publish", controller.publish);
 
 /**

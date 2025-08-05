@@ -22,6 +22,7 @@ export interface CourseProps {
   subCategory?: CourseSubCategory;
   language?: CourseLanguage;
   userId: UserId;
+  published: boolean;
 }
 
 type CoursePrimitiveProps = {
@@ -37,6 +38,7 @@ type CoursePrimitiveProps = {
   subCategory: string;
   language: string;
   userId: string;
+  published: boolean;
 };
 
 export class Course extends AggregateRoot<CourseProps> {
@@ -73,6 +75,7 @@ export class Course extends AggregateRoot<CourseProps> {
       time: props.time,
       imgSrc: props.imgSrc,
       userId,
+      published: props.published,
       modules: Modules.create(props.modules ?? []),
     };
     return Course.create(course, id);
@@ -161,5 +164,13 @@ export class Course extends AggregateRoot<CourseProps> {
 
   setLanguage(newCourseLanguage: CourseLanguage): void {
     this.props.language = newCourseLanguage;
+  }
+
+  getPublished(): boolean {
+    return this.props.published;
+  }
+
+  setPublished(published: boolean): void {
+    this.props.published = published;
   }
 }

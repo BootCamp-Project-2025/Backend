@@ -2,10 +2,12 @@ import { Router } from "express";
 import { container } from "@/di-container";
 import { ChatController } from "../controllers/ChatController";
 import { MessageController } from "../controllers/MessageController";
+import { ProposalController } from "../controllers/ProposalController";
 
 export const chatRoutes = Router({ mergeParams: true });
 const chatController = container.resolve(ChatController);
 const messageController = container.resolve(MessageController);
+const proposalController = container.resolve(ProposalController);
 
 /**
  * @openapi
@@ -60,6 +62,31 @@ chatRoutes.post("", chatController.create);
  *
  */
 chatRoutes.get("/:chatId", chatController.get);
+
+/**
+ * @openapi
+ * /chats/{chatId}/proposals:
+ *   get:
+ *     summary: Get proposal information
+ *     tags:
+ *       - Chat
+ *     parameters:
+ *       - in: path
+ *         name: chatId
+ *         required: true
+ *         description: The ID of the chat
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Proposal retrieved successfully
+ *       404:
+ *         description: Proposal not found
+ *       500:
+ *         description: Server error
+ *
+ */
+chatRoutes.get("/:chatId/proposals", proposalController.getByChatId);
 
 /**
  * @openapi
@@ -122,6 +149,42 @@ chatRoutes.post("/:chatId/messages", messageController.create);
 
 /**
  * @openapi
+ * /chats/{chatId}:
+ *  put:
+ *      summary: Update chat values
+ *      tags:
+ *       - Chat
+ *      parameters:
+ *       - in: path
+ *         name: chatId
+ *         required: true
+ *         description: The ID of the chat
+ *         schema:
+ *           type: string
+ *      requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/Chat'
+ *           encoding:
+ *             participantsIds:
+ *               style: form
+ *               explode: true
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Chat'
+ *      responses:
+ *          201:
+ *              description: Everything is ok and returns new chat
+ *          500:
+ *              description: Everything is wrong
+ *
+ */
+chatRoutes.put("/:chatId", chatController.update);
+
+/**
+ * @openapi
  * /chats/{chatId}/users/{userId}/messages/status:
  *   put:
  *     summary: Update the status of messages in chat
@@ -169,8 +232,18 @@ chatRoutes.put(
  *             type: string
  *             format: uuid
  *           description: The Ids of the users participants of the chat
+ *         status:
+ *           type: string
+ *           description: Status of the chat
+ *           example: "ACTIVE"
+ *           default: "ACTIVE"
+ *           enum:
+ *             - ACTIVE
+ *             - CLOSED
+ *             - PROPOSAL
  *       required:
  *         - participantsIds
+ *         - status
  *
  *     Message:
  *       type: object

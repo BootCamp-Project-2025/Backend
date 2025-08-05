@@ -78,8 +78,4 @@ export class CourseService implements ICourseService {
   async searchCourse(params: QueryParamsDto): Promise<PageDto<Course>> {
     return await this.searchCoursesUseCase.execute(params);
   }
-
-  async searchCourse(params: QueryParamsDto): Promise<PageDto<Course>> {
-    return await this.searchCoursesUseCase.execute(params);
-  }
 }

@@ -12,7 +12,7 @@ export default class PostDescription extends ValueObject<PostDescriptionProps> {
   }
 
   public get value(): string {
-    return this.props.status;
+    return this.props.description;
   }
 
   public static create(props: PostDescriptionProps): PostDescription {

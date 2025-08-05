@@ -62,6 +62,7 @@ export class CourseMapper {
       subCategory: domainCourse.getSubCategory().value,
       published: domainCourse.getPublished(),
       userId: domainCourse.getUserID().toString(),
+      createdAt: new Date(),
     };
   }
 

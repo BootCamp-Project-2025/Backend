@@ -6,6 +6,8 @@ import { SearchResponse } from "@elastic/elasticsearch/lib/api/types";
 import { RequestDto } from "../../domain/interfaces/dtos/RequestDto";
 import dotenv from "dotenv";
 import { CourseIndex } from "@/contexts/LearningContext/domain/dtos/CourseIndex";
+import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
+import { StatusCodes } from "http-status-codes";
 
 dotenv.config();
 
@@ -40,24 +42,48 @@ export class ElasticSearchService implements ISearchService {
   }
 
   async search(params: SearchQueryDto): Promise<SearchResponse> {
-    return await this.esClient.search(params);
+    try {
+      return await this.esClient.search(params);
+    } catch (error) {
+      console.error(error);
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "An error occurred when try to search a resource"
+      );
+    }
   }
 
   async indexResource(
     resource: string,
     resourceDto: CourseIndex | RequestDto
   ): Promise<void> {
-    await this.esClient.index({
-      index: resource,
-      document: resourceDto,
-      id: resourceDto.id,
-    });
+    try {
+      await this.esClient.index({
+        index: resource,
+        document: resourceDto,
+        id: resourceDto.id,
+      });
+    } catch (error) {
+      console.error(error);
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "An error occured when try to index a resource"
+      );
+    }
   }
 
   async removeResource(resource: string, resourceId: string): Promise<void> {
-    await this.esClient.delete({
-      index: resource,
-      id: resourceId,
-    });
+    try {
+      await this.esClient.delete({
+        index: resource,
+        id: resourceId,
+      });
+    } catch (error) {
+      console.error(error);
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "An error occured when try to index a resource"
+      );
+    }
   }
 }

@@ -182,6 +182,13 @@ import StudentTrackProgressService from "./contexts/LearningContext/application/
 import GetLessonByIdUseCase from "./contexts/LearningContext/application/useCases/lesson/GetLessonByIdUseCase";
 import StudentTrackProgressController from "./contexts/LearningContext/presentation/http/controllers/StudentTrackProgressController ";
 import { GetEnrollmentByIdUseCase } from "./contexts/CoreContext/application/useCases/enrollment/GetEnrollmentByIdUseCase";
+import { IDashboardRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IDashboardRepository";
+import { DashboardRepository } from "./contexts/CoreContext/infrastructure/persistence/DashboardRepository";
+import { GetDashboardUseCase } from "./contexts/CoreContext/application/useCases/GetDashboardUseCase";
+import { IDashboardService } from "./contexts/CoreContext/domain/interfaces/services/IDashboardService";
+import { DashboardService } from "./contexts/CoreContext/application/services/DashboardService";
+import { IDashboardController } from "./contexts/CoreContext/domain/interfaces/controllers/IDashboardController";
+import { DashboardController } from "./contexts/CoreContext/presentation/http/controllers/DashboardController";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -719,6 +726,24 @@ container.registerSingleton<StudentTrackProgressController>(
 container.registerSingleton<IStudentTrackProgressService>(
   "IStudentTrackProgressService",
   StudentTrackProgressService
+);
+
+// dashboard
+container.registerSingleton<IDashboardRepository>(
+  "IDashboardRepository",
+  DashboardRepository
+);
+container.registerSingleton<GetDashboardUseCase>(
+  "GetDashboardUseCase",
+  GetDashboardUseCase
+);
+container.registerSingleton<IDashboardService>(
+  "IDashboardService",
+  DashboardService
+);
+container.registerSingleton<IDashboardController>(
+  "IDashboardController",
+  DashboardController
 );
 
 export { container };

@@ -118,6 +118,7 @@ describe("CreateModuleUseCase", () => {
       imgSrc: "CourseTestImage",
       userId: UserId.create(new UniqueEntityID("userId")),
       modules: Modules.create([]),
+      published: false,
     });
 
     mockCourseRepository.findById.mockResolvedValue(course);

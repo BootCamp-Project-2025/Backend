@@ -57,6 +57,7 @@ describe("CourseMapper - domainToIndex", () => {
         imgSrc: "image.png",
         userId: UserId.create(new UniqueEntityID("user-1")),
         modules: Modules.create([module]),
+        published: false,
       },
       new UniqueEntityID("course-1")
     );

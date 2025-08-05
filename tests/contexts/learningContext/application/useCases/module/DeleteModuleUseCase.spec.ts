@@ -79,6 +79,7 @@ describe("DeleteModuleUseCase", () => {
       imgSrc: "img",
       userId: UserId.create(new UniqueEntityID("user-id")),
       modules: Modules.create([]),
+      published: false,
     });
 
     const courseId = "course-id";

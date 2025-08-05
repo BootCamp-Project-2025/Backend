@@ -13,14 +13,44 @@ export class DashboardController implements IDashboardController {
     @inject("IDashboardService") private dashboardService: IDashboardService
   ) {}
 
-  async getDashboardStats(req: Request, res: Response): Promise<void> {
+  async getStudentStats(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?.id;
       if (!userId) {
         throw new ApiError(StatusCodes.UNAUTHORIZED, "User not authenticated");
       }
 
-      const stats = await this.dashboardService.getDashboardStats(userId);
+      const stats = await this.dashboardService.getDashboardStats(
+        userId,
+        "CLIENT"
+      );
+
+      const response = new SuccessResponseEntity(
+        stats,
+        StatusCodes.OK,
+        "Stats retrieved successfully"
+      );
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error as ApiError) {
+        throw error;
+      } else {
+        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "server error");
+      }
+    }
+  }
+
+  async getTeacherStats(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req.user?.id;
+      if (!userId) {
+        throw new ApiError(StatusCodes.UNAUTHORIZED, "User not authenticated");
+      }
+
+      const stats = await this.dashboardService.getDashboardStats(
+        userId,
+        "FREELANCER"
+      );
 
       const response = new SuccessResponseEntity(
         stats,

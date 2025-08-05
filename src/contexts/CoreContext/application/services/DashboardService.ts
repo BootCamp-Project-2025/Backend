@@ -14,8 +14,9 @@ export class DashboardService implements IDashboardService {
   ) {}
 
   getDashboardStats(
-    user: string
+    user: string,
+    role: string
   ): Promise<StudentDashboardStatsDto | TeacherDashboardStatsDto> {
-    return this.getDashboardUseCase.execute(user);
+    return this.getDashboardUseCase.execute(user, role);
   }
 }

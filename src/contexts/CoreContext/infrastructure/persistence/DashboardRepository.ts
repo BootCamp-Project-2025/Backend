@@ -1,30 +1,35 @@
 import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient";
 import {
-  Role,
   StudentDashboardStatsDto,
   TeacherDashboardStatsDto,
 } from "../../domain/interfaces/dtos/DashboardDto";
 import { IDashboardRepository } from "../../domain/interfaces/repositories/IDashboardRepository";
 import { DashboardMapper } from "../../mappers/DashboardMapper";
-import { User } from "../../domain/aggregates/User";
 
 export class DashboardRepository implements IDashboardRepository {
   async getStats(
-    user: User
+    userId: string,
+    role: string
   ): Promise<StudentDashboardStatsDto | TeacherDashboardStatsDto> {
-    if (user.roles.includes("CLIENT")) {
-      return this.getStudentStats(user.id.toString());
+    if (role === "CLIENT") {
+      return this.getStudentStats(userId);
     }
 
-    if (user.roles.includes("FREELANCER")) {
-      return this.getTeacherStats(user.id.toString());
+    if (role === "FREELANCER") {
+      return this.getTeacherStats(userId);
     }
 
     throw new Error("Unsupported role for dashboard stats");
   }
 
   private async getStudentStats(userId: string) {
-    const [coursesEnrolled, proposalsReceive] = await Promise.all([
+    const [
+      coursesEnrolled,
+      proposalsReceive,
+      liveSession,
+      requests,
+      p2pCourses,
+    ] = await Promise.all([
       PrismaClient.enrollment.findMany({
         where: {
           userId: userId,
@@ -44,6 +49,30 @@ export class DashboardRepository implements IDashboardRepository {
             include: {
               user: true,
             },
+          },
+        },
+      }),
+      PrismaClient.liveSession.findMany({
+        where: {
+          p2pCourse: { studentId: userId },
+          status: "COMPLETED",
+        },
+        select: { dateOfTheSession: true },
+      }),
+      PrismaClient.request.findMany({
+        where: { userId: userId },
+        include: { proposals: true },
+      }),
+      PrismaClient.p2PCourse.findMany({
+        where: { studentId: userId },
+        include: {
+          teacher: {
+            select: {
+              userName: true,
+            },
+          },
+          sessions: {
+            select: { id: true },
           },
         },
       }),
@@ -69,27 +98,8 @@ export class DashboardRepository implements IDashboardRepository {
 
     const proposals = DashboardMapper.mapProposals(proposalsReceive);
 
-    const p2pCourses = await PrismaClient.p2PCourse.findMany({
-      where: { studentId: userId },
-      include: {
-        teacher: {
-          select: {
-            userName: true,
-          },
-        },
-        sessions: {
-          select: { id: true },
-        },
-      },
-    });
-
     const formattedP2pCourses =
       DashboardMapper.mapStudentP2PCourses(p2pCourses);
-
-    const requests = await PrismaClient.request.findMany({
-      where: { userId: userId },
-      include: { proposals: true },
-    });
 
     const requestStats = [];
     requestStats.push({ title: "Publications", value: requests.length });
@@ -102,19 +112,30 @@ export class DashboardRepository implements IDashboardRepository {
       value: requests.filter((row) => row.status === "ACCEPTED").length,
     });
 
-    const role: Role = "CLIENT";
+    const enrolledPerMonth =
+      DashboardMapper.groupByMonthByCreatedAt(coursesNotCanceled);
+    const completedSessionsPerMonth =
+      DashboardMapper.groupByMonthDateOfTheSession(liveSession);
 
     return {
-      role: role,
       courses: enrolled,
       p2pCourses: formattedP2pCourses,
       requests: requestStats,
       proposals: proposals,
+      coursesChart: enrolledPerMonth,
+      p2pCoursesChart: completedSessionsPerMonth,
     };
   }
 
   private async getTeacherStats(userId: string) {
-    const [totalCourses, proposalsSent, uniqueStudents] = await Promise.all([
+    const [
+      totalCourses,
+      proposalsSent,
+      uniqueStudents,
+      p2pCourses,
+      courseEnrollments,
+      p2pSessions,
+    ] = await Promise.all([
       PrismaClient.course.findMany({
         where: { userId: userId },
       }),
@@ -138,6 +159,32 @@ export class DashboardRepository implements IDashboardRepository {
         distinct: ["userId"],
         select: { userId: true },
       }),
+      PrismaClient.p2PCourse.findMany({
+        where: { teacherId: userId },
+        include: {
+          student: {
+            select: {
+              userName: true,
+            },
+          },
+          sessions: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      }),
+      PrismaClient.enrollment.findMany({
+        where: { course: { userId } },
+        select: { createdAt: true },
+      }),
+      PrismaClient.liveSession.findMany({
+        where: {
+          p2pCourse: { teacherId: userId },
+          status: "COMPLETED",
+        },
+        select: { dateOfTheSession: true },
+      }),
     ]);
 
     const publishedCourses = totalCourses.filter((row) => row.published);
@@ -152,32 +199,20 @@ export class DashboardRepository implements IDashboardRepository {
 
     const proposals = DashboardMapper.mapProposals(proposalsSent);
 
-    const p2pCourses = await PrismaClient.p2PCourse.findMany({
-      where: { teacherId: userId },
-      include: {
-        student: {
-          select: {
-            userName: true,
-          },
-        },
-        sessions: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
-
     const formattedP2pCourses =
       DashboardMapper.mapTeacherP2PCourses(p2pCourses);
 
-    const role: Role = "FREELANCER";
+    const studentEnrollmentsChart =
+      DashboardMapper.groupByMonthByCreatedAt(courseEnrollments);
+    const completedSessionsChart =
+      DashboardMapper.groupByMonthDateOfTheSession(p2pSessions);
 
     return {
-      role: role,
       courses: courses,
       p2pCourses: formattedP2pCourses,
       proposals: proposals,
+      coursesChart: studentEnrollmentsChart,
+      p2pCoursesChart: completedSessionsChart,
     };
   }
 }

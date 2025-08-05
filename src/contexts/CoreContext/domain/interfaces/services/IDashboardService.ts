@@ -5,6 +5,7 @@ import {
 
 export interface IDashboardService {
   getDashboardStats(
-    user: string
+    user: string,
+    role: string
   ): Promise<StudentDashboardStatsDto | TeacherDashboardStatsDto>;
 }

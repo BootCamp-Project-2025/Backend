@@ -1,35 +1,48 @@
 import {
-  P2PCourseDto,
+  ChartDataDto,
+  CreateAtDateDto,
+  DateOfTheSessionDateDto,
   P2PStudentCourseDto,
   P2PTeacherCourseDto,
   ProposalWithRequestUser,
   TitleValueObjectDto,
 } from "../domain/interfaces/dtos/DashboardDto";
 
-export class DashboardMapper {
-  static mapStudentP2PCourses(courses: P2PStudentCourseDto[]): P2PCourseDto {
-    const formattedCourses = courses.map((course) => {
-      return [
-        {
-          title: "",
-          value: course.name,
-        },
-        {
-          title: "",
-          value: course.teacher?.userName ?? "Unknown",
-        },
-        {
-          title: "Sessions",
-          value: course.sessions.length,
-        },
-      ];
-    });
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+];
 
-    return { courses: formattedCourses };
+export class DashboardMapper {
+  static mapStudentP2PCourses(
+    courses: P2PStudentCourseDto[]
+  ): TitleValueObjectDto[] {
+    return courses.flatMap((course) => [
+      {
+        title: "",
+        value: course.name,
+      },
+      {
+        title: "",
+        value: course.teacher?.userName ?? "Unknown",
+      },
+      {
+        title: "Sessions",
+        value: course.sessions.length,
+      },
+    ]);
   }
 
-  static mapTeacherP2PCourses(courses: P2PTeacherCourseDto[]): P2PCourseDto {
-    const formattedCourses = courses.map((course) => {
+  static mapTeacherP2PCourses(
+    courses: P2PTeacherCourseDto[]
+  ): TitleValueObjectDto[] {
+    return courses.flatMap((course) => {
       return [
         {
           title: "",
@@ -45,8 +58,6 @@ export class DashboardMapper {
         },
       ];
     });
-
-    return { courses: formattedCourses };
   }
 
   static mapProposals(
@@ -56,5 +67,34 @@ export class DashboardMapper {
       title: proposal.request.title,
       value: proposal.request.user.userName ?? "Unknown",
     }));
+  }
+
+  static groupByMonth(counts: number[]): ChartDataDto[] {
+    return counts.map((count, index) => ({
+      month: months[index],
+      value: count,
+    }));
+  }
+
+  static groupByMonthByCreatedAt(items: CreateAtDateDto[]) {
+    const counts = new Array(8).fill(0);
+
+    items.forEach((item) => {
+      const monthIndex = item.createdAt.getMonth();
+      counts[monthIndex]++;
+    });
+
+    return this.groupByMonth(counts);
+  }
+
+  static groupByMonthDateOfTheSession(items: DateOfTheSessionDateDto[]) {
+    const counts = new Array(8).fill(0);
+
+    items.forEach((item) => {
+      const monthIndex = item.dateOfTheSession.getMonth();
+      counts[monthIndex]++;
+    });
+
+    return this.groupByMonth(counts);
   }
 }

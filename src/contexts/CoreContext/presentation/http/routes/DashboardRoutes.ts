@@ -9,9 +9,9 @@ const router = Router();
 
 /**
  * @openapi
- * /stats:
+ * /stats/teacher:
  *   get:
- *     summary: Get the user stats for the dashboard
+ *     summary: Get the teacher stats for the dashboard
  *     tags:
  *       - Dashboard
  *     responses:
@@ -21,6 +21,30 @@ const router = Router();
  *              description: Internal server error
  *
  */
-router.get("/", verifyToken(), controller.getDashboardStats.bind(controller));
+router.get(
+  "/teacher",
+  verifyToken(),
+  controller.getTeacherStats.bind(controller)
+);
+
+/**
+ * @openapi
+ * /stats/student:
+ *   get:
+ *     summary: Get the student stats for the dashboard
+ *     tags:
+ *       - Dashboard
+ *     responses:
+ *          200:
+ *              description: Everything is ok and returns user stats
+ *          500:
+ *              description: Internal server error
+ *
+ */
+router.get(
+  "/student",
+  verifyToken(),
+  controller.getStudentStats.bind(controller)
+);
 
 export default router;

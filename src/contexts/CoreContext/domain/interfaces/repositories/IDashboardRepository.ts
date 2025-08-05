@@ -1,4 +1,3 @@
-import { User } from "../../aggregates/User";
 import {
   StudentDashboardStatsDto,
   TeacherDashboardStatsDto,
@@ -6,6 +5,7 @@ import {
 
 export interface IDashboardRepository {
   getStats(
-    user: User
+    userId: string,
+    role: string
   ): Promise<StudentDashboardStatsDto | TeacherDashboardStatsDto>;
 }

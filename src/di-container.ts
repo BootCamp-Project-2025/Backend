@@ -254,10 +254,9 @@ container.registerSingleton<CreateCourseUseCase>(
   CreateCourseUseCase
 );
 
-container.registerSingleton<IUseCase<string, boolean>>(
-  "PublishCourseUseCase",
-  PublishCourseUseCase
-);
+container.registerSingleton<
+  IUseCase<{ id: string; published: boolean }, boolean>
+>("PublishCourseUseCase", PublishCourseUseCase);
 container.registerSingleton("UpdateCourseUseCase", UpdateCourseUseCase);
 container.registerSingleton("DeleteCourseUseCase", DeleteCourseUseCase);
 

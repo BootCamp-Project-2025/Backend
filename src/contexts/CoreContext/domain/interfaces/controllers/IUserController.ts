@@ -6,4 +6,5 @@ export interface IUserController {
   post(req: Request, res: Response): void;
   freelance(req: Request, res: Response): void;
   updateUser(req: Request, res: Response): Promise<void>;
+  getCourses(req: Request, res: Response): Promise<void>;
 }

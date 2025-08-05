@@ -153,6 +153,74 @@ requestRoutes.get("/:requestId", controller.getById);
 
 /**
  * @openapi
+ * /requests/search:
+ *   get:
+ *     summary: Search requests
+ *     tags:
+ *       - Requests
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         description: Search query
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Filter by category
+ *       - in: query
+ *         name: language
+ *         schema:
+ *           type: string
+ *         description: Filter by language
+ *       - in: query
+ *         name: subcategory
+ *         schema:
+ *           type: string
+ *         description: Filter by subcategory
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           format: int32
+ *         description: Filter by page number
+ *       - in: query
+ *         name: size
+ *         schema:
+ *           type: integer
+ *           format: int32
+ *         description: Number of results per page
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *         description: Field to sort by
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *         description: Order of the results
+ *     responses:
+ *       200:
+ *         description: Search results
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Request'
+ *       400:
+ *         description: Bad request parameters
+ *       500:
+ *         description: An unexpected error happened
+ */
+
+requestRoutes.get("/search", controller.search);
+
+/**
+ * @openapi
  * components:
  *   schemas:
  *     Request:

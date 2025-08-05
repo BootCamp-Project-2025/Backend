@@ -10,4 +10,5 @@ export interface CourseDTO {
   time?: number;
   requirements?: string;
   userId: string;
+  published?: boolean;
 }

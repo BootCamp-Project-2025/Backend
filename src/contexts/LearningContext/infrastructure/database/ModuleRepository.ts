@@ -123,4 +123,26 @@ export class ModuleRepository implements IModuleRepository {
       );
     }
   }
+
+  async findCourseIdByModuleId(moduleId: string): Promise<string> {
+    try {
+      const module = await this.db.module.findUnique({
+        where: { id: moduleId },
+        select: { courseId: true },
+      });
+
+      if (!module) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Module not Found");
+      }
+
+      return module.courseId;
+    } catch (error) {
+      console.error(error);
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Unknown error retrieving courseId"
+      );
+    }
+  }
 }

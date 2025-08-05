@@ -13,7 +13,7 @@ export default class SessionStatus extends ValueObject<SessionStatusProps> {
     super(props);
   }
 
-  public get value(): string {
+  public get value(): SessionStatusType {
     return this.props.status;
   }
 

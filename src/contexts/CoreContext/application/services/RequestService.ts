@@ -2,6 +2,8 @@ import { inject, injectable } from "tsyringe";
 import IRequestService from "../../domain/interfaces/services/IRequestService";
 import { Request } from "../../domain/aggregates/Request";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
+import { QueryParamsDto } from "../../domain/interfaces/dtos/search/QueryParamsDto";
+import { PageDto } from "../../domain/interfaces/dtos/search/PageDto";
 
 @injectable()
 export default class RequestService implements IRequestService {
@@ -15,6 +17,11 @@ export default class RequestService implements IRequestService {
       { userId: string; title: string },
       Request[]
     >,
+    @inject("SearchRequestUseCase")
+    private readonly searchRequestUseCase: IUseCase<
+      QueryParamsDto,
+      PageDto<Request>
+    >,
     @inject("GetRequestUseCase")
     private readonly getRequestUseCase: IUseCase<string, Request>,
     @inject("UpdateRequestUseCase")
@@ -23,7 +30,6 @@ export default class RequestService implements IRequestService {
       Request
     >
   ) {}
-
   async delete(requestId: string): Promise<void> {
     await this.deleteRequestUseCase.execute(requestId);
   }
@@ -35,6 +41,10 @@ export default class RequestService implements IRequestService {
     title: string
   ): Promise<Request[]> {
     return await this.getUserActiveRequestUseCase.execute({ userId, title });
+  }
+
+  async searchRequest(params: QueryParamsDto): Promise<PageDto<Request>> {
+    return await this.searchRequestUseCase.execute(params);
   }
   async getById({ requestId }: { requestId: string }): Promise<Request | null> {
     return await this.getRequestUseCase.execute(requestId);

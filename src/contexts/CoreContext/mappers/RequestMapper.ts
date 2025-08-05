@@ -14,6 +14,7 @@ import { RequestSubcategory } from "../domain/valueObjects/request/RequestSubCat
 import { RequestTitle } from "../domain/valueObjects/request/RequestTitle";
 import { UserId } from "../domain/valueObjects/UserId";
 import ProposalMapper from "./ProposalMapper";
+import { RequestIndex } from "../domain/interfaces/dtos/index/RequestIndex";
 
 const RequestMapper = {
   bulkDtoToDomain(requestListDto: RequestDto[]): Request[] {
@@ -73,12 +74,25 @@ const RequestMapper = {
       description: requestDomain.getDescription().value,
       language: requestDomain.getLanguage().value,
       category: requestDomain.getCategory().value,
-      subcategory: requestDomain.getSubcategory().value,
+      subCategory: requestDomain.getSubcategory().value,
       status: requestDomain.getStatus().value as $Enums.RequestStatus,
       createdAt: requestDomain.getCreatedAt(),
       estimation: requestDomain.getEstimation().value,
       edited: requestDomain.getEdited().value,
       updatedAt: requestDomain.getUpdatedAt(),
+    };
+  },
+
+  domainToIndex(request: Request): RequestIndex {
+    return {
+      id: request.id.toString(),
+      userId: request.getUserId().getValue().toString(),
+      title: request.getTitle().value,
+      description: request.getDescription().value,
+      language: request.getLanguage().value.toLowerCase(),
+      category: request.getCategory().value.toLowerCase(),
+      subCategory: request.getSubcategory().value.toLowerCase(),
+      createdAt: request.getCreatedAt(),
     };
   },
 };

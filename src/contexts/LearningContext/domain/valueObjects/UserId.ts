@@ -12,7 +12,7 @@ export default class UserId extends ValueObject<userIdProps> {
   }
 
   public get value(): string {
-    return this.props.status;
+    return this.props.userId;
   }
 
   public static create(props: userIdProps): UserId {

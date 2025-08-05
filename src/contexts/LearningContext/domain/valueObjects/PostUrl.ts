@@ -13,7 +13,7 @@ export default class PostUrl extends ValueObject<PostUrlProps> {
   }
 
   public get value(): string {
-    return this.props.status;
+    return this.props.url;
   }
 
   public static create(props: PostUrlProps): PostUrl {

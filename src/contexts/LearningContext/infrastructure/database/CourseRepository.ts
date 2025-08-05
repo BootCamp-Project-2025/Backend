@@ -1,7 +1,7 @@
 import { injectable } from "tsyringe";
 import { ICourseRepository } from "../../domain/interfaces/ICourseRepository";
 import { Course } from "../../domain/aggregates/Course";
-import prismaClient from "../../../Shared/infrastructure/database/PrismaClient"; // askDaniel
+import prismaClient from "../../../Shared/infrastructure/database/PrismaClient";
 import { CourseMapper } from "../../mappers/CourseMapper";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
@@ -79,18 +79,12 @@ export class CourseRepository implements ICourseRepository {
     return CourseMapper.toDomain(created);
   }
 
-  async publish(id: string): Promise<boolean> {
-    try {
-      await this.db.course.update({
-        data: { published: true },
-        where: { id },
-      });
-      return true;
-    } catch {
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "error saving the changes"
-      );
-    }
+  async publish(id: string, published: boolean): Promise<boolean> {
+    const updated = await this.db.course.update({
+      data: { published },
+      where: { id },
+      select: { published: true },
+    });
+    return updated.published;
   }
 }

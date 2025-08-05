@@ -8,6 +8,9 @@ import { inject, injectable } from "tsyringe";
 import { Modules } from "../../domain/OneToMany/Modules";
 import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
+import { IndexResourceEvent } from "@/contexts/Shared/domain/events/IndexResourceEvent";
+import { CourseMapper } from "../../mappers/CourseMapper";
+import { globalEventDispatcher } from "@/eventRegister";
 
 @injectable()
 export class CreateCourseUseCase implements IUseCase<CourseDTO, Course> {
@@ -28,7 +31,16 @@ export class CreateCourseUseCase implements IUseCase<CourseDTO, Course> {
       imgSrc: courseDto.imgSrc,
       modules: Modules.create([]),
       userId,
+      published: courseDto.published ?? false,
     });
+
+    const event = new IndexResourceEvent({
+      resource: "course",
+      resourceDto: CourseMapper.domainToIndex(course),
+    });
+
+    globalEventDispatcher.dispatch(event);
+
     return await this.courseRepo.insert(course);
   }
 }

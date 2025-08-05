@@ -13,12 +13,14 @@ import authRoutes from "./contexts/CoreContext/presentation/http/routes/AuthRout
 import enrollmentRoutes from "./contexts/CoreContext/presentation/http/routes/EnrollmentRoutes";
 import moduleRoutes from "./contexts/LearningContext/presentation/http/routes/ModuleRoutes";
 import lessonRoutes from "./contexts/LearningContext/presentation/http/routes/LessonRoute";
+import studentTrackProgressRoutes from "./contexts/LearningContext/presentation/http/routes/StudentTrackProgressRoutes";
 
 import clientRoutes from "./contexts/CoreContext/presentation/http/routes/ClientRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerDocs } from "./config/swagger";
 import { requestRoutes } from "./contexts/CoreContext/presentation/http/routes/RequestsRoutes";
 import { proposalRoutes } from "./contexts/CoreContext/presentation/http/routes/ProposalRoutes";
+import p2pCourseRoutes from "./contexts/LearningContext/presentation/http/routes/P2PCourseRoutes";
 
 const app = express();
 
@@ -46,15 +48,22 @@ app.use("/api/proposals", proposalRoutes);
 app.use("/api/freelancers", freelancersRoutes);
 app.use("/api/clients", clientRoutes);
 
+app.use("/api/p2pCourses", p2pCourseRoutes);
+
 app.use("/api/courses", courseRoutes);
 
 app.use("/api/auth", authRoutes);
 
 app.use("/api/requests", requestRoutes);
 
+app.use("/api/student-track-progress", studentTrackProgressRoutes);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/api/enrollments", enrollmentRoutes);
+
+/*app.use("/api/requestsSearch", searchRoutes);
+app.use("/api/coursesSearch", searchRoutes);*/
 
 app.use(ErrorHandlerMiddleware.handle);
 

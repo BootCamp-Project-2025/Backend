@@ -9,6 +9,7 @@ import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessRe
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
 import { ErrorResponseEntity } from "../../../../Shared/domain/entity/ErrorResponseEntity";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { ParamMapper } from "@/contexts/CoreContext/mappers/ParamsMapper";
 
 @injectable()
 export class CourseController implements ICourseController {
@@ -59,7 +60,6 @@ export class CourseController implements ICourseController {
         StatusCodes.INTERNAL_SERVER_ERROR,
         message
       );
-      console.log(response);
       return ResponseService.send(res, response);
     }
   };
@@ -100,17 +100,26 @@ export class CourseController implements ICourseController {
   public publish = async (req: Request, res: Response): Promise<void> => {
     try {
       const id = req.params.id;
-      const result = await this.courseService.publish(id);
-      res.status(201).json({ published: result });
+      const { published } = req.body;
+
+      if (typeof published !== "boolean") {
+        throw new ApiError(
+          StatusCodes.BAD_REQUEST,
+          "Invalid 'published' value"
+        );
+      }
+
+      const result = await this.courseService.publish(id, published);
+      res.status(200).json({ published: result });
     } catch (error) {
       if (error instanceof ApiError) throw error;
-      console.error(error);
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
         "Error accessing the publish service"
       );
     }
   };
+
   public getCourse = async (req: Request, res: Response): Promise<void> => {
     try {
       const course = await this.courseService.getCourse(req.params.id);
@@ -155,6 +164,29 @@ export class CourseController implements ICourseController {
         StatusCodes.INTERNAL_SERVER_ERROR,
         "error in controller delete"
       );
+    }
+  };
+
+  public search = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const params = ParamMapper.expressQueryToDto(req);
+      const result = await this.courseService.searchCourse(params);
+      const response = new SuccessResponseEntity(
+        result,
+        StatusCodes.OK,
+        "Courses found successfully"
+      );
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else {
+        console.error("Error in search:", error);
+        throw new ApiError(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          "Error searching courses"
+        );
+      }
     }
   };
 }

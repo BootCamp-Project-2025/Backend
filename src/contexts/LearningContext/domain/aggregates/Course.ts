@@ -23,6 +23,7 @@ export interface CourseProps {
   language?: CourseLanguage;
   userId: UserId;
   published: boolean;
+  createdAt: Date | null;
 }
 
 type CoursePrimitiveProps = {
@@ -39,6 +40,7 @@ type CoursePrimitiveProps = {
   language: string;
   userId: string;
   published: boolean;
+  createdAt: Date | null;
 };
 
 export class Course extends AggregateRoot<CourseProps> {
@@ -77,6 +79,7 @@ export class Course extends AggregateRoot<CourseProps> {
       userId,
       published: props.published,
       modules: Modules.create(props.modules ?? []),
+      createdAt: props.createdAt,
     };
     return Course.create(course, id);
   }
@@ -102,6 +105,10 @@ export class Course extends AggregateRoot<CourseProps> {
 
   getImgSrc(): string {
     return this.props.imgSrc;
+  }
+
+  getCreatedAt(): Date | null {
+    return this.props.createdAt;
   }
 
   getModules(): Modules {
@@ -148,6 +155,10 @@ export class Course extends AggregateRoot<CourseProps> {
 
   setImgSrc(imgSrc: string): void {
     this.props.imgSrc = imgSrc;
+  }
+
+  setCreatedAt(createdAt: Date): void {
+    this.props.createdAt = createdAt;
   }
 
   setTime(newTime: number): void {

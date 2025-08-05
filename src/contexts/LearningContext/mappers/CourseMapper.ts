@@ -40,6 +40,7 @@ export class CourseMapper {
       }),
       userId: UserId.create(new UniqueEntityID(prismaCourse.userId)),
       published: prismaCourse.published,
+      createdAt: prismaCourse.createdAt,
     };
 
     return Course.create(
@@ -73,6 +74,7 @@ export class CourseMapper {
       imgSrc: body.props.imgSrc,
       userId: body.props.userId.toString(),
       published: body.getPublished(),
+      createdAt: body.props.createdAt,
     };
   }
 
@@ -84,6 +86,7 @@ export class CourseMapper {
       imgSrc: domainCourse.props.imgSrc,
       userId: domainCourse.props.userId.toString(),
       published: domainCourse.getPublished(),
+      createdAt: domainCourse.getCreatedAt(),
     };
   }
 
@@ -107,6 +110,7 @@ export class CourseMapper {
       modules: Modules.create([]),
       userId: UserId.create(new UniqueEntityID(courseDto.userId)),
       published: courseDto.published ?? false,
+      createdAt: courseDto.createdAt,
     };
     if (courseDto.id !== null)
       return Course.create(courseProps, new UniqueEntityID(courseDto.id));
@@ -126,6 +130,7 @@ export class CourseMapper {
       requirements: courseDto.props.requirements?.value ?? "",
       userId: courseDto.props.userId.toString(),
       published: courseDto.getPublished(),
+      createdAt: courseDto.props.createdAt,
     };
   }
   static fromDTO(dto: CourseDTO): Course {
@@ -139,6 +144,7 @@ export class CourseMapper {
       modules: Modules.create([]),
       userId: UserId.create(new UniqueEntityID(dto.userId)),
       published: dto.published ?? false,
+      createdAt: dto.createdAt,
     };
 
     return Course.create(props, new UniqueEntityID(dto.id));

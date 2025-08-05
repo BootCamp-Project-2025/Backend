@@ -72,7 +72,7 @@ const RequestMapper = {
       description: requestDomain.getDescription().value,
       language: requestDomain.getLanguage().value,
       category: requestDomain.getCategory().value,
-      subcategory: requestDomain.getSubcategory().value,
+      subCategory: requestDomain.getSubcategory().value,
       status: requestDomain.getStatus().value as $Enums.RequestStatus,
       createdAt: requestDomain.getCreatedAt(),
       estimation: requestDomain.getEstimation().value,

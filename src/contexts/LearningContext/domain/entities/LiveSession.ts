@@ -8,6 +8,7 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 
 export type PrimitiveLiveSessionProps = {
+  id?: string;
   url: string;
   dateOfTheSession: Date;
   creationDate: Date;

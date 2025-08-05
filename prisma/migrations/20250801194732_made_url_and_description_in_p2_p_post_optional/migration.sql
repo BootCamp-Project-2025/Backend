@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "P2PPost" ALTER COLUMN "description" SET DEFAULT '',
+ALTER COLUMN "url" SET DEFAULT '';

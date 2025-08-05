@@ -16,6 +16,7 @@ describe("SyncUserUseCase", () => {
     getAll: jest.Mock;
     delete: jest.Mock;
     update: jest.Mock;
+    getCourses: jest.Mock;
   };
   let useCase: SyncUserUseCase;
 
@@ -38,6 +39,7 @@ describe("SyncUserUseCase", () => {
       getAll: jest.fn(),
       delete: jest.fn(),
       update: jest.fn(),
+      getCourses: jest.fn(),
     };
 
     useCase = new SyncUserUseCase(repository);

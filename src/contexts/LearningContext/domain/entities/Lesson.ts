@@ -48,6 +48,10 @@ export class Lesson extends Entity<LessonProps> {
     );
   }
 
+  public updateResourcesUrl(urls: LessonResource[]) {
+    this.props.resources = urls;
+  }
+
   get id(): UniqueEntityID {
     return this._id;
   }

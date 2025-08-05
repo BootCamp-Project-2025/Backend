@@ -7,6 +7,8 @@ import { injectable } from "tsyringe";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import IUserUpdateDto from "../../domain/interfaces/dtos/IUserUpdateDto";
+import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
+import { CourseMapper } from "@/contexts/LearningContext/mappers/CourseMapper";
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -133,5 +135,14 @@ export class UserRepository implements IUserRepository {
     });
     if (!user) return null;
     return UserMapper.persistanceTodomain(user);
+  }
+
+  async getCourses(userId: string): Promise<Course[]> {
+    const courses = await prismaClient.course.findMany({
+      where: {
+        userId,
+      },
+    });
+    return courses.map(CourseMapper.toDomain);
   }
 }

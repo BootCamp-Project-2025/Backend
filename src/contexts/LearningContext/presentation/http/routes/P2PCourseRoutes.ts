@@ -11,6 +11,12 @@ const p2pCourseRoutes = Router({ mergeParams: true });
  * /p2pCourses:
  *   post:
  *     summary: Create a new p2p course
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/P2PCourseDto'
  *     tags:
  *       - P2PCourses
  */
@@ -50,6 +56,12 @@ p2pCourseRoutes.get(
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostDto'
  *     responses:
  *       201:
  *         description: The posts was created correctly in the course
@@ -84,6 +96,12 @@ p2pCourseRoutes.post(
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostDto'
  *     responses:
  *       200:
  *         description: The posts was updated correctly in the course
@@ -118,6 +136,12 @@ p2pCourseRoutes.put(
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostDto'
  *     responses:
  *       200:
  *         description: The posts was deleted correctly of the course
@@ -143,6 +167,12 @@ p2pCourseRoutes.delete(
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SessionDto'
  *     responses:
  *       201:
  *         description: The session was created correctly on the course
@@ -170,11 +200,17 @@ p2pCourseRoutes.post(
  *         required: true
  *         schema:
  *           type: string
- *
+ *       - in: path
  *         name: sessionId
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SessionDto'
  *     responses:
  *       200:
  *         description: The session was updated correctly on the course
@@ -204,7 +240,7 @@ p2pCourseRoutes.put(
  *         required: true
  *         schema:
  *           type: string
- *
+ *       - in: path
  *         name: sessionId
  *         required: true
  *         schema:
@@ -234,7 +270,7 @@ p2pCourseRoutes.delete(
  *         required: true
  *         schema:
  *           type: string
- *
+ *       - in: path
  *         name: sessionId
  *         required: true
  *         schema:
@@ -266,6 +302,12 @@ p2pCourseRoutes.patch(
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FilePostDto'
  *     responses:
  *       201:
  *         description: The filePost was created correctly on the course
@@ -293,7 +335,7 @@ p2pCourseRoutes.post(
  *         required: true
  *         schema:
  *           type: string
- *
+ *       - in: path
  *         name: fileId
  *         required: true
  *         schema:
@@ -311,3 +353,112 @@ p2pCourseRoutes.delete(
 );
 
 export default p2pCourseRoutes;
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     P2PCourseDto:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID of the p2p Course
+ *           example: "c392aeef-7312-438b-ac28-7c93f0c261bb"
+ *         name:
+ *           type: string
+ *           description: Name of the course
+ *           example: "Advance mathematics"
+ *         sessions:
+ *             type: array
+ *             items:
+ *               $ref: '#/components/schemas/SessionDto'
+ *             description: Sessions of the course
+ *         posts:
+ *             type: array
+ *             items:
+ *               $ref: '#/components/schemas/PostDto'
+ *             description: Sessions of the course
+ *         files:
+ *             type: array
+ *             items:
+ *               $ref: '#/components/schemas/FilePostDto'
+ *             description: Sessions of the course
+ *       required:
+ *         - name
+ *
+ *     SessionDto:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID of the session
+ *           example: "c392aeef-7312-438b-ac28-7c93f0c261bb"
+ *         dateOfTheSession:
+ *           type: string
+ *           format: date
+ *           example: 2025-02-01
+ *         creationDate:
+ *           type: string
+ *           format: date
+ *           example: 2025-01-01
+ *         url:
+ *           type: string
+ *           description: Link of meeting room
+ *           example: "https://meet.google.com/landing?pli=1"
+ *         status:
+ *           type: string
+ *           description: Status of the meeting
+ *           example: "PENDING"
+ *           default: "PENDING"
+ *           enum:
+ *             - PENDING
+ *             - COMPLETED
+ *             - CANCELED
+ *       required:
+ *         - dateOfTheSession
+ *         - creationDate
+ *         - url
+ *         - status
+ *
+ *     PostDto:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID of the post
+ *           example: "c392aeef-7312-438b-ac28-7c93f0c261bb"
+ *         title:
+ *           type: string
+ *           description: title of the post
+ *           example: "Algebra 1"
+ *         description:
+ *           type: string
+ *           description: Description of the post
+ *           example: "Algebra 1 can be a challenging subject so you could check out this resource"
+ *         url:
+ *           type: string
+ *           description: Link of the resource
+ *           example: "https://www.youtube.com/"
+ *         creationDate:
+ *           type: string
+ *           format: date
+ *           example: 2025-01-01
+ *       required:
+ *         - title
+ *         - creationDate
+ *
+ *     FilePostDto:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID of the file
+ *           example: "c392aeef-7312-438b-ac28-7c93f0c261bb"
+ *         url:
+ *           type: string
+ *           description: Url of the file in the cdn
+ *           example: "https://res.cloudinary.com/ltcrowd-cdn/raw/upload/v1754245286/mgik0wk9nl9ksqlm1hve.pdf"
+ *       required:
+ *         - url
+ */

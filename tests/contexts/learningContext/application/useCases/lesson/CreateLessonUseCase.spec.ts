@@ -6,17 +6,10 @@ import CreateLessonUseCase from "@/contexts/LearningContext/application/useCases
 import LessonMapper from "@/contexts/LearningContext/mappers/LessonMapper";
 import IModuleRepository from "@/contexts/LearningContext/domain/interfaces/IModuleRepository";
 import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
-import { globalEventDispatcher } from "@/eventRegister";
 import { ICourseRepository } from "@/contexts/LearningContext/domain/interfaces/ICourseRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { Module } from "@/contexts/LearningContext/domain/entities/Module";
-import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
 import { CourseMapper } from "@/contexts/LearningContext/mappers/CourseMapper";
-import { CourseName } from "@/contexts/LearningContext/domain/valueObjects/CourseName";
-import { CourseDescription } from "@/contexts/LearningContext/domain/valueObjects/CourseDescription";
-import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
-import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { Modules } from "@/contexts/LearningContext/domain/OneToMany/Modules";
 
 jest.mock("@/eventRegister", () => ({
   globalEventDispatcher: {

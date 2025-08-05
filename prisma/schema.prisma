@@ -254,7 +254,7 @@ model Request {
   description    String
   language       String
   category       String
-  subcategory    String
+  subCategory    String
   status         RequestStatus    @default(PENDING)
   createdAt      DateTime         @default(now())
   estimation     Int
@@ -302,7 +302,7 @@ model StudentTrackProgress {
   completedAt        DateTime?
 
   enrollment         Enrollment @relation("EnrollmentStudentTrackProgress", fields: [enrollmentId], references: [id])
-  lesson             Lesson     @relation(fields: [lessonId], references: [id])
+  lesson             Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   videoProgresses    VideoProgress[]
   resourcesCompleted ResourceCompleted[]
 }
@@ -314,7 +314,7 @@ model VideoProgress {
   watchedSeconds         Int
   completed              Boolean @default(false)
 
-  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id])
+  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id], onDelete: Cascade)
 }
 
 model ResourceCompleted {
@@ -322,7 +322,7 @@ model ResourceCompleted {
   studentTrackProgressId  String
   url                    String
 
-  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id])
+  studentTrackProgress   StudentTrackProgress  @relation(fields: [studentTrackProgressId], references: [id], onDelete: Cascade)
 }
 enum P2PCourseStatus {
   ACTIVE
@@ -332,6 +332,7 @@ enum P2PCourseStatus {
 model P2PCourse{
   id          String     @id @default(uuid())
   teacherId     String
+  chatId     String
   teacher         User       @relation(name: "teacher", fields: [teacherId], references: [id], onDelete: Cascade)
   studentId     String
   student         User       @relation(name: "student", fields: [studentId], references: [id], onDelete: Cascade)
@@ -348,8 +349,8 @@ model P2PPost{
   p2pCourseId     String
   p2pCourse         P2PCourse       @relation(fields: [p2pCourseId], references: [id], onDelete: Cascade)
   title String
-  description String
-  url String
+  description String @default("")
+  url String @default("")
   creationDate DateTime
 }
 

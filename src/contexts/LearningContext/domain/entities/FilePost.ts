@@ -3,6 +3,7 @@ import { Entity } from "@/contexts/Shared/domain/Entity";
 import FilePostUrl from "../valueObjects/FilePostUrl";
 
 export type PrimitiveFilePostProps = {
+  id?: string;
   url: string;
   creationDate: Date;
 };
@@ -55,5 +56,9 @@ export class FilePost extends Entity<FilePostProps> {
   }
   get creationDate(): Date {
     return this.props.creationDate;
+  }
+
+  public updateUrl(url: string): void {
+    this.props.url = FilePostUrl.create({ url });
   }
 }

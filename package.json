@@ -30,6 +30,7 @@
     "db:deploy": "npx prisma migrate deploy && npx prisma generate --generator=production"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^9.0.3",
     "@prisma/client": "^6.8.2",
     "axios": "^1.10.0",
     "cloudinary": "^2.7.0",

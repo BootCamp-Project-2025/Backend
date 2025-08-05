@@ -4,6 +4,8 @@ import { CourseDTO } from "../../domain/dtos/CourseDTO";
 import { CourseMapper } from "../../mappers/CourseMapper";
 import IUseCase from "../../domain/interfaces/IUseCase";
 import { inject, injectable } from "tsyringe";
+import { QueryParamsDto } from "@/contexts/CoreContext/domain/interfaces/dtos/search/QueryParamsDto";
+import { PageDto } from "@/contexts/CoreContext/domain/interfaces/dtos/search/PageDto";
 
 @injectable()
 export class CourseService implements ICourseService {
@@ -28,6 +30,12 @@ export class CourseService implements ICourseService {
     private publishCourseUseCase: IUseCase<
       { id: string; published: boolean },
       boolean
+    >,
+
+    @inject("SearchCoursesUseCase")
+    private readonly searchCoursesUseCase: IUseCase<
+      QueryParamsDto,
+      PageDto<Course>
     >
   ) {}
 
@@ -65,5 +73,9 @@ export class CourseService implements ICourseService {
 
   async deleteCourse(id: string): Promise<void> {
     await this.deleteCourseUseCase.execute(id);
+  }
+
+  async searchCourse(params: QueryParamsDto): Promise<PageDto<Course>> {
+    return await this.searchCoursesUseCase.execute(params);
   }
 }

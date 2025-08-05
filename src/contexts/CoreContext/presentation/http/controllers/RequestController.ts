@@ -12,6 +12,7 @@ import RequestDtoBuilder, {
 } from "@/contexts/CoreContext/domain/interfaces/dtos/RequestDto";
 import { SuccessResponseEntity } from "@/contexts/Shared/domain/entity/SuccessResponseEntity";
 import { ResponseService } from "@/contexts/Shared/application/services/ResponseService";
+import { ParamMapper } from "@/contexts/CoreContext/mappers/ParamsMapper";
 
 @injectable()
 export class RequestController implements IRequestController {
@@ -106,4 +107,16 @@ export class RequestController implements IRequestController {
       name: string;
     };
   }
+
+  search = async (req: ExpressRequest, res: Response): Promise<void> => {
+    const params = ParamMapper.expressQueryToDto(req);
+    const result = await this.service.searchRequest(params);
+    const response = new SuccessResponseEntity(
+      result,
+      200,
+      "Request found successfully"
+    );
+
+    ResponseService.send(res, response);
+  };
 }

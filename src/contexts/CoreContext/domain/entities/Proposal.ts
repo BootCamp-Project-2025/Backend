@@ -4,8 +4,6 @@ import {
   ProposalStatusEnum,
 } from "../valueObjects/ProposalStatus";
 import { Entity } from "@/contexts/Shared/domain/Entity";
-import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { StatusCodes } from "http-status-codes";
 
 export interface ProposalProps {
   requestId: UniqueEntityID;

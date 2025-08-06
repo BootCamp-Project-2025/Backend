@@ -74,9 +74,9 @@ jobs:
           echo "KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}" >> .env |
           echo "KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}" >> .env |
           echo "KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}" >> .env |
-          echo "KEYCLOAK_CLIENT_SECRET=${{ secrets.KEYCLOAK_CLIENT_SECRET }}" >> .env
-          echo "ELASTICSEARCH_URL=${{ secrets.ELASTICSEARCH_URL }}" >> .env
-          echo "ELASTICSEARCH_USER=${{ secrets.ELASTICSEARCH_USER }}" >> .env
+          echo "KEYCLOAK_CLIENT_SECRET=${{ secrets.KEYCLOAK_CLIENT_SECRET }}" >> .env |
+          echo "ELASTICSEARCH_URL=${{ secrets.ELASTICSEARCH_URL }}" >> .env |
+          echo "ELASTICSEARCH_USER=${{ secrets.ELASTICSEARCH_USER }}" >> .env |
           echo "ELASTICSEARCH_PASSWORD=${{ secrets.ELASTICSEARCH_PASSWORD }}" >> .env
 
       - name: Build Docker image

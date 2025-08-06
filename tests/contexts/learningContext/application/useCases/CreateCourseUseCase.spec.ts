@@ -85,6 +85,7 @@ describe("CreateCourseUseCase", () => {
       name: dto.name,
       description: dto.description,
       userId: dto.userId,
+      imgSrc: dto.imgSrc,
       createdAt: new Date(),
     };
 

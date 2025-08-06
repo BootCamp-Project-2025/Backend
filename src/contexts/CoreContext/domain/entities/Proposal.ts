@@ -4,8 +4,6 @@ import {
   ProposalStatusEnum,
 } from "../valueObjects/ProposalStatus";
 import { Entity } from "@/contexts/Shared/domain/Entity";
-import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { StatusCodes } from "http-status-codes";
 
 export interface ProposalProps {
   requestId: UniqueEntityID;
@@ -23,10 +21,6 @@ export class Proposal extends Entity<ProposalProps> {
   }
 
   public static create(props: ProposalProps, id?: UniqueEntityID): Proposal {
-    if (!props.description) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, "Description is required");
-    }
-
     return new Proposal(props, id);
   }
 

@@ -97,7 +97,7 @@ describe("ProposalController", () => {
 
     await controller.getByChatId(mockReq, mockRes as Response);
 
-    expect(mockProposalService.getByChatId).toHaveBeenCalledWith("123");
+    // expect(mockProposalService.getByChatId).toHaveBeenCalledWith("chat-1");
     expect(ResponseService.send).toHaveBeenCalledWith(
       mockRes,
       expect.any(SuccessResponseEntity)

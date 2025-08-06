@@ -217,9 +217,9 @@ model Message {
   status     MessageStatus @default(DELIVERED)
   senderId   String
   chatId     String
-  sender     User          @relation("SentMessages", fields: [senderId], references: [id])
+  sender     User          @relation("SentMessages", fields: [senderId], references: [id], onDelete: SetNull)
   receivers  User[]        @relation("ReceivedMessages")
-  chat       Chat          @relation(fields: [chatId], references: [id])
+  chat       Chat          @relation(fields: [chatId], references: [id], onDelete: Cascade)
 }
 
 model Chat {
@@ -235,6 +235,7 @@ enum ChatStatus {
     ACTIVE
     CLOSED
     PROPOSAL
+    P2P
 }
 
 enum RequestStatus {

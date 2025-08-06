@@ -17,8 +17,6 @@ export class ProposalController implements IProposalController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     const proposal = req.body as ProposalDto;
-    console.log(proposal);
-
     const proposalDomain = ProposalMapper.dtoToDomain(proposal);
     const newProposalDomain = await this.proposalService.create(proposalDomain);
     const newProposalDto = ProposalMapper.DomainToDto(newProposalDomain);
@@ -31,8 +29,8 @@ export class ProposalController implements IProposalController {
   };
 
   getByChatId = async (req: Request, res: Response): Promise<void> => {
-    const { proposalId } = req.params;
-    const proposalDomain = await this.proposalService.getByChatId(proposalId);
+    const { chatId } = req.params;
+    const proposalDomain = await this.proposalService.getByChatId(chatId);
     const proposalDto = ProposalMapper.DomainToDto(proposalDomain);
     const response = new SuccessResponseEntity(
       proposalDto,

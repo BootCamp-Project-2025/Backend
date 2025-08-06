@@ -5,7 +5,7 @@ import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { Message } from "../entities/Message";
 
-export type ChatStatus = "ACTIVE" | "CLOSED" | "PROPOSAL";
+export type ChatStatus = "ACTIVE" | "CLOSED" | "PROPOSAL" | "P2P";
 
 export interface ChatProps {
   name?: ChatName;

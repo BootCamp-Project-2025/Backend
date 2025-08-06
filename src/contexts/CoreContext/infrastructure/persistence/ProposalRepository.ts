@@ -118,7 +118,6 @@ export class ProposalRepository implements IProposalReposisory {
           user: true,
         },
       });
-      console.log("proposallsss", proposalsDb);
       return ProposalMapper.bulkDtoToDomain(proposalsDb as ProposalDto[]);
     } catch (error) {
       console.log(error);

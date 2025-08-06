@@ -13,12 +13,16 @@ describe("", () => {
   const deleteFunc = jest.fn();
   const getUserActiveRequest = jest.fn();
   const searchRequest = jest.fn();
+  const getById = jest.fn();
+  const update = jest.fn();
 
   const serviceMock: IRequestService = {
     delete: deleteFunc,
     create,
     getUserActiveRequest,
     searchRequest,
+    getById,
+    update,
   };
 
   const mockResponse = () => {

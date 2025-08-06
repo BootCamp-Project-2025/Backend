@@ -4,6 +4,7 @@ import {
   DateOfTheSessionDateDto,
   P2PStudentCourseDto,
   P2PTeacherCourseDto,
+  ProposalDto,
   ProposalWithRequestUser,
   TitleValueObjectDto,
 } from "../domain/interfaces/dtos/DashboardDto";
@@ -60,12 +61,11 @@ export class DashboardMapper {
     });
   }
 
-  static mapProposals(
-    proposals: ProposalWithRequestUser[]
-  ): TitleValueObjectDto[] {
+  static mapProposals(proposals: ProposalWithRequestUser[]): ProposalDto[] {
     return proposals.map((proposal) => ({
       title: proposal.request.title,
       value: proposal.request.user.userName ?? "Unknown",
+      chatId: proposal.chatId,
     }));
   }
 

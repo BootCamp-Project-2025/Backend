@@ -119,4 +119,53 @@ export class RequestController implements IRequestController {
 
     ResponseService.send(res, response);
   };
+
+  getById = async (req: ExpressRequest, res: Response): Promise<void> => {
+    try {
+      const requestId = req.params.requestId;
+      console.log("requestId", requestId);
+      const requestDomain = await this.service.getById({ requestId });
+      console.log("requestDomain", requestDomain);
+
+      if (!requestDomain) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Request not found");
+      }
+
+      const responseData = RequestMapper.domainToDto(requestDomain);
+      const response = new SuccessResponseEntity(responseData, StatusCodes.OK);
+
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else throw new ApiError();
+    }
+  };
+
+  update = async (req: ExpressRequest, res: Response): Promise<void> => {
+    try {
+      const { requestId } = req.params;
+      const requestDto = req.body as RequestDto;
+
+      const requestDomain = RequestMapper.dtoToDomain(requestDto);
+      const updatedRequestDomain = await this.service.update(
+        requestId,
+        requestDomain
+      );
+
+      const requestDtoResponse =
+        RequestMapper.domainToDto(updatedRequestDomain);
+      const response = new SuccessResponseEntity(
+        requestDtoResponse,
+        StatusCodes.OK,
+        "Request updated successfully"
+      );
+
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else throw new ApiError();
+    }
+  };
 }

@@ -7,4 +7,6 @@ export default interface IRequestService {
   create(request: Request): Promise<Request>;
   getUserActiveRequest(userId: string, title: string): Promise<Request[]>;
   searchRequest(queryParam: QueryParamsDto): Promise<PageDto<Request>>;
+  getById(params: { requestId: string }): Promise<Request | null>;
+  update(requestId: string, request: Request): Promise<Request>;
 }

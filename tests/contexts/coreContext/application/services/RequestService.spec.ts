@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import RequestServicec from "@/contexts/CoreContext/application/services/RequestService";
+import RequestService from "@/contexts/CoreContext/application/services/RequestService";
 import RequestMapper from "@/contexts/CoreContext/mappers/RequestMapper";
 import { QueryParamsDto } from "@/contexts/CoreContext/domain/interfaces/dtos/search/QueryParamsDto";
 import { PageDto } from "@/contexts/CoreContext/domain/interfaces/dtos/search/PageDto";
@@ -30,11 +30,15 @@ describe("RequestService", () => {
   const createRequestUseCase = { execute: mockFn };
   const getUserActiveRequestUseCase = { execute: mockFn };
   const searchRequestUseCase = { execute: mockFn };
-  const service = new RequestServicec(
+  const updateRequestUseCase = { execute: mockFn };
+  const getRequestUseCase = { execute: mockFn };
+  const service = new RequestService(
     deleteRequestUseCase,
     createRequestUseCase,
     getUserActiveRequestUseCase,
-    searchRequestUseCase
+    searchRequestUseCase,
+    updateRequestUseCase,
+    getRequestUseCase
   );
   it("exists", () => {
     expect(service.create).toBeDefined();

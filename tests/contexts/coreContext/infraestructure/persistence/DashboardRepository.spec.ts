@@ -41,15 +41,31 @@ describe("DashboardRepository", () => {
       { status: "ENROLLED" },
       { status: "COMPLETED" },
     ]);
-    (PrismaClient.proposal.findMany as jest.Mock).mockResolvedValue([{ id: 1 }]);
-    (PrismaClient.liveSession.findMany as jest.Mock).mockResolvedValue([{ dateOfTheSession: new Date() }]);
-    (PrismaClient.request.findMany as jest.Mock).mockResolvedValue([{ id: 1, proposals: [], status: "OPEN" }]);
-    (PrismaClient.p2PCourse.findMany as jest.Mock).mockResolvedValue([{ id: 1, sessions: [], teacher: { userName: "teacher1" } }]);
+    (PrismaClient.proposal.findMany as jest.Mock).mockResolvedValue([
+      { id: 1 },
+    ]);
+    (PrismaClient.liveSession.findMany as jest.Mock).mockResolvedValue([
+      { dateOfTheSession: new Date() },
+    ]);
+    (PrismaClient.request.findMany as jest.Mock).mockResolvedValue([
+      { id: 1, proposals: [], status: "OPEN" },
+    ]);
+    (PrismaClient.p2PCourse.findMany as jest.Mock).mockResolvedValue([
+      { id: 1, sessions: [], teacher: { userName: "teacher1" } },
+    ]);
 
-    (DashboardMapper.mapProposals as jest.Mock).mockReturnValue([{ title: "Proposal", value: 1 }]);
-    (DashboardMapper.mapStudentP2PCourses as jest.Mock).mockReturnValue({ courses: [] });
-    (DashboardMapper.groupByMonthByCreatedAt as jest.Mock).mockReturnValue([{ month: "January", value: 2 }]);
-    (DashboardMapper.groupByMonthDateOfTheSession as jest.Mock).mockReturnValue([{ month: "January", value: 3 }]);
+    (DashboardMapper.mapProposals as jest.Mock).mockReturnValue([
+      { title: "Proposal", value: 1 },
+    ]);
+    (DashboardMapper.mapStudentP2PCourses as jest.Mock).mockReturnValue({
+      courses: [],
+    });
+    (DashboardMapper.groupByMonthByCreatedAt as jest.Mock).mockReturnValue([
+      { month: "January", value: 2 },
+    ]);
+    (DashboardMapper.groupByMonthDateOfTheSession as jest.Mock).mockReturnValue(
+      [{ month: "January", value: 3 }]
+    );
 
     const result = await repository.getStats("userId", "CLIENT");
 
@@ -63,17 +79,37 @@ describe("DashboardRepository", () => {
   });
 
   it("calls teacher stats and returns expected data", async () => {
-    (PrismaClient.course.findMany as jest.Mock).mockResolvedValue([{ published: true }]);
-    (PrismaClient.proposal.findMany as jest.Mock).mockResolvedValue([{ id: 1 }]);
-    (PrismaClient.enrollment.findMany as jest.Mock).mockResolvedValue([{ userId: "student1" }]);
-    (PrismaClient.p2PCourse.findMany as jest.Mock).mockResolvedValue([{ id: 1, sessions: [], student: { userName: "student1" } }]);
-    (PrismaClient.liveSession.findMany as jest.Mock).mockResolvedValue([{ dateOfTheSession: new Date() }]);
-    (PrismaClient.enrollment.findMany as jest.Mock).mockResolvedValueOnce([{ createdAt: new Date() }]);
+    (PrismaClient.course.findMany as jest.Mock).mockResolvedValue([
+      { published: true },
+    ]);
+    (PrismaClient.proposal.findMany as jest.Mock).mockResolvedValue([
+      { id: 1 },
+    ]);
+    (PrismaClient.enrollment.findMany as jest.Mock).mockResolvedValue([
+      { userId: "student1" },
+    ]);
+    (PrismaClient.p2PCourse.findMany as jest.Mock).mockResolvedValue([
+      { id: 1, sessions: [], student: { userName: "student1" } },
+    ]);
+    (PrismaClient.liveSession.findMany as jest.Mock).mockResolvedValue([
+      { dateOfTheSession: new Date() },
+    ]);
+    (PrismaClient.enrollment.findMany as jest.Mock).mockResolvedValueOnce([
+      { createdAt: new Date() },
+    ]);
 
-    (DashboardMapper.mapProposals as jest.Mock).mockReturnValue([{ title: "Proposal", value: 1 }]);
-    (DashboardMapper.mapTeacherP2PCourses as jest.Mock).mockReturnValue({ courses: [] });
-    (DashboardMapper.groupByMonthByCreatedAt as jest.Mock).mockReturnValue([{ month: "January", value: 2 }]);
-    (DashboardMapper.groupByMonthDateOfTheSession as jest.Mock).mockReturnValue([{ month: "January", value: 3 }]);
+    (DashboardMapper.mapProposals as jest.Mock).mockReturnValue([
+      { title: "Proposal", value: 1 },
+    ]);
+    (DashboardMapper.mapTeacherP2PCourses as jest.Mock).mockReturnValue({
+      courses: [],
+    });
+    (DashboardMapper.groupByMonthByCreatedAt as jest.Mock).mockReturnValue([
+      { month: "January", value: 2 },
+    ]);
+    (DashboardMapper.groupByMonthDateOfTheSession as jest.Mock).mockReturnValue(
+      [{ month: "January", value: 3 }]
+    );
 
     const result = await repository.getStats("userId", "FREELANCER");
 

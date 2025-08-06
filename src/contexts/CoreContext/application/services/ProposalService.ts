@@ -14,7 +14,9 @@ export class ProposalService implements IProposalService {
     private updateProposalUseCase: IUseCase<
       { proposalId: string; proposal: Proposal },
       Proposal
-    >
+    >,
+    @inject("GetUserProposalsUseCase")
+    private getUserProposalsUseCase: IUseCase<string, Proposal[]>
   ) {}
   async create(proposal: Proposal): Promise<Proposal> {
     return await this.createProposalUseCase.execute(proposal);
@@ -24,5 +26,8 @@ export class ProposalService implements IProposalService {
   }
   async update(proposalId: string, proposal: Proposal): Promise<Proposal> {
     return await this.updateProposalUseCase.execute({ proposalId, proposal });
+  }
+  async getByUserId(userId: string): Promise<Proposal[]> {
+    return await this.getUserProposalsUseCase.execute(userId);
   }
 }

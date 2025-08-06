@@ -5,4 +5,5 @@ export default interface IRequestRepository {
   findById(requestId: string): Promise<Request | null>;
   create(request: Request): Promise<Request>;
   findAllActiveByUserId(userId: string, title: string): Promise<Request[]>;
+  update(requestId: string, request: Request): Promise<Request>;
 }

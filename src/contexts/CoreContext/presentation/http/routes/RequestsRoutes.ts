@@ -65,6 +65,41 @@ requestRoutes.post("/", verifyToken(), controller.create);
  * @openapi
  *
  * /requests/{requestId}:
+ *  put:
+ *      summary: Update a request
+ *      tags:
+ *       - Requests
+ *      security:
+ *       - BearerAuth: []
+ *      parameters:
+ *       - in: path
+ *         name: requestId
+ *         required: true
+ *         description: The ID of the request
+ *         schema:
+ *           type: string
+ *      requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Request'
+ *      responses:
+ *          200:
+ *              description: The request has been updated
+ *          400:
+ *              description: Invalid input
+ *          404:
+ *              description: Request not found
+ *          500:
+ *              description: Unexpected error
+ */
+requestRoutes.put("/:requestId", controller.update);
+
+/**
+ * @openapi
+ *
+ * /requests/{requestId}:
  *  delete:
  *      summary: Create a new request
  *      tags:
@@ -88,6 +123,33 @@ requestRoutes.post("/", verifyToken(), controller.create);
  *
  */
 requestRoutes.delete("/:requestId", controller.delete);
+
+/**
+ * @openapi
+ *
+ * /requests/{requestId}:
+ *  get:
+ *      summary: Get a request by ID
+ *      tags:
+ *       - Requests
+ *      security:
+ *       - BearerAuth: []
+ *      parameters:
+ *       - in: path
+ *         name: requestId
+ *         required: true
+ *         description: The ID of the request
+ *         schema:
+ *           type: string
+ *      responses:
+ *          200:
+ *              description: Returns the requested entity
+ *          404:
+ *              description: Request not found
+ *          401:
+ *              description: Unauthorized (missing or invalid token)
+ */
+requestRoutes.get("/:requestId", controller.getById);
 
 /**
  * @openapi

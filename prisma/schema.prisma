@@ -33,7 +33,6 @@ model Course{
   userId String
   user    User   @relation("UserCourse", fields: [userId], references: [id])
   Enrollment Enrollment[]
-  createdAt DateTime? @default(now())
 }
 
 model Module{

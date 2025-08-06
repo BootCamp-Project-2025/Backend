@@ -230,6 +230,9 @@ import { QueryParamsDto } from "./contexts/CoreContext/domain/interfaces/dtos/se
 import { SearchRequestUseCase } from "./contexts/CoreContext/application/useCases/requests/SearchRequestUseCase";
 import { PageDto } from "./contexts/CoreContext/domain/interfaces/dtos/search/PageDto";
 import { SearchCourseUseCase } from "./contexts/LearningContext/application/useCases/searchCourseUseCase";
+import GetRequestUseCase from "./contexts/CoreContext/application/useCases/requests/GetRequestUseCase";
+import GetUserProposalsUseCase from "./contexts/CoreContext/application/useCases/proposal/GetUserProposalsUseCase";
+import UpdateRequestUseCase from "./contexts/CoreContext/application/useCases/requests/UpdateRequestUseCase";
 import { IDashboardRepository } from "./contexts/CoreContext/domain/interfaces/repositories/IDashboardRepository";
 import { DashboardRepository } from "./contexts/CoreContext/infrastructure/persistence/DashboardRepository";
 import { GetDashboardUseCase } from "./contexts/CoreContext/application/useCases/GetDashboardUseCase";
@@ -626,6 +629,13 @@ container.registerSingleton<IUseCase<Request, Request>>(
   "CreateRequestUseCase",
   CreateRequestUseCase
 );
+container.registerSingleton<IUseCase<string, Request | null>>(
+  "GetRequestUseCase",
+  GetRequestUseCase
+);
+container.registerSingleton<
+  IUseCase<{ requestId: string; request: Request }, Request>
+>("UpdateRequestUseCase", UpdateRequestUseCase);
 
 // Chats
 container.registerSingleton<IChatController>("ChatController", ChatController);
@@ -778,6 +788,12 @@ container.registerSingleton<IProposalReposisory>(
   "IProposalRepository",
   ProposalRepository
 );
+
+container.registerSingleton<IUseCase<string, Proposal[]>>(
+  "GetUserProposalsUseCase",
+  GetUserProposalsUseCase
+);
+
 container.registerSingleton<ICdnService>("ICdnService", CloudinaryService);
 container.registerSingleton<IStudentTrackProgressRepository>(
   "IStudentTrackProgressRepository",

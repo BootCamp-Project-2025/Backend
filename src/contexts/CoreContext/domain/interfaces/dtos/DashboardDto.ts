@@ -39,12 +39,19 @@ export type P2PTeacherCourseDto = {
 };
 
 export interface ProposalWithRequestUser {
+  chatId: string;
   request: {
     title: string;
     user: {
       userName: string;
     };
   };
+}
+
+export interface ProposalDto {
+  title: string;
+  value: string | UserName;
+  chatId: string;
 }
 
 export interface ChartDataDto {

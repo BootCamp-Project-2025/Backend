@@ -15,6 +15,7 @@ jest.mock("@/contexts/Shared/infrastructure/database/PrismaClient", () => ({
 jest.mock("@/contexts/CoreContext/mappers/DashboardMapper", () => ({
   DashboardMapper: {
     mapStudentProposals: jest.fn(),
+    mapTeacherProposals: jest.fn(),
     mapStudentP2PCourses: jest.fn(),
     mapTeacherP2PCourses: jest.fn(),
     groupByMonthByCreatedAt: jest.fn(),
@@ -98,7 +99,7 @@ describe("DashboardRepository", () => {
       { createdAt: new Date() },
     ]);
 
-    (DashboardMapper.mapStudentProposals as jest.Mock).mockReturnValue([
+    (DashboardMapper.mapTeacherProposals as jest.Mock).mockReturnValue([
       { title: "Proposal", value: 1 },
     ]);
     (DashboardMapper.mapTeacherP2PCourses as jest.Mock).mockReturnValue({
@@ -114,7 +115,7 @@ describe("DashboardRepository", () => {
     const result = await repository.getStats("userId", "FREELANCER");
 
     expect(PrismaClient.course.findMany).toHaveBeenCalled();
-    expect(DashboardMapper.mapStudentProposals).toHaveBeenCalled();
+    expect(DashboardMapper.mapTeacherProposals).toHaveBeenCalled();
     expect(result).toHaveProperty("courses");
     expect(result).toHaveProperty("p2pCourses");
     expect(result).toHaveProperty("proposals");

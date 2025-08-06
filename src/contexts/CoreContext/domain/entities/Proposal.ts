@@ -23,10 +23,6 @@ export class Proposal extends Entity<ProposalProps> {
   }
 
   public static create(props: ProposalProps, id?: UniqueEntityID): Proposal {
-    if (!props.description) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, "Description is required");
-    }
-
     return new Proposal(props, id);
   }
 

@@ -87,6 +87,8 @@ export class ProposalRepository implements IProposalReposisory {
   }
   async getByChatId(chatId: string): Promise<Proposal> {
     try {
+      console.log(chatId);
+
       const proposal = await PrismaClient.proposal.findFirstOrThrow({
         where: { chatId: chatId },
       });

@@ -31,8 +31,8 @@ export class ProposalController implements IProposalController {
   };
 
   getByChatId = async (req: Request, res: Response): Promise<void> => {
-    const { proposalId } = req.params;
-    const proposalDomain = await this.proposalService.getByChatId(proposalId);
+    const { chatId } = req.params;
+    const proposalDomain = await this.proposalService.getByChatId(chatId);
     const proposalDto = ProposalMapper.DomainToDto(proposalDomain);
     const response = new SuccessResponseEntity(
       proposalDto,

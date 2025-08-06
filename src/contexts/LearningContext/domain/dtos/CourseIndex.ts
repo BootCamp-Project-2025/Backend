@@ -2,6 +2,7 @@ export interface CourseIndex {
   id: string;
   name: string;
   description: string;
+  imgSrc: string;
   category?: string;
   subCategory?: string;
   language?: string;

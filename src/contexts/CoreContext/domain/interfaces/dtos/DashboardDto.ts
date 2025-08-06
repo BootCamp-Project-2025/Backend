@@ -44,6 +44,26 @@ export interface ProposalDto {
   chatId: string;
 }
 
+export interface StudentProposals {
+  chatId: string,
+  user: {
+    userName: string | UserName
+  },
+  request: {
+    title: string
+  }
+}
+
+export interface TeacherProposals {
+  chatId: string,
+  request: {
+    title: string,
+    user: {
+      userName: string | UserName
+    }
+  }
+}
+
 export interface ChartDataDto {
   month: string;
   value: number;

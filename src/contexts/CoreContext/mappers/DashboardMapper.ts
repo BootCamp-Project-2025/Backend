@@ -5,6 +5,8 @@ import {
   P2PStudentCourseDto,
   P2PTeacherCourseDto,
   ProposalDto,
+  StudentProposals,
+  TeacherProposals,
   TitleValueObjectDto,
 } from "../domain/interfaces/dtos/DashboardDto";
 
@@ -60,7 +62,7 @@ export class DashboardMapper {
     });
   }
 
-  static mapTeacherProposals(proposals: any[]): ProposalDto[] {
+  static mapTeacherProposals(proposals: TeacherProposals[]): ProposalDto[] {
     return proposals.map((proposal) => ({
       title: proposal.request.title,
       value: proposal.request.user.userName,
@@ -68,13 +70,14 @@ export class DashboardMapper {
     }));
   }
 
-  static mapStudentProposals(proposals: any[]): ProposalDto[] {
+  static mapStudentProposals(proposals: StudentProposals[]): ProposalDto[] {
     return proposals.map((proposal) => ({
       title: proposal.request.title,
       value: proposal.user.userName,
       chatId: proposal.chatId ?? "",
     }));
   }
+  
 
   static groupByMonth(counts: number[]): ChartDataDto[] {
     return counts.map((count, index) => ({

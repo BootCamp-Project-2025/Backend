@@ -1,3 +1,4 @@
+import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCourse";
 import { FilePostDTO } from "@/contexts/LearningContext/domain/dtos/FilePostDTO";
 import { P2PCourseDTO } from "@/contexts/LearningContext/domain/dtos/P2PCourseDTO";
 import { PostDTO } from "@/contexts/LearningContext/domain/dtos/PostDTO";
@@ -20,7 +21,7 @@ import { inject, injectable } from "tsyringe";
 export class P2PCourseController implements IP2PCourseController {
   constructor(
     @inject("IP2PCourseService") private readonly service: IP2PCourseService
-  ) {}
+  ) { }
 
   editSession = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -254,6 +255,34 @@ export class P2PCourseController implements IP2PCourseController {
       );
       const response = new SuccessResponseEntity(
         P2PCourseMapper.domainToDto(p2pCourse),
+        StatusCodes.OK
+      );
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else {
+        console.log(error);
+        throw new ApiError();
+      }
+    }
+  };
+
+  getByUserId = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const user = getUserFromRequest(req);
+      const p2pCourses = await this.service.getByUserId(
+        user.id
+      );
+
+      const p2pCoursesResponse = p2pCourses.map((p2pCourse: P2PCourse) => {
+        return P2PCourseMapper.domainToDto(p2pCourse);
+      });
+      const response = new SuccessResponseEntity(
+        p2pCoursesResponse,
         StatusCodes.OK
       );
       ResponseService.send(res, response);

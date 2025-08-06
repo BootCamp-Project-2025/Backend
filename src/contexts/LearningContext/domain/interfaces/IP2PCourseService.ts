@@ -28,4 +28,6 @@ export default interface IP2PCourseService {
     p2pCourseId: string,
     userId: string
   ): Promise<P2PCourse>;
+
+  getByUserId(userId: String): Promise<P2PCourse[]>
 }

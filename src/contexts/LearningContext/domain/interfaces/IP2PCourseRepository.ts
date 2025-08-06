@@ -7,4 +7,5 @@ export default interface IP2PCourseRepository {
     p2pCourseId: string,
     userId: string
   ): Promise<P2PCourse | null>;
+  findByUserId(userId: string): Promise<P2PCourse[] | []>
 }

@@ -199,6 +199,7 @@ import AddFilePostUseCase from "./contexts/LearningContext/application/useCases/
 import { FilePost } from "./contexts/LearningContext/domain/entities/FilePost";
 import RemoveFilePostUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/RemoveFilePostUseCase";
 import GetByUserIdAndCourseIdUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/GetByUserIdAndCourseIdUseCase";
+import GetP2PCoursesByUserIdUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/GetP2PCoursesByUserIdUseCase";
 import { GetUserCoursesUseCase } from "./contexts/CoreContext/application/useCases/GetUserCoursesUseCase";
 import { ICdnService } from "./contexts/CoreContext/domain/interfaces/services/ICdnService";
 import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloudinaryService";
@@ -904,6 +905,10 @@ container.registerSingleton<
 container.registerSingleton<
   IUseCase<{ p2pCourseId: string; userId: string }, P2PCourse>
 >("GetByUserIdAndCourseIdUseCase", GetByUserIdAndCourseIdUseCase);
+
+container.registerSingleton<
+  IUseCase<string, P2PCourse[]>
+>("GetP2PCoursesByUserIdUseCase", GetP2PCoursesByUserIdUseCase);
 
 container.registerSingleton<IUseCase<string, P2PCourse>>(
   "GetP2PCourseByIdUseCase",

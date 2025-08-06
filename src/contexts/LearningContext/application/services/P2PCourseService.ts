@@ -62,8 +62,10 @@ export class P2PCourseService implements IP2PCourseService {
       P2PCourse
     >,
     @inject("GetP2PCourseByIdUseCase")
-    private readonly getP2PCourseByIdUseCase: IUseCase<string, P2PCourse>
-  ) {}
+    private readonly getP2PCourseByIdUseCase: IUseCase<string, P2PCourse>,
+    @inject("GetP2PCoursesByUserIdUseCase")
+    private readonly getP2PCoursesByUserIdUseCase: IUseCase<string, P2PCourse[]>
+  ) { }
   async create(course: P2PCourse): Promise<P2PCourse> {
     return await this.createP2PCourseUseCase.execute(course);
   }
@@ -129,5 +131,11 @@ export class P2PCourseService implements IP2PCourseService {
       p2pCourseId,
       userId,
     });
+  }
+
+  async getByUserId(
+    userId: string
+  ): Promise<P2PCourse[]> {
+    return await this.getP2PCoursesByUserIdUseCase.execute(userId);
   }
 }

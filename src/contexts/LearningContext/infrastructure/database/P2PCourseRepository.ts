@@ -45,4 +45,20 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
     }
     return P2PCourseMapper.dtoToDomain(p2pCourse);
   }
+  async findByUserId(userId: string): Promise<P2PCourse[] | []> {
+    const p2pCourses = await this.p2pCourseDbConnection.findMany({
+      where: {
+        studentId: userId,
+      },
+      include: { posts: true, files: true, sessions: true },
+    });
+    if (p2pCourses.length === 0) {
+      return [];
+    }
+    const p2pCourseMany = p2pCourses.map((p2pCourse) => {
+      return P2PCourseMapper.dtoToDomain(p2pCourse)
+    })
+
+    return p2pCourseMany;
+  }
 }

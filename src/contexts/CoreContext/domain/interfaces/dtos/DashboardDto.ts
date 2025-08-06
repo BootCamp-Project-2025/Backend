@@ -45,23 +45,23 @@ export interface ProposalDto {
 }
 
 export interface StudentProposals {
-  chatId: string,
+  chatId: string | null;
   user: {
-    userName: string | UserName
-  },
+    userName: string | UserName;
+  };
   request: {
-    title: string
-  }
+    title: string;
+  };
 }
 
 export interface TeacherProposals {
-  chatId: string,
+  chatId: string | null;
   request: {
-    title: string,
+    title: string;
     user: {
-      userName: string | UserName
-    }
-  }
+      userName: string | UserName;
+    };
+  };
 }
 
 export interface ChartDataDto {

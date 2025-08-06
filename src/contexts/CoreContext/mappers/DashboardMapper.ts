@@ -77,7 +77,6 @@ export class DashboardMapper {
       chatId: proposal.chatId ?? "",
     }));
   }
-  
 
   static groupByMonth(counts: number[]): ChartDataDto[] {
     return counts.map((count, index) => ({

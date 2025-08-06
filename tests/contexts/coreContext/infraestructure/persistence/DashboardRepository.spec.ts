@@ -14,7 +14,7 @@ jest.mock("@/contexts/Shared/infrastructure/database/PrismaClient", () => ({
 
 jest.mock("@/contexts/CoreContext/mappers/DashboardMapper", () => ({
   DashboardMapper: {
-    mapProposals: jest.fn(),
+    mapStudentProposals: jest.fn(),
     mapStudentP2PCourses: jest.fn(),
     mapTeacherP2PCourses: jest.fn(),
     groupByMonthByCreatedAt: jest.fn(),
@@ -54,7 +54,7 @@ describe("DashboardRepository", () => {
       { id: 1, sessions: [], teacher: { userName: "teacher1" } },
     ]);
 
-    (DashboardMapper.mapProposals as jest.Mock).mockReturnValue([
+    (DashboardMapper.mapStudentProposals as jest.Mock).mockReturnValue([
       { title: "Proposal", value: 1 },
     ]);
     (DashboardMapper.mapStudentP2PCourses as jest.Mock).mockReturnValue({
@@ -70,7 +70,7 @@ describe("DashboardRepository", () => {
     const result = await repository.getStats("userId", "CLIENT");
 
     expect(PrismaClient.enrollment.findMany).toHaveBeenCalled();
-    expect(DashboardMapper.mapProposals).toHaveBeenCalled();
+    expect(DashboardMapper.mapStudentProposals).toHaveBeenCalled();
     expect(result).toHaveProperty("courses");
     expect(result).toHaveProperty("p2pCourses");
     expect(result).toHaveProperty("proposals");
@@ -98,7 +98,7 @@ describe("DashboardRepository", () => {
       { createdAt: new Date() },
     ]);
 
-    (DashboardMapper.mapProposals as jest.Mock).mockReturnValue([
+    (DashboardMapper.mapStudentProposals as jest.Mock).mockReturnValue([
       { title: "Proposal", value: 1 },
     ]);
     (DashboardMapper.mapTeacherP2PCourses as jest.Mock).mockReturnValue({
@@ -114,7 +114,7 @@ describe("DashboardRepository", () => {
     const result = await repository.getStats("userId", "FREELANCER");
 
     expect(PrismaClient.course.findMany).toHaveBeenCalled();
-    expect(DashboardMapper.mapProposals).toHaveBeenCalled();
+    expect(DashboardMapper.mapStudentProposals).toHaveBeenCalled();
     expect(result).toHaveProperty("courses");
     expect(result).toHaveProperty("p2pCourses");
     expect(result).toHaveProperty("proposals");

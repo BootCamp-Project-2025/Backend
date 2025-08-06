@@ -148,6 +148,7 @@ export class CourseMapper {
       id: course.id.toString(),
       name: course.getName().value,
       description: course.getDescription().value,
+      imgSrc: course.getImgSrc(),
       category: course.getCategory()?.value,
       subCategory: course.getSubCategory()?.value,
       language: course.getLanguage()?.value,

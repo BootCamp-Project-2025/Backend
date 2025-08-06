@@ -129,6 +129,7 @@ describe("CreateModuleUseCase", () => {
       id: "CourseTestId",
       name: "CourseTest",
       description: "TestDesc",
+      imgSrc: "http://imgSrc.com",
       category: "math",
       subCategory: "algebra",
       language: "es",

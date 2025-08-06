@@ -123,10 +123,7 @@ export class RequestController implements IRequestController {
   getById = async (req: ExpressRequest, res: Response): Promise<void> => {
     try {
       const requestId = req.params.requestId;
-      console.log("requestId", requestId);
       const requestDomain = await this.service.getById({ requestId });
-      console.log("requestDomain", requestDomain);
-
       if (!requestDomain) {
         throw new ApiError(StatusCodes.NOT_FOUND, "Request not found");
       }

@@ -87,8 +87,6 @@ export class ProposalRepository implements IProposalReposisory {
   }
   async getByChatId(chatId: string): Promise<Proposal> {
     try {
-      console.log(chatId);
-
       const proposal = await PrismaClient.proposal.findFirstOrThrow({
         where: { chatId: chatId },
       });
@@ -120,7 +118,6 @@ export class ProposalRepository implements IProposalReposisory {
           user: true,
         },
       });
-      console.log("proposallsss", proposalsDb);
       return ProposalMapper.bulkDtoToDomain(proposalsDb as ProposalDto[]);
     } catch (error) {
       console.log(error);

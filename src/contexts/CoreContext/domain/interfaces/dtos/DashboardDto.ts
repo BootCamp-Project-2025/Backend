@@ -38,16 +38,6 @@ export type P2PTeacherCourseDto = {
   sessions: { id: string }[];
 };
 
-export interface ProposalWithRequestUser {
-  chatId: string;
-  request: {
-    title: string;
-    user: {
-      userName: string;
-    };
-  };
-}
-
 export interface ProposalDto {
   title: string;
   value: string | UserName;

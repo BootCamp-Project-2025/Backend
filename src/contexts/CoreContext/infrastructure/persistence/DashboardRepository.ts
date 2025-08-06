@@ -40,14 +40,22 @@ export class DashboardRepository implements IDashboardRepository {
           request: {
             userId: userId,
           },
+          status: {
+            notIn: ["ACCEPTED", "REJECTED"],
+          },
         },
         orderBy: { createdAt: "desc" },
         take: 3,
-        include: {
-          user: true,
+        select: {
+          chatId: true,
+          user: {
+            select: {
+              userName: true,
+            },
+          },
           request: {
-            include: {
-              user: true,
+            select: {
+              title: true,
             },
           },
         },
@@ -96,7 +104,7 @@ export class DashboardRepository implements IDashboardRepository {
     enrolled.push({ title: "Courses Finish", value: coursesCompleted.length });
     enrolled.push({ title: "Courses Canceled", value: coursesCanceled.length });
 
-    const proposals = DashboardMapper.mapProposals(proposalsReceive);
+    const proposals = DashboardMapper.mapStudentProposals(proposalsReceive);
 
     const formattedP2pCourses =
       DashboardMapper.mapStudentP2PCourses(p2pCourses);
@@ -140,13 +148,24 @@ export class DashboardRepository implements IDashboardRepository {
         where: { userId: userId },
       }),
       PrismaClient.proposal.findMany({
-        where: { userId: userId },
+        where: {
+          userId: userId,
+          status: {
+            notIn: ["ACCEPTED", "REJECTED"],
+          },
+        },
         orderBy: { createdAt: "desc" },
         take: 3,
-        include: {
+        select: {
+          chatId: true,
           request: {
-            include: {
-              user: true,
+            select: {
+              title: true,
+              user: {
+                select: {
+                  userName: true,
+                },
+              },
             },
           },
         },
@@ -197,7 +216,7 @@ export class DashboardRepository implements IDashboardRepository {
     });
     courses.push({ title: "Students", value: uniqueStudents.length });
 
-    const proposals = DashboardMapper.mapProposals(proposalsSent);
+    const proposals = DashboardMapper.mapTeacherProposals(proposalsSent);
 
     const formattedP2pCourses =
       DashboardMapper.mapTeacherP2PCourses(p2pCourses);

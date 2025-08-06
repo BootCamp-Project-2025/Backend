@@ -5,7 +5,6 @@ import {
   P2PStudentCourseDto,
   P2PTeacherCourseDto,
   ProposalDto,
-  ProposalWithRequestUser,
   TitleValueObjectDto,
 } from "../domain/interfaces/dtos/DashboardDto";
 
@@ -61,11 +60,19 @@ export class DashboardMapper {
     });
   }
 
-  static mapProposals(proposals: ProposalWithRequestUser[]): ProposalDto[] {
+  static mapTeacherProposals(proposals: any[]): ProposalDto[] {
     return proposals.map((proposal) => ({
       title: proposal.request.title,
-      value: proposal.request.user.userName ?? "Unknown",
-      chatId: proposal.chatId,
+      value: proposal.request.user.userName,
+      chatId: proposal.chatId ?? "",
+    }));
+  }
+
+  static mapStudentProposals(proposals: any[]): ProposalDto[] {
+    return proposals.map((proposal) => ({
+      title: proposal.request.title,
+      value: proposal.user.userName,
+      chatId: proposal.chatId ?? "",
     }));
   }
 

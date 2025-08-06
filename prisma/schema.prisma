@@ -312,7 +312,7 @@ model StudentTrackProgress {
   completed          Boolean  @default(false)
   completedAt        DateTime?
 
-  enrollment         Enrollment @relation("EnrollmentStudentTrackProgress", fields: [enrollmentId], references: [id])
+  enrollment         Enrollment @relation("EnrollmentStudentTrackProgress", fields: [enrollmentId], references: [id], onDelete: Cascade)
   lesson             Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   videoProgresses    VideoProgress[]
   resourcesCompleted ResourceCompleted[]

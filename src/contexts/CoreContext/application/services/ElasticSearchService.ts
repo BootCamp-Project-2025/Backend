@@ -64,11 +64,7 @@ export class ElasticSearchService implements ISearchService {
         id: resourceDto.id,
       });
     } catch (error) {
-      console.error(error);
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "An error occured when try to index a resource"
-      );
+      console.error("An error has occured when try to index a Resource", error);
     }
   }
 
@@ -79,10 +75,9 @@ export class ElasticSearchService implements ISearchService {
         id: resourceId,
       });
     } catch (error) {
-      console.error(error);
-      throw new ApiError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "An error occured when try to index a resource"
+      console.error(
+        "An error has occured when try to remove a resource",
+        error
       );
     }
   }

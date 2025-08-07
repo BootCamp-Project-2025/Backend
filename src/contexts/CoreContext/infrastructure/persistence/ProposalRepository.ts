@@ -7,6 +7,7 @@ import { ProposalDto } from "../../domain/interfaces/dtos/ProposalDto";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { StatusCodes } from "http-status-codes";
+import { ChatStatus } from "@/generated/prisma";
 
 @injectable()
 export class ProposalRepository implements IProposalReposisory {
@@ -58,6 +59,31 @@ export class ProposalRepository implements IProposalReposisory {
   }
   async update(proposalId: string, proposal: Proposal): Promise<Proposal> {
     try {
+      if (proposal.status.value === "ACCEPTED") {
+        const requestDb = await PrismaClient.request.update({
+          where: { id: proposal.requestId.toValue() },
+          data: {
+            status: "ACCEPTED",
+            proposals: {
+              updateMany: {
+                where: { requestId: proposal.requestId.toString() },
+                data: { status: "REJECTED" },
+              },
+            },
+          },
+          include: { proposals: true },
+        });
+
+        const chatIds = requestDb.proposals
+          .map((p) => p.chatId)
+          .filter((id): id is string => !!id);
+
+        await PrismaClient.chat.updateMany({
+          where: { id: { in: chatIds } },
+          data: { status: ChatStatus.CLOSED },
+        });
+      }
+
       const updatedProposal = await PrismaClient.proposal.update({
         where: { id: proposalId },
         data: {

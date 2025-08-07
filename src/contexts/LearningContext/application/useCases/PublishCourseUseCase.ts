@@ -27,15 +27,13 @@ export class PublishCourseUseCase implements IUseCase<PublishInput, boolean> {
   async execute(input: PublishInput): Promise<boolean> {
     const { id, published } = input;
     const result = await this.repo.publish(id, published);
+    const course = await this.repo.findById(id);
 
-    if (!result) return false;
+    if (!course) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");
+    }
 
     if (published) {
-      const course = await this.repo.findById(id);
-      if (!course) {
-        throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");
-      }
-
       const modules = await this.getAllModulesUseCase.execute(id);
       course.props.modules = Modules.create(modules);
 

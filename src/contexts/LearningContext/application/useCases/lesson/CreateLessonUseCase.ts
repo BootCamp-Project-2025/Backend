@@ -4,11 +4,7 @@ import { ICourseRepository } from "@/contexts/LearningContext/domain/interfaces/
 import ILessonRepository from "@/contexts/LearningContext/domain/interfaces/ILessonRepository";
 import IModuleRepository from "@/contexts/LearningContext/domain/interfaces/IModuleRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
-import { Modules } from "@/contexts/LearningContext/domain/OneToMany/Modules";
-import { CourseMapper } from "@/contexts/LearningContext/mappers/CourseMapper";
-import { IndexResourceEvent } from "@/contexts/Shared/domain/events/IndexResourceEvent";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
-import { globalEventDispatcher } from "@/eventRegister";
 import { StatusCodes } from "http-status-codes";
 
 import { inject, injectable } from "tsyringe";
@@ -48,24 +44,6 @@ export default class CreateLessonUseCase
         throw new ApiError(StatusCodes.NOT_FOUND, "Module not found");
       module.props.lessons.add(lesson);
       const lessonDb = await this.lessonRepository.create(lesson, moduleId);
-
-      const courseId =
-        await this.moduleRepository.findCourseIdByModuleId(moduleId);
-
-      const course = await this.courseRepository.findById(courseId);
-      if (!course) {
-        throw new ApiError(StatusCodes.NOT_FOUND, "Course not found");
-      }
-
-      const modules = await this.getAllModulesUseCase.execute(courseId);
-      course.props.modules = Modules.create(modules);
-
-      const event = new IndexResourceEvent({
-        resource: "course",
-        resourceDto: CourseMapper.domainToIndex(course),
-      });
-
-      globalEventDispatcher.dispatch(event);
 
       return lessonDb;
     } catch (error) {

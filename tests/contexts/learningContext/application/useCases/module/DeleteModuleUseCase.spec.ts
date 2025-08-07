@@ -16,18 +16,6 @@ import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
 import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
 import { Modules } from "@/contexts/LearningContext/domain/OneToMany/Modules";
 
-jest.mock("@/eventRegister", () => ({
-  globalEventDispatcher: {
-    dispatch: jest.fn(),
-  },
-}));
-
-jest.mock("@/contexts/LearningContext/mappers/CourseMapper", () => ({
-  CourseMapper: {
-    domainToIndex: jest.fn(),
-  },
-}));
-
 const mockRepository: jest.Mocked<IModuleRepository> = {
   findByCourseId: jest.fn(),
   findById: jest.fn(),
@@ -73,47 +61,21 @@ describe("DeleteModuleUseCase", () => {
       quizzes: [],
     });
 
-    const course = Course.create({
-      name: CourseName.create({ name: "Test Course" }),
-      description: CourseDescription.create({ description: "desc" }),
-      imgSrc: "img",
-      userId: UserId.create(new UniqueEntityID("user-id")),
-      modules: Modules.create([]),
-      published: false,
-    });
-
-    const courseId = "course-id";
-
     mockRepository.findById.mockResolvedValue(module);
-    mockRepository.findCourseIdByModuleId.mockResolvedValue(courseId);
     mockRepository.delete.mockResolvedValue();
-    mockCourseRepository.findById.mockResolvedValue(course);
-    mockGetAllModulesUseCase.execute.mockResolvedValue([module]);
-    (CourseMapper.domainToIndex as jest.Mock).mockReturnValue({
-      id: courseId,
-      name: "Test Course",
-    });
     await expect(useCase.execute("ModuleTestId")).resolves.toBe(undefined);
 
-    expect(globalEventDispatcher.dispatch).toHaveBeenCalledTimes(1);
-    expect(globalEventDispatcher.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        payload: expect.objectContaining({
-          resource: "course",
-          resourceDto: expect.objectContaining({
-            id: courseId,
-            name: "Test Course",
-          }),
-        }),
-      })
-    );
+    expect(mockRepository.findById).toHaveBeenCalledWith("ModuleTestId");
+    expect(mockRepository.delete).toHaveBeenCalledWith("ModuleTestId");
   });
 
-  it("Module not found", () => {
+  it("throws error when module not found", async () => {
     mockRepository.findById.mockResolvedValue(null);
     mockRepository.delete.mockResolvedValue();
-    expect(async () => await useCase.execute("ModuleTestId")).rejects.toThrow(
-      ApiError
-    );
+
+    await expect(useCase.execute("ModuleTestId")).rejects.toThrow(ApiError);
+
+    expect(mockRepository.findById).toHaveBeenCalledWith("ModuleTestId");
+    expect(mockRepository.delete).not.toHaveBeenCalled();
   });
 });

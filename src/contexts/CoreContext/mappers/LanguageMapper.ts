@@ -51,7 +51,7 @@ export class LanguageMapper extends ArrayToArrayMapper<
     return {
       name: language.name,
       level: language.level,
-      id: new UniqueEntityID().toString(),
+      id: language.id.toString(),
     };
   }
 

@@ -30,7 +30,7 @@ export class SkillMapper extends ArrayToArrayMapper<Skill, PrismaSkill> {
     return {
       name: skill.props.name,
       level: skill.props.level,
-      skillId: skill.id.toString(),
+      id: skill.id.toString(),
     };
   }
 

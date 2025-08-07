@@ -37,11 +37,11 @@ export default class FreelancerController implements IFreelancerController {
       console.log(req.params.skillId);
       req.body.skillId = req.params.skillId;
       const body: ISkillDto = req.body as ISkillDto;
-      if (body.skillId === undefined)
+      if (body.id === undefined)
         throw new ApiError(StatusCodes.BAD_REQUEST, "the skill id is needed");
       const skill: Skill = Skill.create(
         { ...body, freelancerId: req.params.freelancerId },
-        new UniqueEntityID(body.skillId)
+        new UniqueEntityID(body.id)
       );
       const data: ISkillDto = await this.skillService.editSkill(skill);
       const response = new SuccessResponseEntity(data, StatusCodes.OK);
@@ -92,7 +92,7 @@ export default class FreelancerController implements IFreelancerController {
 
       const skill: Skill = Skill.create(
         { ...body, freelancerId: req.params.freelancerId },
-        new UniqueEntityID()
+        new UniqueEntityID(body.id)
       );
       const data: ISkillDto = await this.skillService.addSkill(skill);
       const response = new SuccessResponseEntity(

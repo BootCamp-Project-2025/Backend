@@ -278,7 +278,7 @@ model Proposal {
   updatedAt         DateTime        @updatedAt @db.Timestamptz()
   chatId            String?
   status            ProposalStatus  @default(NEW)
-  request           Request         @relation(fields: [requestId], references: [id])
+  request           Request         @relation(fields: [requestId], references: [id], onDelete: Cascade)
   user              User            @relation(fields: [userId], references: [id])
 }
 

@@ -73,6 +73,27 @@ p2pCourseRoutes.get(
 
 /**
  * @openapi
+ * /p2pCourses/teacherCourse:
+ *   get:
+ *     summary: Get the courses for a teacher
+ *     tags:
+ *       - P2PCourses
+ *     responses:
+ *       200:
+ *         description: Returns the course
+ *       404:
+ *         description: The course does not exit
+ *       500:
+ *         description: Internal server error
+ */
+p2pCourseRoutes.get(
+  "/teacherCourse",
+  verifyToken(),
+  p2pCourseController.getByTeacherId
+);
+
+/**
+ * @openapi
  * /p2pCourses/{p2pCourseId}/posts:
  *   post:
  *     summary: Create a new post in the p2p course

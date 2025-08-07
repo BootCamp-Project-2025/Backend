@@ -93,3 +93,17 @@ export type P2PCourseDB = {
   sessions: LiveSessionDB[];
   teacherName: string;
 };
+
+export type P2PCourseByTeacherDB = {
+  id: string;
+  teacherId: string;
+  chatId: string;
+  studentId: string;
+  name: string;
+  remainingSession: number;
+  status: $Enums.P2PCourseStatus;
+  posts: P2PPostDB[];
+  files: P2PFilePostDB[];
+  sessions: LiveSessionDB[];
+  studentName: string;
+};

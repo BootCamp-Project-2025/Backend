@@ -2,7 +2,7 @@ import { P2PCourse } from "../aggregates/P2PCourse";
 import LiveSession from "../entities/LiveSession";
 import { Post } from "../entities/Posts";
 import { FilePost } from "../entities/FilePost";
-import { P2PCourseDB } from "../dtos/Dbtypes";
+import { P2PCourseByTeacherDB, P2PCourseDB } from "../dtos/Dbtypes";
 
 export default interface IP2PCourseService {
   create(course: P2PCourse): Promise<P2PCourse>;
@@ -30,5 +30,8 @@ export default interface IP2PCourseService {
     userId: string
   ): Promise<P2PCourse>;
 
-  getByUserId(userId: String): Promise<P2PCourseDB[]>
+  getByUserId(userId: String): Promise<P2PCourseDB[]>;
+  getByTeacherId(
+    userId: string
+  ): Promise<P2PCourseByTeacherDB[]>
 }

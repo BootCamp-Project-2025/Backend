@@ -277,10 +277,31 @@ export class P2PCourseController implements IP2PCourseController {
       const p2pCourses = await this.service.getByUserId(
         user.id
       );
+      const response = new SuccessResponseEntity(
+        p2pCourses,
+        StatusCodes.OK
+      );
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else {
+        console.log(error);
+        throw new ApiError();
+      }
+    }
+  };
 
-      /*       const p2pCoursesResponse = p2pCourses.map((p2pCourse: P2PCourseDB) => {
-              return P2PCourseMapper.domainToDto(p2pCourse);
-            }); */
+  getByTeacherId = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const user = getUserFromRequest(req);
+      const p2pCourses = await this.service.getByTeacherId(
+        user.id
+      );
+
       const response = new SuccessResponseEntity(
         p2pCourses,
         StatusCodes.OK

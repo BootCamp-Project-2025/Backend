@@ -39,7 +39,11 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
         id: p2pCourseId,
         OR: [{ teacherId: userId }, { studentId: userId }],
       },
-      include: { posts: true, files: true, sessions: true },
+      include: {
+        posts: true,
+        files: true,
+        sessions: { orderBy: { dateOfTheSession: "asc" } },
+      },
     });
     if (!p2pCourse) {
       return null;

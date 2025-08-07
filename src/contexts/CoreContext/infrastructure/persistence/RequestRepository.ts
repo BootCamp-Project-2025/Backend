@@ -5,10 +5,27 @@ import RequestMapper from "../../mappers/RequestMapper";
 import { ApiError } from "@/contexts/Shared/infrastructure/errors/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { ChatStatus } from "@/generated/prisma";
 
 export default class RequestRepository implements IRequestRepository {
   db = PrismaClient;
   async delete(requestId: string): Promise<void> {
+    const request = await this.db.request.findFirst({
+      where: { id: requestId },
+      include: { proposals: true },
+    });
+    if (!request) {
+      return;
+    }
+
+    const chatIds = request.proposals
+      .map((p) => p.chatId)
+      .filter((id): id is string => !!id);
+
+    await PrismaClient.chat.updateMany({
+      where: { id: { in: chatIds } },
+      data: { status: ChatStatus.CLOSED },
+    });
     await this.db.request.delete({ where: { id: requestId } });
   }
   async findById(requestId: string): Promise<Request | null> {
@@ -35,6 +52,7 @@ export default class RequestRepository implements IRequestRepository {
     const requestDb = await this.db.request.findMany({
       where: {
         userId,
+        status: "AVAILABLE",
         title: { contains: title, mode: "insensitive" },
       },
       include: { proposals: true },

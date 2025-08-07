@@ -69,7 +69,11 @@ export class CourseRepository implements ICourseRepository {
   }
 
   async findAll(): Promise<Course[]> {
-    const courses = await prismaClient.course.findMany();
+    const courses = await prismaClient.course.findMany({
+      where: {
+        published: true,
+      },
+    });
     return courses.map(CourseMapper.toDomain);
   }
 

@@ -9,13 +9,6 @@ import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
 import { ICourseRepository } from "@/contexts/LearningContext/domain/interfaces/ICourseRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { Module } from "@/contexts/LearningContext/domain/entities/Module";
-import { CourseMapper } from "@/contexts/LearningContext/mappers/CourseMapper";
-
-jest.mock("@/eventRegister", () => ({
-  globalEventDispatcher: {
-    dispatch: jest.fn(),
-  },
-}));
 
 const mockRepository: jest.Mocked<ILessonRepository> = {
   create: jest.fn(),
@@ -78,28 +71,8 @@ describe("CreateLessonUseCase", () => {
       quizzes: [],
     });
 
-    const course = CourseMapper.toDomain({
-      id: "course-id",
-      name: "CourseTest",
-      description: "TestDesc",
-      imgSrc: "CourseTestImage",
-      field: "Engineering",
-      requirements: "None",
-      time: 5,
-      language: "en",
-      category: "Test Category",
-      subCategory: "Test Subcategory",
-      userId: "user-id",
-      published: false,
-    });
-
     mockModuleRepository.findById.mockResolvedValue(module);
     mockRepository.create.mockResolvedValue(lesson);
-    mockModuleRepository.findCourseIdByModuleId.mockResolvedValue(
-      course.id.toString()
-    );
-    mockCourseRepository.findById.mockResolvedValue(course);
-    mockGetAllModulesUseCase.execute.mockResolvedValue([module]);
 
     const result = await useCase.execute({
       lesson,
@@ -107,30 +80,8 @@ describe("CreateLessonUseCase", () => {
     });
 
     expect(result).toBe(lesson);
-    expect(mockRepository.create).toHaveBeenCalled();
-    expect(mockCourseRepository.findById).toHaveBeenCalledWith(
-      course.id.toString()
-    );
-    expect(mockGetAllModulesUseCase.execute).toHaveBeenCalledWith(
-      course.id.toString()
-    );
-
-    const { globalEventDispatcher } = await import("@/eventRegister");
-    expect(globalEventDispatcher.dispatch).toHaveBeenCalledTimes(1);
-    expect(globalEventDispatcher.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        payload: expect.objectContaining({
-          resource: "course",
-          resourceDto: expect.objectContaining({
-            id: "course-id",
-            name: "CourseTest",
-            description: "TestDesc",
-            field: "Engineering",
-            userId: "user-id",
-          }),
-        }),
-      })
-    );
+    expect(mockModuleRepository.findById).toHaveBeenCalledWith("module-id");
+    expect(mockRepository.create).toHaveBeenCalledWith(lesson, "module-id");
   });
 
   it("Module not found", () => {

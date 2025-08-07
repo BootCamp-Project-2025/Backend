@@ -5,15 +5,8 @@ import IModuleRepository from "@/contexts/LearningContext/domain/interfaces/IMod
 import CreateModuleUseCase from "@/contexts/LearningContext/application/useCases/module/CreateModuleUseCase";
 import { ICourseRepository } from "@/contexts/LearningContext/domain/interfaces/ICourseRepository";
 import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
-import { globalEventDispatcher } from "@/eventRegister";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { Module } from "@/contexts/LearningContext/domain/entities/Module";
-import { Course } from "@/contexts/LearningContext/domain/aggregates/Course";
-import { CourseName } from "@/contexts/LearningContext/domain/valueObjects/CourseName";
-import { CourseDescription } from "@/contexts/LearningContext/domain/valueObjects/CourseDescription";
-import { UserId } from "@/contexts/CoreContext/domain/valueObjects/UserId";
-import { UniqueEntityID } from "@/contexts/Shared/domain/UniqueEntityID";
-import { Modules } from "@/contexts/LearningContext/domain/OneToMany/Modules";
 import { CourseMapper } from "@/contexts/LearningContext/mappers/CourseMapper";
 
 jest.mock("@/eventRegister", () => ({
@@ -44,11 +37,7 @@ const mockGetAllModulesUseCase: jest.Mocked<IUseCase<string, Module[]>> = {
   execute: jest.fn(),
 };
 
-const useCase = new CreateModuleUseCase(
-  mockRepository,
-  mockCourseRepository,
-  mockGetAllModulesUseCase
-);
+const useCase = new CreateModuleUseCase(mockRepository, mockCourseRepository);
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -101,58 +90,5 @@ describe("CreateModuleUseCase", () => {
     await expect(
       async () => await useCase.execute({ module, courseId: "CourseTestId" })
     ).rejects.toThrow(ApiError);
-  });
-
-  it("Dispatches event after module creation", async () => {
-    const module = ModuleMapper.DtoToDomain({
-      id: "module-id",
-      title: "New Module",
-      lessons: [],
-      position: 1,
-      quizzes: [],
-    });
-
-    const course = Course.create({
-      name: CourseName.create({ name: "CourseTest" }),
-      description: CourseDescription.create({ description: "TestDesc" }),
-      imgSrc: "CourseTestImage",
-      userId: UserId.create(new UniqueEntityID("userId")),
-      modules: Modules.create([]),
-      published: false,
-    });
-
-    mockCourseRepository.findById.mockResolvedValue(course);
-    mockRepository.create.mockResolvedValue(module);
-    mockGetAllModulesUseCase.execute.mockResolvedValue([module]);
-
-    jest.spyOn(CourseMapper, "domainToIndex").mockReturnValue({
-      id: "CourseTestId",
-      name: "CourseTest",
-      description: "TestDesc",
-      imgSrc: "http://imgSrc.com",
-      category: "math",
-      subCategory: "algebra",
-      language: "es",
-      field: "STEM",
-      time: 123,
-      userId: "userId",
-      createdAt: new Date(),
-      modules: [],
-    });
-
-    await useCase.execute({ module, courseId: "CourseTestId" });
-
-    expect(globalEventDispatcher.dispatch).toHaveBeenCalledTimes(1);
-    expect(globalEventDispatcher.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        payload: expect.objectContaining({
-          resource: "course",
-          resourceDto: expect.objectContaining({
-            id: "CourseTestId",
-            name: "CourseTest",
-          }),
-        }),
-      })
-    );
   });
 });

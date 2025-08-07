@@ -1,4 +1,5 @@
 import { Decimal } from "@prisma/client/runtime/library";
+import { $Enums } from "@/generated/prisma";
 
 export type ModuleDb = {
   lessons: LessonDb[];
@@ -52,4 +53,43 @@ export type StudentTrackProgressDb = {
   completedAt: Date | null;
   videoProgresses: VideoProgressDb[];
   resourcesCompleted: ResourceCompletedDb[];
+};
+
+type P2PPostDB = {
+  id: string;
+  p2pCourseId: string;
+  title: string;
+  description: string;
+  url: string;
+  creationDate: Date;
+};
+
+type P2PFilePostDB = {
+  id: string;
+  p2pCourseId: string;
+  url: string;
+  creationDate: Date;
+};
+
+type LiveSessionDB = {
+  id: string;
+  p2pCourseId: string;
+  status: $Enums.LiveSessionStatus;
+  creationDate: Date;
+  dateOfTheSession: Date;
+  url: string;
+};
+
+export type P2PCourseDB = {
+  id: string;
+  teacherId: string;
+  chatId: string;
+  studentId: string;
+  name: string;
+  remainingSession: number;
+  status: $Enums.P2PCourseStatus;
+  posts: P2PPostDB[];
+  files: P2PFilePostDB[];
+  sessions: LiveSessionDB[];
+  teacherName: string;
 };

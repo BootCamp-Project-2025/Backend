@@ -1,4 +1,5 @@
 import { P2PCourse } from "../aggregates/P2PCourse";
+import { P2PCourseDB } from "../dtos/Dbtypes";
 
 export default interface IP2PCourseRepository {
   create(p2pCourse: P2PCourse): Promise<P2PCourse>;
@@ -7,5 +8,5 @@ export default interface IP2PCourseRepository {
     p2pCourseId: string,
     userId: string
   ): Promise<P2PCourse | null>;
-  findByUserId(userId: string): Promise<P2PCourse[] | []>
+  findByUserId(userId: string): Promise<P2PCourseDB[]>
 }

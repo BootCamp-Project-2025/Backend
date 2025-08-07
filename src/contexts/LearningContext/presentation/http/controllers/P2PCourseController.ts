@@ -1,4 +1,4 @@
-import { P2PCourse } from "@/contexts/LearningContext/domain/aggregates/P2PCourse";
+import { P2PCourseDB } from "@/contexts/LearningContext/domain/dtos/Dbtypes";
 import { FilePostDTO } from "@/contexts/LearningContext/domain/dtos/FilePostDTO";
 import { P2PCourseDTO } from "@/contexts/LearningContext/domain/dtos/P2PCourseDTO";
 import { PostDTO } from "@/contexts/LearningContext/domain/dtos/PostDTO";
@@ -278,11 +278,11 @@ export class P2PCourseController implements IP2PCourseController {
         user.id
       );
 
-      const p2pCoursesResponse = p2pCourses.map((p2pCourse: P2PCourse) => {
-        return P2PCourseMapper.domainToDto(p2pCourse);
-      });
+      /*       const p2pCoursesResponse = p2pCourses.map((p2pCourse: P2PCourseDB) => {
+              return P2PCourseMapper.domainToDto(p2pCourse);
+            }); */
       const response = new SuccessResponseEntity(
-        p2pCoursesResponse,
+        p2pCourses,
         StatusCodes.OK
       );
       ResponseService.send(res, response);

@@ -2,6 +2,7 @@ import PrismaClient from "@/contexts/Shared/infrastructure/database/PrismaClient
 import { P2PCourse } from "../../domain/aggregates/P2PCourse";
 import IP2PCourseRepository from "../../domain/interfaces/IP2PCourseRepository";
 import P2PCourseMapper from "../../mappers/P2PCourseMapper";
+import { P2PCourseDB } from "../../domain/dtos/Dbtypes";
 
 export default class P2PCourseRepository implements IP2PCourseRepository {
   private p2pCourseDbConnection = PrismaClient.p2PCourse;
@@ -45,18 +46,31 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
     }
     return P2PCourseMapper.dtoToDomain(p2pCourse);
   }
-  async findByUserId(userId: string): Promise<P2PCourse[] | []> {
+  async findByUserId(userId: string): Promise<P2PCourseDB[]> {
     const p2pCourses = await this.p2pCourseDbConnection.findMany({
       where: {
         studentId: userId,
       },
-      include: { posts: true, files: true, sessions: true },
+      include: { posts: true, files: true, sessions: true, teacher: { select: { userName: true } } },
     });
     if (p2pCourses.length === 0) {
       return [];
     }
+    console.log(p2pCourses)
     const p2pCourseMany = p2pCourses.map((p2pCourse) => {
-      return P2PCourseMapper.dtoToDomain(p2pCourse)
+      return {
+        id: p2pCourse.id,
+        teacherId: p2pCourse.teacherId,
+        chatId: p2pCourse.chatId,
+        studentId: p2pCourse.studentId,
+        name: p2pCourse.name,
+        remainingSession: p2pCourse.remainingSession,
+        status: p2pCourse.status,
+        posts: p2pCourse.posts,
+        files: p2pCourse.files,
+        sessions: p2pCourse.sessions,
+        teacherName: p2pCourse.teacher.userName
+      }
     })
 
     return p2pCourseMany;

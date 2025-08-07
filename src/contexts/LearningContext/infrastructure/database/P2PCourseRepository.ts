@@ -51,7 +51,12 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
       where: {
         studentId: userId,
       },
-      include: { posts: true, files: true, sessions: true, teacher: { select: { userName: true } } },
+      include: {
+        posts: true,
+        files: true,
+        sessions: true,
+        teacher: { select: { userName: true } },
+      },
     });
     if (p2pCourses.length === 0) {
       return [];
@@ -68,9 +73,9 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
         posts: p2pCourse.posts,
         files: p2pCourse.files,
         sessions: p2pCourse.sessions,
-        teacherName: p2pCourse.teacher.userName
-      }
-    })
+        teacherName: p2pCourse.teacher.userName,
+      };
+    });
 
     return p2pCourseMany;
   }
@@ -79,7 +84,12 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
       where: {
         teacherId: userId,
       },
-      include: { posts: true, files: true, sessions: true, student: { select: { userName: true } } },
+      include: {
+        posts: true,
+        files: true,
+        sessions: true,
+        student: { select: { userName: true } },
+      },
     });
     if (p2pCourses.length === 0) {
       return [];
@@ -96,9 +106,9 @@ export default class P2PCourseRepository implements IP2PCourseRepository {
         posts: p2pCourse.posts,
         files: p2pCourse.files,
         sessions: p2pCourse.sessions,
-        studentName: p2pCourse.student.userName
-      }
-    })
+        studentName: p2pCourse.student.userName,
+      };
+    });
 
     return p2pCourseMany;
   }

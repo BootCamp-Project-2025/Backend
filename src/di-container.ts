@@ -242,7 +242,10 @@ import { IDashboardService } from "./contexts/CoreContext/domain/interfaces/serv
 import { DashboardService } from "./contexts/CoreContext/application/services/DashboardService";
 import { IDashboardController } from "./contexts/CoreContext/domain/interfaces/controllers/IDashboardController";
 import { DashboardController } from "./contexts/CoreContext/presentation/http/controllers/DashboardController";
-import { P2PCourseByTeacherDB, P2PCourseDB } from "./contexts/LearningContext/domain/dtos/Dbtypes";
+import {
+  P2PCourseByTeacherDB,
+  P2PCourseDB,
+} from "./contexts/LearningContext/domain/dtos/Dbtypes";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -908,13 +911,15 @@ container.registerSingleton<
   IUseCase<{ p2pCourseId: string; userId: string }, P2PCourse>
 >("GetByUserIdAndCourseIdUseCase", GetByUserIdAndCourseIdUseCase);
 
-container.registerSingleton<
-  IUseCase<string, P2PCourseDB[]>
->("GetP2PCoursesByUserIdUseCase", GetP2PCoursesByUserIdUseCase);
+container.registerSingleton<IUseCase<string, P2PCourseDB[]>>(
+  "GetP2PCoursesByUserIdUseCase",
+  GetP2PCoursesByUserIdUseCase
+);
 
-container.registerSingleton<
-  IUseCase<string, P2PCourseByTeacherDB[]>
->("GetP2PCoursesByTeacherIdUseCase", GetP2PCoursesByTeacherIdUseCase);
+container.registerSingleton<IUseCase<string, P2PCourseByTeacherDB[]>>(
+  "GetP2PCoursesByTeacherIdUseCase",
+  GetP2PCoursesByTeacherIdUseCase
+);
 
 container.registerSingleton<IUseCase<string, P2PCourse>>(
   "GetP2PCourseByIdUseCase",

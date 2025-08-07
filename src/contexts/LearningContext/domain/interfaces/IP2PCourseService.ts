@@ -30,8 +30,6 @@ export default interface IP2PCourseService {
     userId: string
   ): Promise<P2PCourse>;
 
-  getByUserId(userId: String): Promise<P2PCourseDB[]>;
-  getByTeacherId(
-    userId: string
-  ): Promise<P2PCourseByTeacherDB[]>
+  getByUserId(userId: String): Promise<Array<P2PCourseDB>>;
+  getByTeacherId(userId: string): Promise<P2PCourseByTeacherDB[]>;
 }

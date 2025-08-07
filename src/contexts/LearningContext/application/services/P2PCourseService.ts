@@ -65,10 +65,16 @@ export class P2PCourseService implements IP2PCourseService {
     @inject("GetP2PCourseByIdUseCase")
     private readonly getP2PCourseByIdUseCase: IUseCase<string, P2PCourse>,
     @inject("GetP2PCoursesByUserIdUseCase")
-    private readonly getP2PCoursesByUserIdUseCase: IUseCase<string, P2PCourseDB[]>,
+    private readonly getP2PCoursesByUserIdUseCase: IUseCase<
+      string,
+      P2PCourseDB[]
+    >,
     @inject("GetP2PCoursesByTeacherIdUseCase")
-    private readonly getP2PCoursesByTeacherIdUseCase: IUseCase<string, P2PCourseByTeacherDB[]>
-  ) { }
+    private readonly getP2PCoursesByTeacherIdUseCase: IUseCase<
+      string,
+      P2PCourseByTeacherDB[]
+    >
+  ) {}
   async create(course: P2PCourse): Promise<P2PCourse> {
     return await this.createP2PCourseUseCase.execute(course);
   }
@@ -136,15 +142,11 @@ export class P2PCourseService implements IP2PCourseService {
     });
   }
 
-  async getByUserId(
-    userId: string
-  ): Promise<P2PCourseDB[]> {
+  async getByUserId(userId: string): Promise<P2PCourseDB[]> {
     return await this.getP2PCoursesByUserIdUseCase.execute(userId);
   }
 
-  async getByTeacherId(
-    userId: string
-  ): Promise<P2PCourseByTeacherDB[]> {
+  async getByTeacherId(userId: string): Promise<P2PCourseByTeacherDB[]> {
     return await this.getP2PCoursesByTeacherIdUseCase.execute(userId);
   }
 }

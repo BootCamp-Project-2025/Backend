@@ -9,5 +9,5 @@ export default interface IP2PCourseRepository {
     userId: string
   ): Promise<P2PCourse | null>;
   findByUserId(userId: string): Promise<P2PCourseDB[]>;
-  findByTeacherId(userId: string): Promise<P2PCourseByTeacherDB[]>
+  findByTeacherId(userId: string): Promise<P2PCourseByTeacherDB[]>;
 }

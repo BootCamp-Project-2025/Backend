@@ -7,16 +7,17 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export default class GetP2PCoursesByUserIdUseCase
-    implements IUseCase<string, P2PCourseDB[]> {
-    constructor(
-        @inject("IP2PCourseRepository")
-        private readonly p2pCourseRepository: IP2PCourseRepository
-    ) { }
-    async execute(userId: string): Promise<P2PCourseDB[]> {
-        const p2pCourses = await this.p2pCourseRepository.findByUserId(userId);
-        if (p2pCourses.length === 0) {
-            throw new ApiError(StatusCodes.NOT_FOUND, "Courses not found");
-        }
-        return p2pCourses;
+  implements IUseCase<string, P2PCourseDB[]>
+{
+  constructor(
+    @inject("IP2PCourseRepository")
+    private readonly p2pCourseRepository: IP2PCourseRepository
+  ) {}
+  async execute(userId: string): Promise<P2PCourseDB[]> {
+    const p2pCourses = await this.p2pCourseRepository.findByUserId(userId);
+    if (p2pCourses.length === 0) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Courses not found");
     }
+    return p2pCourses;
+  }
 }

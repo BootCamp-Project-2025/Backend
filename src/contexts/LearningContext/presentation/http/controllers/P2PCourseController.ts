@@ -1,4 +1,3 @@
-import { P2PCourseDB } from "@/contexts/LearningContext/domain/dtos/Dbtypes";
 import { FilePostDTO } from "@/contexts/LearningContext/domain/dtos/FilePostDTO";
 import { P2PCourseDTO } from "@/contexts/LearningContext/domain/dtos/P2PCourseDTO";
 import { PostDTO } from "@/contexts/LearningContext/domain/dtos/PostDTO";
@@ -21,7 +20,7 @@ import { inject, injectable } from "tsyringe";
 export class P2PCourseController implements IP2PCourseController {
   constructor(
     @inject("IP2PCourseService") private readonly service: IP2PCourseService
-  ) { }
+  ) {}
 
   editSession = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -268,19 +267,11 @@ export class P2PCourseController implements IP2PCourseController {
     }
   };
 
-  getByUserId = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
+  getByUserId = async (req: Request, res: Response): Promise<void> => {
     try {
       const user = getUserFromRequest(req);
-      const p2pCourses = await this.service.getByUserId(
-        user.id
-      );
-      const response = new SuccessResponseEntity(
-        p2pCourses,
-        StatusCodes.OK
-      );
+      const p2pCourses = await this.service.getByUserId(user.id);
+      const response = new SuccessResponseEntity(p2pCourses, StatusCodes.OK);
       ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof ApiError) {
@@ -292,20 +283,12 @@ export class P2PCourseController implements IP2PCourseController {
     }
   };
 
-  getByTeacherId = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
+  getByTeacherId = async (req: Request, res: Response): Promise<void> => {
     try {
       const user = getUserFromRequest(req);
-      const p2pCourses = await this.service.getByTeacherId(
-        user.id
-      );
+      const p2pCourses = await this.service.getByTeacherId(user.id);
 
-      const response = new SuccessResponseEntity(
-        p2pCourses,
-        StatusCodes.OK
-      );
+      const response = new SuccessResponseEntity(p2pCourses, StatusCodes.OK);
       ResponseService.send(res, response);
     } catch (error) {
       if (error instanceof ApiError) {

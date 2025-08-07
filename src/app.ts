@@ -14,6 +14,7 @@ import enrollmentRoutes from "./contexts/CoreContext/presentation/http/routes/En
 import moduleRoutes from "./contexts/LearningContext/presentation/http/routes/ModuleRoutes";
 import lessonRoutes from "./contexts/LearningContext/presentation/http/routes/LessonRoute";
 import studentTrackProgressRoutes from "./contexts/LearningContext/presentation/http/routes/StudentTrackProgressRoutes";
+import dashboardRoutes from "./contexts/CoreContext/presentation/http/routes/DashboardRoutes";
 
 import clientRoutes from "./contexts/CoreContext/presentation/http/routes/ClientRoutes";
 import swaggerUi from "swagger-ui-express";
@@ -41,6 +42,8 @@ app.use("/api/modules", moduleRoutes);
 app.use("/api/lessons", lessonRoutes);
 
 app.use("/api/users", userRoutes);
+
+app.use("/api/stats", dashboardRoutes);
 
 app.use("/api/chats", chatRoutes);
 app.use("/api/proposals", proposalRoutes);

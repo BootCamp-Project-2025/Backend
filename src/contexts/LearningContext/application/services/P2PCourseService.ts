@@ -5,6 +5,7 @@ import LiveSession from "../../domain/entities/LiveSession";
 import { Post } from "../../domain/entities/Posts";
 import IP2PCourseService from "../../domain/interfaces/IP2PCourseService";
 import IUseCase from "../../domain/interfaces/IUseCase";
+import { P2PCourseByTeacherDB, P2PCourseDB } from "../../domain/dtos/Dbtypes";
 
 @injectable()
 export class P2PCourseService implements IP2PCourseService {
@@ -62,7 +63,17 @@ export class P2PCourseService implements IP2PCourseService {
       P2PCourse
     >,
     @inject("GetP2PCourseByIdUseCase")
-    private readonly getP2PCourseByIdUseCase: IUseCase<string, P2PCourse>
+    private readonly getP2PCourseByIdUseCase: IUseCase<string, P2PCourse>,
+    @inject("GetP2PCoursesByUserIdUseCase")
+    private readonly getP2PCoursesByUserIdUseCase: IUseCase<
+      string,
+      P2PCourseDB[]
+    >,
+    @inject("GetP2PCoursesByTeacherIdUseCase")
+    private readonly getP2PCoursesByTeacherIdUseCase: IUseCase<
+      string,
+      P2PCourseByTeacherDB[]
+    >
   ) {}
   async create(course: P2PCourse): Promise<P2PCourse> {
     return await this.createP2PCourseUseCase.execute(course);
@@ -129,5 +140,13 @@ export class P2PCourseService implements IP2PCourseService {
       p2pCourseId,
       userId,
     });
+  }
+
+  async getByUserId(userId: string): Promise<P2PCourseDB[]> {
+    return await this.getP2PCoursesByUserIdUseCase.execute(userId);
+  }
+
+  async getByTeacherId(userId: string): Promise<P2PCourseByTeacherDB[]> {
+    return await this.getP2PCoursesByTeacherIdUseCase.execute(userId);
   }
 }

@@ -8,6 +8,8 @@ describe("GetByTeacherIdAndCourseIdUseCase component", () => {
     create: jest.fn(),
     findById: jest.fn(),
     findByUserIdAndCourseId: jest.fn(),
+    findByUserId: jest.fn(),
+    findByTeacherId: jest.fn(),
   };
   it("Creates correctly", () => {
     const useCase = new GetByUserIdAndCourseIdUseCase(p2pCourseRepositoryMock);

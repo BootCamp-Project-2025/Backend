@@ -22,6 +22,8 @@ describe("P2PCourseService component", () => {
   const removeFilePostUseCase = { execute: jest.fn() };
   const getByTeacherIdAndCourseIdUseCase = { execute: jest.fn() };
   const getP2PCourseByIdUseCase = { execute: jest.fn() };
+  const getByUserId = { execute: jest.fn() };
+  const getByTeacherId = { execute: jest.fn() };
   const service = new P2PCourseService(
     createP2PCourseUseCase,
     addSessionUseCase,
@@ -34,7 +36,9 @@ describe("P2PCourseService component", () => {
     addFilePostUseCase,
     removeFilePostUseCase,
     getByTeacherIdAndCourseIdUseCase,
-    getP2PCourseByIdUseCase
+    getP2PCourseByIdUseCase,
+    getByUserId,
+    getByTeacherId
   );
 
   const p2pCourse = P2PCourse.createFromPrimitive({

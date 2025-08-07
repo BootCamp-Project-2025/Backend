@@ -267,6 +267,39 @@ export class P2PCourseController implements IP2PCourseController {
     }
   };
 
+  getByUserId = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = getUserFromRequest(req);
+      const p2pCourses = await this.service.getByUserId(user.id);
+      const response = new SuccessResponseEntity(p2pCourses, StatusCodes.OK);
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else {
+        console.log(error);
+        throw new ApiError();
+      }
+    }
+  };
+
+  getByTeacherId = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = getUserFromRequest(req);
+      const p2pCourses = await this.service.getByTeacherId(user.id);
+
+      const response = new SuccessResponseEntity(p2pCourses, StatusCodes.OK);
+      ResponseService.send(res, response);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      } else {
+        console.log(error);
+        throw new ApiError();
+      }
+    }
+  };
+
   private async validateEditPermision(
     p2pCourseId: string,
     userId: string

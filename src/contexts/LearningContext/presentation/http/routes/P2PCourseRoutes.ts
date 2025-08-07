@@ -19,6 +19,13 @@ const p2pCourseRoutes = Router({ mergeParams: true });
  *             $ref: '#/components/schemas/P2PCourseDto'
  *     tags:
  *       - P2PCourses
+ *     responses:
+ *       200:
+ *         description: Returns the course
+ *       404:
+ *         description: The course does not exit
+ *       500:
+ *         description: Internal server error
  */
 p2pCourseRoutes.post("/", verifyToken(), p2pCourseController.create);
 
@@ -41,6 +48,48 @@ p2pCourseRoutes.get(
   "/:p2pCourseId/userCourse",
   verifyToken(),
   p2pCourseController.getByUserIdAndCourseId
+);
+
+/**
+ * @openapi
+ * /p2pCourses/userCourse:
+ *   get:
+ *     summary: Get the courses for a student
+ *     tags:
+ *       - P2PCourses
+ *     responses:
+ *       200:
+ *         description: Returns the course
+ *       404:
+ *         description: The course does not exit
+ *       500:
+ *         description: Internal server error
+ */
+p2pCourseRoutes.get(
+  "/userCourse",
+  verifyToken(),
+  p2pCourseController.getByUserId
+);
+
+/**
+ * @openapi
+ * /p2pCourses/teacherCourse:
+ *   get:
+ *     summary: Get the courses for a teacher
+ *     tags:
+ *       - P2PCourses
+ *     responses:
+ *       200:
+ *         description: Returns the course
+ *       404:
+ *         description: The course does not exit
+ *       500:
+ *         description: Internal server error
+ */
+p2pCourseRoutes.get(
+  "/teacherCourse",
+  verifyToken(),
+  p2pCourseController.getByTeacherId
 );
 
 /**

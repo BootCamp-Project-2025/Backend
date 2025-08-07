@@ -199,6 +199,8 @@ import AddFilePostUseCase from "./contexts/LearningContext/application/useCases/
 import { FilePost } from "./contexts/LearningContext/domain/entities/FilePost";
 import RemoveFilePostUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/RemoveFilePostUseCase";
 import GetByUserIdAndCourseIdUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/GetByUserIdAndCourseIdUseCase";
+import GetP2PCoursesByUserIdUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/GetP2PCoursesByUserIdUseCase";
+import GetP2PCoursesByTeacherIdUseCase from "./contexts/LearningContext/application/useCases/p2pCourse/GetP2PCoursesByTeacherIdUseCase";
 import { GetUserCoursesUseCase } from "./contexts/CoreContext/application/useCases/GetUserCoursesUseCase";
 import { ICdnService } from "./contexts/CoreContext/domain/interfaces/services/ICdnService";
 import { CloudinaryService } from "./contexts/CoreContext/infrastructure/cdn/CloudinaryService";
@@ -240,6 +242,10 @@ import { IDashboardService } from "./contexts/CoreContext/domain/interfaces/serv
 import { DashboardService } from "./contexts/CoreContext/application/services/DashboardService";
 import { IDashboardController } from "./contexts/CoreContext/domain/interfaces/controllers/IDashboardController";
 import { DashboardController } from "./contexts/CoreContext/presentation/http/controllers/DashboardController";
+import {
+  P2PCourseByTeacherDB,
+  P2PCourseDB,
+} from "./contexts/LearningContext/domain/dtos/Dbtypes";
 
 //User
 container.registerSingleton<IUserRepository>("IUserRepository", UserRepository);
@@ -904,6 +910,16 @@ container.registerSingleton<
 container.registerSingleton<
   IUseCase<{ p2pCourseId: string; userId: string }, P2PCourse>
 >("GetByUserIdAndCourseIdUseCase", GetByUserIdAndCourseIdUseCase);
+
+container.registerSingleton<IUseCase<string, P2PCourseDB[]>>(
+  "GetP2PCoursesByUserIdUseCase",
+  GetP2PCoursesByUserIdUseCase
+);
+
+container.registerSingleton<IUseCase<string, P2PCourseByTeacherDB[]>>(
+  "GetP2PCoursesByTeacherIdUseCase",
+  GetP2PCoursesByTeacherIdUseCase
+);
 
 container.registerSingleton<IUseCase<string, P2PCourse>>(
   "GetP2PCourseByIdUseCase",

@@ -71,6 +71,9 @@ jobs:
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env |
           echo "API_HOST=${{ secrets.API_HOST }}" >> .env |
           echo "API_PORT=${{ secrets.API_PORT }}" >> .env |
+          echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env |
+          echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env |
+          echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env |
           echo "KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}" >> .env |
           echo "KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}" >> .env |
           echo "KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}" >> .env |

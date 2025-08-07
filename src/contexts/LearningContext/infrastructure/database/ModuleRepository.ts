@@ -14,7 +14,13 @@ export class ModuleRepository implements IModuleRepository {
     try {
       const moduleDb = await this.db.module.findMany({
         where: { courseId },
-        include: { lessons: { include: { resources: true } }, quizzes: true },
+        include: {
+          lessons: {
+            orderBy: { position: "asc" },
+            include: { resources: true },
+          },
+          quizzes: true,
+        },
         orderBy: { position: "asc" },
       });
       return ModuleMapper.bulkPersistanceToDomain(moduleDb);

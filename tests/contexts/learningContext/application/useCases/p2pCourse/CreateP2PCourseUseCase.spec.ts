@@ -7,6 +7,8 @@ describe("CreateP2PCourseUseCase component", () => {
     create: jest.fn(),
     findById: jest.fn(),
     findByUserIdAndCourseId: jest.fn(),
+    findByUserId: jest.fn(),
+    findByTeacherId: jest.fn(),
   };
   it("Creates correctly", () => {
     const useCase = new CreateP2PCourseUseCase(p2pCourseRepositoryMock);

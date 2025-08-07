@@ -33,6 +33,8 @@ describe("P2PCourseController.spec", () => {
     addFilePost: jest.fn(),
     removeFilePost: jest.fn(),
     getByUserIdAndCourseId: jest.fn(),
+    getByUserId: jest.fn(),
+    getByTeacherId: jest.fn(),
   };
   beforeEach(() => {
     req = {

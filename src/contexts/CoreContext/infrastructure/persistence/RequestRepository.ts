@@ -51,7 +51,7 @@ export default class RequestRepository implements IRequestRepository {
           description: request.getDescription().value,
           language: request.getLanguage().value,
           category: request.getCategory().value,
-          subcategory: request.getSubcategory().value,
+          subCategory: request.getSubcategory().value,
           updatedAt: new Date(),
         },
       });

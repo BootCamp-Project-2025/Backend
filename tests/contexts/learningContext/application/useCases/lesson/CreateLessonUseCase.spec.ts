@@ -9,7 +9,6 @@ import ModuleMapper from "@/contexts/LearningContext/mappers/ModuleMapper";
 import { ICourseRepository } from "@/contexts/LearningContext/domain/interfaces/ICourseRepository";
 import IUseCase from "@/contexts/LearningContext/domain/interfaces/IUseCase";
 import { Module } from "@/contexts/LearningContext/domain/entities/Module";
-import { CourseMapper } from "@/contexts/LearningContext/mappers/CourseMapper";
 
 const mockRepository: jest.Mocked<ILessonRepository> = {
   create: jest.fn(),
